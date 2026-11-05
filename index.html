@@ -587,6 +587,8 @@ ol.rules .ex{font-size:14px;border-radius:6px}
 .cbt-mode{align-self:center;min-width:0}
 .numgrid{padding:12px 0 4px}
 .cbt-body{padding-top:18px}
+.topbar{display:none!important}
+.filters.tabs{top:0}
 @media (prefers-reduced-motion: reduce){*{transition:none!important;animation:none!important}}
 </style>
 
@@ -1230,7 +1232,7 @@ Aturan untuk keduanya:
    b. Isian angka: lima kalimat bernomor di "kalimat", perintah seperti "Kalimat yang tidak efektif terdapat pada kalimat nomor ....". Tepat satu kalimat yang dimaksud; nomornya di "kunci_isian".
    c. Untuk bahasa buatan: contoh pola ditulis di "kalimat" (misal "lo mesa kuti = saya makan nasi"), lalu PG 5 opsi.
 2. Kalimat yang dimaksudkan benar harus benar di SEMUA aspek (ejaan, tanda baca, kalimat efektif). Kalimat yang salah hanya memuat SATU kesalahan, dan kesalahan itu pada konsep yang diuji.
-3. Pengecoh harus kesalahan yang memang sering terjadi, bukan salah ketik. Untuk makna imbuhan, analogi, dan relasi makna, setiap pengecoh mewakili makna atau hubungan lain yang berbeda jelas, sehingga hanya satu jawaban yang sah.
+3. Pengecoh harus kesalahan yang memang sering terjadi, bukan salah ketik. Setiap opsi salah mewakili satu kesalahan yang bisa dinamai (lihat "Peta pengecoh"). Untuk makna imbuhan, analogi, dan relasi makna, setiap pengecoh mewakili makna atau hubungan lain yang berbeda jelas, sehingga hanya satu jawaban yang sah. Pada PG kaidah (EYD atau kalimat efektif), keempat pengecoh memuat kesalahan yang berbeda-beda, bukan kesalahan yang sama diulang.
 4. "kaidah": satu kalimat aturan; untuk EYD sertakan rujukan bab, misalnya "(III.B.3)".
 5. Variasikan konteks (sekolah, kesehatan, lingkungan, ekonomi, budaya). Nama orang dan lembaga fiktif. Huruf miring ditulis dengan *...*.
 6. Jika Kelemahan menyebut subkategori hari ini, minimal separuh butir subkategori itu menyasarnya dengan contoh baru.
@@ -1244,6 +1246,30 @@ Aturan untuk keduanya:
 6. Soal "seharusnya" memakai lima opsi tetap: dihilangkan, dibiarkan saja, diganti ..., didahului ..., diikuti .... "Dibiarkan saja" boleh menjadi kunci.
 7. "bukti" = nomor kalimat dasar jawaban. "pembahasan" paling banyak 2 kalimat. "drill_terkait" = subkategori (EYD atau kebahasaan) yang berkaitan, boleh kosong.
 8. Kata uji paling banyak 5 di "kata_uji", tanpa angka superskrip di dalam kalimat. Rumpang ditulis [...].
+9. Setiap soal teks memakai pengecoh dari "Peta pengecoh" sesuai tipenya.
+
+## Peta pengecoh (PBM dan PPU)
+Pakai pola ini untuk menyusun opsi salah:
+- Ungkapan kembali / makna sama. Kunci: isi dan kadar kepastian sama ("dapat" → "berpotensi"). Pengecoh: satu opsi per modalitas (pasti, selalu, biasanya, seharusnya, sepertinya); pelaku dan sasaran ditukar; induk klausa "yang" dipindah.
+- Penggabungan kalimat. Kunci: konjungsi sesuai relasi (sehingga, tetapi). Pengecoh: dan, lalu, yang, padahal, walaupun, ketika, yang relasinya tidak cocok.
+- Perbaikan kalimat. Kunci: satu perbaikan yang menyelesaikan seluruh masalah. Pengecoh: memperbaiki separuh masalah; mengganti satu kesalahan dengan kesalahan baru.
+- Kalimat inti / informasi utama. Kunci: S-P-O utuh dengan penjelas wajib. Pengecoh: membuang kata wajib; ikut membawa keterangan.
+- Rumpang dua kata. Kunci: kedua kata cocok sekaligus. Pengecoh: kata pertama benar tetapi kata kedua salah, dan sebaliknya.
+- Pasangan tetap / pola makna. Kunci: gabungan yang membentuk istilah; pola hubungan makna yang sama. Pengecoh: frasa biasa yang bisa diganti sinonim; frasa berkelas kata sama tetapi relasi maknanya beda.
+- Hubungan kata / analogi. Kunci: relasi yang sejajar arah dan muatannya. Pengecoh: kata yang dekat secara topik tetapi relasinya beda.
+- Judul. Kunci: mencakup dua paragraf atau dua sisi teks. Pengecoh: hanya satu paragraf, atau terlalu umum.
+- Sisipan / urutan kalimat. Kunci: tepat setelah kalimat yang dirujuk. Pengecoh: satu posisi lebih awal atau lebih akhir.
+
+Hindari: dua sinonim atau dua antonim yang sama-sama sah, lebih dari satu opsi dengan pola makna yang sama, hubungan kata yang muatannya tidak sejajar (negatif vs positif), dan dua kesalahan dalam satu kalimat.
+
+## Sebaran kunci
+Pada soal PG A–E (drill dan teks), sebar kunci ke kelima huruf; jangan lebih dari 2 kunci sama berurutan, dan jangan ada huruf yang menjadi kunci lebih dari 3 kali dalam satu paket. Soal "seharusnya" yang memakai lima opsi tetap dan soal isian tidak ikut dihitung.
+
+## Cek sebelum mengirim (jangan ditulis di keluaran)
+1. Untuk setiap soal PG, namai kesalahan yang diwakili tiap opsi salah. Jika ada opsi salah yang tidak bisa dinamai, atau dua opsi dengan nama kesalahan yang sama, ganti opsinya.
+2. Pastikan hanya satu opsi yang sah. Jika kunci meragukan, ganti soalnya.
+3. Pastikan jawaban tidak bisa ditebak tanpa membaca kalimat atau teks (misalnya karena opsi kunci paling panjang atau satu-satunya yang berbeda bentuk).
+4. Cek sebaran kunci. Daftar cek ini hanya untuk kamu; keluaran tetap HANYA satu blok json.
 
 ## Daftar subkategori yang sah
 EYD: ${o.allEyd}
