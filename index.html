@@ -589,6 +589,81 @@ ol.rules .ex{font-size:14px;border-radius:6px}
 .cbt-body{padding-top:18px}
 .topbar{display:none!important}
 .filters.tabs{top:0}
+
+/* Tugas harian & progres */
+.tasks{gap:8px}
+.tsum{font-size:13px;font-weight:700;color:var(--muted);font-variant-numeric:tabular-nums}
+.tsum.ok{color:var(--ok-ink)}
+.tdone{font-size:13px;font-weight:600;color:var(--ok-ink)}
+.tlist{display:flex;flex-direction:column}
+.trow{display:flex;align-items:center;gap:12px;padding:10px 0;border-top:1px solid var(--line)}
+.trow:first-child{border-top:0}
+.tchk{width:22px;height:22px;flex:none;border-radius:50%;border:1.5px solid var(--line2);display:grid;place-items:center;font-size:11px;font-weight:700;color:var(--muted)}
+.tchk svg{width:12px;height:12px}
+.trow.done .tchk{background:var(--ok);border-color:var(--ok);color:#fff}
+.ttx{flex:1;min-width:0;display:flex;flex-direction:column;gap:2px}
+.tt{font-weight:700;font-size:15px;display:flex;gap:8px;align-items:baseline;flex-wrap:wrap}
+.tnum{font-size:12px;font-weight:600;color:var(--muted);font-variant-numeric:tabular-nums}
+.td{font-size:13px;color:var(--muted);line-height:1.35}
+.trow.done .tt{color:var(--muted)}
+.trow.done .tnum{color:var(--ok-ink)}
+.tbar{display:block;height:4px;border-radius:2px;background:var(--fill);overflow:hidden;margin-top:4px;max-width:220px}
+.tbar i{display:block;height:100%;background:var(--accent);border-radius:2px}
+.mini .tbar i{background:var(--ok)}
+.obtn.tgo{min-height:30px;padding:0 12px;font-size:13px;flex:none}
+.week{display:grid;grid-template-columns:repeat(7,minmax(0,1fr));gap:6px;text-align:center}
+.wd{display:flex;flex-direction:column;align-items:center;gap:4px}
+.wl{font-size:12px;color:var(--muted);font-weight:600}
+.wd.now .wl{color:var(--accent)}
+.wb{width:100%;max-width:40px;height:30px;border-radius:6px;display:grid;place-items:center;font-size:12px;font-weight:700;border:1.5px solid var(--line);color:var(--muted);background:var(--surface)}
+.wb.part{background:color-mix(in srgb,var(--ok) 22%,transparent);border-color:transparent;color:var(--ok-ink)}
+.wb.full{background:var(--ok);border-color:var(--ok);color:#fff}
+.wb.fut{border-style:dashed;background:transparent}
+.wd.now .wb{outline:2px solid var(--accent);outline-offset:1px}
+.heat{display:grid;grid-template-columns:repeat(15,minmax(0,1fr));gap:4px}
+.heat i{aspect-ratio:1;border-radius:3px;background:var(--fill)}
+.heat i.p1{background:color-mix(in srgb,var(--ok) 25%,transparent)}
+.heat i.p2{background:color-mix(in srgb,var(--ok) 45%,transparent)}
+.heat i.p3{background:color-mix(in srgb,var(--ok) 70%,transparent)}
+.heat i.full{background:var(--ok)}
+.mini div{gap:2px}
+.mini span{line-height:1.3}
+.cal-day .dot.part{background:var(--warn)}
+.pemb .mbtn{align-self:flex-start;margin-top:4px;white-space:normal;text-align:left;height:auto;padding-block:6px}
+.rule .mbtn{min-height:28px}
+.peta{display:flex;flex-wrap:wrap;gap:6px;margin:0 14px 12px}
+.pchip{border:1px solid var(--line2);background:var(--surface);color:var(--ink);border-radius:6px;padding:3px 8px;font-size:12px;font-weight:600;min-height:26px}
+.pchip span{color:var(--muted);font-weight:500;margin-left:2px}
+@media (hover:hover){.pchip:hover{border-color:var(--accent);color:var(--accent)}}
+.kgrp{margin:0 14px 12px;scroll-margin-top:16px}
+details.topic>.kgrp,details.topic>.peta{margin:0 14px 12px}
+.kgh{font-size:12px;font-weight:700;text-transform:uppercase;letter-spacing:.04em;color:var(--accent);padding:8px 0 6px;border-top:1px solid var(--line)}
+.kgrp:first-of-type .kgh{border-top:0;padding-top:0}
+.kgrp ol.rules{margin:0}
+ol.rules li.rfocus{background:color-mix(in srgb,var(--warn) 14%,transparent);outline:1.5px solid var(--warn);border-radius:6px;padding:6px 8px;margin-left:-8px;scroll-margin:80px}
+.rtag{display:inline-block;font-size:11px;font-weight:700;color:#8A5A00;background:color-mix(in srgb,var(--warn) 30%,transparent);border-radius:4px;padding:1px 6px;margin-bottom:4px}
+.qbackfab{position:fixed;z-index:6;left:50%;transform:translateX(-50%);bottom:calc(64px + env(safe-area-inset-bottom,0px))}
+.qbackfab .fbtn{box-shadow:0 4px 14px rgba(16,24,40,.18)}
+.pchip.on{background:var(--accent);border-color:var(--accent);color:#fff}
+.pchip.on span{color:rgba(255,255,255,.8)}
+.kmore{margin:0 14px 14px;font-size:13px;color:var(--muted);display:flex;align-items:center;gap:6px;flex-wrap:wrap}
+.kmore .link{font-size:13px;min-height:28px;padding:0;font-weight:600}
+details.topic{scroll-margin-top:56px}
+.mgrid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px}
+@media (min-width:560px){.mgrid{grid-template-columns:repeat(4,minmax(0,1fr))}}
+.mbox{display:flex;flex-direction:column;align-items:flex-start;gap:6px;padding:10px;border:1px solid var(--line);border-radius:10px;background:var(--surface);text-align:left;color:var(--ink);min-height:86px;min-width:0}
+.mbox .ic{width:26px;height:26px}
+.mbox b{font-size:13px;font-weight:700;line-height:1.25;overflow-wrap:anywhere}
+.mbox small{font-size:11px;color:var(--muted);margin-top:auto}
+@media (hover:hover){.mbox:hover{border-color:var(--accent)}}
+.mbox:active{opacity:.75}
+.mback{align-self:flex-start;display:inline-flex;align-items:center;gap:6px;border:0;background:none;color:var(--accent);font-weight:600;font-size:14px;padding:6px 0 0;min-height:32px}
+.mback svg{width:7px;height:12px}
+h1.mh{margin-top:0}
+.mrules{padding:14px 14px 4px}
+.mrules ol.rules{margin:0 0 10px}
+.mres{display:flex;align-items:center;justify-content:space-between;width:100%;border:0;background:none;padding:0 0 4px;font-weight:700;font-size:15px;color:var(--ink);text-align:left}
+.mres .chev{color:var(--faint)}
 @media (prefers-reduced-motion: reduce){*{transition:none!important;animation:none!important}}
 </style>
 
@@ -1081,7 +1156,70 @@ function mergeImport(st,data,isSample){
 /* ---------- Util ---------- */
 const $=s=>document.querySelector(s);
 function esc(s){ return String(s==null?'':s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c])); }
-function rich(s){ return esc(s).replace(/\*\*\*([^*]+)\*\*\*/g,'<b><i>$1</i></b>').replace(/\*([^*]+)\*/g,'<i>$1</i>'); }
+const GRUP={
+ 'Huruf kapital':[['Awal kalimat & petikan',[1]],['Nama orang & gelar',[2,3,4,5]],['Bangsa, suku, bahasa',[6]],['Waktu & peristiwa',[7]],['Geografi',[8]],['Lembaga, dokumen, judul',[9]],['Kekerabatan & Anda',[10]]],
+ 'Huruf miring dan tebal':[['Huruf miring',[1,2,3]],['Bukan huruf miring',[4,5]],['Huruf tebal',[6]]],
+ 'Kata berimbuhan dan bentuk terikat':[['Ditulis serangkai',[1,2]],['Pakai tanda hubung',[3,4]],['Ditulis terpisah',[5]]],
+ 'Bentuk ulang dan gabungan kata':[['Bentuk ulang',[1,2]],['Gabungan kata terpisah',[3,5]],['Gabungan kata serangkai',[4,6]]],
+ 'Pemenggalan kata':[['Vokal & konsonan',[1,2]],['Kata berimbuhan',[3]],['Batasan',[4]]],
+ 'Partikel':[['-lah, -kah, -tah',[1]],['pun',[2,3]],['per',[4]]],
+ 'Singkatan dan akronim':[['Singkatan bertitik',[1,3,4]],['Singkatan tanpa titik',[2,5]],['Akronim',[6]]],
+ 'Angka dan bilangan':[['Huruf atau angka',[1,2,3]],['Bilangan tingkat & -an',[4,5]],['Pecahan',[6]]],
+ 'Kata ganti dan kata sandang':[['Kata ganti',[1,2]],['Si dan sang',[3]]],
+ 'Tanda titik':[['Dipakai',[1,3,4]],['Tidak dipakai',[2,5]]],
+ 'Tanda koma':[['Perincian & pertentangan',[1,2]],['Anak kalimat & penghubung',[3,4,10]],['Seru, sapaan, petikan',[5,6]],['Gelar, desimal, aposisi',[7,8,9]],['Tidak dipakai',[11]]],
+ 'Tanda titik dua':[['Dipakai',[1,3,4]],['Tidak dipakai',[2]]],
+ 'Tanda hubung':[['Bentuk ulang & pemenggalan',[1]],['Tanggal, ejaan, skor',[2]],['Huruf kapital & angka',[3,4]],['Unsur asing & kesatuan',[5,6]]],
+ 'Tanda petik':[['Petik ganda',[1,2,3]],['Petik tunggal',[4]]],
+ 'Tanda kurung':[['Kurung biasa',[1,2,3]],['Kurung siku',[4]]],
+ 'Makna imbuhan: awalan':[['ber- dan pe-',[1,6]],['meN-, di-, ter-',[2,3,4]],['peN-',[5]],['se- dan memper-',[7,8]]],
+ 'Makna imbuhan: akhiran dan konfiks':[['Akhiran -an, -kan, -i',[1,2,3]],['Konfiks',[4,5,6,7]],['Jebakan UTBK',[8]]],
+ 'Kelas kata dan frasa':[['Kelas kata',[1]],['Frasa',[2,3,4]],['Kata majemuk',[5]]],
+ 'Pola dan jenis kalimat':[['Fungsi & pola',[1,2,3]],['Jenis kalimat',[4]],['Inti & pasif',[5,6]]],
+ 'Kalimat efektif: kesepadanan':[['Subjek & predikat',[1,2,3]],['Anak kalimat',[4]],['Ketegasan',[5]]],
+ 'Kalimat efektif: kehematan dan kecermatan':[['Kehematan',[1,2,3]],['Kata depan & pasangan',[4,5]],['Kecermatan',[6]]],
+ 'Kalimat efektif: keparalelan dan kelogisan':[['Keparalelan',[1]],['Kelogisan',[2,3,4]]],
+ 'Konjungsi':[['Intrakalimat',[1,2,3,5]],['Antarkalimat & antarparagraf',[4,6]],['Strategi',[7]]],
+ 'Relasi makna':[['Sinonim & antonim',[1,2]],['Hiponim',[3]],['Homonim & polisemi',[4,5]],['Ambiguitas',[6]]],
+ 'Jenis dan perubahan makna':[['Jenis makna',[1,2]],['Perubahan makna',[3,4,5]]],
+ 'Hubungan kata (analogi)':[['Strategi',[1,3,4]],['Jenis hubungan',[2]]],
+ 'Ungkapan, idiom, dan pasangan tetap':[['Idiom & peribahasa',[1,3]],['Pasangan tetap',[2,4]]],
+ 'Majas':[['Perbandingan',[1]],['Pertentangan',[2]],['Sindiran',[3]],['Penegasan',[4]],['Di soal PPU',[5]]],
+ 'Paragraf dan ungkapan kembali':[['Gagasan utama & judul',[1,6]],['Kepaduan',[2,3,4]],['Ungkapan kembali',[5]]]
+};
+function grupOf(sub,i){ const g=GRUP[sub]; if(!g) return null; const x=g.find(([,ix])=>ix.includes(i+1)); return x?x[0]:null; }
+/* Kode EYD V, mis. (I.F.23) → (EYD V · Huruf kapital, butir 23) */
+function refParts(ref){ const m=/^(I{1,3})\.([A-Z])(?:–([A-Z]))?(?:\.(\d+)(?:–(\d+))?)?$/.exec(ref||''); return m?{bab:m[1],a:m[2],b:m[3]||m[2],n1:m[4]?+m[4]:null,n2:m[5]?+m[5]:(m[4]?+m[4]:null)}:null; }
+function topicForCode(bab,L,num){ let hit=null; MATERI.forEach(b=>b.topik.forEach(t=>{ const r=refParts(t.ref); if(!r||r.bab!==bab||L<r.a||L>r.b) return; if(r.n1!=null&&num!=null&&(num<r.n1||num>r.n2)) return; if(r.n1!=null&&num==null&&hit) return; hit=hit||t; })); return hit; }
+function humanCodes(s){
+  return String(s==null?'':s).replace(/\(((?:I{1,3})\.[A-Z][^)]*)\)/g,(all,inner)=>{
+    const out=[]; inner.split(/,\s*/).forEach(tok=>{ const m=/^(I{1,3})\.([A-Z])(?:–[A-Z])?(?:\.(\d+)[a-z]?(?:–[a-z\d]+)?)?$/.exec(tok.trim());
+      if(m){ const t=topicForCode(m[1],m[2],m[3]?+m[3]:null), nm=t?t.sub:'EYD V Bab '+m[1]; if(!out.includes(nm)) out.push(nm); } });
+    return out.length?'(EYD V · '+out.join(', ')+')':all; });
+}
+/* Cari kaidah materi yang paling cocok dengan sebuah soal */
+const STOPW=new Set('yang dan di ke dari pada untuk dengan atau dalam tidak adalah ini itu juga jika sebagai oleh karena kata kalimat ditulis dipakai huruf tanda bukan harus sama'.split(' '));
+function toks(s){ return String(s||'').toLowerCase().replace(/[*"'()·.,;:!?/]/g,' ').split(/\s+/).filter(w=>w.length>=3&&!STOPW.has(w)); }
+function bestRule(subs,text){ const q=new Set(toks(text)); let best=null,bs=0;
+  MATERI.forEach(b=>b.topik.forEach(t=>{ if(!subs.includes(t.sub)) return; t.aturan.forEach((a,i)=>{ let sc=0; new Set(toks(a[0]+' '+a[1])).forEach(w=>{ if(q.has(w)) sc++; }); if(sc>bs){ bs=sc; best={sub:t.sub,i}; } }); }));
+  return bs>=2?best:null; }
+function itemText(it,isD){ const k=isD?(it.opsi?(it.opsi.find(o=>o.benar)||{}).teks:''):''; return (isD?it.kaidah:it.pembahasan)+' '+(k||''); }
+function ruleBlock(t,rules,focus){
+  const li=a=>{ const i=t.aturan.indexOf(a), f=focus&&focus.sub===t.sub&&focus.i===i; return '<li value="'+(i+1)+'"'+(f?' class="rfocus" id="rfocus"':'')+'>'+(f?'<span class="rtag">Sesuai soalmu</span>':'')+'<div>'+rich(a[0])+'</div><div class="ex">'+rich(a[1])+'</div></li>'; };
+  const g=GRUP[t.sub];
+  if(!g) return '<ol class="rules">'+rules.map(li).join('')+'</ol>';
+  const groups=g.map(([lbl,ix],gi)=>({lbl,gi,rs:rules.filter(a=>ix.includes(t.aturan.indexOf(a)+1))})).filter(x=>x.rs.length);
+  const used=new Set(groups.flatMap(x=>x.rs)), rest=rules.filter(a=>!used.has(a)); if(rest.length) groups.push({lbl:'Lainnya',gi:99,rs:rest});
+  const gs=V.kaidah.gsel||{}; let sel=gs[t.sub];
+  if(sel===undefined&&focus&&focus.sub===t.sub){ const fg=groups.find(x=>x.rs.includes(t.aturan[focus.i])); sel=fg?fg.gi:null; }
+  if(sel!=null&&!groups.some(x=>x.gi===sel)) sel=null;
+  const sv=esc(t.sub), chip=(v,lbl,n,on)=>'<button type="button" class="pchip'+(on?' on':'')+'" data-action="kgrp" data-sub="'+sv+'" data-v="'+v+'" aria-pressed="'+on+'">'+esc(lbl)+' <span>'+n+'</span></button>';
+  const peta=groups.length>1?'<div class="peta" role="group" aria-label="Kategori '+sv+'">'+chip('all','Semua',rules.length,sel==null)+groups.map(x=>chip(x.gi,x.lbl,x.rs.length,sel===x.gi)).join('')+'</div>':'';
+  const shown=sel==null?groups:groups.filter(x=>x.gi===sel);
+  return peta+shown.map(x=>'<div class="kgrp"><div class="kgh">'+esc(x.lbl)+'</div><ol class="rules">'+x.rs.map(li).join('')+'</ol></div>').join('')+
+    (sel!=null&&groups.length>1?'<div class="kmore">Hanya kategori ini yang ditampilkan. <button type="button" class="link" data-action="kgrp" data-sub="'+sv+'" data-v="all">Lihat semua kategori</button></div>':'');
+}
+function rich(s){ return esc(humanCodes(s)).replace(/\*\*\*([^*]+)\*\*\*/g,'<b><i>$1</i></b>').replace(/\*([^*]+)\*/g,'<i>$1</i>'); }
 function slug(s){ return String(s).toLowerCase().normalize('NFD').replace(/[̀-ͯ]/g,'').replace(/[^a-z0-9]+/g,'-').replace(/^-|-$/g,''); }
 function toast(msg){ const t=$('#toast'); t.textContent=msg; t.hidden=false; clearTimeout(toast._t); toast._t=setTimeout(()=>{t.hidden=true},2400); }
 function pct(a,b){ return b?Math.round(a*100/b):0; }
@@ -1232,7 +1370,7 @@ Aturan untuk keduanya:
    b. Isian angka: lima kalimat bernomor di "kalimat", perintah seperti "Kalimat yang tidak efektif terdapat pada kalimat nomor ....". Tepat satu kalimat yang dimaksud; nomornya di "kunci_isian".
    c. Untuk bahasa buatan: contoh pola ditulis di "kalimat" (misal "lo mesa kuti = saya makan nasi"), lalu PG 5 opsi.
 2. Kalimat yang dimaksudkan benar harus benar di SEMUA aspek (ejaan, tanda baca, kalimat efektif). Kalimat yang salah hanya memuat SATU kesalahan, dan kesalahan itu pada konsep yang diuji.
-3. Pengecoh harus kesalahan yang memang sering terjadi, bukan salah ketik. Setiap opsi salah mewakili satu kesalahan yang bisa dinamai (lihat "Peta pengecoh"). Untuk makna imbuhan, analogi, dan relasi makna, setiap pengecoh mewakili makna atau hubungan lain yang berbeda jelas, sehingga hanya satu jawaban yang sah. Pada PG kaidah (EYD atau kalimat efektif), keempat pengecoh memuat kesalahan yang berbeda-beda, bukan kesalahan yang sama diulang.
+3. Pengecoh harus kesalahan yang memang sering terjadi, bukan salah ketik. Untuk makna imbuhan, analogi, dan relasi makna, setiap pengecoh mewakili makna atau hubungan lain yang berbeda jelas, sehingga hanya satu jawaban yang sah.
 4. "kaidah": satu kalimat aturan; untuk EYD sertakan rujukan bab, misalnya "(III.B.3)".
 5. Variasikan konteks (sekolah, kesehatan, lingkungan, ekonomi, budaya). Nama orang dan lembaga fiktif. Huruf miring ditulis dengan *...*.
 6. Jika Kelemahan menyebut subkategori hari ini, minimal separuh butir subkategori itu menyasarnya dengan contoh baru.
@@ -1246,30 +1384,6 @@ Aturan untuk keduanya:
 6. Soal "seharusnya" memakai lima opsi tetap: dihilangkan, dibiarkan saja, diganti ..., didahului ..., diikuti .... "Dibiarkan saja" boleh menjadi kunci.
 7. "bukti" = nomor kalimat dasar jawaban. "pembahasan" paling banyak 2 kalimat. "drill_terkait" = subkategori (EYD atau kebahasaan) yang berkaitan, boleh kosong.
 8. Kata uji paling banyak 5 di "kata_uji", tanpa angka superskrip di dalam kalimat. Rumpang ditulis [...].
-9. Setiap soal teks memakai pengecoh dari "Peta pengecoh" sesuai tipenya.
-
-## Peta pengecoh (PBM dan PPU)
-Pakai pola ini untuk menyusun opsi salah:
-- Ungkapan kembali / makna sama. Kunci: isi dan kadar kepastian sama ("dapat" → "berpotensi"). Pengecoh: satu opsi per modalitas (pasti, selalu, biasanya, seharusnya, sepertinya); pelaku dan sasaran ditukar; induk klausa "yang" dipindah.
-- Penggabungan kalimat. Kunci: konjungsi sesuai relasi (sehingga, tetapi). Pengecoh: dan, lalu, yang, padahal, walaupun, ketika, yang relasinya tidak cocok.
-- Perbaikan kalimat. Kunci: satu perbaikan yang menyelesaikan seluruh masalah. Pengecoh: memperbaiki separuh masalah; mengganti satu kesalahan dengan kesalahan baru.
-- Kalimat inti / informasi utama. Kunci: S-P-O utuh dengan penjelas wajib. Pengecoh: membuang kata wajib; ikut membawa keterangan.
-- Rumpang dua kata. Kunci: kedua kata cocok sekaligus. Pengecoh: kata pertama benar tetapi kata kedua salah, dan sebaliknya.
-- Pasangan tetap / pola makna. Kunci: gabungan yang membentuk istilah; pola hubungan makna yang sama. Pengecoh: frasa biasa yang bisa diganti sinonim; frasa berkelas kata sama tetapi relasi maknanya beda.
-- Hubungan kata / analogi. Kunci: relasi yang sejajar arah dan muatannya. Pengecoh: kata yang dekat secara topik tetapi relasinya beda.
-- Judul. Kunci: mencakup dua paragraf atau dua sisi teks. Pengecoh: hanya satu paragraf, atau terlalu umum.
-- Sisipan / urutan kalimat. Kunci: tepat setelah kalimat yang dirujuk. Pengecoh: satu posisi lebih awal atau lebih akhir.
-
-Hindari: dua sinonim atau dua antonim yang sama-sama sah, lebih dari satu opsi dengan pola makna yang sama, hubungan kata yang muatannya tidak sejajar (negatif vs positif), dan dua kesalahan dalam satu kalimat.
-
-## Sebaran kunci
-Pada soal PG A–E (drill dan teks), sebar kunci ke kelima huruf; jangan lebih dari 2 kunci sama berurutan, dan jangan ada huruf yang menjadi kunci lebih dari 3 kali dalam satu paket. Soal "seharusnya" yang memakai lima opsi tetap dan soal isian tidak ikut dihitung.
-
-## Cek sebelum mengirim (jangan ditulis di keluaran)
-1. Untuk setiap soal PG, namai kesalahan yang diwakili tiap opsi salah. Jika ada opsi salah yang tidak bisa dinamai, atau dua opsi dengan nama kesalahan yang sama, ganti opsinya.
-2. Pastikan hanya satu opsi yang sah. Jika kunci meragukan, ganti soalnya.
-3. Pastikan jawaban tidak bisa ditebak tanpa membaca kalimat atau teks (misalnya karena opsi kunci paling panjang atau satu-satunya yang berbeda bentuk).
-4. Cek sebaran kunci. Daftar cek ini hanya untuk kamu; keluaran tetap HANYA satu blok json.
 
 ## Daftar subkategori yang sah
 EYD: ${o.allEyd}
@@ -1333,14 +1447,78 @@ const NAV=[
  ['beranda','Latihan','<path d="M3 11l9-7 9 7v9a1 1 0 0 1-1 1h-5v-6H9v6H4a1 1 0 0 1-1-1z"/>'],
  ['kalender','Kalender','<rect x="3" y="5" width="18" height="16" rx="3"/><path d="M3 10h18M8 3v4M16 3v4"/>'],
  ['kaidah','Materi','<path d="M4 5a2 2 0 0 1 2-2h13v16H6a2 2 0 0 0-2 2z"/><path d="M4 19V5"/>'],
- ['teks','Daftar teks','<path d="M5 4h14v16H5z"/><path d="M8 8h8M8 12h8M8 16h5"/>'],
+ ['progres','Progres','<path d="M4 20V10M10 20V4M16 20v-7M22 20H2"/>'],
  ['bank','Bank soal','<path d="M12 3v12M7 10l5 5 5-5"/><path d="M4 19h16"/>']
 ];
-const ROUTES=['beranda','kalender','kaidah','teks','bank','drill','soal','selesai','prompt','swipe'];
+const ROUTES=['beranda','kalender','kaidah','progres','teks','bank','drill','soal','selesai','prompt','swipe'];
 function route(){ const h=(location.hash||'').slice(1); return ROUTES.includes(h)?h:'beranda'; }
 function renderNav(){
-  let r=route(); if(['drill','soal','selesai','prompt','swipe'].includes(r)) r='beranda';
+  let r=route(); if(['drill','soal','selesai','prompt','swipe'].includes(r)) r='beranda'; if(r==='teks') r='bank';
   $('#nav').innerHTML=NAV.map(([id,label,ic])=>'<a href="#'+id+'"'+(r===id?' aria-current="page"':'')+'><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">'+ic+'</svg>'+label+'</a>').join('');
+}
+
+/* ---------- Tugas harian & progres ---------- */
+const SV_TICK='<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 12.5l4 4 8-9"/></svg>';
+function tasksOn(date){
+  const key=dayKey(date.getTime()), c=conceptsOn(date);
+  const dh=S.dhist.filter(x=>dayKey(x.ts)===key);
+  const uniq=subs=>new Set(dh.filter(x=>subs.includes(x.sub)).map(x=>x.id)).size;
+  const cap=subs=>{ const n=poolFor('sub:'+subs.join('|')).length; return n?Math.min(5,n):5; };
+  const by={}; S.history.filter(x=>dayKey(x.ts)===key&&x.subtes===c.fokus).forEach(x=>{ (by[x.teksId]=by[x.teksId]||new Set()).add(x.nomor); });
+  let tc=0, tt=0, tdone=false;
+  Object.keys(by).forEach(id=>{ const t=S.bank.find(b=>b.id===id); const need=t?t.soal.filter(q=>q.subtes===c.fokus).length:by[id].size; if(by[id].size>=need){ tdone=true; tc=tt=need; } else if(!tdone&&by[id].size>tc){ tc=by[id].size; tt=need; } });
+  if(!tt){ const nt=nextTeks(c.fokus); tt=nt?nt.soal.filter(q=>q.subtes===c.fokus).length:1; }
+  const bk=dh.filter(x=>x.kat==='baku').length, imp=(S.imp||[]).includes(key);
+  const n1=cap(c.k.subs), n2=cap(c.k2.subs);
+  return [
+    {id:'eyd',ic:'eyd',t:'Drill EYD',d:c.k.n,cur:Math.min(uniq(c.k.subs),n1),n:n1,unit:'butir',act:'drill',v:'sub:'+c.k.subs.join('|')},
+    {id:'keb',ic:'keb',t:'Drill kebahasaan',d:c.k2.n,cur:Math.min(uniq(c.k2.subs),n2),n:n2,unit:'butir',act:'drill',v:'sub:'+c.k2.subs.join('|')},
+    {id:'teks',ic:c.fokus==='PBM'?'pbm':'ppu',t:'Teks '+c.fokus,d:'Kerjakan 1 teks sampai selesai',cur:Math.min(tc,tt),n:tt,unit:'soal',done:tdone,act:'teks',v:c.fokus},
+    {id:'baku',ic:'baku',t:'Kata baku',d:'Geser 20 kartu baku/tidak baku',cur:Math.min(bk,20),n:20,unit:'kartu',act:'swipe',v:''},
+    {id:'imp',ic:'today',t:'Siapkan soal besok',d:'Salin prompt, tempel hasilnya di Bank soal',cur:imp?1:0,n:1,unit:'',act:'prompt',v:''}
+  ].map(x=>Object.assign(x,{done:x.done!=null?x.done:x.cur>=x.n}));
+}
+function dayRatio(date){ const t=tasksOn(date); return t.filter(x=>x.done).length/t.length; }
+function fullStreak(){ let n=0; const d=new Date(); d.setHours(0,0,0,0); if(dayRatio(d)<1) d.setDate(d.getDate()-1); while(n<400&&dayRatio(d)===1){ n++; d.setDate(d.getDate()-1); } return n; }
+function taskRows(tasks,live){
+  return tasks.map((x,i)=>{
+    const go=!live||x.done?'':x.act==='prompt'?'<a class="obtn blue tgo" href="#prompt">Mulai</a>':'<button type="button" class="obtn blue tgo" data-action="'+x.act+'"'+(x.v?' data-v="'+esc(x.v)+'"':'')+'>Mulai</button>';
+    const meta=x.n>1?'<span class="tnum">'+x.cur+'/'+x.n+' '+x.unit+'</span>':'';
+    return '<div class="trow'+(x.done?' done':'')+'"><span class="tchk">'+(x.done?SV_TICK:i+1)+'</span><span class="ttx"><span class="tt">'+esc(x.t)+meta+'</span><span class="td">'+esc(x.d)+'</span>'+(x.n>1&&!x.done?'<span class="tbar"><i style="width:'+pct(x.cur,x.n)+'%"></i></span>':'')+'</span>'+go+'</div>';
+  }).join('');
+}
+function tasksCard(){
+  const t=tasksOn(new Date()), d=t.filter(x=>x.done).length, all=d===t.length;
+  return '<section class="card tasks"><div class="row"><h2 class="grow">Tugas hari ini</h2><span class="tsum'+(all?' ok':'')+'">'+d+'/'+t.length+' selesai</span></div><div class="bar"><i style="width:'+pct(d,t.length)+'%"></i></div>'+
+    (all?'<div class="tdone">Semua tugas hari ini selesai. Mantap!</div>':'')+'<div class="tlist">'+taskRows(t,true)+'</div>'+(t.slice(0,3).every(x=>x.done)?'':'<button class="btn primary block" type="button" data-action="paket">Mulai paket harian · tugas 1–3</button>')+'</section>';
+}
+function weekStrip(){
+  const now=new Date(); now.setHours(0,0,0,0); const mon=new Date(now); mon.setDate(now.getDate()-((now.getDay()+6)%7));
+  let h='<div class="week">';
+  for(let i=0;i<7;i++){ const d=new Date(mon); d.setDate(mon.getDate()+i); const fut=d>now, r=fut?0:dayRatio(d), t=tasksOn(d).length;
+    const cls=fut?'fut':r===1?'full':r>0?'part':'none';
+    h+='<div class="wd'+(d.getTime()===now.getTime()?' now':'')+'"><span class="wl">'+['Sen','Sel','Rab','Kam','Jum','Sab','Min'][i]+'</span><span class="wb '+cls+'">'+(fut?'':Math.round(r*t))+'</span></div>'; }
+  return '<section class="card"><div class="row"><h2 class="grow">Minggu ini</h2><span class="sub">'+fullStreak()+' hari tugas lengkap beruntun</span></div>'+h+'</div></section>';
+}
+function progSummary(){
+  const now=Date.now(), wk=now-7*DAY;
+  const mast=ids=>ids.filter(id=>{ const r=srsOf(id); return r.int>=7; }).length;
+  const dm=mast(S.drill.map(d=>d.id)), bm=mast(S.baku.map(pairId));
+  const h7=S.dhist.concat(S.history).filter(x=>x.ts>=wk), acc=pct(h7.filter(x=>x.correct).length,h7.length);
+  const t=tasksOn(new Date()), td=t.filter(x=>x.done).length;
+  const box=(v,l,p)=>'<div><b>'+v+'</b><span>'+l+'</span>'+(p!=null?'<span class="tbar"><i style="width:'+p+'%"></i></span>':'')+'</div>';
+  let heat=''; const d0=new Date(); d0.setHours(0,0,0,0);
+  for(let i=29;i>=0;i--){ const d=new Date(d0); d.setDate(d0.getDate()-i); const r=dayRatio(d); heat+='<i class="'+(r===1?'full':r>=.6?'p3':r>=.4?'p2':r>0?'p1':'')+'" title="'+esc(d.toLocaleDateString('id-ID',{day:'numeric',month:'short'}))+': '+Math.round(r*t.length)+'/'+t.length+' tugas"></i>'; }
+  return '<h1>Progres</h1>'+
+    '<section class="card"><div class="mini">'+box(td+'/'+t.length,'tugas hari ini',pct(td,t.length))+box(fullStreak(),'hari lengkap beruntun')+box(daysToUtbk(),'hari menuju UTBK')+
+      box(dm+'/'+S.drill.length,'butir drill dikuasai',pct(dm,S.drill.length))+box(bm+'/'+S.baku.length,'kata baku dikuasai',pct(bm,S.baku.length))+box(h7.length?acc+'%':'–','akurasi 7 hari',h7.length?acc:null)+'</div>'+
+      '<div class="sub" style="font-size:12px">Dikuasai = benar 2 kali berturut-turut.</div></section>'+
+    '<section class="card"><div class="row"><h2 class="grow">30 hari terakhir</h2><span class="sub">tugas selesai per hari</span></div><div class="heat">'+heat+'</div></section>';
+}
+function taskWatch(){
+  const t=tasksOn(new Date()), ids=t.filter(x=>x.done).map(x=>x.id);
+  if(V._td&&V._tk===dayKey(Date.now())){ const nw=t.filter(x=>x.done&&!V._td.includes(x.id)); if(nw.length) toast('✓ Tugas selesai: '+nw.map(x=>x.t).join(', ')+' ('+ids.length+'/'+t.length+')'); }
+  V._td=ids; V._tk=dayKey(Date.now());
 }
 
 /* ---------- Latihan: helper tampilan ---------- */
@@ -1391,44 +1569,20 @@ function nextTeks(sub){
   return pool.slice().sort((a,b)=>last(a.id)-last(b.id))[0];
 }
 function viewBeranda(){
-  const seg='<div class="seg" role="group" aria-label="Bahasa"><button type="button" aria-pressed="'+(V.lang==='en')+'" data-action="lang" data-v="en">Inggris</button><button type="button" aria-pressed="'+(V.lang==='id')+'" data-action="lang" data-v="id">Indonesia</button></div>';
-  const dateStr0=new Date().toLocaleDateString('id-ID',{weekday:'long',day:'numeric',month:'long'});
-  const head='<div class="lt-row"><div><h1>Latihan</h1><div class="lt-sub">'+esc(dateStr0)+'</div></div>'+seg+'</div>';
-  if(V.lang==='en') return head+'<div class="group"><div class="cell"><span class="txt"><span class="t1">Mode Inggris</span><span class="t2">Tetap memakai Vocab Lab yang sudah ada. Prototipe ini hanya berisi mode Indonesia.</span></span></div></div>';
-  const T=today(), dateStr=new Date().toLocaleDateString('id-ID',{weekday:'long',day:'numeric',month:'long'});
-  const cell=(act,v,t1,t2,val,dis,ic)=>'<button type="button" class="cell'+(ic?' has-ic':'')+'" data-action="'+act+'" data-v="'+esc(v)+'"'+(dis?' disabled':'')+'>'+(ic?icon(ic):'')+'<span class="txt"><span class="t1">'+t1+'</span>'+(t2?'<span class="t2">'+t2+'</span>':'')+'</span><span class="val">'+val+'</span>'+CHEV+'</button>';
-  const dc=(k,t1,t2,ic)=>{ const n=poolFor(k).length, a=drillAcc(k); return cell('drill',k,t1,t2,n?(a.n?a.p+'% · ':'')+dueCount(k)+' siap':'kosong',!n,ic); };
-  const tc=s=>{ const t=nextTeks(s), a=teksAcc(s); return cell('teks',s,'Teks '+s,s==='PBM'?'Ejaan, diksi, kalimat efektif, kepaduan':'Makna kata, imbuhan, majas, konjungsi',t?(a.n?a.p+'% · ':'')+t.soal.filter(q=>q.subtes===s).length+' soal':'kosong',!t,s==='PBM'?'pbm':'ppu'); };
-  const kSubs=T.k.subs.concat(T.k2.subs), kN=poolFor('sub:'+kSubs.join('|')).length;
-  const tile=(act,v,ic,t1,val,t2,dis,wide)=>'<button type="button" class="tile tone-'+ICONS[ic][0]+(wide?' wide':'')+'" data-action="'+act+'"'+(v?' data-v="'+esc(v)+'"':'')+(dis?' disabled':'')+'><span class="tile-ic">'+icon(ic)+'</span><span class="tile-t">'+t1+'</span><span class="tile-v">'+val+'</span><span class="tile-s">'+t2+'</span></button>';
-  const dt=(k,ic,t1,t2)=>{ const n=poolFor(k).length, a=drillAcc(k); return tile('drill',k,ic,t1,n?dueCount(k)+' siap':'Kosong',(a.n?a.p+'% benar · ':'')+t2,!n); };
-  const tt=s=>{ const t=nextTeks(s), a=teksAcc(s); return tile('teks',s,s==='PBM'?'pbm':'ppu','Teks '+s,t?t.soal.filter(q=>q.subtes===s).length+' soal':'Kosong',(a.n?a.p+'% benar · ':'')+(s==='PBM'?'Ejaan, diksi, kalimat efektif':'Makna kata, imbuhan, majas'),!t); };
-  const st=streak(), tc0=todayCount();
-  const FLAME='<svg viewBox="0 0 24 24" fill="#FF9500" aria-hidden="true"><path d="M12 2c1 3.5-1.5 5-1.5 7.5 0 1.2.8 2 1.8 2 1.5 0 2-1.6 1.6-3.2C16.6 10.4 18 13 18 15.5 18 19 15.3 22 12 22s-6-2.6-6-6.2C6 10.8 10.6 8.4 12 2z"/></svg>';
-  const CHK='<svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="10" fill="#34C759"/><path d="M7.5 12.5l3 3 6-6.5" fill="none" stroke="#fff" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/></svg>';
-  const row=(ic,lbl,val)=>'<div class="cell has-ic">'+icon(ic)+'<span class="txt"><span class="t2">'+lbl+'</span><span class="t1">'+val+'</span></span></div>';
-  return head+
-    '<div class="pills"><span class="pill"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="10" fill="#007AFF"/><path d="M12 7v5l3 2" fill="none" stroke="#fff" stroke-width="2.2" stroke-linecap="round"/></svg>'+daysToUtbk()+' <span class="lbl">hari menuju UTBK</span></span><span class="pill">'+FLAME+st+' <span class="lbl">hari beruntun</span></span><span class="pill">'+CHK+tc0+' <span class="lbl">soal hari ini</span></span></div>'+
-    '<div class="sh">Hari ini <small>Paket ± 15 menit</small></div>'+
-    '<div class="group">'+
-      row('eyd','EYD',esc(T.k.n))+
-      row('keb','Kebahasaan',esc(T.k2.n))+
-      row(T.fokus==='PBM'?'pbm':'ppu','Teks',T.fokus==='PBM'?'PBM · Pengetahuan Bahasa':'PPU · Pemahaman Umum')+
-    '</div>'+
-    '<button class="btn primary block" type="button" data-action="paket">Mulai paket harian</button>'+
-    '<a class="btn ghost block" href="#prompt">Salin prompt hari ini</a>'+
-    '<div class="foot">10 butir drill (5 EYD, 5 kebahasaan), lalu satu teks '+T.fokus+'.</div>'+
-    '<div class="sh">Kata baku</div><div class="tiles">'+
-      tile('swipe','','baku','Baku atau tidak baku?',S.baku.length+' kata','Kartu geser, berhenti kapan saja',false,true)+
-    '</div>'+
-    '<div class="sh">Drill</div><div class="tiles">'+
-      tile('drill','sub:'+kSubs.join('|'),'today','Konsep hari ini',kN+' butir',esc(T.k.n)+' · '+esc(T.k2.n),!kN,true)+
-      dt('kebahasaan','keb','Kebahasaan','Imbuhan, makna, analogi')+
-      dt('tanda-baca','tb','Tanda baca','Koma, titik, hubung, petik')+
-      dt('ejaan','eyd','EYD V','Huruf, penulisan kata')+
-      tile('drill','campur','mix','Campur',dueCount('campur')+' siap','Semua kategori diacak')+
-    '</div>'+
-    '<div class="sh">Teks ala UTBK</div><div class="tiles">'+tt('PBM')+tt('PPU')+'</div>'+weakCard();
+  const dateStr=new Date().toLocaleDateString('id-ID',{weekday:'long',day:'numeric',month:'long'});
+  const cell=(act,v,ic,t1,t2,val,dis)=>'<button type="button" class="cell has-ic" data-action="'+act+'"'+(v?' data-v="'+esc(v)+'"':'')+(dis?' disabled':'')+'>'+icon(ic)+'<span class="txt"><span class="t1">'+t1+'</span><span class="t2">'+t2+'</span></span><span class="val">'+val+'</span>'+CHEV+'</button>';
+  const dc=(k,ic,t1,t2)=>{ const n=poolFor(k).length; return cell('drill',k,ic,t1,t2,n?dueCount(k)+' siap':'kosong',!n); };
+  const tc=s=>{ const t=nextTeks(s); return cell('teks',s,s==='PBM'?'pbm':'ppu','Teks '+s,s==='PBM'?'Ejaan, diksi, kalimat efektif':'Makna kata, imbuhan, majas',t?t.soal.filter(q=>q.subtes===s).length+' soal':'kosong',!t); };
+  return '<div class="lt-row"><div><h1>Latihan</h1><div class="lt-sub">'+esc(dateStr)+' · '+daysToUtbk()+' hari menuju UTBK</div></div></div>'+
+    tasksCard()+
+    '<div class="sh">Latihan lain</div><div class="group">'+
+      cell('swipe','','baku','Kata baku','Kartu geser baku/tidak baku',S.baku.length+' kata')+
+      dc('kebahasaan','keb','Kebahasaan','Imbuhan, makna, analogi')+
+      dc('tanda-baca','tb','Tanda baca','Koma, titik, hubung, petik')+
+      dc('ejaan','eyd','EYD V','Huruf, penulisan kata')+
+      dc('campur','mix','Campur','Semua kategori diacak')+
+      tc('PBM')+tc('PPU')+
+    '</div>';
 }
 function weakCard(){
   const w=weakSubs().slice(0,3);
@@ -1478,6 +1632,14 @@ function countHtml(C){ const c=countOf(C); return 'Terjawab: '+c.a+'<br>Kosong: 
 function letterOf(it){ const i=it.opsi.findIndex(o=>o.benar); return i<0?'-':(it.opsi[i].huruf||'ABCDE'[i]); }
 const BM='<svg viewBox="0 0 24 28" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linejoin="round" aria-hidden="true"><path d="M4 2.5h16v23l-8-6-8 6z"/></svg>';
 const BACK='<svg viewBox="0 0 12 20" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 2L2 10l8 8"/></svg>';
+function primaryBtn(C){ const s=C.s,n=C.items.length,k=s.cur,it=C.items[k],a=s.A[k];
+  if(!s.review&&cekMode()==='langsung'&&it.tipe==='isian'&&!a.done&&String(a.is).trim()) return '<button type="button" id="qprimary" class="fbtn lg" data-action="qcheck">Periksa jawaban</button>';
+  if(k<n-1) return '<button type="button" id="qprimary" class="fbtn lg" data-action="qnext">Selanjutnya →</button>';
+  return s.review?'<button type="button" id="qprimary" class="fbtn lg" data-action="qendreview">Kembali ke hasil</button>':'<button type="button" id="qprimary" class="fbtn lg" data-action="qend">Selesai ✓</button>'; }
+function materiSubs(list){ const all=[]; MATERI.forEach(b=>b.topik.forEach(t=>all.push(t.sub))); return [...new Set(list.filter(x=>x&&all.includes(x)))]; }
+function materiBtn(subs,text,short){ subs=materiSubs(subs); if(!subs.length) return ''; const f=text?bestRule(subs,text):null, g=f?grupOf(f.sub,f.i):null;
+  const lbl=short?'Buka materi →':'Buka materi: '+(f?f.sub+(g?' › '+g:'')+' (kaidah '+(f.i+1)+')':subs.join(', '))+' →';
+  return '<button type="button" class="obtn blue tgo mbtn" data-action="qmateri" data-v="'+esc(subs.join('|'))+'"'+(f?' data-r="'+esc(f.sub)+'#'+f.i+'"':'')+'>'+esc(lbl)+'</button>'; }
 function viewCbt(C){
   const s=C.s, n=C.items.length, k=s.cur, it=C.items[k], a=s.A[k], fb=a.done, rv=s.review, isD=C.kind==='drill';
   const en=enterOnce(C.kind+(C.t?C.t.id:'')+'|'+k+'|'+(rv?'r':''));
@@ -1489,7 +1651,7 @@ function viewCbt(C){
   h+='<section class="cbt-panel'+(!isD&&S.layout==='split'?' split':'')+'"><div class="cbt-body">';
   // bacaan
   if(!isD){
-    const t=C.t, focus=[...String(it.perintah).matchAll(/\((\d+)\)/g)].map(m=>+m[1]), proof=fb?(it.bukti||[]):[];
+    const t=C.t, focus=[], proof=fb?(it.bukti||[]):[];
     const starts=(t.paragraf_mulai&&t.paragraf_mulai.length?t.paragraf_mulai:[1]);
     let paras=''; starts.forEach((st,pi)=>{ const end=(starts[pi+1]||t.kalimat.length+1)-1; let p=''; for(let i=st-1;i<end;i++) p+=renderSentence(t,i,focus,proof); paras+='<p>'+p+'</p>'; });
     h+='<div class="cbt-left cbt-passage"><p class="lead">Bacalah teks berikut untuk menjawab soal nomor '+(n>1?'1 sampai dengan '+n:'1')+'!</p>'+(t.judul?'<div class="ptitle">'+esc(t.judul)+'</div>':'')+paras+(t.sumber_fiktif?'<div class="src">'+esc(t.sumber_fiktif)+'</div>':'')+'</div>';
@@ -1499,7 +1661,7 @@ function viewCbt(C){
   if(isD&&it.kalimat&&it.kalimat.length) h+='<div><p class="lead" style="margin-bottom:8px">Perhatikan '+(it.tipe==='isian'?'kalimat':'pola')+' berikut!</p><ol class="cbt-list">'+it.kalimat.map((x,i)=>'<li class="'+(fb&&it.tipe==='isian'&&String(i+1)===String(it.kunci_isian)?'hit':'')+'"><span class="no">('+(i+1)+')</span><span>'+rich(x)+'</span></li>').join('')+'</ol></div>';
   h+='<div class="cbt-q'+en+'">'+tx(it.perintah)+'</div>';
   if(it.tipe==='isian'){
-    h+='<div class="cbt-isian"><label for="qisian">Jawaban</label><input id="qisian" inputmode="numeric" autocomplete="off" placeholder="nomor" value="'+esc(a.is)+'"'+(fb||rv?' disabled':'')+'>'+(cekMode()==='langsung'&&!fb?'<button type="button" class="obtn blue" data-action="qcheck"'+(String(a.is).trim()?'':' disabled')+'>Periksa</button>':'')+'</div>';
+    h+='<div class="cbt-isian"><label for="qisian">Jawaban</label><input id="qisian" inputmode="numeric" autocomplete="off" placeholder="nomor" value="'+esc(a.is)+'"'+(fb||rv?' disabled':'')+'>'+'</div>';
   } else {
     h+='<div class="ropts" role="radiogroup" aria-label="Pilihan jawaban">'+it.opsi.map((o,i)=>{
       let c='ropt'+(fb?'':en); if(a.c===i) c+=' sel'; if(fb){ if(o.benar) c+=' right'; else if(a.c===i) c+=' wrong'; else c+=' dim'; }
@@ -1515,12 +1677,12 @@ function viewCbt(C){
     let note='';
     if(isD){ if(!a.ok) note='Butir ini diulang di drill berikutnya.'; }
     else { const subs=it.drill_terkait||[]; note='Bukti: kalimat '+(it.bukti||[]).map(b=>'('+b+')').join(', ')+(subs.length?' · Drill terkait: '+subs.map(esc).join(', ')+(a.ok?'':' (dimajukan ke drill berikutnya)'):''); }
-    h+='<div class="pemb '+(a.ok?'ok':'bad')+'"><div class="pemb-h">'+head+combo+'</div><div class="pemb-b">'+(isD?rich(it.kaidah||''):esc(it.pembahasan||''))+'</div>'+(note?'<div class="pemb-n">'+note+'</div>':'')+'</div>';
+    h+='<div class="pemb '+(a.ok?'ok':'bad')+'"><div class="pemb-h">'+head+combo+'</div><div class="pemb-b">'+(isD?rich(it.kaidah||''):esc(humanCodes(it.pembahasan||'')))+'</div>'+(note?'<div class="pemb-n">'+note+'</div>':'')+(a.ok?'':materiBtn(isD?[it.subkategori]:(it.drill_terkait||[]),itemText(it,isD)))+'</div>';
   }
   h+='</div></div>';
   if(V.confirmEnd&&!rv){ const c=countOf(C); h+='<div class="cbt-confirm"><b>'+[c.k?c.k+' soal masih kosong':'',c.f?c.f+' soal ditandai ragu-ragu':''].filter(Boolean).join(' dan ')+'.</b><span class="sub">Soal kosong dihitung salah. Tetap selesai?</span><div class="actions"><button type="button" class="obtn" data-action="qendno">Kembali</button><button type="button" class="fbtn" data-action="qendyes">Ya, selesai</button></div></div>'; }
   h+='<div class="cbt-foot"><button type="button" class="obtn blue lg" data-action="qprev"'+(k===0?' disabled':'')+'>← Sebelumnya</button>'+
-    (k<n-1?'<button type="button" class="fbtn lg" data-action="qnext">Selanjutnya →</button>':rv?'<button type="button" class="fbtn lg" data-action="qendreview">Kembali ke hasil</button>':'<button type="button" class="fbtn lg" data-action="qend">Selesai ✓</button>')+'</div></section>';
+    primaryBtn(C)+'</div></section>';
   return h;
 }
 function viewDrill(){
@@ -1532,7 +1694,7 @@ function viewDrill(){
 function viewDrillDone(){
   const D=V.drill, ok=D.res.filter(r=>r.ok).length, wrong=D.res.filter(r=>!r.ok);
   let h='<h1>Drill selesai</h1>'+ring(ok,D.res.length)+'<div class="sub">butir benar · '+esc(D.label)+'</div></section>';
-  if(wrong.length) h+='<section class="card"><h2>Kaidah yang perlu diulang</h2>'+wrong.map(r=>'<div class="rule"><div class="row"><span class="chip plain">'+esc(r.it.subkategori)+'</span></div><div style="font-size:14px">'+rich(r.it.kaidah)+'</div></div>').join('')+'</section>';
+  if(wrong.length) h+='<section class="card"><h2>Kaidah yang perlu diulang</h2>'+wrong.map(r=>'<div class="rule"><div class="row"><span class="chip plain">'+esc(r.it.subkategori)+'</span><span class="grow"></span>'+materiBtn([r.it.subkategori],itemText(r.it,true),true)+'</div><div style="font-size:14px">'+rich(r.it.kaidah)+'</div></div>').join('')+'</section>';
   if(V.paket){ const t=nextTeks(V.paket.sub); h+= t?'<button class="btn primary block" type="button" data-action="paketteks">Lanjut ke teks '+esc(V.paket.sub)+': '+esc(t.judul)+'</button>':'<div class="card empty">Belum ada teks di bank. <a href="#bank">Tempel paket harian.</a></div>'; }
   else h+='<div class="actions"><a class="btn ghost" href="#beranda">Pilihan latihan</a><button class="btn primary" type="button" data-action="drill" data-v="'+esc(D.mode)+'">Drill lagi</button></div>';
   return h+'<button class="btn ghost block" type="button" data-action="qreview" data-v="drill">Lihat pembahasan per nomor</button>';
@@ -1547,7 +1709,7 @@ function startTeks(sub, teksId){
 }
 function renderSentence(t,i,focus,proof){
   let s=esc(t.kalimat[i]);
-  (t.kata_uji||[]).filter(k=>k.kalimat===i+1).forEach(k=>{ const w=esc(k.kata); const idx=s.indexOf(w); if(idx>=0) s=s.slice(0,idx)+'<sup>'+k.nomor+'</sup><b>'+w+'</b>'+s.slice(idx+w.length); });
+  (t.kata_uji||[]).filter(k=>k.kalimat===i+1).forEach(k=>{ const w=esc(k.kata); const idx=s.indexOf(w); if(idx>=0) s=s.slice(0,idx)+'<b>'+w+'</b>'+s.slice(idx+w.length); });
   s=s.replace(/\[\.\.\.\]/g,'<span class="blank">[...]</span>').replace(/\*([^*]+)\*/g,'<i>$1</i>');
   return '<span class="s'+(proof.includes(i+1)?' proof':focus.includes(i+1)?' focus':'')+'"><span class="n">('+(i+1)+')</span> '+s+'</span> ';
 }
@@ -1569,25 +1731,60 @@ function viewSelesai(){
 
 /* ---------- Materi EYD ---------- */
 function subStat(sub){ const h=S.dhist.filter(x=>x.sub===sub); return {n:h.length,p:pct(h.filter(x=>x.correct).length,h.length)}; }
+const KREF={'Morfologi':['imbuhan','Makna imbuhan'],'Sintaksis':['sint','Kelas kata & kalimat'],'Kalimat efektif':['efektif','Kalimat efektif'],'Kata tugas':['konj','Konjungsi'],'Semantik':['makna','Makna kata'],'Stilistika':['majas','Majas'],'Wacana':['para','Paragraf'],'Penalaran bahasa':['buatan','Bahasa buatan']};
+Object.assign(ICONS,{
+ huruf:['indigo','<path d="M3 19l5-14 5 14M5 14h6"/><path d="M15.5 12.5a2.8 2.8 0 1 1 0 5.6 2.8 2.8 0 0 1 0-5.6zM18.3 12v7"/>'],
+ tulis:['pink','<path d="M4 20h4L19 9a2.8 2.8 0 0 0-4-4L4 16z"/><path d="M13.5 6.5l4 4"/>'],
+ imbuhan:['purple','<rect x="3" y="8" width="8" height="8" rx="2"/><path d="M14 12h7M17.5 8.5v7"/>'],
+ sint:['teal','<path d="M9 3h6v4H9zM3 15h6v4H3zM15 15h6v4h-6z"/><path d="M12 7v4M6 15v-2h12v2"/>'],
+ efektif:['green','<path d="M4 7h10M4 12h7M4 17h8"/><path d="M15 15l2.5 2.5L21 13"/>'],
+ konj:['blue','<path d="M10 14a4 4 0 0 0 5.7 0l3-3a4 4 0 0 0-5.7-5.7l-1 1"/><path d="M14 10a4 4 0 0 0-5.7 0l-3 3a4 4 0 0 0 5.7 5.7l1-1"/>'],
+ makna:['blue','<path d="M4 5.5C6.5 4 9.5 4 12 6c2.5-2 5.5-2 8-.5V19c-2.5-1.5-5.5-1.5-8 .5-2.5-2-5.5-2-8-.5z"/><path d="M12 6v13.5"/>'],
+ majas:['pink','<path d="M12 3l1.8 4.7 4.7 1.8-4.7 1.8L12 16l-1.8-4.7-4.7-1.8 4.7-1.8z"/><path d="M18 15l.8 2.2 2.2.8-2.2.8L18 21l-.8-2.2-2.2-.8 2.2-.8z"/>'],
+ para:['orange','<path d="M4 6h16M4 10h16M4 14h16M4 18h10"/>'],
+ buatan:['indigo','<circle cx="12" cy="12" r="9"/><path d="M3 12h18M12 3c3 3.5 3 14.5 0 18M12 3c-3 3.5-3 14.5 0 18"/>']
+});
+function boxes(){ const out=[]; MATERI.forEach((b,bi)=>{
+  if(b.kat!=='kebahasaan') out.push({id:'b'+bi,n:['Pemakaian huruf','Penulisan kata','Tanda baca'][bi]||b.bab,ic:['huruf','tulis','tb'][bi]||'eyd',kat:'EYD V · '+b.bab.split(' · ')[0],sec:'EYD V',topics:b.topik.slice()});
+  else b.topik.forEach(t=>{ const r=KREF[t.ref]||['makna',t.ref]; let x=out.find(o=>o.id==='k-'+r[0]); if(!x){ x={id:'k-'+r[0],n:r[1],ic:r[0],kat:'Kebahasaan · '+t.ref,sec:'Kebahasaan',topics:[]}; out.push(x); } x.topics.push(t); });
+ }); return out; }
+function topicOf(sub){ let r=null; MATERI.forEach(b=>b.topik.forEach(t=>{ if(t.sub===sub) r=t; })); return r; }
+function refLabel(t){ let r=''; MATERI.forEach(b=>{ if(b.topik.includes(t)) r=b.kat==='kebahasaan'?'Kebahasaan · '+t.ref:'EYD V · '+b.bab.split(' · ')[0]; }); return esc(r); }
+function ruleList(t,rules,focus){ return '<ol class="rules">'+rules.map(a=>{ const i=t.aturan.indexOf(a), f=focus&&focus.sub===t.sub&&focus.i===i; return '<li'+(f?' class="rfocus" id="rfocus"':'')+'>'+(f?'<span class="rtag">Sesuai soalmu</span>':'')+'<div>'+rich(a[0])+'</div><div class="ex">'+rich(a[1])+'</div></li>'; }).join('')+'</ol>'; }
+function navUp(n){ if(n.sub&&n.g!=null&&GRUP[n.sub]) return Object.assign({},n,{g:null});
+  if(n.sub){ if(n.box==='pilih') return {box:'pilih',subs:n.subs}; const bx=boxes().find(x=>x.topics.some(t=>t.sub===n.sub)); return bx&&bx.topics.length>1?{box:bx.id}:{}; }
+  return {}; }
+function upLabel(n){ if(n.sub&&n.g!=null&&GRUP[n.sub]) return n.sub; const u=navUp(n); if(u.box==='pilih') return 'Konsep pilihan'; if(u.box){ const bx=boxes().find(x=>x.id===u.box); return bx?bx.n:'Materi'; } return 'Materi'; }
 function viewKaidah(){
-  const T=today(), q=V.kaidah.q.trim().toLowerCase(), tab=V.kaidah.tab||'hari-ini';
-  const todaySubs=T.k.subs.concat(T.k2.subs);
-  const all=[]; MATERI.forEach((b,bi)=>b.topik.forEach(t=>all.push({b,bi,t})));
-  const TABS=[['hari-ini','Hari ini',x=>todaySubs.includes(x.t.sub)],['huruf','Huruf',x=>x.bi===0],['kata','Penulisan kata',x=>x.bi===1],['tanda-baca','Tanda baca',x=>x.b.kat==='tanda-baca'],['kebahasaan','Kebahasaan',x=>x.b.kat==='kebahasaan']];
-  let h='<h1>Materi</h1>'+
-    '<label class="search" for="kq"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true" style="color:var(--muted)"><circle cx="11" cy="11" r="7"/><path d="M20 20l-4-4"/></svg><input id="kq" type="search" placeholder="Cari di semua materi: koma, pe-an, analogi…" value="'+esc(V.kaidah.q)+'" data-action="kq"></label>';
-  if(!q) h+='<div class="filters tabs" role="tablist" aria-label="Kategori materi">'+TABS.map(([k,l,f])=>'<button type="button" role="tab" aria-selected="'+(tab===k)+'" aria-pressed="'+(tab===k)+'" data-action="mtab" data-v="'+k+'">'+l+' <span class="cnt">'+all.filter(f).length+'</span></button>').join('')+'</div>';
-  let list;
-  if(q){ list=all.map(x=>({...x,rules:x.t.aturan.filter(a=>(x.t.sub+' '+a[0]+' '+a[1]).toLowerCase().includes(q))})).filter(x=>x.rules.length); }
-  else { const f=tab==='pilih'?(x=>(V.kaidah.subs||[]).includes(x.t.sub)):TABS.find(t=>t[0]===tab)[2]; list=all.filter(f).map(x=>({...x,rules:x.t.aturan})); }
-  const note={'pilih':'Materi untuk konsep yang kamu pilih dari Kalender','huruf':'EYD V Bab I · Pemakaian Huruf','kata':'EYD V Bab II · Penulisan Kata','tanda-baca':'EYD V Bab III · Penggunaan Tanda Baca','kebahasaan':'Ringkasan kaidah tata bahasa baku untuk PBM dan PPU','hari-ini':'EYD: '+T.k.n+' · Kebahasaan: '+T.k2.n};
-  h+='<div class="sub">'+(q?list.length+' topik cocok':esc(note[tab]))+'</div>';
-  if(!q&&tab==='hari-ini') h+='<button class="btn primary" type="button" data-action="drill" data-v="sub:'+esc(todaySubs.join('|'))+'">Drill konsep hari ini</button>';
-  if(!list.length) return h+'<div class="card empty">Tidak ada materi yang cocok.</div>';
-  h+=list.map(({b,t,rules})=>{ const st=subStat(t.sub), n=S.drill.filter(d=>d.subkategori===t.sub).length, open=q||tab==='hari-ini'||tab==='pilih';
-    return '<details class="card topic"'+(open?' open':'')+'><summary><span class="grow"><b>'+esc(t.sub)+'</b> <span class="sub">'+(b.kat==='kebahasaan'?esc(t.ref):'EYD V '+esc(t.ref))+'</span></span><span class="sub">'+(st.n?st.p+'%':n+' butir')+'</span></summary>'+
-      '<ol class="rules">'+rules.map(a=>'<li><div>'+rich(a[0])+'</div><div class="ex">'+rich(a[1])+'</div></li>').join('')+'</ol>'+
-      (n?'<button class="btn ghost" type="button" data-action="drill" data-v="sub:'+esc(t.sub)+'" style="min-height:40px">Drill topik ini ('+n+' butir)</button>':'<div class="sub">Belum ada butir drill untuk topik ini. Butir masuk saat konsepnya tiba di urutan harian.</div>')+'</details>'; }).join('');
+  const K=V.kaidah, q=(K.q||'').trim().toLowerCase(), nav=K.nav||{};
+  const fromQ=K.from&&((K.from==='drill'&&V.drill)||(K.from==='soal'&&V.run));
+  const fab=fromQ?'<div class="qbackfab"><button type="button" class="fbtn" data-action="qback">← Kembali ke soal</button></div>':'';
+  const back='<button type="button" class="mback" data-action="mup">'+BACK+esc(upLabel(nav))+'</button>';
+  const drillBtn=t=>{ const n=S.drill.filter(d=>d.subkategori===t.sub).length; return n?'<button class="btn ghost block" type="button" data-action="drill" data-v="sub:'+esc(t.sub)+'">Drill topik ini · '+n+' butir</button>':''; };
+  const cell=(act,v,t1,t2,val)=>'<button type="button" class="cell" data-action="'+act+'" data-v="'+esc(v)+'"><span class="txt"><span class="t1">'+esc(t1)+'</span>'+(t2?'<span class="t2">'+esc(t2)+'</span>':'')+'</span><span class="val">'+val+'</span>'+CHEV+'</button>';
+  if(nav.sub){
+    const t=topicOf(nav.sub); if(!t){ K.nav={}; return viewKaidah(); }
+    const g=GRUP[t.sub], focus=fromQ?K.focus:null;
+    if(g&&nav.g!=null&&g[nav.g]){ const [lbl,ix]=g[nav.g], rules=ix.map(i=>t.aturan[i-1]).filter(Boolean);
+      return fab+back+'<h1 class="mh">'+esc(lbl)+'</h1><div class="lt-sub">'+esc(t.sub)+' · '+rules.length+' kaidah</div><section class="card mrules">'+ruleList(t,rules,focus)+'</section>'+drillBtn(t); }
+    if(!g) return fab+back+'<h1 class="mh">'+esc(t.sub)+'</h1><div class="lt-sub">'+refLabel(t)+' · '+t.aturan.length+' kaidah</div><section class="card mrules">'+ruleList(t,t.aturan,focus)+'</section>'+drillBtn(t);
+    return fab+back+'<h1 class="mh">'+esc(t.sub)+'</h1><div class="lt-sub">'+refLabel(t)+'</div><div class="sh">Subkategori</div><div class="group">'+g.map(([lbl,ix],gi)=>cell('mgrp',String(gi),lbl,'',ix.length+' kaidah')).join('')+'</div>'+drillBtn(t);
+  }
+  if(nav.box){
+    const bx=nav.box==='pilih'?{n:'Konsep pilihan',kat:'Dari Kalender',topics:(nav.subs||[]).map(topicOf).filter(Boolean)}:boxes().find(x=>x.id===nav.box);
+    if(!bx){ K.nav={}; return viewKaidah(); }
+    return fab+back+'<h1 class="mh">'+esc(bx.n)+'</h1><div class="lt-sub">'+esc(bx.kat)+'</div><div class="sh">Kategori</div><div class="group">'+bx.topics.map(t=>{ const st=subStat(t.sub); return cell('mtopic',t.sub,t.sub,GRUP[t.sub]?GRUP[t.sub].length+' subkategori':t.aturan.length+' kaidah',st.n?st.p+'%':''); }).join('')+'</div>';
+  }
+  let h='<h1>Materi</h1><label class="search" for="kq"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true" style="color:var(--muted)"><circle cx="11" cy="11" r="7"/><path d="M20 20l-4-4"/></svg><input id="kq" type="search" placeholder="Cari materi: koma, pe-an, analogi…" value="'+esc(K.q||'')+'" data-action="kq"></label>';
+  if(q){
+    const res=[]; MATERI.forEach(b=>b.topik.forEach(t=>{ const rs=t.aturan.filter(a=>(t.sub+' '+a[0]+' '+a[1]).toLowerCase().includes(q)); if(rs.length) res.push({t,rs}); }));
+    if(!res.length) return h+'<div class="card empty">Tidak ada materi yang cocok.</div>';
+    return h+'<div class="sub">'+res.reduce((n,x)=>n+x.rs.length,0)+' kaidah cocok</div>'+res.map(({t,rs})=>'<section class="card mrules"><button type="button" class="mres" data-action="mtopic" data-v="'+esc(t.sub)+'">'+esc(t.sub)+' '+CHEV+'</button>'+ruleList(t,rs,null)+'</section>').join('');
+  }
+  const T=today(), ts=[...new Set(T.k.subs.concat(T.k2.subs))].map(topicOf).filter(Boolean);
+  h+='<div class="sh">Hari ini</div><div class="group">'+ts.map(t=>cell('mtopic',t.sub,t.sub,refLabel(t).replace(/&amp;/g,'&').replace(/&#39;/g,"'"),'')).join('')+'</div>';
+  const BX=boxes(), tile=x=>'<button type="button" class="mbox" data-action="mbox" data-v="'+x.id+'">'+icon(x.ic)+'<b>'+esc(x.n)+'</b><small>'+x.topics.length+' kategori</small></button>';
+  ['EYD V','Kebahasaan'].forEach(sec=>{ h+='<div class="sh">'+sec+'</div><div class="mgrid">'+BX.filter(x=>x.sec===sec).map(tile).join('')+'</div>'; });
   return h;
 }
 /* ---------- Daftar teks ---------- */
@@ -1603,7 +1800,7 @@ function viewTeks(){
 /* ---------- Bank soal ---------- */
 function viewBank(){
   const c=V.bank.check, bp=V.bank.bakuPrev;
-  let h='<h1>Bank soal</h1><p class="sub" style="margin:-6px 0 0">'+S.drill.length+' butir drill EYD · '+S.baku.length+' kata baku · '+S.bank.length+' teks</p>';
+  let h='<div class="row" style="justify-content:flex-end;margin-bottom:-14px"><a class="link" href="#teks">Daftar teks →</a></div><h1>Bank soal</h1><p class="sub" style="margin:-6px 0 0">'+S.drill.length+' butir drill EYD · '+S.baku.length+' kata baku · '+S.bank.length+' teks</p>';
   h+='<section class="card"><div class="row"><h2 class="grow">Paket harian (JSON)</h2><a class="link" href="#prompt">Prompt hari ini</a></div><label for="paste" class="sub">Tempel keluaran prompt harian di sini.</label><textarea id="paste" spellcheck="false" placeholder="{ &quot;versi&quot;: 3, &quot;drill&quot;: [ ... ], &quot;teks&quot;: [ ... ] }" data-action="paste">'+esc(V.bank.text)+'</textarea>'+
    '<div class="actions"><button class="btn ghost" type="button" data-action="loadsample">Isi contoh</button><button class="btn ghost" type="button" data-action="check">Periksa</button></div>';
   if(c){ h+='<div class="mini"><div><b>'+(c.nDrill||0)+'</b><span>butir drill</span></div><div><b>'+(c.nTeks||0)+'</b><span>teks</span></div><div><b>'+(c.nSoal||0)+'</b><span>soal teks</span></div></div><div class="checks">'+
@@ -1630,12 +1827,11 @@ function viewPrompt(){
 
 /* ---------- Progres ---------- */
 function viewProgres(){
-  if(!S.dhist.length&&!S.history.length) return '<h1>Progres</h1><section class="card empty">Belum ada jawaban. Mulai satu drill atau teks, lalu akurasimu muncul di sini.<br><a href="#beranda">Pilih latihan</a></section>';
   const bar=(label,n,p,meta)=>'<div style="display:flex;flex-direction:column;gap:4px"><div class="row" style="font-size:13px"><span class="grow">'+label+'</span><b style="font-variant-numeric:tabular-nums">'+(n?p+'%':'–')+'</b><span class="sub" style="width:58px;text-align:right">'+meta+'</span></div><div class="bar">'+(n?'<i class="'+(p<70?'low':'')+'" style="width:'+p+'%"></i>':'')+'</div></div>';
   const kat=['tanda-baca','ejaan','kebahasaan','baku'].map(k=>({k,...drillAcc(k)}));
   const subs=[]; MATERI.forEach(b=>b.topik.forEach(t=>{ const s=subStat(t.sub); if(s.n) subs.push({sub:t.sub,...s}); }));
   const rows=KELOMPOK_ORDER.map(([sub,k])=>{ const h=S.history.filter(x=>x.subtes===sub&&kelompok(x.pola_id)===k); return {sub,k,n:h.length,p:pct(h.filter(x=>x.correct).length,h.length)}; });
-  return '<h1>Progres</h1><div class="row"><span class="chip">'+streak()+' hari beruntun</span><span class="chip plain">'+todayCount()+' soal hari ini</span></div>'+
+  return progSummary()+weekStrip()+weakCard()+
     '<section class="card"><h2>Drill per kategori</h2>'+kat.map(x=>bar(esc(KAT[x.k]),x.n,x.p,x.n+' butir')).join('')+'</section>'+
     (subs.length?'<section class="card"><h2>Drill per topik</h2>'+subs.sort((a,b)=>a.p-b.p).map(x=>bar(esc(x.sub),x.n,x.p,x.n+' butir')).join('')+'</section>':'')+
     '<section class="card"><h2>Teks ala UTBK</h2>'+rows.map(r=>bar('<b style="color:var(--muted)">'+r.sub+'</b> '+esc(r.k),r.n,r.p,r.n+' soal')).join('')+'<div class="sub">Batang oranye: di bawah 70%.</div></section>'+
@@ -1745,8 +1941,8 @@ function viewKalender(){
   h+='<div class="cal-grid" role="grid">'+['S','S','R','K','J','S','M'].map(w=>'<span class="cal-wd" aria-hidden="true">'+w+'</span>').join('');
   for(let i=0;i<lead;i++) h+='<span></span>';
   for(let d=1;d<=days;d++){
-    const dt=new Date(C.y,C.m,d), key=ymd(dt), isToday=key===ymd(now), sel=key===C.sel, act=activityOn(dt);
-    h+='<button type="button" class="cal-day'+(isToday?' today':'')+(sel?' sel':'')+'" data-action="calday" data-v="'+key+'" aria-label="'+esc(dt.toLocaleDateString('id-ID',{weekday:'long',day:'numeric',month:'long'}))+(act.n?', '+act.n+' soal dikerjakan':'')+'" aria-pressed="'+sel+'"><span class="num">'+d+'</span><span class="dot'+(act.n?' on':'')+'"></span></button>';
+    const dt=new Date(C.y,C.m,d), key=ymd(dt), isToday=key===ymd(now), sel=key===C.sel, act=activityOn(dt), rr=dt<=now?dayRatio(dt):0;
+    h+='<button type="button" class="cal-day'+(isToday?' today':'')+(sel?' sel':'')+'" data-action="calday" data-v="'+key+'" aria-label="'+esc(dt.toLocaleDateString('id-ID',{weekday:'long',day:'numeric',month:'long'}))+(act.n?', '+act.n+' soal dikerjakan':'')+'" aria-pressed="'+sel+'"><span class="num">'+d+'</span><span class="dot'+(rr===1?' on':rr>0?' part':'')+'"></span></button>';
   }
   h+='</div></div>';
   const sd=fromYmd(C.sel), c=conceptsOn(sd), act=activityOn(sd), isPast=sd<now, isToday=C.sel===ymd(now);
@@ -1756,7 +1952,7 @@ function viewKalender(){
   h+='<div class="group">'+row('eyd','EYD',c.k.n,c.k.subs)+
      row('keb','Kebahasaan',c.k2.n,c.k2.subs)+
      '<div class="cell has-ic">'+icon(c.fokus==='PBM'?'pbm':'ppu')+'<span class="txt"><span class="t2">Teks</span><span class="t1">'+c.fokus+'</span></span></div></div>';
-  if(isPast||isToday) h+='<div class="foot">'+(act.n?act.n+' soal dikerjakan, '+act.ok+' benar.':(isToday?'Belum ada soal yang dikerjakan hari ini.':'Tidak ada latihan pada hari ini.'))+'</div>';
+  if(isPast||isToday){ const tk=tasksOn(sd), dn=tk.filter(x=>x.done).length; h+='<section class="card tasks"><div class="row"><h2 class="grow">Tugas</h2><span class="tsum'+(dn===tk.length?' ok':'')+'">'+dn+'/'+tk.length+' selesai</span></div><div class="bar"><i style="width:'+pct(dn,tk.length)+'%"></i></div><div class="tlist">'+taskRows(tk,isToday)+'</div></section><div class="foot">'+(act.n?act.n+' soal dikerjakan, '+act.ok+' benar.':(isToday?'Belum ada soal yang dikerjakan hari ini.':'Tidak ada latihan pada hari ini.'))+'</div>'; }
   const subs=c.k.subs.concat(c.k2.subs), n=poolFor('sub:'+subs.join('|')).length;
   h+=isToday?'<button class="btn primary block" type="button" data-action="paket">Mulai paket harian</button>'
             :'<button class="btn ghost block" type="button" data-action="drill" data-v="sub:'+esc(subs.join('|'))+'"'+(n?'':' disabled')+'>'+(n?'Drill konsep hari itu ('+n+' butir)':'Belum ada butir untuk konsep ini')+'</button>';
@@ -1771,12 +1967,12 @@ function viewKalender(){
 
 /* ---------- Render ---------- */
 function render(){
-  const r=route();
-  const views={kalender:viewKalender,beranda:viewBeranda,kaidah:viewKaidah,teks:viewTeks,bank:viewBank,progres:viewProgres,drill:viewDrill,soal:viewSoal,selesai:viewSelesai,prompt:viewPrompt,swipe:viewSwipe};
+  const r=route(); if(r!=='kaidah'&&V.kaidah) V.kaidah.from=null;
+  const views={progres:viewProgres,kalender:viewKalender,beranda:viewBeranda,kaidah:viewKaidah,teks:viewTeks,bank:viewBank,progres:viewProgres,drill:viewDrill,soal:viewSoal,selesai:viewSelesai,prompt:viewPrompt,swipe:viewSwipe};
   $('#view').innerHTML=(views[r]||viewBeranda)();
   renderNav();
   document.body.classList.toggle('sess', (r==='drill'&&!!V.drill&&!(V.drill.fin&&!V.drill.review))||(r==='soal'&&!!V.run));
-  const h1=$('#view h1'); $('#topbar').textContent=h1?h1.textContent:''; onScrollTop();
+  const h1=$('#view h1'); $('#topbar').textContent=h1?h1.textContent:''; onScrollTop(); taskWatch();
 }
 function onScrollTop(){ const h1=$('#view h1'), tb=$('#topbar'); if(!tb) return; tb.classList.toggle('on', !!h1 && h1.getBoundingClientRect().bottom<44); }
 window.addEventListener('scroll',onScrollTop,{passive:true});
@@ -1791,7 +1987,11 @@ document.addEventListener('click',e=>{
   else if(a==='mtab'){ V.kaidah.tab=b.dataset.v; render(); }
   else if(a==='calmove'){ const C=V.cal; let m=C.m+(+b.dataset.v), y=C.y; if(m<0){m=11;y--;} if(m>11){m=0;y++;} C.m=m; C.y=y; render(); }
   else if(a==='calday'){ V.cal.sel=b.dataset.v; render(); }
-  else if(a==='calmateri'){ V.kaidah.q=''; V.kaidah.tab='pilih'; V.kaidah.subs=b.dataset.v.split('|'); go('kaidah'); }
+  else if(a==='calmateri'){ const subs=b.dataset.v.split('|'); V.kaidah={q:'',nav:subs.length===1?{sub:subs[0]}:{box:'pilih',subs}}; go('kaidah'); }
+  else if(a==='mbox'){ const bx=boxes().find(x=>x.id===b.dataset.v); if(!bx) return; V.kaidah.q=''; V.kaidah.nav=bx.topics.length===1?{box:bx.id,sub:bx.topics[0].sub}:{box:bx.id}; render(); window.scrollTo(0,0); }
+  else if(a==='mtopic'){ const n=V.kaidah.nav||{}; V.kaidah.q=''; V.kaidah.nav={box:n.box,subs:n.subs,sub:b.dataset.v,g:null}; render(); window.scrollTo(0,0); }
+  else if(a==='mgrp'){ V.kaidah.nav=Object.assign({},V.kaidah.nav,{g:+b.dataset.v}); render(); window.scrollTo(0,0); }
+  else if(a==='mup'){ V.kaidah.nav=navUp(V.kaidah.nav||{}); render(); window.scrollTo(0,0); }
   else if(a==='swipe'){ startSwipe(null); }
   else if(a==='swyes'){ swAnswer(true); }
   else if(a==='swno'){ swAnswer(false); }
@@ -1811,13 +2011,17 @@ document.addEventListener('click',e=>{
   else if(a==='qlayout'){ S.layout=S.layout==='split'?'stack':'split'; save(); render(); toast(S.layout==='split'?'Bacaan di kiri, soal di kanan (layar lebar)':'Bacaan di atas, soal di bawah'); }
   else if(a==='qend'){ const C=sessCtx(); if(!C) return; const c=countOf(C); if((c.k||c.f)&&!V.confirmEnd){ V.confirmEnd=true; render(); const el=$('.cbt-confirm'); if(el) el.scrollIntoView({block:'center',behavior:'smooth'}); return; } finishSess(C); }
   else if(a==='qendyes'){ finishSess(sessCtx()); }
+  else if(a==='qmateri'){ const from=route(), r=b.dataset.r; const subs=b.dataset.v.split('|'), focus=r?{sub:r.split('#')[0],i:+r.split('#')[1]}:null, fs=focus?focus.sub:subs[0], gg=GRUP[fs], gi=focus&&gg?gg.findIndex(x=>x[1].includes(focus.i+1)):-1; V.kaidah={q:'',from,focus,nav:{sub:fs,g:gi>=0?gi:null}}; go('kaidah'); setTimeout(()=>{ const el=$('#rfocus'); if(el) el.scrollIntoView({block:'center'}); },120); }
+  else if(a==='kgrp'){ const sub=b.dataset.sub, K=V.kaidah; K.gsel=K.gsel||{}; K.gsel[sub]=b.dataset.v==='all'?null:+b.dataset.v; K.openSet=K.openSet||[]; if(!K.openSet.includes(sub)) K.openSet.push(sub); render(); const d=[...document.querySelectorAll('details.topic')].find(x=>x.dataset.sub===sub); if(d) d.scrollIntoView({block:'start'}); }
+  else if(a==='kjump'){ const el=document.getElementById(b.dataset.v); if(el) el.scrollIntoView({block:'start',behavior:'smooth'}); }
+  else if(a==='qback'){ const f=V.kaidah.from; V.kaidah={q:''}; go(f||'beranda'); }
   else if(a==='qendno'){ V.confirmEnd=false; render(); }
   else if(a==='qreview'){ if(b.dataset.v==='drill'){ if(!V.drill) return; V.drill.review=true; V.drill.cur=0; render(); window.scrollTo(0,0); } else { if(!V.run) return; V.run.review=true; V.run.cur=0; go('soal'); } }
   else if(a==='qendreview'){ const C=sessCtx(); if(!C) return; C.s.review=false; if(C.kind==='drill'){ render(); window.scrollTo(0,0); } else go('selesai'); }
   else if(a==='paketteks'){ const D=V.drill; V.paket.drillRes=[D.res.filter(r=>r.ok).length,D.res.length]; startTeks(V.paket.sub); }
   else if(a==='loadsample'){ V.bank.text=JSON.stringify(SAMPLE,null,2); V.bank.check=null; render(); }
   else if(a==='check'){ V.bank.text=$('#paste').value; V.bank.check=validate(V.bank.text); render(); }
-  else if(a==='savebank'){ const c=V.bank.check; if(!c||c.errs.length) return; const r=mergeImport(S,c.data,false); save(); V.bank.text=''; V.bank.check=null; render(); toast(r.addD+' butir drill dan '+r.addT+' teks disimpan'); }
+  else if(a==='savebank'){ const c=V.bank.check; if(!c||c.errs.length) return; const r=mergeImport(S,c.data,false); S.imp=(S.imp||[]).concat(dayKey(Date.now())).slice(-90); save(); V.bank.text=''; V.bank.check=null; render(); toast(r.addD+' butir drill dan '+r.addT+' teks disimpan'); }
   else if(a==='bakuadd'||a==='bakureplace'){
     const bp=V.bank.bakuPrev; if(!bp||!bp.pairs.length) return;
     if(a==='bakureplace'||S.bakuContoh){ S.baku=[]; S.bakuContoh=false; }
@@ -1830,9 +2034,10 @@ document.addEventListener('click',e=>{
   else if(a==='resetyes'){ S=fresh(); save(); V.bank.confirmReset=false; V.run=null; V.drill=null; V.paket=null; render(); toast('Data diatur ulang'); }
   else if(a==='copyprompt'){ const ta=$('#promptbox'); copyText(ta.value,ta); }
 });
+document.addEventListener('toggle',e=>{ const d=e.target; if(!d||!d.matches||!d.matches('details.topic[data-sub]')) return; const K=V.kaidah, st=K.openSet=K.openSet||[], k=d.dataset.sub, i=st.indexOf(k); if(d.open&&i<0) st.push(k); if(!d.open&&i>=0) st.splice(i,1); },true);
 document.addEventListener('input',e=>{
   const el=e.target;
-  if(el.id==='qisian'){ const C=sessCtx(); if(!C) return; const x=C.s.A[C.s.cur]; x.is=el.value.replace(/[^0-9]/g,''); el.value=x.is; const btn=document.querySelector('[data-action="qcheck"]'); if(btn) btn.disabled=!x.is; const nb=document.querySelector('.nb.cur'); if(nb) nb.classList.toggle('ans',!!x.is); const cc=document.querySelector('.cbt-count'); if(cc) cc.innerHTML=countHtml(C); }
+  if(el.id==='qisian'){ const C=sessCtx(); if(!C) return; const x=C.s.A[C.s.cur]; x.is=el.value.replace(/[^0-9]/g,''); el.value=x.is; const qp=document.getElementById('qprimary'); if(qp) qp.outerHTML=primaryBtn(C); const nb=document.querySelector('.nb.cur'); if(nb) nb.classList.toggle('ans',!!x.is); const cc=document.querySelector('.cbt-count'); if(cc) cc.innerHTML=countHtml(C); }
   else if(el.dataset.action==='kq'){ V.kaidah.q=el.value; const pos=el.selectionStart; render(); const n=$('#kq'); n.focus(); try{n.setSelectionRange(pos,pos);}catch(_){} }
   else if(el.dataset.action==='paste'){ V.bank.text=el.value; }
   else if(el.dataset.action==='bakuin'){ V.bank.bakuText=el.value; clearTimeout(V._bt); V._bt=setTimeout(()=>{ V.bank.bakuPrev=V.bank.bakuText.trim()?parseBaku(V.bank.bakuText):null; const pos=el.selectionStart; render(); const n=$('#bakuin'); if(n){ n.focus(); try{n.setSelectionRange(pos,pos);}catch(_){} } },400); }
@@ -1842,7 +2047,7 @@ document.addEventListener('keydown',e=>{
   const r=route(); if(r!=='drill'&&r!=='soal') return;
   const C=sessCtx(); if(!C||(C.s.fin&&!C.s.review)) return;
   const click=sel=>{ const el=document.querySelector(sel); if(el&&!el.disabled){ e.preventDefault(); el.click(); return true; } return false; };
-  if(e.target&&e.target.id==='qisian'){ if(e.key==='Enter'){ if(!click('[data-action="qcheck"]')) click('[data-action="qnext"]'); } return; }
+  if(e.target&&e.target.id==='qisian'){ if(e.key==='Enter') click('#qprimary'); return; }
   if(/^(INPUT|TEXTAREA|SELECT)$/.test((e.target&&e.target.tagName)||'')) return;
   const k=e.key.toLowerCase(); let idx='abcde'.indexOf(k); if(idx<0&&/^[1-5]$/.test(k)) idx=+k-1;
   if(idx>=0&&k.length===1){ click('[data-action="qpick"][data-i="'+idx+'"]'); return; }
