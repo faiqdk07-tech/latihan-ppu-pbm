@@ -671,7 +671,10 @@ nav.bottom a{min-height:46px;border-radius:10px}
 .app,body.sess .app{padding-bottom:calc(100px + env(safe-area-inset-bottom,0px))}
 .qbackfab{bottom:calc(84px + env(safe-area-inset-bottom,0px))}
 .toast{bottom:calc(84px + env(safe-area-inset-bottom,0px))}
-@media (prefers-reduced-motion: reduce){*{transition:none!important;animation:none!important}}
+@media (prefers-reduced-motion: reduce){:root:not([data-anim="on"]) *{transition:none!important;animation:none!important}}
+
+/* tombol kembali ke Progres Harian */
+.hubback{display:inline-flex;align-items:center;gap:4px;font-size:13px;font-weight:700;color:var(--accent);background:var(--accent-soft);border-radius:999px;padding:6px 12px;text-decoration:none;width:fit-content;white-space:nowrap}
 </style>
 
 </head>
@@ -1850,6 +1853,7 @@ function viewBank(){
         :'<div class="g">✓ Format lolos: kategori dan subkategori dikenali, setiap PG punya 1 kunci, setiap isian punya nomor kunci yang ada.</div>')+'</div>'; }
   h+='<button class="btn primary block" type="button" data-action="savebank"'+(c&&!c.errs.length?'':' disabled')+'>Simpan ke bank</button></section>';
   h+='<h2>Teks tersimpan</h2>'+(S.bank.length?S.bank.map(t=>'<div class="card" style="flex-direction:row;align-items:center"><div class="grow"><div style="font-weight:700">'+esc(t.judul||t.id)+'</div><div class="sub">'+t.soal.length+' soal · '+esc(t.id)+'</div></div><button class="btn danger" type="button" data-action="delteks" data-id="'+esc(t.id)+'" aria-label="Hapus '+esc(t.judul||t.id)+'" style="min-height:40px;padding:0 12px">Hapus</button></div>').join(''):'<div class="card empty">Belum ada teks.</div>');
+  h+='<section class="card"><h2>Animasi</h2><div style="align-self:flex-start" class="seg" role="group" aria-label="Animasi"><button type="button" aria-pressed="'+(S.anim!=='on')+'" data-action="anim" data-v="auto">Ikuti perangkat</button><button type="button" aria-pressed="'+(S.anim==='on')+'" data-action="anim" data-v="on">Selalu nyala</button></div><div class="sub">Pilih Selalu nyala agar gerakan soal tetap muncul walau Kurangi Gerakan di perangkat menyala.</div></section>';
   h+='<section class="card"><h2>Atur ulang</h2><div class="sub">Menghapus riwayat jawaban, jadwal ulang, isi tambahan, dan daftar kata, lalu memuat ulang contoh.</div>'+
      (V.bank.confirmReset?'<div class="actions"><button class="btn ghost" type="button" data-action="resetno">Batal</button><button class="btn danger" type="button" data-action="resetyes">Ya, atur ulang</button></div>':'<button class="btn danger" type="button" data-action="reset">Atur ulang data</button>')+'</section>';
   return h;
@@ -2014,7 +2018,7 @@ function viewKalender(){
 function render(){
   const r=route(); if(r!=='kaidah'&&V.kaidah) V.kaidah.from=null;
   const views={progres:viewProgres,kalender:viewKalender,beranda:viewBeranda,kaidah:viewKaidah,teks:viewTeks,bank:viewBank,progres:viewProgres,drill:viewDrill,soal:viewSoal,selesai:viewSelesai,prompt:viewPrompt,swipe:viewSwipe};
-  $('#view').innerHTML=(views[r]||viewBeranda)();
+  $('#view').innerHTML=(['beranda','kalender','kaidah','progres','bank','teks'].includes(r)&&!(r==='kaidah'&&V.kaidah&&V.kaidah.from)?'<div style="display:flex;margin:6px 0 -8px"><a class="hubback" href="https://faiqdk07-tech.github.io/progres-harian/#hari-ini"><svg viewBox=\"0 0 12 12\" width=\"11\" height=\"11\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"1.8\" stroke-linecap=\"round\" stroke-linejoin=\"round\" aria-hidden=\"true\"><path d=\"M7.5 2.5L4 6l3.5 3.5\"/></svg>Progres Harian</a></div>':'')+(views[r]||viewBeranda)();
   renderNav();
   document.body.classList.toggle('sess', (r==='drill'&&!!V.drill&&!(V.drill.fin&&!V.drill.review))||(r==='soal'&&!!V.run));
   const h1=$('#view h1'); $('#topbar').textContent=h1?h1.textContent:''; onScrollTop(); taskWatch();
@@ -2078,6 +2082,7 @@ document.addEventListener('click',e=>{
     save(); V.bank.bakuText=''; V.bank.bakuPrev=null; render(); toast(bp.pairs.length+' kata disimpan · total '+S.baku.length);
   }
   else if(a==='delteks'){ S.bank=S.bank.filter(t=>t.id!==b.dataset.id); save(); render(); toast('Teks dihapus'); }
+  else if(a==='anim'){ S.anim=b.dataset.v==='on'?'on':'auto'; save(); applyAnim(); render(); toast(S.anim==='on'?'Animasi selalu nyala':'Animasi mengikuti pengaturan perangkat'); }
   else if(a==='reset'){ V.bank.confirmReset=true; render(); }
   else if(a==='resetno'){ V.bank.confirmReset=false; render(); }
   else if(a==='resetyes'){ S=fresh(); save(); V.bank.confirmReset=false; V.run=null; V.drill=null; V.paket=null; render(); toast('Data diatur ulang'); }
@@ -2107,6 +2112,8 @@ document.addEventListener('keydown',e=>{
 document.addEventListener('paste',e=>{ if(e.target.id==='paste'){ setTimeout(()=>{ V.bank.text=$('#paste').value; V.bank.check=validate(V.bank.text); render(); },0); } });
 window.addEventListener('hashchange',()=>{ const r=route(); if(((r==='soal'||r==='selesai')&&!V.run)||(r==='drill'&&!V.drill)||(r==='swipe'&&!V.sw)){ location.hash='#beranda'; return; } render(); window.scrollTo(0,0); });
 if(['soal','selesai','drill','swipe'].includes(route())) location.hash='#beranda';
+function applyAnim(){ try{ if(S.anim==='on') document.documentElement.setAttribute('data-anim','on'); else document.documentElement.removeAttribute('data-anim'); }catch(_){} }
+applyAnim();
 render();
 
 })();
