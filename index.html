@@ -1155,7 +1155,10 @@ try{ S=JSON.parse(localStorage.getItem(KEY)||'null'); }catch(e){ S=null; }
 if(!S||!Array.isArray(S.bank)||!Array.isArray(S.drill)||!Array.isArray(S.baku)) S=fresh();
 const BAKU_VER='kbbi-650-v1';
 if(S.bakuVer!==BAKU_VER){ S.baku=parseBaku(SAMPLE_BAKU).pairs; S.bakuVer=BAKU_VER; try{localStorage.setItem(KEY,JSON.stringify(S));}catch(e){} }
-function save(){ try{ localStorage.setItem(KEY, JSON.stringify(S)); }catch(e){} }
+function save(){ try{ localStorage.setItem(KEY, JSON.stringify(S)); }catch(e){} ringkasPPU(); }
+/* ringkasan harian untuk Progres Harian (domain yang sama) */
+function ringkasPPU(){ try{ const d=new Date(), t=tasksOn(d), k=dayKey(d.getTime()), h=S.dhist.concat(S.history).filter(x=>dayKey(x.ts)===k);
+  localStorage.setItem('ppu.ringkas',JSON.stringify({app:'latihan-ppu-pbm',tanggal:ymd(d),tugas_selesai:t.filter(x=>x.done).length,tugas_total:t.length,soal:h.length,benar:h.filter(x=>x.correct).length,diperbarui:Date.now()})); }catch(e){} }
 function mergeImport(st,data,isSample){
   let addT=0, addD=0;
   (data.teks||[]).forEach(t=>{ const c=JSON.parse(JSON.stringify(t)); c._contoh=!!isSample; const i=st.bank.findIndex(b=>b.id===c.id); if(i>=0) st.bank[i]=c; else st.bank.push(c); addT++; });
@@ -1366,7 +1369,25 @@ function buildPrompt(o){
 7. Soal "seharusnya" memakai lima opsi tetap: dihilangkan, dibiarkan saja, diganti ..., didahului ..., diikuti .... "Dibiarkan saja" boleh menjadi kunci.
 8. "bukti" = nomor kalimat dasar jawaban. "pembahasan" paling banyak 2 kalimat. "drill_terkait" = subkategori (EYD atau kebahasaan) yang berkaitan, boleh kosong.
 9. Kata uji paling banyak 5 per teks di "kata_uji", tanpa angka superskrip di dalam kalimat. Rumpang ditulis [...].
-10. "nomor" soal dimulai dari 1 di setiap teks.${isSim?'\n11. Tingkat kesulitan setara UTBK asli: campurkan soal mudah, sedang, dan sulit (sekitar 30:50:20).':''}`;
+10. "nomor" soal dimulai dari 1 di setiap teks.
+11. Tingkat kesulitan setara UTBK asli: sekitar ${isSim?'30:50:20':'20:50:30'} untuk mudah : sedang : sulit. Soal sulit menuntut membaca dua kalimat atau lebih, atau membedakan dua opsi yang sama-sama terdengar benar.
+
+## Pengecoh gaya UTBK (WAJIB, ini yang membuat soal tidak mudah ditebak)
+P1. Setiap opsi salah harus "hampir benar": terdengar masuk akal sekilas dan salah karena SATU alasan yang hanya terlihat jika teks dibaca teliti. Minimal 2 opsi per soal harus tampak benar bagi pembaca yang terburu-buru.
+P2. Opsi sejajar: panjang, struktur, dan tingkat formalitas mirip. Kunci tidak boleh selalu opsi terpanjang, paling lengkap, atau paling formal. Kata mutlak (selalu, pasti, semua, satu-satunya) boleh muncul di kunci jika teks memang mendukung, dan opsi salah boleh memakai kata yang terdengar hati-hati.
+P3. Pengecoh per tipe soal:
+   - Makna kata/sinonim/antonim kontekstual: pakai kata yang bermakna polisemi; pengecoh utama = sinonim kata itu dalam MAKNA LAIN (makna kamus yang tidak cocok dengan konteks kalimat).
+   - Ungkapan kembali/makna sama: satu opsi per modalitas (pasti, biasanya, seharusnya, sepertinya); tukar pelaku dan sasaran; pindahkan induk klausa "yang"; kunci mempertahankan isi DAN kadar kepastian.
+   - Imbuhan: pengecoh memakai imbuhan yang sama tetapi makna berbeda (pe-an 'proses' vs 'hal' vs 'tempat'); kunci tidak boleh bisa dipilih hanya dari bentuk katanya.
+   - Konjungsi/penggabungan: pengecoh adalah konjungsi yang relasinya mirip (sehingga vs karena vs maka; tetapi vs padahal vs meskipun).
+   - Perbaikan/kalimat efektif: pengecoh memperbaiki separuh masalah, atau memperbaiki kesalahan tetapi menimbulkan kesalahan baru.
+   - Kalimat inti/informasi utama: pengecoh membuang unsur wajib atau ikut membawa keterangan.
+   - Rumpang dua kata: pengecoh = kata pertama benar & kedua salah, dan sebaliknya.
+   - Judul/gagasan: pengecoh hanya mencakup satu paragraf atau terlalu umum.
+   - Sisipan/urutan: pengecoh = satu posisi lebih awal atau lebih akhir.
+   - Ejaan/tanda baca (isian nomor kalimat): selain satu kalimat yang memang salah, tanam 1–2 "kalimat umpan" yang tampak salah tetapi sebenarnya benar menurut EYD V (misalnya koma setelah keterangan awal yang panjang, kata baku yang jarang dipakai, huruf kapital nama jenis yang benar ditulis kecil).
+P4. Uji anti-tebak sebelum mengirim. Untuk tiap soal tanyakan: (a) apakah bisa dijawab tanpa membaca teks? (b) apakah ada opsi yang bisa dicoret dalam 2 detik karena topiknya lain, tata bahasanya rusak, atau jelas absurd? (c) apakah kunci menonjol karena panjang atau gayanya? Jika salah satu jawabannya "ya", ganti opsi atau soalnya.
+P5. Sebar kunci A–E merata dan jangan lebih dari 2 kunci sama berturut-turut.`;
   const drillRules=`A. 10 butir konsep EYD hari ini: "kategori" = "tanda-baca" (Bab III) atau "ejaan" (Bab I–II), "subkategori" persis seperti di atas.
 B. 10 butir konsep kebahasaan hari ini: "kategori" = "kebahasaan", "subkategori" persis seperti di atas.
 Aturan untuk keduanya:
@@ -1378,7 +1399,8 @@ Aturan untuk keduanya:
 3. Pengecoh harus kesalahan yang memang sering terjadi, bukan salah ketik. Untuk makna imbuhan, analogi, dan relasi makna, setiap pengecoh mewakili makna atau hubungan lain yang berbeda jelas, sehingga hanya satu jawaban yang sah.
 4. "kaidah": satu kalimat aturan; untuk EYD sertakan rujukan bab, misalnya "(III.B.3)".
 5. Variasikan konteks (sekolah, kesehatan, lingkungan, ekonomi, budaya). Nama orang dan lembaga fiktif. Huruf miring ditulis dengan *...*. Jangan mengulang kalimat yang sama antarbutir.
-6. Jika Kelemahan menyebut subkategori hari ini, minimal separuh butir subkategori itu menyasarnya dengan contoh baru.`;
+6. Jika Kelemahan menyebut subkategori hari ini, minimal separuh butir subkategori itu menyasarnya dengan contoh baru.
+7. Uji anti-tebak: tiap butir tidak boleh bisa dijawab tanpa menguasai kaidahnya. Opsi sejajar panjang dan gayanya, kunci tidak menonjol, dan minimal 2 opsi tampak benar sekilas. Untuk butir "yang tepat", pengecoh mengandung kesalahan halus yang sering terjadi; untuk butir "yang salah", sisipkan kalimat benar yang tampak janggal.`;
   const idb=o.idbase+(isSim?'-sim'+sub.toLowerCase():'');
   const fmtDrill=`{
   "versi": 3,
@@ -2021,7 +2043,7 @@ function render(){
   $('#view').innerHTML=(views[r]||viewBeranda)();
   renderNav();
   document.body.classList.toggle('sess', (r==='drill'&&!!V.drill&&!(V.drill.fin&&!V.drill.review))||(r==='soal'&&!!V.run));
-  const h1=$('#view h1'); $('#topbar').textContent=h1?h1.textContent:''; onScrollTop(); taskWatch();
+  const h1=$('#view h1'); $('#topbar').textContent=h1?h1.textContent:''; onScrollTop(); taskWatch(); ringkasPPU();
 }
 function onScrollTop(){ const h1=$('#view h1'), tb=$('#topbar'); if(!tb) return; tb.classList.toggle('on', !!h1 && h1.getBoundingClientRect().bottom<44); }
 window.addEventListener('scroll',onScrollTop,{passive:true});
