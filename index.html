@@ -675,6 +675,9 @@ nav.bottom a{min-height:46px;border-radius:10px}
 
 /* tombol kembali ke Progres Harian */
 .hubback{display:inline-flex;align-items:center;gap:4px;font-size:13px;font-weight:700;color:var(--accent);background:var(--accent-soft);border-radius:999px;padding:6px 12px;text-decoration:none;width:fit-content;white-space:nowrap}
+
+/* tablet: kolom lebih lebar agar tidak ada ruang kosong panjang di kiri-kanan */
+@media (min-width:700px){ body .app{max-width:960px;padding-left:max(28px,env(safe-area-inset-left,0px));padding-right:max(28px,env(safe-area-inset-right,0px))} .cbt-panel.split .cbt-body{display:grid;grid-template-columns:minmax(0,1.1fr) minmax(0,1fr);gap:24px;align-items:start} .cbt-panel.split .cbt-left{position:sticky;top:12px;max-height:calc(100vh - 60px);overflow:auto;padding-right:16px;border-right:1px solid var(--line)} }
 </style>
 
 </head>
