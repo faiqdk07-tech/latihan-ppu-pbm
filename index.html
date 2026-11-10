@@ -678,6 +678,9 @@ nav.bottom a{min-height:46px;border-radius:10px}
 
 /* tablet: kolom lebih lebar agar tidak ada ruang kosong panjang di kiri-kanan */
 @media (min-width:700px){ body .app{max-width:960px;padding-left:max(28px,env(safe-area-inset-left,0px));padding-right:max(28px,env(safe-area-inset-right,0px))} .cbt-panel.split .cbt-body{display:grid;grid-template-columns:minmax(0,1.1fr) minmax(0,1fr);gap:24px;align-items:start} .cbt-panel.split .cbt-left{position:sticky;top:12px;max-height:calc(100vh - 60px);overflow:auto;padding-right:16px;border-right:1px solid var(--line)} }
+.cbt-timer{display:inline-flex;align-items:center;min-height:30px;padding:0 10px;border:1px solid var(--line2);border-radius:6px;font-weight:700;font-size:13px;font-variant-numeric:tabular-nums;color:var(--ink);background:var(--surface)}
+.cbt-timer.low{color:#B42318;border-color:#B42318}
+.pemb .link.rep{align-self:flex-start;margin-top:6px;font-size:12px;font-weight:600;color:var(--muted);background:none;border:0;padding:0;min-height:24px;text-decoration:underline;cursor:pointer}
 </style>
 
 </head>
@@ -1125,6 +1128,10 @@ function kelompok(pid){
 }
 const KELOMPOK_ORDER = [['PBM','Ejaan'],['PBM','Diksi & rumpang'],['PBM','Efektivitas'],['PBM','Makna & kepaduan'],['PPU','Makna kata & frasa'],['PPU','Imbuhan'],['PPU','Majas'],['PPU','Hubungan & struktur']];
 const DRILL_SIZE = 10;
+/* Waktu UTBK per soal: PPU 20 soal/15 menit, PBM 20 soal/25 menit */
+const PACE = {PPU:45, PBM:75};
+const WEAK_MIN = 5;
+function mmss(ms){ const t=Math.max(0,Math.round(ms/1000)); return Math.floor(t/60)+':'+String(t%60).padStart(2,'0'); }
 const DAY = 86400000;
 
 /* ---------- Konsep harian ---------- */
@@ -1150,13 +1157,14 @@ function parseBaku(text){
   return {pairs,bad};
 }
 function fresh(){
-  const st={bank:[],drill:[],baku:[],srs:{},history:[],dhist:[],bakuContoh:true};
+  const st={bank:[],drill:[],baku:[],srs:{},history:[],dhist:[],bad:{},bakuContoh:true};
   mergeImport(st,SAMPLE,true); st.baku=parseBaku(SAMPLE_BAKU).pairs; return st;
 }
 let S;
 try{ S=JSON.parse(localStorage.getItem(KEY)||'null'); }catch(e){ S=null; }
 if(!S||!Array.isArray(S.bank)||!Array.isArray(S.drill)||!Array.isArray(S.baku)) S=fresh();
 const BAKU_VER='kbbi-650-v1';
+if(!S.bad||typeof S.bad!=='object') S.bad={};
 if(S.bakuVer!==BAKU_VER){ S.baku=parseBaku(SAMPLE_BAKU).pairs; S.bakuVer=BAKU_VER; try{localStorage.setItem(KEY,JSON.stringify(S));}catch(e){} }
 function save(){ try{ localStorage.setItem(KEY, JSON.stringify(S)); }catch(e){} ringkasPPU(); }
 /* ringkasan harian untuk Progres Harian (domain yang sama) */
@@ -1164,8 +1172,12 @@ function ringkasPPU(){ try{ const d=new Date(), t=tasksOn(d), k=dayKey(d.getTime
   localStorage.setItem('ppu.ringkas',JSON.stringify({app:'latihan-ppu-pbm',tanggal:ymd(d),tugas_selesai:t.filter(x=>x.done).length,tugas_total:t.length,soal:h.length,benar:h.filter(x=>x.correct).length,diperbarui:Date.now()})); }catch(e){} }
 function mergeImport(st,data,isSample){
   let addT=0, addD=0;
-  (data.teks||[]).forEach(t=>{ const c=JSON.parse(JSON.stringify(t)); c._contoh=!!isSample; const i=st.bank.findIndex(b=>b.id===c.id); if(i>=0) st.bank[i]=c; else st.bank.push(c); addT++; });
-  (data.drill||[]).forEach(d=>{ const c=JSON.parse(JSON.stringify(d)); c._contoh=!!isSample; const i=st.drill.findIndex(b=>b.id===c.id); if(i>=0) st.drill[i]=c; else st.drill.push(c); addD++; });
+  st.bad=st.bad||{};
+  (data.teks||[]).forEach(t=>{ const c=JSON.parse(JSON.stringify(t)); c._contoh=!!isSample; const i=st.bank.findIndex(b=>b.id===c.id);
+    if(i>=0&&!Array.isArray(c.kalimat)){ /* perbaikan: hanya soal yang dikirim, cocokkan lewat nomor */
+      const old=st.bank[i]; (c.soal||[]).forEach(q=>{ const j=old.soal.findIndex(x=>x.nomor===q.nomor); if(j>=0) old.soal[j]=q; else old.soal.push(q); delete st.bad[old.id+'#'+q.nomor]; }); addT++; return; }
+    if(i>=0) st.bank[i]=c; else st.bank.push(c); (c.soal||[]).forEach(q=>delete st.bad[c.id+'#'+q.nomor]); addT++; });
+  (data.drill||[]).forEach(d=>{ const c=JSON.parse(JSON.stringify(d)); c._contoh=!!isSample; const i=st.drill.findIndex(b=>b.id===c.id); if(i>=0) st.drill[i]=c; else st.drill.push(c); delete st.bad[c.id]; addD++; });
   return {addT,addD};
 }
 
@@ -1267,7 +1279,8 @@ function bakuItem(p){
   }
   return {id,kategori:'baku',subkategori:'Kata baku',tipe:'PG',perintah,opsi:shuffle(opsi),kaidah:'Bentuk baku: '+p.baku+' (bukan '+p.non.join(', ')+').'};
 }
-function poolFor(mode){
+function poolFor(mode){ return poolAll(mode).filter(d=>!S.bad[d.id]); }
+function poolAll(mode){
   if(mode==='baku') return S.baku.map(bakuItem);
   if(mode==='campur') return S.drill.slice();
   if(mode==='tanda-baca'||mode==='ejaan'||mode==='kebahasaan') return S.drill.filter(d=>d.kategori===mode);
@@ -1291,7 +1304,7 @@ function buildPaket(){
   const take=(arr,n)=>{ for(const d of arr){ if(items.length>=n) break; if(!ids.has(d.id)){ ids.add(d.id); items.push(d); } } };
   take(rankDue(poolFor(m1)),10); take(shuffle(poolFor(m1)),10);
   take(rankDue(poolFor(m2)),20); take(shuffle(poolFor(m2)),20);
-  take(rankDue(S.drill),20); take(shuffle(poolFor('campur')),20);
+  take(rankDue(S.drill.filter(d=>!S.bad[d.id])),20); take(shuffle(poolFor('campur')),20);
   return initSessO({mode:'paket',label:'Paket harian',items,res:[],extra:false});
 }
 
@@ -1323,7 +1336,9 @@ function validate(raw){
   T.forEach((t,ti)=>{
     const where='Teks '+(ti+1);
     if(!t.id) errs.push(where+': "id" kosong.');
-    if(!Array.isArray(t.kalimat)||!t.kalimat.length){ errs.push(where+': "kalimat" harus berupa daftar kalimat.'); return; }
+    const old=S.bank.find(b=>b.id===t.id);
+    if(!Array.isArray(t.kalimat)&&old){ t=Object.assign({},t,{kalimat:old.kalimat}); }
+    if(!Array.isArray(t.kalimat)||!t.kalimat.length){ errs.push(where+': "kalimat" harus berupa daftar kalimat (perbaikan soal tanpa "kalimat" hanya bisa untuk teks yang sudah ada di bank).'); return; }
     const nK=t.kalimat.length;
     (t.kata_uji||[]).forEach(k=>{ if(!(k.kalimat>=1&&k.kalimat<=nK)) errs.push(where+': kata uji "'+(k.kata||'?')+'" merujuk kalimat ('+k.kalimat+') yang tidak ada.'); });
     if(!Array.isArray(t.soal)||!t.soal.length){ errs.push(where+': tidak ada soal.'); return; }
@@ -1350,9 +1365,10 @@ function validate(raw){
 
 /* ---------- Prompt harian ---------- */
 function weakText(){
-  const lines=[];
-  weakSubs().slice(0,5).forEach(x=>lines.push('- Drill '+x.sub+': salah '+x.bad+' dari '+x.n));
-  KELOMPOK_ORDER.forEach(([s,k])=>{ const h=S.history.filter(x=>x.subtes===s&&kelompok(x.pola_id)===k); if(h.length){ const p=pct(h.filter(x=>x.correct).length,h.length); if(p<70) lines.push('- Teks '+s+' '+k+': '+p+'% dari '+h.length+' soal'); } });
+  const lines=[], since=Date.now()-30*DAY;
+  const m={}; S.dhist.filter(x=>x.ts>=since).forEach(x=>{ const r=m[x.sub]=m[x.sub]||{sub:x.sub,n:0,bad:0}; r.n++; if(!x.correct) r.bad++; });
+  Object.values(m).filter(x=>x.n>=WEAK_MIN&&pct(x.n-x.bad,x.n)<70).sort((a,b)=>pct(a.n-a.bad,a.n)-pct(b.n-b.bad,b.n)).slice(0,5).forEach(x=>lines.push('- Drill '+x.sub+': salah '+x.bad+' dari '+x.n));
+  KELOMPOK_ORDER.forEach(([s,k])=>{ const h=S.history.filter(x=>x.ts>=since&&x.subtes===s&&kelompok(x.pola_id)===k); if(h.length>=WEAK_MIN){ const p=pct(h.filter(x=>x.correct).length,h.length); if(p<70) lines.push('- Teks '+s+' '+k+': '+p+'% dari '+h.length+' soal'); } });
   return lines.length?lines.join('\n'):'- (belum ada data)';
 }
 function buildPrompt(o){
@@ -1365,7 +1381,7 @@ function buildPrompt(o){
   const nT=isSim?4:2, sub=isSim?o.simSub:o.teks;
   const teksRules=`1. ${nT} teks berbeda topik (sains populer, sosial, ekonomi, budaya, lingkungan, kesehatan), masing-masing 6–10 kalimat dalam 1–3 paragraf, gaya artikel berita atau ilmiah populer, dengan sumber fiktif ("Diadaptasi dari ...").
 2. Setiap teks berisi TEPAT 5 soal; semua soal ber-"subtes": "${sub}". Total ${nT*5} soal.
-3. ${sub==='PBM'?'PBM: sebar pola_id PBM (ejaan dan tanda baca, diksi, kalimat efektif, kepaduan paragraf, kalimat sumbang/sisipan, rumpang). Minimal 2 isian angka per teks.'+(isSim?'':' Minimal 2 soal menguji konsep EYD hari ini.'):'PPU: sebar pola_id PPU (makna kata dan frasa, imbuhan, majas dan kiasan, hubungan antarkata, konjungsi, struktur dan isi teks).'+(isSim?'':' Minimal 2 soal menguji konsep kebahasaan hari ini.')}
+3. ${sub==='PBM'?'PBM: sebar pola_id PBM (ejaan dan tanda baca, diksi, kalimat efektif, kepaduan paragraf, kalimat sumbang/sisipan, rumpang). Tepat 1 isian angka per teks (UTBK asli sekitar 1 dari 7 soal).'+(isSim?'':' Minimal 2 soal menguji konsep EYD hari ini.'):'PPU: sebar pola_id PPU (makna kata dan frasa, imbuhan, majas dan kiasan, hubungan antarkata, konjungsi, struktur dan isi teks).'+(isSim?'':' Minimal 2 soal menguji konsep kebahasaan hari ini.')}
 4. Rancang dari target: tentukan dulu pola soal, baru tulis teks yang menanam target itu.${sub==='PBM'?' Setiap kesalahan PBM hanya ada di SATU kalimat.':''}
 5. Kalimat perintah meniru gaya UTBK, misalnya "Kata X dalam kalimat (n) seharusnya ...." atau "Bentuk pe-an pada kata X dalam kalimat (n) mempunyai makna yang sama dengan bentuk pe-an pada kalimat ....".
 6. PG tepat 5 opsi (A–E) dan tepat satu kunci. Isian: opsi kosong, jawaban angka di "kunci_isian".
@@ -1410,7 +1426,7 @@ Aturan untuk keduanya:
   "drill": [
     {"id": "${o.idbase}-e1", "kategori": "tanda-baca", "subkategori": "Tanda koma", "tipe": "PG",
      "perintah": "Penggunaan tanda koma yang tepat terdapat pada kalimat ....",
-     "opsi": [{"teks": "...", "benar": true}, {"teks": "..."}, {"teks": "..."}, {"teks": "..."}, {"teks": "..."}],
+     "opsi": [{"teks": "..."}, {"teks": "..."}, {"teks": "...", "benar": true}, {"teks": "..."}, {"teks": "..."}],
      "kaidah": "... (III.B.3)"},
     {"id": "${o.idbase}-k1", "kategori": "kebahasaan", "subkategori": "Kalimat efektif: kesepadanan", "tipe": "isian",
      "perintah": "Kalimat yang tidak efektif terdapat pada kalimat nomor ....",
@@ -1647,8 +1663,9 @@ function weakSubs(){
 
 /* ---------- Drill ---------- */
 /* ---------- Sesi soal gaya CBT ---------- */
-function initSess(o,n){ o.A=Array.from({length:n},()=>({c:null,is:'',done:false,ok:false})); o.F=Array(n).fill(false); o.cur=0; o.fin=false; o.review=false; o.qStart=Date.now(); return o; }
-function initSessO(o){ return initSess(o,o.items.length); }
+function spent(s,k){ return (s.T?s.T[k]||0:0)+(k===s.cur&&!s.fin?Date.now()-s.qStart:0); }
+function initSess(o,n){ o.A=Array.from({length:n},()=>({c:null,is:'',done:false,ok:false})); o.F=Array(n).fill(false); o.T=Array(n).fill(0); o.cur=0; o.fin=false; o.review=false; o.qStart=Date.now(); return o; }
+function initSessO(o){ o.items=o.items.map(d=>d.tipe==='PG'&&Array.isArray(d.opsi)?Object.assign({},d,{opsi:shuffle(d.opsi)}):d); return initSess(o,o.items.length); }
 function cekMode(){ const r=route(), s=r==='soal'?V.run:r==='drill'?V.drill:null; if(s&&s.cek) return s.cek; return S.cek==='akhir'?'akhir':'langsung'; }
 function sessCtx(){
   const r=route();
@@ -1666,13 +1683,31 @@ function recordAt(C,k){
     S.dhist.push({id:it.id,kat:it.kategori,sub:it.subkategori,correct:ok,ts:Date.now()});
     s.res.push({id:it.id,ok,it});
   } else {
-    S.history.push({teksId:(it._t||C.t).id,nomor:it.nomor,subtes:it.subtes,pola_id:it.pola_id,correct:ok,ms:Date.now()-s.qStart,ts:Date.now()});
+    S.history.push({teksId:(it._t||C.t).id,nomor:it.nomor,subtes:it.subtes,pola_id:it.pola_id,correct:ok,ms:Math.min(spent(s,k),600000),ts:Date.now()});
     if(!ok) (it.drill_terkait||[]).forEach(sub=>S.drill.filter(d=>d.subkategori===sub).forEach(d=>{ S.srs[d.id]=Object.assign({},srsOf(d.id),{due:0}); }));
     s.res.push(ok);
   }
 }
+function badId(C,it){ return C.kind==='drill'?it.id:(it._t||C.t).id+'#'+it.nomor; }
+function reportText(C,it){
+  const L='ABCDE';
+  if(C.kind==='drill'){
+    const orig=S.drill.find(d=>d.id===it.id)||it;
+    return 'Soal drill ini kuncinya meragukan. Tolong periksa. Jika memang ambigu atau kuncinya salah, kirim perbaikannya sebagai JSON {"versi":3,"drill":[butir itu saja]} dengan id yang sama.\n\n'+JSON.stringify(orig,null,1);
+  }
+  const t=it._t||C.t, q=Object.assign({},it); delete q._t;
+  return 'Soal teks ini kuncinya meragukan. Tolong periksa. Jika memang ambigu atau kuncinya salah, kirim perbaikannya sebagai JSON {"versi":3,"teks":[{"id":"'+t.id+'","soal":[soal itu saja, nomor sama]}]} tanpa field "kalimat", supaya soal lain di teks ini tidak terhapus.\n\nTeks ('+t.id+'):\n'+t.kalimat.map((k,i)=>'('+(i+1)+') '+k).join('\n')+(t.kata_uji&&t.kata_uji.length?'\nKata uji: '+t.kata_uji.map(k=>k.kata+' (kalimat '+k.kalimat+')').join(', '):'')+'\n\nSoal:\n'+JSON.stringify(q,null,1);
+}
+function reportItem(C){
+  const it=C.items[C.s.cur], id=badId(C,it);
+  S.bad[id]={ts:Date.now(),label:C.kind==='drill'?(it.subkategori+' · '+it.id):((it._t||C.t).judul||(it._t||C.t).id)+' · soal '+it.nomor};
+  if(C.kind==='drill') S.dhist=S.dhist.filter(x=>x.id!==it.id);
+  else { const tid=(it._t||C.t).id; S.history=S.history.filter(x=>!(x.teksId===tid&&x.nomor===it.nomor)); }
+  save(); copyText(reportText(C,it));
+  setTimeout(()=>toast('Soal dikeluarkan dari latihan. Teks laporan disalin, tempel ke Claude.'),50);
+}
 function finishSess(C){
-  if(!C) return; C.items.forEach((it,i)=>{ if(!C.s.A[i].done) recordAt(C,i); }); save();
+  if(!C) return; C.items.forEach((it,i)=>{ if(!C.s.A[i].done) recordAt(C,i); }); if(C.s.T) C.s.T[C.s.cur]+=Date.now()-C.s.qStart; C.s.qStart=Date.now(); C.s.ended=Date.now(); save();
   C.s.fin=true; C.s.review=false; V.confirmEnd=false;
   if(C.kind==='drill'){ render(); window.scrollTo(0,0); } else go('selesai');
 }
@@ -1693,7 +1728,8 @@ function viewCbt(C){
   const s=C.s, n=C.items.length, k=s.cur, it=C.items[k], a=s.A[k], fb=a.done, rv=s.review, isD=C.kind==='drill';
   const en=enterOnce(C.kind+(C.t?C.t.id:'')+'|'+k+'|'+(rv?'r':'')+'|'+C.items.length);
   const tools=(rv?'<span class="cbt-mode">Pembahasan</span>':'<button type="button" class="obtn blue" data-action="qcek" title="Ganti cara pemeriksaan">✓ Periksa '+(cekMode()==='langsung'?'langsung':'di akhir')+'</button>')+(isD?'':'<button type="button" class="obtn" data-action="qlayout">⇄ Tata letak</button>')+'<button type="button" class="obtn bm'+(s.F[k]?' on':'')+'" data-action="qflag" aria-pressed="'+s.F[k]+'" aria-label="Tandai ragu-ragu" title="Tandai ragu-ragu">'+BM+'</button>';
-  let h='<div class="cbt-head"><a class="cbt-exit" href="#beranda">'+BACK+'Keluar</a><div class="cbt-tools">'+tools+'</div></div>';
+  const timer=(!isD&&s.limit&&!rv)?'<span class="cbt-timer'+(s.limit-(Date.now()-s.started)<120000?' low':'')+'" id="cdown" aria-label="Sisa waktu">'+mmss(s.limit-(Date.now()-s.started))+'</span>':'';
+  let h='<div class="cbt-head"><a class="cbt-exit" href="#beranda">'+BACK+'Keluar</a><div class="cbt-tools">'+timer+tools+'</div></div>';
   h+='<div class="numgrid" role="navigation" aria-label="Nomor soal">'+C.items.map((q,i)=>{ const x=s.A[i]; let c='nb'; if(i===k) c+=' cur'; if(x.done) c+=x.ok?' ok':' bad'; else if(isAns(q,x)) c+=' ans'; if(s.F[i]) c+=' flag'; return '<button type="button" class="'+c+'" data-action="qgo" data-k="'+i+'" aria-label="Soal '+(i+1)+'"'+(i===k?' aria-current="true"':'')+'>'+(i+1)+'</button>'; }).join('')+'</div>';
   const anyDone=s.A.some(x=>x.done);
   if(isD&&s.extra&&!anyDone) h+='<div class="cbt-note">Semua butir sudah dikuasai untuk hari ini. Ini putaran tambahan.</div>';
@@ -1726,7 +1762,8 @@ function viewCbt(C){
     let note='';
     if(isD){ if(!a.ok) note='Butir ini diulang di drill berikutnya.'; }
     else { const subs=it.drill_terkait||[]; note='Bukti: kalimat '+(it.bukti||[]).map(b=>'('+b+')').join(', ')+(subs.length?' · Drill terkait: '+subs.map(esc).join(', ')+(a.ok?'':' (dimajukan ke drill berikutnya)'):''); }
-    h+='<div class="pemb '+(a.ok?'ok':'bad')+'"><div class="pemb-h">'+head+combo+'</div><div class="pemb-b">'+(isD?rich(it.kaidah||''):esc(humanCodes(it.pembahasan||'')))+'</div>'+(note?'<div class="pemb-n">'+note+'</div>':'')+(a.ok?'':materiBtn(isD?[it.subkategori]:(it.drill_terkait||[]),itemText(it,isD)))+'</div>';
+    h+='<div class="pemb '+(a.ok?'ok':'bad')+'"><div class="pemb-h">'+head+combo+'</div><div class="pemb-b">'+(isD?rich(it.kaidah||''):esc(humanCodes(it.pembahasan||'')))+'</div>'+(note?'<div class="pemb-n">'+note+'</div>':'')+(a.ok?'':materiBtn(isD?[it.subkategori]:(it.drill_terkait||[]),itemText(it,isD)))+
+      (S.bad[badId(C,it)]?'<div class="pemb-n">⚑ Soal ini sudah dilaporkan dan tidak akan muncul lagi sampai diperbaiki.</div>':'<button type="button" class="link rep" data-action="qreport">⚑ Kunci meragukan? Laporkan soal</button>')+'</div>';
   }
   h+='</div></div>';
   if(V.confirmEnd&&!rv){ const c=countOf(C); h+='<div class="cbt-confirm"><b>'+[c.k?c.k+' soal masih kosong':'',c.f?c.f+' soal ditandai ragu-ragu':''].filter(Boolean).join(' dan ')+'.</b><span class="sub">Soal kosong dihitung salah. Tetap selesai?</span><div class="actions"><button type="button" class="obtn" data-action="qendno">Kembali</button><button type="button" class="fbtn" data-action="qendyes">Ya, selesai</button></div></div>'; }
@@ -1758,9 +1795,9 @@ function nextTexts(sub,n,preferSim){
 }
 function startTeksMulti(texts,opt){
   opt=opt||{}; const sub=opt.sub, qs=[];
-  texts.forEach(t=>t.soal.forEach((q,i)=>{ if(!sub||sub==='campur'||q.subtes===sub) qs.push([t.id,i]); }));
+  texts.forEach(t=>t.soal.forEach((q,i)=>{ if(S.bad[t.id+'#'+q.nomor]) return; if(!sub||sub==='campur'||q.subtes===sub) qs.push([t.id,i]); }));
   const lim=opt.max?qs.slice(0,opt.max):qs; if(!lim.length){ location.hash='#bank'; return; }
-  V.run=initSess({teksId:texts[0].id,teksIds:texts.map(t=>t.id),sub,qs:lim,label:opt.label||null,cek:opt.cek||null,started:Date.now(),res:[]},lim.length); V.confirmEnd=false;
+  V.run=initSess({teksId:texts[0].id,teksIds:texts.map(t=>t.id),sub,qs:lim,label:opt.label||null,cek:opt.cek||null,started:Date.now(),limit:opt.timed?Math.round(lim.length*(PACE[sub]||60)*1000):0,res:[]},lim.length); V.confirmEnd=false;
   if(location.hash==='#soal') render(); else location.hash='#soal';
 }
 function startTeks(sub, teksId){
@@ -1773,7 +1810,7 @@ function startSim(sub){
   const all=nextTexts(sub,99,true), pick=[]; let n=0;
   for(const t of all){ if(n>=20) break; pick.push(t); n+=t.soal.filter(q=>q.subtes===sub).length; }
   if(!pick.length){ toast('Belum ada teks '+sub+'. Tempel hasil prompt Simulasi dulu.'); location.hash='#prompt'; return; }
-  V.paket=null; startTeksMulti(pick,{sub,max:20,label:'Simulasi '+sub,cek:'akhir'});
+  V.paket=null; startTeksMulti(pick,{sub,max:20,label:'Simulasi '+sub,cek:'akhir',timed:true});
   if(n<20) setTimeout(()=>toast('Baru ada '+Math.min(n,20)+' soal '+sub+'. Tempel prompt Simulasi untuk 20 soal.'),300);
 }
 function renderSentence(t,i,focus,proof){
@@ -1788,6 +1825,15 @@ function viewSoal(){
   if(R.fin&&!R.review) return viewSelesai();
   return viewCbt(C);
 }
+function paceCard(R){
+  if(!R.started||!R.res.length) return '';
+  let used=(R.ended||Date.now())-R.started; if(R.limit) used=Math.min(used,R.limit);
+  const n=R.res.length, per=used/n, sub=R.sub&&PACE[R.sub]?R.sub:null, tgt=sub?PACE[sub]*1000:0;
+  const over=tgt&&per>=tgt+1000, timeout=R.limit&&used>=R.limit;
+  return '<section class="card"><h2>Waktu</h2><div class="row"><span class="grow">Total</span><b>'+mmss(used)+(R.limit?' / '+mmss(R.limit):'')+'</b></div>'+
+    '<div class="row"><span class="grow">Rata-rata per soal</span><b style="color:var('+(over?'--warn-ink,#8A5A00':'--ok-ink')+')">'+Math.round(per/1000)+' dtk</b></div>'+
+    (timeout?'<div class="sub">Waktu habis sebelum kamu menekan Selesai. Di UTBK asli, soal yang belum dijawab dihitung kosong.</div>':sub?'<div class="sub">Target UTBK '+sub+': '+PACE[sub]+' dtk per soal'+(over?'. Kamu masih lebih lambat '+Math.round((per-tgt)/1000)+' dtk per soal.':'. Sudah sesuai target.')+'</div>':'')+'</section>';
+}
 function viewSelesai(){
   const R=V.run; if(!R) return viewBeranda();
   const t=S.bank.find(x=>x.id===R.teksId), ok=R.res.filter(Boolean).length, tl=R.label||(R.teksIds&&R.teksIds.length>1?R.teksIds.length+' teks':(t?t.judul:'Teks'));
@@ -1795,6 +1841,7 @@ function viewSelesai(){
   if(V.paket&&V.paket.drillRes) h+='<section class="card"><div class="row"><span class="grow">Drill kaidah</span><b>'+V.paket.drillRes[0]+' / '+V.paket.drillRes[1]+'</b></div><div class="row"><span class="grow">'+esc(tl)+'</span><b>'+ok+' / '+R.res.length+'</b></div></section>'+
     '<section class="card"><h2>Untuk besok</h2><div class="sub">Besok konsepnya berganti ke '+esc(KONSEP[(today().i+1)%KONSEP.length].n)+'. Kelemahan hari ini otomatis ikut di prompt besok.</div><a class="btn ghost" href="#prompt">Lihat prompt</a></section>';
   else h+=ring(ok,R.res.length)+'<div class="sub">soal benar · '+esc(tl)+'</div></section>';
+  h+=paceCard(R);
   return h+'<button class="btn ghost block" type="button" data-action="qreview" data-v="teks">Lihat pembahasan per nomor</button><a class="btn primary block" href="#beranda">Selesai</a>';
 }
 
@@ -1877,6 +1924,9 @@ function viewBank(){
       (c.errs.length?c.errs.slice(0,12).map(e=>'<div class="e">'+esc(e)+'</div>').join('')+(c.errs.length>12?'<div class="sub">dan '+(c.errs.length-12)+' masalah lain</div>':'')
         :'<div class="g">✓ Format lolos: kategori dan subkategori dikenali, setiap PG punya 1 kunci, setiap isian punya nomor kunci yang ada.</div>')+'</div>'; }
   h+='<button class="btn primary block" type="button" data-action="savebank"'+(c&&!c.errs.length?'':' disabled')+'>Simpan ke bank</button></section>';
+  const bad=Object.keys(S.bad||{});
+  if(bad.length) h+='<section class="card"><div class="row"><h2 class="grow">Soal dilaporkan ('+bad.length+')</h2><button class="link" type="button" data-action="unbad" data-id="*">Pulihkan semua</button></div><div class="sub">Tidak muncul di latihan. Otomatis kembali saat perbaikannya ditempel di atas.</div>'+
+    bad.map(id=>'<div class="row" style="font-size:13px"><span class="grow">'+esc(S.bad[id].label||id)+'</span><button class="link" type="button" data-action="unbad" data-id="'+esc(id)+'">Pulihkan</button></div>').join('')+'</section>';
   h+='<h2>Teks tersimpan</h2>'+(S.bank.length?S.bank.map(t=>'<div class="card" style="flex-direction:row;align-items:center"><div class="grow"><div style="font-weight:700">'+esc(t.judul||t.id)+'</div><div class="sub">'+t.soal.length+' soal · '+esc(t.id)+'</div></div><button class="btn danger" type="button" data-action="delteks" data-id="'+esc(t.id)+'" aria-label="Hapus '+esc(t.judul||t.id)+'" style="min-height:40px;padding:0 12px">Hapus</button></div>').join(''):'<div class="card empty">Belum ada teks.</div>');
   h+='<section class="card"><h2>Animasi</h2><div style="align-self:flex-start" class="seg" role="group" aria-label="Animasi"><button type="button" aria-pressed="'+(S.anim!=='on')+'" data-action="anim" data-v="auto">Ikuti perangkat</button><button type="button" aria-pressed="'+(S.anim==='on')+'" data-action="anim" data-v="on">Selalu nyala</button></div><div class="sub">Pilih Selalu nyala agar gerakan soal tetap muncul walau Kurangi Gerakan di perangkat menyala.</div></section>';
   h+='<section class="card"><h2>Atur ulang</h2><div class="sub">Menghapus riwayat jawaban, jadwal ulang, isi tambahan, dan daftar kata, lalu memuat ulang contoh.</div>'+
@@ -1900,6 +1950,12 @@ function viewPrompt(){
 }
 
 /* ---------- Progres ---------- */
+function paceProgres(){
+  const since=Date.now()-30*DAY;
+  const rows=['PPU','PBM'].map(sub=>{ const h=S.history.filter(x=>x.subtes===sub&&x.ms>0&&x.ts>=since); const avg=h.length?h.reduce((a,x)=>a+x.ms,0)/h.length/1000:0; return {sub,n:h.length,avg}; }).filter(r=>r.n);
+  if(!rows.length) return '';
+  return '<section class="card"><h2>Kecepatan (30 hari)</h2>'+rows.map(r=>'<div class="row" style="font-size:13px"><span class="grow"><b style="color:var(--muted)">'+r.sub+'</b> rata-rata per soal</span><b style="font-variant-numeric:tabular-nums;color:var('+(r.avg>PACE[r.sub]?'--warn-ink,#8A5A00':'--ok-ink')+')">'+Math.round(r.avg)+' dtk</b><span class="sub" style="width:80px;text-align:right">target '+PACE[r.sub]+' dtk</span></div>').join('')+'<div class="sub">Dihitung dari waktu yang kamu habiskan di tiap soal teks.</div></section>';
+}
 function viewProgres(){
   const bar=(label,n,p,meta)=>'<div style="display:flex;flex-direction:column;gap:4px"><div class="row" style="font-size:13px"><span class="grow">'+label+'</span><b style="font-variant-numeric:tabular-nums">'+(n?p+'%':'–')+'</b><span class="sub" style="width:58px;text-align:right">'+meta+'</span></div><div class="bar">'+(n?'<i class="'+(p<70?'low':'')+'" style="width:'+p+'%"></i>':'')+'</div></div>';
   const kat=['tanda-baca','ejaan','kebahasaan','baku'].map(k=>({k,...drillAcc(k)}));
@@ -1909,6 +1965,7 @@ function viewProgres(){
     '<section class="card"><h2>Drill per kategori</h2>'+kat.map(x=>bar(esc(KAT[x.k]),x.n,x.p,x.n+' butir')).join('')+'</section>'+
     (subs.length?'<section class="card"><h2>Drill per topik</h2>'+subs.sort((a,b)=>a.p-b.p).map(x=>bar(esc(x.sub),x.n,x.p,x.n+' butir')).join('')+'</section>':'')+
     '<section class="card"><h2>Teks ala UTBK</h2>'+rows.map(r=>bar('<b style="color:var(--muted)">'+r.sub+'</b> '+esc(r.k),r.n,r.p,r.n+' soal')).join('')+'<div class="sub">Batang oranye: di bawah 70%.</div></section>'+
+    paceProgres()+
     '<section class="card"><h2>Kelemahan untuk prompt besok</h2><div class="sub">Bagian ini otomatis masuk ke prompt hari berikutnya.</div><textarea id="weak" readonly>'+esc(weakText())+'</textarea></section>';
 }
 
@@ -2050,6 +2107,9 @@ function render(){
 }
 function onScrollTop(){ const h1=$('#view h1'), tb=$('#topbar'); if(!tb) return; tb.classList.toggle('on', !!h1 && h1.getBoundingClientRect().bottom<44); }
 window.addEventListener('scroll',onScrollTop,{passive:true});
+/* hitung mundur simulasi */
+setInterval(function(){ const R=V.run; if(!R||!R.limit||R.fin) return; const left=R.limit-(Date.now()-R.started); const el=document.getElementById('cdown'); if(el){ el.textContent=mmss(left); el.classList.toggle('low',left<120000); }
+  if(left<=0&&route()==='soal'){ const C=sessCtx(); if(C){ V.confirmEnd=false; finishSess(C); toast('Waktu habis. Jawaban dikumpulkan otomatis.'); } } },1000);
 function go(h){ if(location.hash==='#'+h) render(); else location.hash='#'+h; window.scrollTo(0,0); }
 function drillLabel(v){ if(v.startsWith('sub:')){ const s=v.slice(4).split('|'); return s.length>1?'Konsep hari ini':s[0]; } return v==='campur'?'Campur':KAT[v]; }
 
@@ -2079,7 +2139,9 @@ document.addEventListener('click',e=>{
   else if(a==='teksid'){ V.paket=null; startTeks(b.dataset.v,b.dataset.id); }
   else if(a==='qpick'){ const C=sessCtx(); if(!C) return; const s=C.s, x=s.A[s.cur]; if(x.done||s.review) return; x.c=+b.dataset.i; if(cekMode()==='langsung'){ recordAt(C,s.cur); buzz(x.ok); save(); } render(); }
   else if(a==='qcheck'){ const C=sessCtx(); if(!C) return; const s=C.s, x=s.A[s.cur]; if(x.done||!String(x.is).trim()) return; recordAt(C,s.cur); buzz(x.ok); save(); render(); }
-  else if(a==='qgo'||a==='qprev'||a==='qnext'){ const C=sessCtx(); if(!C) return; const s=C.s, k=a==='qgo'?+b.dataset.k:s.cur+(a==='qnext'?1:-1); if(k<0||k>=C.items.length) return; s.cur=k; s.qStart=Date.now(); V.confirmEnd=false; render(); window.scrollTo(0,0); }
+  else if(a==='qgo'||a==='qprev'||a==='qnext'){ const C=sessCtx(); if(!C) return; const s=C.s, k=a==='qgo'?+b.dataset.k:s.cur+(a==='qnext'?1:-1); if(k<0||k>=C.items.length) return; if(s.T) s.T[s.cur]+=Date.now()-s.qStart; s.cur=k; s.qStart=Date.now(); V.confirmEnd=false; render(); window.scrollTo(0,0); }
+  else if(a==='qreport'){ const C=sessCtx(); if(!C) return; reportItem(C); render(); }
+  else if(a==='unbad'){ const id=b.dataset.id; if(id==='*') S.bad={}; else delete S.bad[id]; save(); render(); toast('Soal dikembalikan ke latihan'); }
   else if(a==='qflag'){ const C=sessCtx(); if(!C) return; C.s.F[C.s.cur]=!C.s.F[C.s.cur]; render(); }
   else if(a==='qcek'){ const C=sessCtx(), nv=cekMode()==='langsung'?'akhir':'langsung'; if(C&&C.s.cek) C.s.cek=nv; else S.cek=nv; if(C&&nv==='langsung') C.items.forEach((it,i)=>{ if(!C.s.A[i].done&&isAns(it,C.s.A[i])) recordAt(C,i); }); save(); render(); toast(nv==='langsung'?'Jawaban langsung diperiksa saat dipilih':'Jawaban diperiksa setelah menekan Selesai'); }
   else if(a==='qlayout'){ S.layout=S.layout==='split'?'stack':'split'; save(); render(); toast(S.layout==='split'?'Bacaan di kiri, soal di kanan (layar lebar)':'Bacaan di atas, soal di bawah'); }
