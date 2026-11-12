@@ -5,13 +5,13 @@
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="default">
-<meta name="apple-mobile-web-app-title" content="Vocab Lab ID">
+<meta name="apple-mobile-web-app-title" content="Latihan PPU-PBM">
 <meta name="theme-color" content="#F3F4F7">
 <meta name="color-scheme" content="light">
 <style>:root{padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}body{margin:0}[hidden]{display:none!important}img{max-width:100%}</style>
-<title>Vocab Lab Indonesia</title>
+<title>Latihan PPU-PBM</title>
 <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Lilita+One&family=Rubik:wght@400;500;600;700&display=swap" rel="stylesheet">
 <style>
 /* Gaya iOS: latar abu sistem, kartu putih membulat, judul besar, tab bar kapsul mengambang */
 :root{
@@ -404,6 +404,17 @@ body.sess nav.bottom{display:none}
 .cbt-list li .no{flex:none}
 .cbt-list li.hit{background:var(--ok-soft)}
 .ropts{display:flex;flex-direction:column;gap:2px}
+.ropt.gopt{gap:10px;font-size:16px}.gopt .gno{flex:none;font-weight:700;color:var(--muted);min-width:28px}
+.cbt-list li.miss{background:var(--bad-soft)}.cbt-list li.ph{color:var(--muted);font-size:14px}.cbt-list .grow{flex:1}
+.gx{flex:none;border:0;background:transparent;color:var(--muted);font-size:16px;padding:0 4px;cursor:pointer}
+.pgk{display:flex;flex-direction:column;border:1px solid var(--line2);border-radius:10px;overflow:hidden;font-size:16px;line-height:1.45}
+.pgk-h,.pgk-r{display:grid;grid-template-columns:1fr 56px 56px;align-items:center;gap:0}
+.pgk-h{background:var(--fill2);font-size:12px;font-weight:700;color:var(--muted)}
+.pgk-h span{padding:8px 10px}.pgk-h span+span{text-align:center}
+.pgk-r{border-top:1px solid var(--line2)}.pgk-r .t{padding:10px}
+.pgk-r.ok{background:var(--ok-soft)}.pgk-r.bad{background:var(--bad-soft)}
+.pgk-b{justify-self:center;width:28px;height:28px;border-radius:6px;border:2px solid var(--line2);background:var(--surface);display:grid;place-items:center;color:#fff;padding:0;cursor:pointer}
+.pgk-b svg{width:16px;height:16px}.pgk-b.on{background:var(--accent);border-color:var(--accent)}.pgk-b.key{outline:2px solid var(--ok);outline-offset:2px}
 .ropt{display:flex;align-items:center;gap:22px;width:calc(100% + 24px);margin:0 -12px;text-align:left;background:transparent;border:0;padding:12px;border-radius:14px;color:inherit;font-size:18px;line-height:1.45;transition:background .2s,opacity .25s}
 @media (hover:hover){.ropt:not([disabled]):hover{background:var(--fill2)}.ropt:not([disabled]):hover .radio{border-color:var(--accent)}}
 .ropt:not([disabled]):active{background:var(--fill)}
@@ -681,10 +692,123 @@ nav.bottom a{min-height:46px;border-radius:10px}
 .cbt-timer{display:inline-flex;align-items:center;min-height:30px;padding:0 10px;border:1px solid var(--line2);border-radius:6px;font-weight:700;font-size:13px;font-variant-numeric:tabular-nums;color:var(--ink);background:var(--surface)}
 .cbt-timer.low{color:#B42318;border-color:#B42318}
 .pemb .link.rep{align-self:flex-start;margin-top:6px;font-size:12px;font-weight:600;color:var(--muted);background:none;border:0;padding:0;min-height:24px;text-decoration:underline;cursor:pointer}
+
+/* ===================== Tema Balok (mengikuti Nalar Harian) ===================== */
+:root{--red:#ef5f5a;--yellow:#ffd24f;--blue:#4b8ae8;--green:#3fb46e;--orange:#ff9d4d;--sky:#4fc0ec;--pink:#f47eab;--lime:#a2d058;--purple:#8f7ae8;
+  --pl:#5b6d99;--sh:rgba(52,78,150,.22);--bg:#eaf4ff;--surface:#fff;--sunk:#f3f6fc;--fill:#eef2f9;--fill2:#f6f8fc;--line:#e1e8f4;--line2:#cdd7ea;
+  --ink:#26304b;--muted:#64708e;--faint:#a3aec6;--accent:#4b8ae8;--accent-soft:#e2ecfc;--ok:#3fb46e;--ok-ink:#23864b;--ok-soft:#e2f2e8;--bad:#ef5f5a;--bad-ink:#c4403b;--bad-soft:#fbe7e6;--warn:#ff9d4d;
+  --f-ui:"Rubik",-apple-system,"Segoe UI",Roboto,sans-serif;--f-read:var(--f-ui);--f-disp:"Lilita One","Rubik",sans-serif;--shadow:none}
+body{font-family:var(--f-ui);color:var(--ink);font-size:15px;background:linear-gradient(180deg,#dcecff 0%,#eaf4ff 45%,#f4f9ff 100%) fixed}
+.scene{position:fixed;inset:0;z-index:-1;overflow:hidden;pointer-events:none}
+.scene .cloud{position:absolute;opacity:.9}
+.scene .fbrick{position:absolute;width:38px;opacity:.4;transform:rotate(var(--r));animation:bfloat 7s ease-in-out infinite}
+@keyframes bfloat{50%{transform:rotate(var(--r)) translateY(-10px)}}
+.scene .hills{position:absolute;left:0;right:0;bottom:0;width:100%;height:150px}
+main{gap:22px}
+h1,h2,.sh,.cal-title,.stat,.mini b,.tile-v,.ring .in b,.cbt-no b,.score .msg,.swword,.swverdict,.navbar .ttl,.cbt-title{font-family:var(--f-disp);font-weight:400;letter-spacing:.2px}
+h1{font-size:24px} h2{font-size:18px}
+.sh{font-size:18px;padding:4px 2px 0;margin-bottom:-10px}
+/* kartu = pelat dengan tonjolan balok */
+.card,.group,.cbt-panel,.swcard,.mbox,.tile,:root .tile{background:var(--surface)!important;border:2px solid var(--pl);border-radius:12px;box-shadow:0 5px 0 var(--sh)!important}
+.card,.group,.cbt-panel{position:relative;overflow:visible}
+.card::before,.group::before,.cbt-panel::before{content:"";position:absolute;top:-11px;left:14px;width:110px;height:11px;background:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='110' height='11'%3E%3Cg fill='%23fff' stroke='%235b6d99' stroke-width='2'%3E%3Crect x='1' y='1' width='20' height='16' rx='5'/%3E%3Crect x='30' y='1' width='20' height='16' rx='5'/%3E%3Crect x='59' y='1' width='20' height='16' rx='5'/%3E%3Crect x='88' y='1' width='20' height='16' rx='5'/%3E%3C/g%3E%3C/svg%3E") no-repeat;pointer-events:none}
+.group>.cell:first-child{border-radius:10px 10px 0 0} .group>.cell:last-child{border-radius:0 0 10px 10px}
+.cell+.cell::before,.group>*+.cell::before{border-top:2px dashed var(--line)}
+.cell .t1{font-weight:600} .cell .val{font-weight:600}
+.ic,:root .ic{width:30px;height:28px;border-radius:6px;background:var(--icc)!important;color:#fff;border:2px solid color-mix(in srgb,var(--icc) 62%,#1f2a4d);box-shadow:0 2px 0 color-mix(in srgb,var(--icc) 70%,#1f2a4d)!important}
+.ic svg{width:16px;height:16px}
+.ic-blue{--icc:var(--blue)}.ic-purple{--icc:var(--purple)}.ic-orange{--icc:var(--orange)}.ic-indigo{--icc:var(--sky)}.ic-green{--icc:var(--green)}.ic-teal{--icc:var(--sky)}.ic-pink{--icc:var(--pink)}.ic-red{--icc:var(--red)}
+/* judul halaman: balok merah */
+.lt-row,#view>h1{position:relative;background:var(--red);color:#fff;border:2px solid color-mix(in srgb,var(--red) 62%,#1f2a4d);border-radius:14px;box-shadow:0 5px 0 color-mix(in srgb,var(--red) 68%,#1f2a4d);margin-top:16px}
+.lt-row{padding:11px 13px;justify-content:flex-start;align-items:center;gap:10px}
+#view>h1{padding:10px 14px;font-size:22px;text-shadow:0 2px 0 color-mix(in srgb,var(--red) 65%,#1f2a4d)}
+.lt-row::before,#view>h1::before{content:"";position:absolute;top:-11px;left:14px;width:110px;height:11px;background:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='110' height='11'%3E%3Cg fill='%23ef5f5a' stroke='%23a04b55' stroke-width='2'%3E%3Crect x='1' y='1' width='20' height='16' rx='5'/%3E%3Crect x='30' y='1' width='20' height='16' rx='5'/%3E%3Crect x='59' y='1' width='20' height='16' rx='5'/%3E%3Crect x='88' y='1' width='20' height='16' rx='5'/%3E%3C/g%3E%3C/svg%3E") no-repeat}
+.lt-row::after{content:"";order:-1;flex:none;width:36px;height:36px;background:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 34 34'%3E%3Crect x='7' y='2' width='8' height='5' rx='2' fill='%23ffd24f' stroke='%239a6f00' stroke-width='2'/%3E%3Crect x='19' y='2' width='8' height='5' rx='2' fill='%23ffd24f' stroke='%239a6f00' stroke-width='2'/%3E%3Crect x='2' y='6' width='30' height='16' rx='3' fill='%23ffd24f' stroke='%239a6f00' stroke-width='2.5'/%3E%3Crect x='2' y='21' width='30' height='10' rx='3' fill='%234b8ae8' stroke='%232b4f99' stroke-width='2.5'/%3E%3C/svg%3E") no-repeat center/contain}
+.lt-row h1{color:#fff;font-size:23px;line-height:1;text-shadow:0 2px 0 color-mix(in srgb,var(--red) 65%,#1f2a4d)}
+.lt-sub{display:inline-block;margin-top:5px;font-size:11.5px;font-weight:600;color:#fff;background:rgba(255,255,255,.2);border:1.5px solid rgba(255,255,255,.45);border-radius:6px;padding:1px 7px}
+/* maskot Bloki */
+.bhero{position:relative;display:flex;align-items:flex-end;justify-content:space-between;gap:18px;min-height:140px;margin:-10px 0 -6px}
+.bhero .masc{width:140px;height:140px;flex:none;animation:bhop 3.2s ease-in-out infinite;transform-origin:50% 100%}
+@keyframes bhop{0%,100%{transform:none}45%{transform:translateY(-6px) rotate(-1.5deg)}55%{transform:translateY(-6px) rotate(1.5deg)}}
+.bhero .bubble{position:relative;align-self:center;margin-bottom:30px;background:#fff;border:2px solid #b9c9e6;border-radius:13px;padding:8px 11px;font-size:12.5px;font-weight:600;line-height:1.4;color:var(--ink);box-shadow:0 3px 0 #d3e0f3;max-width:56%}
+.bhero .bubble::after{content:"";position:absolute;right:-8px;bottom:16px;width:12px;height:12px;background:#fff;border-right:2px solid #b9c9e6;border-bottom:2px solid #b9c9e6;transform:rotate(-45deg);border-radius:0 0 4px 0}
+/* tombol */
+.btn{min-height:42px;border-radius:9px;border:2px solid var(--pl);background:var(--surface);color:var(--ink);box-shadow:0 3px 0 var(--sh);font-weight:600;transition:transform .05s,box-shadow .05s}
+.btn:active:not([disabled]){transform:translateY(3px);box-shadow:0 0 0 var(--sh);opacity:1}
+.btn.primary,.fbtn,.obtn.tgo{background:var(--yellow);color:#2f333d;font-family:var(--f-disp);font-weight:400;letter-spacing:.3px;border:2px solid color-mix(in srgb,var(--yellow) 55%,#6b4a00);box-shadow:0 3px 0 color-mix(in srgb,var(--yellow) 60%,#7a5200)}
+.btn.primary{font-size:16px}
+.btn.ghost,.btn.light,.card .btn.ghost,.hero .btn.ghost{background:var(--surface);border:2px solid var(--pl);color:var(--ink)}
+.btn.danger{background:var(--surface);border:2px solid var(--pl);color:var(--bad-ink)}
+.obtn{border:2px solid var(--pl);background:var(--surface);color:var(--ink);border-radius:9px;box-shadow:0 3px 0 var(--sh);font-weight:600}
+.obtn.blue{color:var(--accent)}
+.obtn:not([disabled]):active,.fbtn:not([disabled]):active{transform:translateY(3px);box-shadow:none}
+.obtn.bm{border:2px solid var(--pl);border-radius:9px;box-shadow:0 2px 0 var(--sh)}
+.chip{background:var(--surface);color:var(--ink);border:2px solid var(--pl);border-radius:6px;font-size:11.5px;padding:2px 7px}
+.chip.ok{background:var(--green);color:#fff;border-color:color-mix(in srgb,var(--green) 60%,#1f2a4d)}
+.chip.bad{background:var(--red);color:#fff;border-color:color-mix(in srgb,var(--red) 60%,#1f2a4d)}
+.chip.plain{color:var(--muted)}
+/* tugas harian: balok bernomor */
+.trow{border-top:2px dashed var(--line);gap:11px}
+.tchk{--c:var(--yellow);width:34px;height:30px;border-radius:6px;background:var(--c);border:2px solid color-mix(in srgb,var(--c) 62%,#1f2a4d);box-shadow:0 2px 0 color-mix(in srgb,var(--c) 70%,#1f2a4d);color:#fff;font-family:var(--f-disp);font-size:15px;font-weight:400}
+.trow:nth-child(5n+1) .tchk{--c:var(--yellow);color:var(--ink)}.trow:nth-child(5n+2) .tchk{--c:var(--red)}.trow:nth-child(5n+3) .tchk{--c:var(--blue)}.trow:nth-child(5n+4) .tchk{--c:var(--green)}.trow:nth-child(5n) .tchk{--c:var(--orange)}
+.trow.done .tchk{--c:var(--green);color:#fff;opacity:.6}
+.tbar{height:10px;border-radius:5px;border:2px solid var(--pl);background:var(--surface)} .tbar i{background:var(--yellow);border-radius:0}
+.bar{height:12px;border-radius:6px;background:var(--surface);border:2px solid var(--pl)} .bar>i{background:var(--green);border-radius:0} .bar>i.low{background:var(--orange)}
+/* isian teks */
+textarea#paste,textarea#bakuin,textarea#promptbox,textarea#weak,.search,.cbt-isian input{border:2px solid var(--pl);border-radius:9px;background:var(--surface)}
+textarea:focus,input:focus{outline:0;box-shadow:0 0 0 3px var(--yellow)}
+/* sesi soal */
+.navbar{background:rgba(234,244,255,.92)}
+.cbt-exit,.navbar .back{border:2px solid var(--pl);border-radius:9px;background:var(--surface);box-shadow:0 3px 0 var(--sh);font-weight:600;color:var(--ink)}
+.nb{border:2px solid var(--pl);border-radius:6px;background:var(--surface);box-shadow:0 2px 0 var(--sh);font-family:var(--f-disp);font-weight:400;color:var(--ink)}
+.nb.ans,.nb.ok{background:var(--green);border-color:color-mix(in srgb,var(--green) 60%,#1f2a4d);color:#fff}
+.nb.bad{background:var(--red);border-color:color-mix(in srgb,var(--red) 60%,#1f2a4d);color:#fff}
+.nb.cur{background:var(--blue);border-color:color-mix(in srgb,var(--blue) 60%,#1f2a4d);color:#fff}
+.cbt-timer{background:var(--yellow);border:2px solid color-mix(in srgb,var(--yellow) 55%,#6b4a00);border-radius:6px;font-family:var(--f-disp);font-weight:400;color:#2f333d}
+.ropts{gap:9px;counter-reset:opt}
+.ropt{counter-increment:opt;width:100%;margin:0;align-items:flex-start;gap:10px;padding:10px 12px;background:var(--surface);border:1.5px solid var(--line2);border-radius:10px;box-shadow:0 2px 0 #dbe3f1;line-height:1.4}
+.ropt:not([disabled]):active{transform:translateY(2px);box-shadow:none;background:var(--surface)}
+@media (hover:hover){.ropt:not([disabled]):hover{background:var(--fill2)}}
+.radio{width:22px;height:22px;border-radius:5px;border:1.5px solid var(--line2);background:var(--fill);color:var(--muted);font-family:var(--f-disp);font-size:13px;margin-top:-1px}
+.radio::before{content:counter(opt,upper-alpha)}
+.ropt.sel{border-color:var(--blue);background:var(--accent-soft)}
+.ropt.sel .radio{background:var(--blue);border-color:var(--blue);color:#fff;box-shadow:none}
+.ropt.right{background:var(--ok-soft);border-color:var(--green)} .ropt.right .radio{background:var(--green);border-color:var(--green);color:#fff}
+.ropt.wrong{background:var(--bad-soft);border-color:var(--red)} .ropt.wrong .radio{background:var(--red);border-color:var(--red);color:#fff}
+.ropt.right .radio::before,.ropt.wrong .radio::before{content:none}
+.gopt .gno{min-width:28px;height:22px;border-radius:5px;background:var(--fill);border:1.5px solid var(--line2);display:grid;place-items:center;font-family:var(--f-disp);font-weight:400;font-size:12px}
+.ropt.right .gno{background:var(--green);border-color:var(--green);color:#fff} .ropt.wrong .gno{background:var(--red);border-color:var(--red);color:#fff}
+.pemb,.pemb.bad{background:#f3f6fc;border:1.5px dashed #b9c6de;border-radius:10px}
+.pgk{border:1.5px solid var(--line2)} .pgk-h{background:var(--fill)} .pgk-r{border-top-color:var(--line2)}
+.pgk-b{border-color:var(--line2);border-radius:5px} .pgk-b.on{background:var(--blue);border-color:var(--blue)}
+/* lain-lain */
+.mini div{background:var(--surface);border:2px solid var(--pl);border-radius:9px;box-shadow:0 3px 0 var(--sh)}
+.seg{border:2px solid var(--pl)} .seg button[aria-pressed="true"]{background:var(--blue)}
+.filters button,.pchip{border:2px solid var(--pl);border-radius:7px;box-shadow:0 2px 0 var(--sh);font-weight:600}
+.filters button[aria-pressed="true"],.pchip.on{background:var(--blue);border-color:color-mix(in srgb,var(--blue) 60%,#1f2a4d);color:#fff}
+.wb{border:2px solid var(--pl);border-radius:5px} .wb.full{background:var(--green);border-color:color-mix(in srgb,var(--green) 60%,#1f2a4d)} .wb.part{background:var(--yellow);color:var(--ink);border-color:color-mix(in srgb,var(--yellow) 55%,#6b4a00)}
+.cal-day.sel .num,.cal-day.sel.today .num{background:var(--blue);color:#fff}
+.ring .tr{stroke:var(--fill)} .ring .fg{stroke:var(--green)} .ring .fg.low{stroke:var(--orange)}
+.swb{border:2px solid var(--pl);box-shadow:0 3px 0 var(--sh)}
+.toast{background:var(--yellow);color:#2f333d;border:2px solid color-mix(in srgb,var(--yellow) 55%,#6b4a00);box-shadow:0 4px 0 color-mix(in srgb,var(--yellow) 60%,#7a5200);font-family:var(--f-disp);font-size:15px}
+/* tab bar: deretan balok */
+nav.bottom .in{background:#3a4f86;border:2px solid #2e3f6e;border-radius:14px;box-shadow:0 5px 0 var(--sh);padding:14px 8px 8px;gap:6px}
+nav.bottom a{--c:var(--yellow);position:relative;background:var(--c);color:#fff;border:2px solid color-mix(in srgb,var(--c) 62%,#1f2a4d);border-radius:7px;box-shadow:0 2px 0 color-mix(in srgb,var(--c) 70%,#1f2a4d);font-family:var(--f-disp);font-weight:400;font-size:11.5px;letter-spacing:.3px;min-height:46px;transform:translateY(3px);opacity:.9;filter:saturate(.92);transition:transform .15s,box-shadow .15s}
+nav.bottom a:nth-child(1){--c:var(--yellow);color:var(--ink)}nav.bottom a:nth-child(2){--c:var(--red)}nav.bottom a:nth-child(3){--c:var(--blue)}nav.bottom a:nth-child(4){--c:var(--green)}nav.bottom a:nth-child(5){--c:var(--orange)}
+nav.bottom a[aria-current="page"]{background:var(--c);color:#fff;transform:translateY(-3px);opacity:1;filter:none;box-shadow:0 5px 0 color-mix(in srgb,var(--c) 60%,#141c36)}
+nav.bottom a::before,nav.bottom a::after{content:"";position:absolute;top:-8px;width:14px;height:6px;background:var(--c);border:2px solid color-mix(in srgb,var(--c) 62%,#1f2a4d);border-bottom:0;border-radius:4px 4px 0 0;opacity:0;transition:opacity .15s}
+nav.bottom a::before{left:18%} nav.bottom a::after{right:18%}
+nav.bottom a[aria-current="page"]::before,nav.bottom a[aria-current="page"]::after{opacity:1}
+nav.bottom svg{width:19px;height:19px}
+nav.bottom a:nth-child(1)[aria-current="page"]{color:var(--ink)}
+.obtn.tgo,.obtn.blue.tgo{color:#2f333d}
+.app,body.sess .app{padding-bottom:calc(118px + env(safe-area-inset-bottom,0px))}
+.qbackfab,.toast{bottom:calc(100px + env(safe-area-inset-bottom,0px))}
 </style>
 
 </head>
 <body>
+<div class="scene" aria-hidden="true"><svg class="cloud" style="left:-4%;top:8%;width:130px" viewBox="0 0 120 50"><path d="M20 44 h80 a16 16 0 0 0 -4 -31 a24 24 0 0 0 -44 -6 a18 18 0 0 0 -30 14 a12 12 0 0 0 -2 23z" fill="#fff"/></svg><svg class="cloud" style="left:62%;top:20%;width:110px" viewBox="0 0 120 50"><path d="M20 44 h80 a16 16 0 0 0 -4 -31 a24 24 0 0 0 -44 -6 a18 18 0 0 0 -30 14 a12 12 0 0 0 -2 23z" fill="#fff"/></svg><svg class="cloud" style="left:28%;top:52%;width:90px" viewBox="0 0 120 50"><path d="M20 44 h80 a16 16 0 0 0 -4 -31 a24 24 0 0 0 -44 -6 a18 18 0 0 0 -30 14 a12 12 0 0 0 -2 23z" fill="#fff"/></svg><svg class="fbrick" style="left:6%;top:14%;--r:-14deg;animation-delay:0.0s" viewBox="0 0 44 30"><rect x="6" y="2" width="11" height="7" rx="3" fill="#ef5f5a" stroke="#26304b" stroke-opacity=".25" stroke-width="1.5"/><rect x="27" y="2" width="11" height="7" rx="3" fill="#ef5f5a" stroke="#26304b" stroke-opacity=".25" stroke-width="1.5"/><rect x="2" y="8" width="40" height="20" rx="5" fill="#ef5f5a" stroke="#26304b" stroke-opacity=".25" stroke-width="1.5"/><rect x="6" y="11" width="4" height="12" rx="2" fill="#fff" opacity=".45"/></svg><svg class="fbrick" style="left:84%;top:10%;--r:12deg;animation-delay:-1.3s" viewBox="0 0 44 30"><rect x="6" y="2" width="11" height="7" rx="3" fill="#4b8ae8" stroke="#26304b" stroke-opacity=".25" stroke-width="1.5"/><rect x="27" y="2" width="11" height="7" rx="3" fill="#4b8ae8" stroke="#26304b" stroke-opacity=".25" stroke-width="1.5"/><rect x="2" y="8" width="40" height="20" rx="5" fill="#4b8ae8" stroke="#26304b" stroke-opacity=".25" stroke-width="1.5"/><rect x="6" y="11" width="4" height="12" rx="2" fill="#fff" opacity=".45"/></svg><svg class="fbrick" style="left:90%;top:38%;--r:-8deg;animation-delay:-2.6s" viewBox="0 0 44 30"><rect x="6" y="2" width="11" height="7" rx="3" fill="#3fb46e" stroke="#26304b" stroke-opacity=".25" stroke-width="1.5"/><rect x="27" y="2" width="11" height="7" rx="3" fill="#3fb46e" stroke="#26304b" stroke-opacity=".25" stroke-width="1.5"/><rect x="2" y="8" width="40" height="20" rx="5" fill="#3fb46e" stroke="#26304b" stroke-opacity=".25" stroke-width="1.5"/><rect x="6" y="11" width="4" height="12" rx="2" fill="#fff" opacity=".45"/></svg><svg class="fbrick" style="left:4%;top:46%;--r:10deg;animation-delay:-3.9s" viewBox="0 0 44 30"><rect x="6" y="2" width="11" height="7" rx="3" fill="#ff9d4d" stroke="#26304b" stroke-opacity=".25" stroke-width="1.5"/><rect x="27" y="2" width="11" height="7" rx="3" fill="#ff9d4d" stroke="#26304b" stroke-opacity=".25" stroke-width="1.5"/><rect x="2" y="8" width="40" height="20" rx="5" fill="#ff9d4d" stroke="#26304b" stroke-opacity=".25" stroke-width="1.5"/><rect x="6" y="11" width="4" height="12" rx="2" fill="#fff" opacity=".45"/></svg><svg class="fbrick" style="left:80%;top:64%;--r:-18deg;animation-delay:-5.2s" viewBox="0 0 44 30"><rect x="6" y="2" width="11" height="7" rx="3" fill="#f47eab" stroke="#26304b" stroke-opacity=".25" stroke-width="1.5"/><rect x="27" y="2" width="11" height="7" rx="3" fill="#f47eab" stroke="#26304b" stroke-opacity=".25" stroke-width="1.5"/><rect x="2" y="8" width="40" height="20" rx="5" fill="#f47eab" stroke="#26304b" stroke-opacity=".25" stroke-width="1.5"/><rect x="6" y="11" width="4" height="12" rx="2" fill="#fff" opacity=".45"/></svg><svg class="fbrick" style="left:10%;top:76%;--r:16deg;animation-delay:-6.5s" viewBox="0 0 44 30"><rect x="6" y="2" width="11" height="7" rx="3" fill="#ffd24f" stroke="#26304b" stroke-opacity=".25" stroke-width="1.5"/><rect x="27" y="2" width="11" height="7" rx="3" fill="#ffd24f" stroke="#26304b" stroke-opacity=".25" stroke-width="1.5"/><rect x="2" y="8" width="40" height="20" rx="5" fill="#ffd24f" stroke="#26304b" stroke-opacity=".25" stroke-width="1.5"/><rect x="6" y="11" width="4" height="12" rx="2" fill="#fff" opacity=".45"/></svg><svg class="fbrick" style="left:58%;top:4%;--r:6deg;animation-delay:-7.8s" viewBox="0 0 44 30"><rect x="6" y="2" width="11" height="7" rx="3" fill="#4fc0ec" stroke="#26304b" stroke-opacity=".25" stroke-width="1.5"/><rect x="27" y="2" width="11" height="7" rx="3" fill="#4fc0ec" stroke="#26304b" stroke-opacity=".25" stroke-width="1.5"/><rect x="2" y="8" width="40" height="20" rx="5" fill="#4fc0ec" stroke="#26304b" stroke-opacity=".25" stroke-width="1.5"/><rect x="6" y="11" width="4" height="12" rx="2" fill="#fff" opacity=".45"/></svg><svg class="fbrick" style="left:30%;top:30%;--r:-6deg;animation-delay:-9.1s" viewBox="0 0 44 30"><rect x="6" y="2" width="11" height="7" rx="3" fill="#a2d058" stroke="#26304b" stroke-opacity=".25" stroke-width="1.5"/><rect x="27" y="2" width="11" height="7" rx="3" fill="#a2d058" stroke="#26304b" stroke-opacity=".25" stroke-width="1.5"/><rect x="2" y="8" width="40" height="20" rx="5" fill="#a2d058" stroke="#26304b" stroke-opacity=".25" stroke-width="1.5"/><rect x="6" y="11" width="4" height="12" rx="2" fill="#fff" opacity=".45"/></svg><svg class="hills" viewBox="0 0 400 140" preserveAspectRatio="none"><path d="M0 70 Q60 20 130 58 T260 50 T400 40 V140 H0z" fill="#c6ebd1"/><path d="M0 100 Q90 60 190 92 T400 78 V140 H0z" fill="#a6dcb6"/></svg></div>
 <div class="topbar" id="topbar" aria-hidden="true"></div>
 <div class="app">
   <main id="view" aria-live="polite"></main>
@@ -1074,7 +1198,7 @@ const SAMPLE_KEB = [
 {"id":"k-ter-tidaksengaja","kategori":"kebahasaan","subkategori":"Makna imbuhan: awalan","tipe":"isian","perintah":"Kata berimbuhan ter- yang bermakna 'tidak sengaja' terdapat pada kalimat nomor ....","kalimat":["Gedung itu adalah bangunan tertinggi di kota.","Kakinya terinjak penonton saat antre.","Pintu gerbang sekolah sudah tertutup.","Beban seberat itu tidak terangkat olehnya.","Ia terbangun karena suara petir."],"kunci_isian":"2","kaidah":"Ter- bermakna paling (tertinggi), tidak sengaja (terinjak), keadaan (tertutup), dapat di- (terangkat), dan tiba-tiba (terbangun)."},
 {"id":"k-pen-alat","kategori":"kebahasaan","subkategori":"Makna imbuhan: awalan","tipe":"PG","perintah":"Kata berimbuhan peN- yang bermakna 'alat' terdapat pada kalimat ....","opsi":[{"teks":"Penulis buku itu berasal dari Medan."},{"teks":"Gunakan penggaris untuk membuat garis lurus.","benar":true},{"teks":"Adiknya terkenal pemalu."},{"teks":"Pedagang itu membuka lapak sejak subuh."},{"teks":"Pelari itu memecahkan rekor."}],"kaidah":"PeN- bermakna pelaku (penulis), alat (penggaris), atau orang yang bersifat (pemalu); pe- dari ber- bermakna orang yang pekerjaannya (pedagang, pelari)."},
 {"id":"k-pean-proses","kategori":"kebahasaan","subkategori":"Makna imbuhan: akhiran dan konfiks","tipe":"PG","perintah":"Bentuk pe-an pada kata pengembangan dalam kalimat 'Pengembangan kurikulum dilakukan bertahap.' bermakna sama dengan bentuk pe-an pada kalimat ....","opsi":[{"teks":"Pendaftaran peserta dibuka hari ini.","benar":true},{"teks":"Pemandian air panas itu ramai."},{"teks":"Pendengaran kakek mulai berkurang."},{"teks":"Penginapan itu dekat stasiun."},{"teks":"Pendapatan warga meningkat."}],"kaidah":"Pengembangan dan pendaftaran bermakna proses; pemandian dan penginapan bermakna tempat, pendapatan bermakna hasil."},
-{"id":"k-peran-vs-pean","kategori":"kebahasaan","subkategori":"Makna imbuhan: akhiran dan konfiks","tipe":"PG","perintah":"Penggunaan kata berimbuhan yang tepat terdapat pada kalimat ....","opsi":[{"teks":"Perkembangan kota itu sangat pesat.","benar":true},{"teks":"Pemerintah melakukan perkembangan wilayah pesisir."},{"teks":"Pertumbuhan jalan baru dilakukan tahun ini."},{"teks":"Petani mengeluhkan pengembangan harga pupuk."}],"kaidah":"Per-an berpasangan dengan ber- (berkembang → perkembangan); peN-an berpasangan dengan meN- (mengembangkan → pengembangan)."},
+{"id":"k-peran-vs-pean","kategori":"kebahasaan","subkategori":"Makna imbuhan: akhiran dan konfiks","tipe":"PG","perintah":"Penggunaan kata berimbuhan yang tepat terdapat pada kalimat ....","opsi":[{"teks":"Perkembangan kota itu sangat pesat.","benar":true},{"teks":"Pemerintah melakukan perkembangan wilayah pesisir."},{"teks":"Pertumbuhan jalan baru dilakukan tahun ini."},{"teks":"Petani mengeluhkan pengembangan harga pupuk."},{"teks":"Perusahaan itu sedang melakukan perkembangan produk baru."}],"kaidah":"Per-an berpasangan dengan ber- (berkembang → perkembangan); peN-an berpasangan dengan meN- (mengembangkan → pengembangan)."},
 {"id":"k-kean-terlalu","kategori":"kebahasaan","subkategori":"Makna imbuhan: akhiran dan konfiks","tipe":"isian","perintah":"Kata berimbuhan ke-an yang bermakna 'terlalu' terdapat pada kalimat nomor ....","kalimat":["Keadilan harus ditegakkan.","Warga kehujanan saat pulang.","Baju itu kebesaran untuk adikku.","Kantor kelurahan buka pukul delapan.","Langit tampak kemerah-merahan."],"kunci_isian":"3","kaidah":"Ke-an bermakna hal (keadilan), kena (kehujanan), terlalu (kebesaran), tempat (kelurahan), dan agak (kemerah-merahan)."},
 {"id":"k-frasa-pola","kategori":"kebahasaan","subkategori":"Kelas kata dan frasa","tipe":"PG","perintah":"Frasa yang memiliki pola sama dengan frasa 'makanan enak' adalah ....","opsi":[{"teks":"sangat enak"},{"teks":"rumah besar","benar":true},{"teks":"membaca buku"},{"teks":"dua piring"},{"teks":"di dapur"}],"kaidah":"Makanan enak berpola nomina + adjektiva, sama dengan rumah besar."},
 {"id":"k-frasa-adv-v","kategori":"kebahasaan","subkategori":"Kelas kata dan frasa","tipe":"PG","perintah":"Frasa yang memiliki pola sama dengan frasa 'sedang belajar' adalah ....","opsi":[{"teks":"akan pergi","benar":true},{"teks":"belajar giat"},{"teks":"sangat rajin"},{"teks":"buku pelajaran"},{"teks":"tempat belajar"}],"kaidah":"Sedang belajar berpola adverbia + verba, sama dengan akan pergi; sangat rajin adalah adverbia + adjektiva."},
@@ -1113,8 +1237,8 @@ const SAMPLE_KEB = [
 SAMPLE.drill = SAMPLE.drill.concat(SAMPLE_KEB);
 
 /* ---------- Konstanta ---------- */
-const KAT = {'tanda-baca':'Tanda baca','ejaan':'EYD V','kebahasaan':'Kebahasaan','baku':'Kata baku'};
-const POLA_IDS = ['PBM-ejaan-kapital','PBM-ejaan-tanda-baca','PBM-ejaan-penulisan-kata','PBM-ejaan-nama-ilmiah','PBM-diksi-seharusnya','PBM-diksi-pengganti','PBM-diksi-dihilangkan','PBM-rumpang-kata','PBM-rumpang-konjungsi','PBM-rumpang-pernyataan','PBM-efektif-sempurnakan','PBM-efektif-perbaikan','PBM-efektif-penggabungan','PBM-efektif-kalimat-inti','PBM-efektif-variasi-kalimat','PBM-efektif-paling-ringkas','PBM-makna-ungkap-kembali','PBM-makna-informasi-utama','PBM-kepaduan-judul','PBM-kepaduan-sisipan','PBM-kepaduan-urutan',
+const KAT = {'tanda-baca':'Tanda baca','ejaan':'EYD V','kebahasaan':'Kebahasaan','baku':'Kata baku','game':'Mini game kepaduan'};
+const POLA_IDS = ['PBM-ejaan-kapital','PBM-ejaan-tanda-baca','PBM-ejaan-penulisan-kata','PBM-ejaan-nama-ilmiah','PBM-diksi-seharusnya','PBM-diksi-pengganti','PBM-diksi-dihilangkan','PBM-rumpang-kata','PBM-rumpang-konjungsi','PBM-rumpang-pernyataan','PBM-efektif-sempurnakan','PBM-efektif-perbaikan','PBM-efektif-penggabungan','PBM-efektif-kalimat-inti','PBM-efektif-variasi-kalimat','PBM-efektif-paling-ringkas','PBM-makna-ungkap-kembali','PBM-makna-informasi-utama','PBM-kepaduan-judul','PBM-kepaduan-sisipan','PBM-kepaduan-urutan','PBM-kepaduan-kalimat-sumbang',
 'PPU-makna-sinonim','PPU-makna-antonim','PPU-makna-luas-sempit','PPU-makna-asosiasi','PPU-makna-simpulan-situasi','PPU-makna-ungkap-kembali','PPU-frasa-makna','PPU-frasa-pasangan-tetap','PPU-frasa-pola-makna','PPU-frasa-variasi-kata','PPU-imbuhan-makna','PPU-majas-kiasan','PPU-majas-perumpamaan','PPU-majas-makna-sebenarnya','PPU-hubungan-kata','PPU-konjungsi-fungsi','PPU-konjungsi-antarparagraf','PPU-struktur-pola-kalimat','PPU-struktur-tidak-logis','PPU-struktur-melengkapi','PPU-struktur-pembagian-paragraf','PPU-pandangan-penulis','PPU-bahasa-buatan'];
 /* Kunci Pola Soal (brief Nov 2026): pola_id -> [kemampuan, bentuk lama terdekat] */
 const POLA_BRIEF = {
@@ -1124,7 +1248,7 @@ const POLA_BRIEF = {
 'PBM-efektif-sempurnakan':['PBM-C','PBM-11'],'PBM-efektif-perbaikan':['PBM-C','PBM-13'],'PBM-efektif-penggabungan':['PBM-B','PBM-6'],'PBM-efektif-kalimat-inti':['PBM-B','PBM-5'],
 'PBM-efektif-variasi-kalimat':['PBM-B','belum pernah keluar'],'PBM-efektif-paling-ringkas':['PBM-C','belum pernah keluar'],
 'PBM-makna-ungkap-kembali':['PBM-B','PBM-7'],'PBM-makna-informasi-utama':['PBM-B','PBM-5'],
-'PBM-kepaduan-judul':['PBM-A','PBM-1'],'PBM-kepaduan-sisipan':['PBM-B','PBM-4'],'PBM-kepaduan-urutan':['PBM-B','tambahan 2026'],
+'PBM-kepaduan-judul':['PBM-A','PBM-1'],'PBM-kepaduan-sisipan':['PBM-B','PBM-4'],'PBM-kepaduan-urutan':['PBM-B','tambahan 2026'],'PBM-kepaduan-kalimat-sumbang':['PBM-B','PBM-4'],
 'PPU-makna-sinonim':['PPU-A','PPU-1'],'PPU-makna-antonim':['PPU-A','PPU-1'],'PPU-makna-luas-sempit':['PPU-A','PPU-2'],'PPU-makna-asosiasi':['PPU-A','PPU-4'],
 'PPU-makna-simpulan-situasi':['PPU-A','PPU-15'],'PPU-makna-ungkap-kembali':['PPU-D','PPU-13'],
 'PPU-frasa-makna':['PPU-C','PPU-6'],'PPU-frasa-pasangan-tetap':['PPU-A','PPU-7'],'PPU-frasa-pola-makna':['PPU-C','PPU-6'],'PPU-frasa-variasi-kata':['PPU-B','tambahan 2026'],
@@ -1134,9 +1258,13 @@ const POLA_BRIEF = {
 'PPU-struktur-pola-kalimat':['PPU-C','PPU-9'],'PPU-struktur-tidak-logis':['PPU-D','PPU-10'],'PPU-struktur-melengkapi':['PPU-D','PPU-12'],'PPU-struktur-pembagian-paragraf':['PPU-D','PPU-14'],
 'PPU-pandangan-penulis':['PPU-D','tambahan 2026'],'PPU-bahasa-buatan':['PPU-E','PPU-16']};
 const MODE_LBL = {dasar:'Mode Dasar', geser:'Satu hal diubah', '2027':'Mode 2027'};
-/* Tahap pola: 1 = bentuk lama dulu, 2 = boleh satu hal diubah, 3 = boleh bentuk baru. Naik jika 5+ soal terakhir di tahap sebelumnya benar 70% ke atas. */
-const LVL_MIN = 5;
-function polaLevel(pid){ const h=S.history.filter(x=>x.pola_id===pid); const st=m=>{ const a=h.filter(x=>(x.mode||'dasar')===m).slice(-10); return {n:a.length,p:pct(a.filter(x=>x.correct).length,a.length)}; }; const d=st('dasar'), g=st('geser'); if(d.n<LVL_MIN||d.p<70) return 1; if(g.n<LVL_MIN||g.p<70) return 2; return 3; }
+/* Tahap per kelompok kemampuan: 1 = bentuk lama, 2 = boleh satu hal diubah, 3 = boleh bentuk baru.
+   Naik jika 10 soal terakhir kelompok itu di tahap sebelumnya (minimal 8) benar 80% ke atas. pola_id tetap dipakai untuk kelemahan. */
+const LVL_MIN = 8;
+function kelKey(pid){ return String(pid).slice(0,3)+' '+kelompok(pid); }
+function kelStat(key,mode){ const a=S.history.filter(x=>x.pola_id&&kelKey(x.pola_id)===key&&(x.mode||'dasar')===mode).slice(-10); return {n:a.length,p:pct(a.filter(x=>x.correct).length,a.length)}; }
+function kelLevel(key){ const d=kelStat(key,'dasar'); if(d.n<LVL_MIN||d.p<WEAK_PCT) return 1; const g=kelStat(key,'geser'); if(g.n<LVL_MIN||g.p<WEAK_PCT) return 2; return 3; }
+function polaLevel(pid){ return kelLevel(kelKey(pid)); }
 function polaLabel(it){ const b=POLA_BRIEF[it.pola_id]; if(!b) return ''; return 'Kemampuan: '+b[0]+' · Bentuk lama terdekat: '+b[1]+(MODE_LBL[it.mode]?' · '+MODE_LBL[it.mode]:'')+(it.geser?' · Yang diubah: '+it.geser:''); }
 function kelompok(pid){
   if(/^PBM-ejaan/.test(pid)) return 'Ejaan';
@@ -1153,6 +1281,8 @@ const DRILL_SIZE = 10;
 /* Waktu UTBK per soal: PPU 20 soal/15 menit, PBM 20 soal/25 menit */
 const PACE = {PPU:45, PBM:75};
 const WEAK_MIN = 5;
+/* batas "lemah" dan naik tahap, sama dengan target 80% di Progres Harian */
+const WEAK_PCT = 80;
 function mmss(ms){ const t=Math.max(0,Math.round(ms/1000)); return Math.floor(t/60)+':'+String(t%60).padStart(2,'0'); }
 const DAY = 86400000;
 
@@ -1193,11 +1323,11 @@ function save(){ try{ localStorage.setItem(KEY, JSON.stringify(S)); }catch(e){} 
 function ringkasPPU(){ try{ const d=new Date(), t=tasksOn(d), k=dayKey(d.getTime()), h=S.dhist.concat(S.history).filter(x=>dayKey(x.ts)===k);
   localStorage.setItem('ppu.ringkas',JSON.stringify({app:'latihan-ppu-pbm',tanggal:ymd(d),tugas_selesai:t.filter(x=>x.done).length,tugas_total:t.length,soal:h.length,benar:h.filter(x=>x.correct).length,pola:ringkasPola(),diperbarui:Date.now()})); }catch(e){} }
 /* tahap pola untuk Progres Harian: [bentuk lama, mulai digeser, bentuk baru] + pola terlemah */
-function ringkasPola(){ const tahap=[0,0,0]; POLA_IDS.forEach(p=>tahap[polaLevel(p)-1]++); const w=polaStat().filter(x=>x.n>=LVL_MIN&&x.p<70)[0]; return {tahap,lemah:w?{id:w.id,p:w.p,n:w.n}:null}; }
+function ringkasPola(){ const tahap=[0,0,0]; KELOMPOK_ORDER.forEach(([s,k])=>tahap[kelLevel(s+' '+k)-1]++); const w=polaStat().filter(x=>x.n>=WEAK_MIN&&x.p<WEAK_PCT)[0]; return {tahap,lemah:w?{id:w.id,p:w.p,n:w.n}:null}; }
 function mergeImport(st,data,isSample){
   let addT=0, addD=0;
   st.bad=st.bad||{};
-  (data.teks||[]).forEach(t=>{ const c=JSON.parse(JSON.stringify(t)); c._contoh=!!isSample; const i=st.bank.findIndex(b=>b.id===c.id);
+  (data.teks||[]).forEach(t=>{ const c=JSON.parse(JSON.stringify(t)); c._contoh=!!isSample; if(c.jenis==='lepas'&&!Array.isArray(c.kalimat)) c.kalimat=[]; const i=st.bank.findIndex(b=>b.id===c.id);
     if(i>=0&&!Array.isArray(c.kalimat)){ /* perbaikan: hanya soal yang dikirim, cocokkan lewat nomor */
       const old=st.bank[i]; (c.soal||[]).forEach(q=>{ const j=old.soal.findIndex(x=>x.nomor===q.nomor); if(j>=0) old.soal[j]=q; else old.soal.push(q); delete st.bad[old.id+'#'+q.nomor]; }); addT++; return; }
     if(i>=0) st.bank[i]=c; else st.bank.push(c); (c.soal||[]).forEach(q=>delete st.bad[c.id+'#'+q.nomor]); addT++; });
@@ -1353,7 +1483,8 @@ function validate(raw){
       const k=d.kalimat||[]; if(k.length<2) errs.push(w+': isian butuh daftar "kalimat" bernomor.');
       const n=+d.kunci_isian; if(!(n>=1&&n<=k.length)) errs.push(w+': kunci_isian harus nomor kalimat 1–'+k.length+'.');
     } else if(d.tipe==='PG'){
-      const o=d.opsi||[]; if(o.length<2||o.length>5) errs.push(w+': PG harus punya 2–5 opsi (sekarang '+o.length+').');
+      const o=d.opsi||[]; if(o.length!==5) errs.push(w+': PG harus punya 5 opsi (sekarang '+o.length+').');
+      if(d.bentuk==='perbaiki'&&!(Array.isArray(d.kalimat)&&d.kalimat.length===1)) errs.push(w+': butir perbaiki butuh tepat 1 kalimat salah di "kalimat".');
       const b=o.filter(x=>x.benar===true).length; if(b!==1) errs.push(w+': harus ada tepat 1 opsi benar (sekarang '+b+').');
     } else errs.push(w+': tipe harus "PG" atau "isian".');
   });
@@ -1361,8 +1492,13 @@ function validate(raw){
     const where='Teks '+(ti+1);
     if(!t.id) errs.push(where+': "id" kosong.');
     const old=S.bank.find(b=>b.id===t.id);
-    if(!Array.isArray(t.kalimat)&&old){ t=Object.assign({},t,{kalimat:old.kalimat}); }
-    if(!Array.isArray(t.kalimat)||!t.kalimat.length){ errs.push(where+': "kalimat" harus berupa daftar kalimat (perbaikan soal tanpa "kalimat" hanya bisa untuk teks yang sudah ada di bank).'); return; }
+    if(!Array.isArray(t.kalimat)&&old){ t=Object.assign({},t,{kalimat:old.kalimat,jenis:t.jenis||old.jenis}); }
+    const jenis=t.jenis||'bernomor';
+    if(!['bernomor','pendek','lepas'].includes(jenis)) errs.push(where+': jenis harus "bernomor", "pendek", atau "lepas".');
+    if(jenis==='lepas'&&!Array.isArray(t.kalimat)) t=Object.assign({},t,{kalimat:[]});
+    if(jenis==='pendek'&&Array.isArray(t.kalimat)&&(t.kalimat.length<2||t.kalimat.length>4)) errs.push(where+': soal pendek butuh 2–4 kalimat.');
+    if(jenis!=='bernomor'&&Array.isArray(t.soal)&&t.soal.length!==1) errs.push(where+': soal '+jenis+' berisi tepat 1 soal (sekarang '+t.soal.length+').');
+    if(!Array.isArray(t.kalimat)||(!t.kalimat.length&&jenis!=='lepas')){ errs.push(where+': "kalimat" harus berupa daftar kalimat (perbaikan soal tanpa "kalimat" hanya bisa untuk teks yang sudah ada di bank).'); return; }
     const nK=t.kalimat.length;
     (t.kata_uji||[]).forEach(k=>{ if(!(k.kalimat>=1&&k.kalimat<=nK)) errs.push(where+': kata uji "'+(k.kata||'?')+'" merujuk kalimat ('+k.kalimat+') yang tidak ada.'); });
     if(!Array.isArray(t.soal)||!t.soal.length){ errs.push(where+': tidak ada soal.'); return; }
@@ -1382,7 +1518,13 @@ function validate(raw){
         if(benar!==1) errs.push(w+': harus ada tepat 1 kunci (sekarang '+benar+').');
       } else if(q.tipe==='isian'){
         if(q.kunci_isian==null||!/^\d+$/.test(String(q.kunci_isian).trim())) errs.push(w+': isian harus punya kunci_isian berupa angka.');
-      } else errs.push(w+': tipe harus "PG" atau "isian".');
+      } else if(q.tipe==='pgk'){
+        const ps=q.pernyataan||[];
+        if(ps.length<3||ps.length>4) errs.push(w+': pgk butuh 3–4 pernyataan (sekarang '+ps.length+').');
+        if(ps.some(x=>!x||!x.teks||typeof x.benar!=='boolean')) errs.push(w+': setiap pernyataan pgk butuh "teks" dan "benar": true/false.');
+        else if(ps.length&&(ps.every(x=>x.benar)||ps.every(x=>!x.benar))) errs.push(w+': pernyataan pgk harus campuran benar dan salah.');
+        if(q.mode!=='2027') errs.push(w+': tipe pgk hanya boleh pada mode "2027".');
+      } else errs.push(w+': tipe harus "PG", "isian", atau "pgk".');
     });
   });
   return {errs,data,nDrill:D.length,nTeks:T.length,nSoal};
@@ -1391,10 +1533,10 @@ function validate(raw){
 /* ---------- Prompt harian ---------- */
 function weakText(){
   const lines=[], since=Date.now()-30*DAY;
-  const m={}; S.dhist.filter(x=>x.ts>=since).forEach(x=>{ const r=m[x.sub]=m[x.sub]||{sub:x.sub,n:0,bad:0}; r.n++; if(!x.correct) r.bad++; });
-  Object.values(m).filter(x=>x.n>=WEAK_MIN&&pct(x.n-x.bad,x.n)<70).sort((a,b)=>pct(a.n-a.bad,a.n)-pct(b.n-b.bad,b.n)).slice(0,5).forEach(x=>lines.push('- Drill '+x.sub+': salah '+x.bad+' dari '+x.n));
-  KELOMPOK_ORDER.forEach(([s,k])=>{ const h=S.history.filter(x=>x.ts>=since&&x.subtes===s&&kelompok(x.pola_id)===k); if(h.length>=WEAK_MIN){ const p=pct(h.filter(x=>x.correct).length,h.length); if(p<70) lines.push('- Teks '+s+' '+k+': '+p+'% dari '+h.length+' soal'); } });
-  polaStat(since).filter(x=>x.n>=WEAK_MIN&&x.p<70).slice(0,5).forEach(x=>lines.push('- Pola '+x.id+' ('+(POLA_BRIEF[x.id]||['?'])[0]+'): '+x.p+'% dari '+x.n+' soal'));
+  const m={}; S.dhist.filter(x=>x.ts>=since&&x.kat!=='game'&&x.sub!=='Baku di Kalimat').forEach(x=>{ const r=m[x.sub]=m[x.sub]||{sub:x.sub,n:0,bad:0}; r.n++; if(!x.correct) r.bad++; });
+  Object.values(m).filter(x=>x.n>=WEAK_MIN&&pct(x.n-x.bad,x.n)<WEAK_PCT).sort((a,b)=>pct(a.n-a.bad,a.n)-pct(b.n-b.bad,b.n)).slice(0,5).forEach(x=>lines.push('- Drill '+x.sub+': salah '+x.bad+' dari '+x.n));
+  KELOMPOK_ORDER.forEach(([s,k])=>{ const h=S.history.filter(x=>x.ts>=since&&x.subtes===s&&kelompok(x.pola_id)===k); if(h.length>=WEAK_MIN){ const p=pct(h.filter(x=>x.correct).length,h.length); if(p<WEAK_PCT) lines.push('- Teks '+s+' '+k+': '+p+'% dari '+h.length+' soal'); } });
+  polaStat(since).filter(x=>x.n>=WEAK_MIN&&x.p<WEAK_PCT).slice(0,5).forEach(x=>lines.push('- Pola '+x.id+' ('+(POLA_BRIEF[x.id]||['?'])[0]+'): '+x.p+'% dari '+x.n+' soal'));
   return lines.length?lines.join('\n'):'- (belum ada data)';
 }
 function polaStat(since){ const m={}; S.history.filter(x=>x.ts>=(since||0)&&x.pola_id).forEach(x=>{ const r=m[x.pola_id]=m[x.pola_id]||{id:x.pola_id,n:0,ok:0}; r.n++; if(x.correct) r.ok++; }); return Object.values(m).map(r=>({...r,p:pct(r.ok,r.n)})).sort((a,b)=>a.p-b.p||b.n-a.n); }
@@ -1406,18 +1548,20 @@ function buildPrompt(o){
     : isSim
       ? 'Kamu adalah pembuat SIMULASI UTBK-SNBT subtes '+o.simSub+' ('+(o.simSub==='PBM'?'Pemahaman Bacaan dan Menulis':'Pengetahuan dan Pemahaman Umum')+'): 20 soal berbasis teks yang setara dengan satu subtes asli.'
       : 'Kamu adalah pembuat SOAL TEKS harian UTBK-SNBT subtes '+o.teks+' ('+(o.teks==='PBM'?'Pemahaman Bacaan dan Menulis':'Pengetahuan dan Pemahaman Umum')+'). Tujuannya membangun fondasi: bentuk lama dikuasai dulu, lalu bentuk baru diperkenalkan sedikit demi sedikit sesuai bagian "Mode pola".';
-  const nT=isSim?4:2, sub=isSim?o.simSub:o.teks;
-  const l2=POLA_IDS.filter(p=>p.startsWith(sub)&&polaLevel(p)>=2), l3=l2.filter(p=>polaLevel(p)===3);
-  const teksRules=`1. ${nT} teks berbeda topik (sains populer, sosial, ekonomi, budaya, lingkungan, kesehatan), masing-masing 6–10 kalimat dalam 1–3 paragraf, gaya artikel berita atau ilmiah populer, dengan sumber fiktif ("Diadaptasi dari ...").
-2. Setiap teks berisi TEPAT 5 soal; semua soal ber-"subtes": "${sub}". Total ${nT*5} soal.
-3. ${sub==='PBM'?'PBM: sebar pola_id PBM (ejaan dan tanda baca, diksi, kalimat efektif, kepaduan paragraf, kalimat sumbang/sisipan, rumpang). Tepat 1 isian angka per teks (UTBK asli sekitar 1 dari 7 soal).'+(isSim?'':' Minimal 2 soal menguji konsep EYD hari ini.'):'PPU: sebar pola_id PPU (makna kata dan frasa, imbuhan, majas dan kiasan, hubungan antarkata, konjungsi, struktur dan isi teks).'+(isSim?'':' Minimal 2 soal menguji konsep kebahasaan hari ini.')}
+  const sub=isSim?o.simSub:o.teks, bentuk=isSim?'sim':(o.bentuk||'A'), nT=isSim?4:bentuk==='A'?2:1;
+  const kels=KELOMPOK_ORDER.filter(([s])=>s===sub).map(([s,k])=>{ const key=s+' '+k; return {k,lv:kelLevel(key),d:kelStat(key,'dasar'),ids:POLA_IDS.filter(p=>kelKey(p)===key)}; });
+  const k2=kels.filter(x=>x.lv>=2), k3=kels.filter(x=>x.lv===3), kl=x=>x.k+' ('+x.ids.join(', ')+')';
+  const kenal=kels.some(x=>x.d.n)?kels.slice().sort((a,b)=>b.d.p-a.d.p||b.d.n-a.d.n)[0]:kels.find(x=>x.k===(sub==='PBM'?'Diksi & rumpang':'Makna kata & frasa'));
+  const teksRules=`1. ${nT>1?nT+' teks utama berbeda topik':'1 teks utama'} (sains populer, sosial, ekonomi, budaya, lingkungan, kesehatan), ${nT>1?'masing-masing ':''}8–12 kalimat dalam 2–3 paragraf, gaya artikel berita atau ilmiah populer, dengan sumber fiktif ("Diadaptasi dari ...").
+2. ${bentuk==='sim'?'Setiap teks berisi TEPAT 5 soal. Total 20 soal.':bentuk==='A'?'Bentuk paket hari ini: TEPAT 2 teks utama × 5 soal = 10 soal.':'Bentuk paket hari ini: TEPAT 1 teks utama × 5 soal, ditambah 5 soal pendek atau lepas = 10 soal. Soal pendek: "jenis": "pendek", 2–4 kalimat bernomor, tepat 1 soal. Soal lepas: "jenis": "lepas", "kalimat": [], tepat 1 soal, stimulusnya ditulis di "perintah". '+(sub==='PPU'?'Untuk PPU, soal lepas dipakai untuk sinonim, analogi (hubungan kata), dan bahasa buatan; soal pendek untuk pola lain.':'Untuk PBM, soal pendek dipakai untuk kalimat efektif dan kalimat sumbang (4 kalimat, satu di antaranya sumbang).')} Semua soal ber-"subtes": "${sub}".
+3. ${sub==='PBM'?'PBM: sebar pola_id PBM (ejaan dan tanda baca, diksi, kalimat efektif, kepaduan paragraf, kalimat sumbang/sisipan, rumpang). Tepat 1 isian angka per teks utama (UTBK asli sekitar 1 dari 7 soal).'+(isSim?'':' Minimal 2 soal menguji konsep EYD hari ini.'):'PPU: sebar pola_id PPU (makna kata dan frasa, imbuhan, majas dan kiasan, hubungan antarkata, konjungsi, struktur dan isi teks).'+(isSim?'':' Minimal 2 soal menguji konsep kebahasaan hari ini.')}
 4. Rancang dari target: tentukan dulu pola soal, baru tulis teks yang menanam target itu.${sub==='PBM'?' Setiap kesalahan PBM hanya ada di SATU kalimat.':''}
 5. Hanya soal ber-"mode": "dasar" yang kalimat perintahnya meniru templat UTBK, misalnya "Kata X dalam kalimat (n) seharusnya ...." atau "Bentuk pe-an pada kata X dalam kalimat (n) mempunyai makna yang sama dengan bentuk pe-an pada kalimat ....".
-6. PG tepat 5 opsi (A–E) dan tepat satu kunci. Isian: opsi kosong, jawaban angka di "kunci_isian".
-7. Soal "seharusnya" memakai lima opsi tetap: dihilangkan, dibiarkan saja, diganti ..., didahului ..., diikuti .... "Dibiarkan saja" boleh menjadi kunci.
+6. PG tepat 5 opsi (A–E) dan tepat satu kunci. Isian: opsi kosong, jawaban angka di "kunci_isian". Tipe "pgk" (PG kompleks): "opsi": [], "kunci_isian": null, dan "pernyataan" berisi 3–4 pernyataan {"teks", "benar": true/false} dengan campuran benar dan salah; hanya boleh pada soal "2027".
+7. Soal "seharusnya" tetap 5 opsi, tetapi pilih dari daftar tindakan: dihilangkan, dibiarkan saja, diganti X, diganti Y, didahului ..., diikuti ..., dipindah ke .... Boleh memakai "diganti" dua kali dengan kata berbeda dan tidak harus memakai "didahului". "Dibiarkan saja" muncul di sebagian soal saja, dan boleh menjadi kunci.
 8. "bukti" = nomor kalimat dasar jawaban. "pembahasan" ringkas: langkah menuju kunci (1–2 kalimat), lalu satu frasa per pengecoh tentang kesalahan yang diwakilinya, misalnya "A: sinonim makna lain; C: imbuhan sama, makna beda". "drill_terkait" = subkategori (EYD atau kebahasaan) yang berkaitan, boleh kosong.
 9. Kata uji paling banyak 5 per teks di "kata_uji", tanpa angka superskrip di dalam kalimat. Rumpang ditulis [...].
-10. "nomor" soal dimulai dari 1 di setiap teks.
+10. "nomor" soal dimulai dari 1 di setiap teks; soal pendek dan lepas bernomor 1.
 11. Tingkat kesulitan mengikuti mode: "dasar" mudah sampai sedang, "geser" sedang, "2027" sulit. Soal sulit menuntut membaca dua kalimat atau lebih, atau membedakan dua opsi yang sama-sama terdengar benar.
 
 ## Pengecoh gaya UTBK (WAJIB, ini yang membuat soal tidak mudah ditebak)
@@ -1440,22 +1584,24 @@ P5. Sebar kunci A–E merata dan jangan lebih dari 2 kunci sama berturut-turut.
 ## Mode pola (WAJIB)
 Latihan ini membangun fondasi setiap hari. Bentuk baru diperkenalkan bertahap, hanya pada pola yang bentuk lamanya sudah dikuasai; jangan memaksakan bentuk baru pada pola yang masih lemah.
 M1. Isi "mode" di setiap soal: "dasar" (kerangka pertanyaan persis bentuk lama; untuk pola yang belum pernah keluar, bentuk paling sederhana dan eksplisit), "geser" (satu hal diubah), atau "2027" (bentuk yang belum pernah keluar; ubah sedikitnya dua dari: jenis stimulus, arah tanya, format jawaban).
-   - Pola yang boleh "geser": ${l2.length?l2.join(', '):'belum ada'}
-   - Pola yang boleh "2027": ${l3.length?l3.join(', '):'belum ada'}
-   - Pola lain WAJIB "dasar".
-   Per 10 soal: paling sedikit 3 "dasar", paling banyak 5 "geser", paling banyak 2 "2027". ${l2.length?'Jangan menaikkan mode hanya untuk memenuhi batas itu.':'Karena belum ada pola yang naik tahap, buat tepat 1 soal "geser" per paket sebagai pengenalan pada pola yang paling sederhana; sisanya "dasar".'}
-M2. Mulai dari kemampuan (lihat daftar pola_id di bawah), bukan dari templat. Lima tuas pemutar: ganti bungkus cerita; sembunyikan struktur dalam narasi; tambah satu langkah; balik arah tanya; ganti format jawaban.
+   Tahap dihitung per kelompok kemampuan (pola_id di dalam kurung):
+   - Kelompok yang boleh "geser": ${k2.length?k2.map(kl).join('; '):'belum ada'}
+   - Kelompok yang boleh "2027": ${k3.length?k3.map(kl).join('; '):'belum ada'}
+   - Pola di kelompok lain WAJIB "dasar"${k2.length?'.':', kecuali satu soal pengenalan: buat tepat 1 soal "geser" dengan pola dari kelompok '+kenal.k+' ('+kenal.ids.join(', ')+'), kelompok dengan akurasi bentuk lama tertinggi.'}
+   Per 10 soal: paling sedikit 3 "dasar", paling banyak 5 "geser", paling banyak 2 "2027". Jangan menaikkan mode hanya untuk memenuhi batas itu.
+M2. Mulai dari kemampuan (lihat daftar pola_id di bawah), bukan dari templat. Lima tuas pemutar: ganti bungkus cerita; sembunyikan struktur dalam narasi; tambah satu langkah; balik arah tanya; ganti format jawaban (misalnya PG menjadi isian nomor kalimat, atau "pgk" pada soal "2027").
 M3. Isi "geser" pada soal "geser" dan "2027" dengan apa yang diubah, misalnya "arah tanya" atau "stimulus dan format jawaban". Pada soal "dasar", "geser" = "".
-M4. Periksa: soal masih menguji kemampuan yang sama; bisa dijawab hanya dari teks; selesai dalam ${sub==='PBM'?'75':'45'} detik. Jika soal bisa dijawab cukup dengan mengenali templat tanpa bernalar, rancang ulang.
+M4. Periksa: soal masih menguji kemampuan yang sama; bisa dijawab hanya dari teks; selesai dalam ${sub==='PBM'?'75':'45'} detik. Jika soal bisa dijawab cukup dengan mengenali templat tanpa bernalar, rancang ulang. Soal "2027" tidak boleh memakai kalimat perintah yang sama dengan contoh di aturan 5.
 M5. Dalam satu paket, pola_id yang sama tidak boleh muncul dua kali dengan bentuk yang sama.
 M6. Arah geser ${sub}: ${sub==='PBM'?'butir yang jarang keluar (kata gabung, kata serapan, tanda hubung, titik dua, variasi kalimat, kalimat paling ringkas); kata bercetak tebal bernomor; lima kalimat lepas yang diurutkan menjadi paragraf.':'kata, imbuhan, dan kata tugas yang belum pernah ditanya (selain pe-an, ke-an, per-an, ber-an); pandangan penulis; variasi kata; perumpamaan; bahasa buatan dengan kalimat tanya atau ingkar; arah tanya dibalik (yang TIDAK sama, yang BUKAN).'}`;
   const drillRules=`A. 10 butir konsep EYD hari ini: "kategori" = "tanda-baca" (Bab III) atau "ejaan" (Bab I–II), "subkategori" persis seperti di atas.
 B. 10 butir konsep kebahasaan hari ini: "kategori" = "kebahasaan", "subkategori" persis seperti di atas.
 Aturan untuk keduanya:
-1. Setiap bagian berisi 6 PG dan 4 isian, dengan bentuk UTBK:
+1. Setiap bagian berisi 5 PG, 3 isian, dan 2 perbaiki, dengan bentuk UTBK:
    a. PG 5 opsi (A–E), tepat satu opsi sesuai perintah ("benar": true). Contoh perintah EYD: "Penggunaan tanda koma yang tepat terdapat pada kalimat ....". Contoh perintah kebahasaan: "Kata berimbuhan pe-an yang bermakna 'proses' terdapat pada kalimat ....", "Kalimat yang efektif adalah ....", "GUNTING : PENJAHIT = ....", "Makna ungkapan 'membanting tulang' adalah ....".
    b. Isian angka: lima kalimat bernomor di "kalimat", perintah seperti "Kalimat yang tidak efektif terdapat pada kalimat nomor ....". Tepat satu kalimat yang dimaksud; nomornya di "kunci_isian".
-   c. Untuk bahasa buatan: contoh pola ditulis di "kalimat" (misal "lo mesa kuti = saya makan nasi"), lalu PG 5 opsi.
+   c. Perbaiki: "tipe": "PG", "bentuk": "perbaiki", satu kalimat salah di "kalimat" (daftar berisi 1 kalimat), perintah seperti "Perbaikan yang tepat untuk kalimat tersebut adalah ....", lalu 5 opsi perbaikan. Pengecoh memperbaiki separuh masalah atau menimbulkan kesalahan baru.
+   d. Untuk bahasa buatan: contoh pola ditulis di "kalimat" (misal "lo mesa kuti = saya makan nasi"), lalu PG 5 opsi.
 2. Kalimat yang dimaksudkan benar harus benar di SEMUA aspek (ejaan, tanda baca, kalimat efektif). Kalimat yang salah hanya memuat SATU kesalahan, dan kesalahan itu pada konsep yang diuji.
 3. Pengecoh harus kesalahan yang memang sering terjadi, bukan salah ketik. Untuk makna imbuhan, analogi, dan relasi makna, setiap pengecoh mewakili makna atau hubungan lain yang berbeda jelas, sehingga hanya satu jawaban yang sah.
 4. "kaidah": satu kalimat aturan; untuk EYD sertakan rujukan bab, misalnya "(III.B.3)".
@@ -1473,6 +1619,10 @@ Aturan untuk keduanya:
     {"id": "${o.idbase}-k1", "kategori": "kebahasaan", "subkategori": "Kalimat efektif: kesepadanan", "tipe": "isian",
      "perintah": "Kalimat yang tidak efektif terdapat pada kalimat nomor ....",
      "kalimat": ["...", "...", "...", "...", "..."], "kunci_isian": "3",
+     "kaidah": "..."},
+    {"id": "${o.idbase}-k2", "kategori": "kebahasaan", "subkategori": "Kalimat efektif: kesepadanan", "tipe": "PG", "bentuk": "perbaiki",
+     "kalimat": ["Kalimat yang salah."], "perintah": "Perbaikan yang tepat untuk kalimat tersebut adalah ....",
+     "opsi": [{"teks": "..."}, {"teks": "...", "benar": true}, {"teks": "..."}, {"teks": "..."}, {"teks": "..."}],
      "kaidah": "..."}
   ]
 }`;
@@ -1491,15 +1641,18 @@ Aturan untuk keduanya:
         "perintah": "...", "opsi": [{"huruf": "A", "teks": "...", "benar": true}, {"huruf": "B", "teks": "..."}, {"huruf": "C", "teks": "..."}, {"huruf": "D", "teks": "..."}, {"huruf": "E", "teks": "..."}],
         "kunci_isian": null, "bukti": [2], "pembahasan": "...", "drill_terkait": []}
      ]},
-    {"id": "${idb}-t2", "...": "teks berikutnya dengan pola yang sama"}
+    ${bentuk==='B'?`{"id": "${idb}-p1", "jenis": "pendek", "judul": "", "kalimat": ["...", "...", "..."], "soal": [{"nomor": 1, "subtes": "${sub}", "pola_id": "...", "mode": "dasar", "geser": "", "tipe": "PG", "perintah": "...", "opsi": ["5 opsi seperti di atas"], "kunci_isian": null, "bukti": [2], "pembahasan": "...", "drill_terkait": []}]},
+    {"id": "${idb}-l1", "jenis": "lepas", "judul": "", "kalimat": [], "soal": [{"nomor": 1, "subtes": "${sub}", "pola_id": "...", "mode": "dasar", "geser": "", "tipe": "PG", "perintah": "stimulus dan pertanyaan ditulis di sini", "opsi": ["5 opsi"], "kunci_isian": null, "bukti": [], "pembahasan": "...", "drill_terkait": []}]},
+    {"id": "${idb}-p2", "...": "total 5 soal pendek/lepas"}`:`{"id": "${idb}-t2", "...": "teks berikutnya dengan pola yang sama"}`}
   ]
-}`;
+}
+Contoh soal "pgk" (hanya mode "2027"): {"nomor": 3, "subtes": "${sub}", "pola_id": "...", "mode": "2027", "geser": "format jawaban dan arah tanya", "tipe": "pgk", "perintah": "Tentukan benar atau salah setiap pernyataan berikut berdasarkan teks!", "pernyataan": [{"teks": "...", "benar": true}, {"teks": "...", "benar": false}, {"teks": "...", "benar": true}], "opsi": [], "kunci_isian": null, "bukti": [4], "pembahasan": "...", "drill_terkait": []}`;
   const cek=isD
-    ? `- Drill: 20 butir (10 EYD, 10 kebahasaan); PG punya 5 opsi dengan tepat satu "benar": true; isian punya 5 kalimat dan kunci_isian 1–5.
+    ? `- Drill: 20 butir (10 EYD, 10 kebahasaan), tiap bagian 5 PG + 3 isian + 2 perbaiki; PG dan perbaiki punya tepat 5 opsi dengan tepat satu "benar": true; isian punya 5 kalimat dan kunci_isian 1–5.
 - Setiap kalimat yang benar bebas dari kesalahan lain; setiap kalimat salah hanya punya satu kesalahan.
 - "kategori" dan "subkategori" persis dari daftar yang sah.`
-    : `- Tepat ${nT} teks, masing-masing 5 soal (${nT*5} soal), semua "subtes": "${sub}".
-- PG 5 opsi dan 1 kunci; isian punya kunci angka; nomor di "bukti" dan "kata_uji" ada di teks.
+    : `- ${bentuk==='B'?'Tepat 1 teks utama berisi 5 soal, ditambah 5 soal pendek/lepas (masing-masing 1 soal); total 10 soal':'Tepat '+nT+' teks utama, masing-masing 5 soal ('+(nT*5)+' soal)'}, semua "subtes": "${sub}".
+- PG 5 opsi dan 1 kunci; isian punya kunci angka; "pgk" hanya pada mode "2027" dengan 3–4 pernyataan; nomor di "bukti" dan "kata_uji" ada di teks.
 - "drill_terkait" persis dari daftar yang sah; "pola_id" dari daftar yang boleh; setiap soal punya "mode" ("dasar", "geser", atau "2027") sesuai batas M1.
 - Setiap id teks berbeda.`;
   return `${intro} Hasilmu akan kutempel langsung ke aplikasi, jadi keluarkan HANYA satu blok kode json yang valid, tanpa teks lain.
@@ -1540,12 +1693,14 @@ ${isD?fmtDrill:fmtTeks}
 ${cek}
 - Tidak ada teks apa pun di luar blok json.`;
 }
+/* bentuk paket teks: A = 2 teks utama, B = 1 teks utama + 5 soal pendek/lepas; berganti tiap 2 hari agar PBM dan PPU sama-sama kebagian */
+function bentukHari(ts){ const n=dayNo(ts); return (((Math.floor(n/2))%2)+2)%2===0?'A':'B'; }
 function todayPrompt(part,simSub){
   const T=today(), d=new Date();
   const date=d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0')+'-'+String(d.getDate()).padStart(2,'0');
   const fmt=list=>list.map(t=>'['+t.sub+' · '+t.ref+']\n'+t.aturan.map(a=>'- '+a[0]+' Contoh: '+a[1]).join('\n')).join('\n\n');
   const subsOf=kat=>Object.keys(SUB_KAT).filter(s=>kat.includes(SUB_KAT[s])).join(', ');
-  return buildPrompt({part:part||'drill',simSub:simSub||T.fokus,date,konsep:T.k.n,fokus:T.k.fokus,subs:T.k.subs.join(', '),konsep2:T.k2.n,subs2:T.k2.subs.join(', '),teks:T.fokus,weak:weakText(),
+  return buildPrompt({part:part||'drill',simSub:simSub||T.fokus,bentuk:bentukHari(),date,konsep:T.k.n,fokus:T.k.fokus,subs:T.k.subs.join(', '),konsep2:T.k2.n,subs2:T.k2.subs.join(', '),teks:T.fokus,weak:weakText(),
     rules:fmt(rulesFor(T.k.subs)),rules2:fmt(rulesFor(T.k2.subs)),allEyd:subsOf(['tanda-baca','ejaan']),allKeb:subsOf(['kebahasaan']),idbase:'h'+date.replace(/-/g,'')});
 }
 
@@ -1560,10 +1715,10 @@ const NAV=[
  ['progres','Progres','<path d="M4 20V10M10 20V4M16 20v-7M22 20H2"/>'],
  ['bank','Bank soal','<path d="M12 3v12M7 10l5 5 5-5"/><path d="M4 19h16"/>']
 ];
-const ROUTES=['beranda','kalender','kaidah','progres','teks','bank','drill','soal','selesai','prompt','swipe'];
+const ROUTES=['beranda','kalender','kaidah','progres','teks','bank','drill','soal','selesai','prompt','swipe','game'];
 function route(){ const h=(location.hash||'').slice(1); return ROUTES.includes(h)?h:'beranda'; }
 function renderNav(){
-  let r=route(); if(['drill','soal','selesai','prompt','swipe'].includes(r)) r='beranda'; if(r==='teks') r='bank';
+  let r=route(); if(['drill','soal','selesai','prompt','swipe','game'].includes(r)) r='beranda'; if(r==='teks') r='bank';
   $('#nav').innerHTML=NAV.map(([id,label,ic])=>'<a href="#'+id+'"'+(r===id?' aria-current="page"':'')+'><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">'+ic+'</svg>'+label+'</a>').join('');
 }
 
@@ -1574,16 +1729,16 @@ function tasksOn(date){
   const dh=S.dhist.filter(x=>dayKey(x.ts)===key);
   const uniq=subs=>new Set(dh.filter(x=>subs.includes(x.sub)).map(x=>x.id)).size;
   const cap=subs=>{ const n=poolFor('sub:'+subs.join('|')).length; return n?Math.min(10,n):10; };
-  const by={}; S.history.filter(x=>dayKey(x.ts)===key&&x.subtes===c.fokus).forEach(x=>{ (by[x.teksId]=by[x.teksId]||new Set()).add(x.nomor); });
-  let nDone=0; Object.keys(by).forEach(id=>{ const t=S.bank.find(b=>b.id===id); const need=t?t.soal.filter(q=>q.subtes===c.fokus).length:by[id].size; if(by[id].size>=need) nDone++; });
-  const avail=S.bank.filter(t=>t.soal.some(q=>q.subtes===c.fokus)).length, nT=Math.max(1,Math.min(2,avail||2));
-  const bk=dh.filter(x=>x.kat==='baku').length, imp=(S.imp||[]).includes(key);
+  const doneQ=new Set(S.history.filter(x=>dayKey(x.ts)===key&&x.subtes===c.fokus).map(x=>x.teksId+'#'+x.nomor)).size;
+  const availQ=S.bank.reduce((n,t)=>n+t.soal.filter(q=>q.subtes===c.fokus&&!S.bad[t.id+'#'+q.nomor]).length,0), nQ=Math.max(1,Math.min(10,availQ||10));
+  const bk=dh.filter(x=>x.kat==='baku'&&x.sub!=='Baku di Kalimat').length, bkk=dh.filter(x=>x.sub==='Baku di Kalimat').length, imp=(S.imp||[]).includes(key), lama=date<BAKU_KAL_START;
   const n1=cap(c.k.subs), n2=cap(c.k2.subs);
   return [    {id:'imp',ic:'today',t:'Siapkan soal hari ini',d:'Salin Prompt 1 dan 2, tempel hasilnya di Bank soal',cur:imp?1:0,n:1,unit:'',act:'prompt',v:''},
     {id:'eyd',ic:'eyd',t:'Drill EYD',d:c.k.n,cur:Math.min(uniq(c.k.subs),n1),n:n1,unit:'butir',act:'drill',v:'sub:'+c.k.subs.join('|')},
     {id:'keb',ic:'keb',t:'Drill kebahasaan',d:c.k2.n,cur:Math.min(uniq(c.k2.subs),n2),n:n2,unit:'butir',act:'drill',v:'sub:'+c.k2.subs.join('|')},
-    {id:'teks',ic:c.fokus==='PBM'?'pbm':'ppu',t:'Teks '+c.fokus,d:'Kerjakan '+nT+' teks sampai selesai',cur:Math.min(nDone,nT),n:nT,unit:'teks',act:'teks2',v:c.fokus},
-    {id:'baku',ic:'baku',t:'Kata baku',d:'Geser 20 kartu baku/tidak baku',cur:Math.min(bk,20),n:20,unit:'kartu',act:'swipe',v:''}
+    {id:'teks',ic:c.fokus==='PBM'?'pbm':'ppu',t:'Teks '+c.fokus,d:'Kerjakan '+nQ+' soal teks',cur:Math.min(doneQ,nQ),n:nQ,unit:'soal',act:'teks2',v:c.fokus},
+    lama?{id:'baku',ic:'baku',t:'Kata baku',d:'Geser 20 kartu baku/tidak baku',cur:Math.min(bk,20),n:20,unit:'kartu',act:'swipe',v:''}
+      :{id:'baku',ic:'baku',t:'Kata baku dalam kalimat',d:'Temukan kalimat yang memuat kata tidak baku',cur:Math.min(bkk,10),n:10,unit:'soal',act:'game',v:'baku'}
   ].map(x=>Object.assign(x,{done:x.done!=null?x.done:x.cur>=x.n}));
 }
 function dayRatio(date){ const t=tasksOn(date); return t.filter(x=>x.done).length/t.length; }
@@ -1647,7 +1802,7 @@ function buzz(ok){ try{ if(navigator.vibrate) navigator.vibrate(ok?12:[25,40,25]
 function ring(ok,total){
   const p=total?ok/total:0, pc=Math.round(p*100);
   const msg=pc>=85?'Luar biasa!':pc>=70?'Bagus, pertahankan.':pc>=50?'Lumayan, terus ulangi.':'Pelan-pelan saja, ulangi kaidahnya.';
-  return '<section class="card score"><div class="ring" style="--p:'+p.toFixed(4)+'"><svg viewBox="0 0 120 120" aria-hidden="true"><circle class="tr" cx="60" cy="60" r="52"/><circle class="fg'+(pc<70?' low':'')+'" cx="60" cy="60" r="52"/></svg><div class="in"><b>'+ok+'/'+total+'</b><span>'+pc+'% benar</span></div></div><div class="msg">'+msg+'</div>';
+  return '<section class="card score"><div class="ring" style="--p:'+p.toFixed(4)+'"><svg viewBox="0 0 120 120" aria-hidden="true"><circle class="tr" cx="60" cy="60" r="52"/><circle class="fg'+(pc<WEAK_PCT?' low':'')+'" cx="60" cy="60" r="52"/></svg><div class="in"><b>'+ok+'/'+total+'</b><span>'+pc+'% benar</span></div></div><div class="msg">'+msg+'</div>';
 }
 const KB_HINT='<span><kbd>A</kbd>–<kbd>E</kbd></span>';
 
@@ -1676,20 +1831,42 @@ function nextTeks(sub){
   const last=id=>{ const h=S.history.filter(x=>x.teksId===id&&(!sub||x.subtes===sub)); return h.length?Math.max(...h.map(x=>x.ts)):0; };
   return pool.slice().sort((a,b)=>last(a.id)-last(b.id))[0];
 }
+/* ---------- Maskot Bloki (tampilan, dari Nalar Harian) ---------- */
+function bloki(pose){
+  const c='#ffd24f',d='#c9971a',ink='#26304b',arm=(x1,y1,x2,y2)=>'<path d="M'+x1+' '+y1+' L'+x2+' '+y2+'" stroke="'+d+'" stroke-width="13" stroke-linecap="round"/><path d="M'+x1+' '+y1+' L'+x2+' '+y2+'" stroke="'+c+'" stroke-width="8" stroke-linecap="round"/><circle cx="'+x2+'" cy="'+y2+'" r="7.5" fill="'+c+'" stroke="'+d+'" stroke-width="2.5"/>';
+  const open='<path d="M69 107 Q80 124 91 107 Z" fill="#a8434f" stroke="'+ink+'" stroke-width="2.5" stroke-linejoin="round"/><path d="M74 114 Q80 119 86 114" fill="#ff8fa3"/>';
+  let L=arm(34,104,18,122),R=arm(126,104,142,122),prop='',mouth='<path d="M70 109 Q80 121 90 109" stroke="'+ink+'" stroke-width="3.2" fill="none" stroke-linecap="round"/>',extra='';
+  if(pose==='wave'){ R=arm(126,98,150,64); mouth=open; extra='<path d="M158 48 q6 6 2 14 M164 40 q9 9 3 22" stroke="'+d+'" stroke-width="2.5" fill="none" stroke-linecap="round"/>'; L=arm(34,104,16,118); }
+  if(pose==='trophy'){ R=arm(126,100,146,84); mouth=open; prop='<path d="M136 56 h28 v10 q0 16 -14 18 q-14 -2 -14 -18z" fill="#ffd24f" stroke="'+d+'" stroke-width="2.5"/><path d="M136 60 q-8 0 -6 8 q2 6 8 6 M164 60 q8 0 6 8 q-2 6 -8 6" stroke="'+d+'" stroke-width="2.5" fill="none"/><rect x="145" y="84" width="10" height="6" fill="'+d+'"/><rect x="139" y="89" width="22" height="6" rx="2" fill="#4b8ae8" stroke="'+ink+'" stroke-width="2"/>'; }
+  if(pose==='pencil'){ R=arm(126,104,140,92); prop='<g transform="rotate(35 150 80)"><rect x="144" y="50" width="12" height="44" rx="2" fill="#ff9d4d" stroke="'+ink+'" stroke-width="2.3"/><rect x="144" y="50" width="12" height="7" fill="#f47eab" stroke="'+ink+'" stroke-width="2.3"/><path d="M144 94 l6 12 6-12z" fill="#f6e2c0" stroke="'+ink+'" stroke-width="2.3" stroke-linejoin="round"/><path d="M148.5 103 l1.5 3 1.5-3z" fill="'+ink+'"/></g>'; }
+  return '<svg class="masc" viewBox="0 0 175 175" aria-hidden="true"><ellipse cx="80" cy="166" rx="46" ry="6" fill="#26304b" opacity=".12"/>'+extra+L+R+
+  '<rect x="50" y="134" width="22" height="20" rx="5" fill="#4b8ae8" stroke="'+ink+'" stroke-width="2.5"/><rect x="88" y="134" width="22" height="20" rx="5" fill="#4b8ae8" stroke="'+ink+'" stroke-width="2.5"/>'+
+  '<rect x="45" y="150" width="30" height="11" rx="5" fill="'+ink+'"/><rect x="85" y="150" width="30" height="11" rx="5" fill="'+ink+'"/>'+
+  '<rect x="46" y="44" width="26" height="20" rx="7" fill="'+c+'" stroke="'+d+'" stroke-width="3"/><rect x="88" y="44" width="26" height="20" rx="7" fill="'+c+'" stroke="'+d+'" stroke-width="3"/>'+
+  '<rect x="51" y="48" width="9" height="4" rx="2" fill="#fff" opacity=".55"/><rect x="93" y="48" width="9" height="4" rx="2" fill="#fff" opacity=".55"/>'+
+  '<rect x="30" y="58" width="100" height="82" rx="17" fill="'+c+'" stroke="'+d+'" stroke-width="3.2"/><rect x="40" y="67" width="9" height="36" rx="4.5" fill="#fff" opacity=".4"/>'+
+  '<ellipse cx="64" cy="89" rx="11" ry="13" fill="#fff" stroke="'+ink+'" stroke-width="2.5"/><ellipse cx="96" cy="89" rx="11" ry="13" fill="#fff" stroke="'+ink+'" stroke-width="2.5"/>'+
+  '<circle cx="66" cy="92" r="6" fill="'+ink+'"/><circle cx="98" cy="92" r="6" fill="'+ink+'"/><circle cx="68.5" cy="89" r="2.2" fill="#fff"/><circle cx="100.5" cy="89" r="2.2" fill="#fff"/>'+
+  '<ellipse cx="50" cy="107" rx="7" ry="4.2" fill="#ff8fa3" opacity=".6"/><ellipse cx="110" cy="107" rx="7" ry="4.2" fill="#ff8fa3" opacity=".6"/>'+mouth+prop+'</svg>';
+}
+function blokiHero(){ const t=tasksOn(new Date()), d=t.filter(x=>x.done).length, n=t.length;
+  const [pose,msg]=d===n?['trophy','Semua tugas hari ini beres. Sampai besok, ya!']:d?['pencil','Mantap! Tinggal '+(n-d)+' tugas lagi hari ini.']:['wave','Hai, aku Bloki! Yuk susun balok PPU & PBM hari ini.'];
+  return '<div class="bhero"><div class="bubble">'+esc(msg)+'</div>'+bloki(pose)+'</div>'; }
 function viewBeranda(){
   const dateStr=new Date().toLocaleDateString('id-ID',{weekday:'long',day:'numeric',month:'long'});
   const cell=(act,v,ic,t1,t2,val,dis)=>'<button type="button" class="cell has-ic" data-action="'+act+'"'+(v?' data-v="'+esc(v)+'"':'')+(dis?' disabled':'')+'>'+icon(ic)+'<span class="txt"><span class="t1">'+t1+'</span><span class="t2">'+t2+'</span></span><span class="val">'+val+'</span>'+CHEV+'</button>';
   const dc=(k,ic,t1,t2)=>{ const n=poolFor(k).length; return cell('drill',k,ic,t1,t2,n?dueCount(k)+' siap':'kosong',!n); };
   const tc=s=>{ const t=nextTeks(s); return cell('teks',s,s==='PBM'?'pbm':'ppu','Teks '+s,s==='PBM'?'Ejaan, diksi, kalimat efektif':'Makna kata, imbuhan, majas',t?t.soal.filter(q=>q.subtes===s).length+' soal':'kosong',!t); };
   return '<div class="lt-row"><div><h1>Latihan</h1><div class="lt-sub">'+esc(dateStr)+' · '+daysToUtbk()+' hari menuju UTBK</div></div></div>'+
-    tasksCard()+
+    blokiHero()+tasksCard()+
     '<div class="sh">Latihan lain</div><div class="group">'+
-      cell('swipe','','baku','Kata baku','Kartu geser baku/tidak baku',S.baku.length+' kata')+
+      cell('swipe','','baku','Kartu kata baku','Pemanasan: geser baku/tidak baku',S.baku.length+' kata')+
       dc('kebahasaan','keb','Kebahasaan','Imbuhan, makna, analogi')+
       dc('tanda-baca','tb','Tanda baca','Koma, titik, hubung, petik')+
       dc('ejaan','eyd','EYD V','Huruf, penulisan kata')+
       dc('campur','mix','Campur','Semua kategori diacak')+
       tc('PBM')+tc('PPU')+
+    '</div><div class="sh">Mini game</div><div class="group">'+['susun','sumbang','baku'].map(k=>{ const n=gameToday(k); return cell('game',k,GAME_INFO[k].ic,GAME_INFO[k].t,GAME_INFO[k].d,n?n+' hari ini':''); }).join('')+
     '</div><div class="sh">Simulasi</div><div class="group">'+['PBM','PPU'].map(k=>cell('sim',k,'sim','Simulasi '+k,'20 soal, diperiksa di akhir',simCount(k)+'/20 soal')).join('')+'</div>';
 }
 function weakCard(){
@@ -1700,7 +1877,7 @@ function weakCard(){
     (wb.length?'<button type="button" class="cell has-ic" data-action="swipe">'+icon('baku')+'<span class="txt"><span class="t1">Kata baku</span><span class="t2">'+wb.map(p=>esc(p.baku)).join(', ')+'</span></span>'+CHEV+'</button>':'')+'</div>';
 }
 function weakSubs(){
-  const m={}; S.dhist.forEach(x=>{ const k=x.sub; m[k]=m[k]||{kat:x.kat,sub:x.sub,n:0,bad:0}; m[k].n++; if(!x.correct) m[k].bad++; });
+  const m={}; S.dhist.filter(x=>x.kat!=='game'&&x.sub!=='Baku di Kalimat').forEach(x=>{ const k=x.sub; m[k]=m[k]||{kat:x.kat,sub:x.sub,n:0,bad:0}; m[k].n++; if(!x.correct) m[k].bad++; });
   return Object.values(m).filter(x=>x.bad).sort((a,b)=>b.bad-a.bad||a.n-b.n);
 }
 
@@ -1716,8 +1893,8 @@ function sessCtx(){
   if(r==='soal'&&V.run){ const R=V.run, t=S.bank.find(x=>x.id===R.teksId); if(!t) return null; const items=R.qs.map(q=>{ const [tid,i]=Array.isArray(q)?q:[R.teksId,q], tt=S.bank.find(x=>x.id===tid); return tt&&tt.soal[i]?Object.assign({},tt.soal[i],{_t:tt}):null; }).filter(Boolean); if(!items.length) return null; return {kind:'teks',s:R,t,items,title:R.label?esc(R.label):(R.sub&&R.sub!=='campur'?'Teks '+esc(R.sub):'Teks')+(V.paket?' · 2/2':'')}; }
   return null;
 }
-function isAns(it,a){ return it.tipe==='isian'?String(a.is).trim()!=='':a.c!=null; }
-function grade(it,a){ return it.tipe==='isian'?String(a.is).trim()===String(it.kunci_isian).trim():(a.c!=null&&!!it.opsi[a.c].benar); }
+function isAns(it,a){ if(it.tipe==='pgk') return Array.isArray(a.c)&&it.pernyataan.every((_,i)=>a.c[i]!=null); return it.tipe==='isian'?String(a.is).trim()!=='':a.c!=null; }
+function grade(it,a){ if(it.tipe==='pgk') return isAns(it,a)&&it.pernyataan.every((x,i)=>a.c[i]===x.benar); return it.tipe==='isian'?String(a.is).trim()===String(it.kunci_isian).trim():(a.c!=null&&!!it.opsi[a.c].benar); }
 function recordAt(C,k){
   const s=C.s, a=s.A[k], it=C.items[k]; if(a.done) return; const ok=grade(it,a); a.done=true; a.ok=ok;
   if(C.kind==='drill'){
@@ -1776,9 +1953,10 @@ function viewCbt(C){
   h+='<div class="numgrid" role="navigation" aria-label="Nomor soal">'+C.items.map((q,i)=>{ const x=s.A[i]; let c='nb'; if(i===k) c+=' cur'; if(x.done) c+=x.ok?' ok':' bad'; else if(isAns(q,x)) c+=' ans'; if(s.F[i]) c+=' flag'; return '<button type="button" class="'+c+'" data-action="qgo" data-k="'+i+'" aria-label="Soal '+(i+1)+'"'+(i===k?' aria-current="true"':'')+'>'+(i+1)+'</button>'; }).join('')+'</div>';
   const anyDone=s.A.some(x=>x.done);
   if(isD&&s.extra&&!anyDone) h+='<div class="cbt-note">Semua butir sudah dikuasai untuk hari ini. Ini putaran tambahan.</div>';
-  h+='<section class="cbt-panel'+(!isD&&S.layout==='split'?' split':'')+'"><div class="cbt-body">';
+  const lepas=!isD&&(it._t||C.t).jenis==='lepas';
+  h+='<section class="cbt-panel'+(!isD&&!lepas&&S.layout==='split'?' split':'')+'"><div class="cbt-body">';
   // bacaan
-  if(!isD){
+  if(!isD&&!lepas){
     const t=it._t||C.t, focus=[], proof=fb?(it.bukti||[]):[], qa=C.items.findIndex(x=>(x._t||C.t)===t)+1, qb=C.items.length-[...C.items].reverse().findIndex(x=>(x._t||C.t)===t);
     const starts=(t.paragraf_mulai&&t.paragraf_mulai.length?t.paragraf_mulai:[1]);
     let paras=''; starts.forEach((st,pi)=>{ const end=(starts[pi+1]||t.kalimat.length+1)-1; let p=''; for(let i=st-1;i<end;i++) p+=renderSentence(t,i,focus,proof); paras+='<p>'+p+'</p>'; });
@@ -1786,10 +1964,15 @@ function viewCbt(C){
   }
   const tx=v=>isD?rich(v):esc(v);
   h+='<div class="cbt-right">';
-  if(isD&&it.kalimat&&it.kalimat.length) h+='<div><p class="lead" style="margin-bottom:8px">Perhatikan '+(it.tipe==='isian'?'kalimat':'pola')+' berikut!</p><ol class="cbt-list">'+it.kalimat.map((x,i)=>'<li class="'+(fb&&it.tipe==='isian'&&String(i+1)===String(it.kunci_isian)?'hit':'')+'"><span class="no">('+(i+1)+')</span><span>'+rich(x)+'</span></li>').join('')+'</ol></div>';
+  if(isD&&it.kalimat&&it.kalimat.length) h+='<div><p class="lead" style="margin-bottom:8px">Perhatikan '+(it.tipe==='isian'||it.bentuk==='perbaiki'?'kalimat':'pola')+' berikut!</p><ol class="cbt-list">'+it.kalimat.map((x,i)=>'<li class="'+(fb&&it.tipe==='isian'&&String(i+1)===String(it.kunci_isian)?'hit':'')+'"><span class="no">('+(i+1)+')</span><span>'+rich(x)+'</span></li>').join('')+'</ol></div>';
   h+='<div class="cbt-q'+en+'">'+tx(it.perintah)+'</div>';
   if(it.tipe==='isian'){
     h+='<div class="cbt-isian"><label for="qisian">Jawaban</label><input id="qisian" inputmode="numeric" autocomplete="off" placeholder="nomor" value="'+esc(a.is)+'"'+(fb||rv?' disabled':'')+'>'+'</div>';
+  } else if(it.tipe==='pgk'){
+    const v=Array.isArray(a.c)?a.c:[];
+    h+='<div class="pgk" role="group" aria-label="Benar atau salah"><div class="pgk-h"><span>Pernyataan</span><span>Benar</span><span>Salah</span></div>'+it.pernyataan.map((x,i)=>{
+      const cur=v[i]==null?null:v[i], bt=(val,lbl)=>'<button type="button" class="pgk-b'+(cur===val?' on':'')+(fb&&x.benar===val?' key':'')+'" data-action="qpgk" data-i="'+i+'" data-v="'+(val?1:0)+'" aria-pressed="'+(cur===val)+'" aria-label="'+lbl+'"'+(fb||rv?' disabled':'')+'>'+(cur===val?SV_CHECK:'')+'</button>';
+      return '<div class="pgk-r'+(fb?(cur===x.benar?' ok':' bad'):'')+'"><span class="t">'+esc(x.teks)+'</span>'+bt(true,'Benar')+bt(false,'Salah')+'</div>'; }).join('')+'</div>';
   } else {
     h+='<div class="ropts" role="radiogroup" aria-label="Pilihan jawaban">'+it.opsi.map((o,i)=>{
       let c='ropt'+(fb?'':en); if(a.c===i) c+=' sel'; if(fb){ if(o.benar) c+=' right'; else if(a.c===i) c+=' wrong'; else c+=' dim'; }
@@ -1799,7 +1982,7 @@ function viewCbt(C){
     }).join('')+'</div>';
   }
   if(fb){
-    const key=it.tipe==='isian'?esc(it.kunci_isian):esc(letterOf(it));
+    const key=it.tipe==='isian'?esc(it.kunci_isian):it.tipe==='pgk'?it.pernyataan.map(x=>x.benar?'B':'S').join(', '):esc(letterOf(it));
     const head=a.ok?'Jawaban benar'+(rv?'':' · '+PUJI[k%PUJI.length]):(isAns(it,a)?'Jawaban belum tepat':'Tidak dijawab')+' · Kunci: '+key;
     const combo=a.ok&&!rv?comboChip(isD?s.res.map(r=>r.ok):s.res):'';
     let note='';
@@ -1824,7 +2007,7 @@ function viewDrillDone(){
   const D=V.drill, ok=D.res.filter(r=>r.ok).length, wrong=D.res.filter(r=>!r.ok);
   let h='<h1>Drill selesai</h1>'+ring(ok,D.res.length)+'<div class="sub">butir benar · '+esc(D.label)+'</div></section>';
   if(wrong.length) h+='<section class="card"><h2>Kaidah yang perlu diulang</h2>'+wrong.map(r=>'<div class="rule"><div class="row"><span class="chip plain">'+esc(r.it.subkategori)+'</span><span class="grow"></span>'+materiBtn([r.it.subkategori],itemText(r.it,true),true)+'</div><div style="font-size:14px">'+rich(r.it.kaidah)+'</div></div>').join('')+'</section>';
-  if(V.paket){ const ts=nextTexts(V.paket.sub,2,false); h+= ts.length?'<button class="btn primary block" type="button" data-action="paketteks">Lanjut ke '+ts.length+' teks '+esc(V.paket.sub)+'</button>':'<div class="card empty">Belum ada teks di bank. <a href="#bank">Tempel paket harian.</a></div>'; }
+  if(V.paket){ const ts=dailyTexts(V.paket.sub), nq=ts.reduce((n,t)=>n+t.soal.filter(q=>q.subtes===V.paket.sub).length,0); h+= ts.length?'<button class="btn primary block" type="button" data-action="paketteks">Lanjut ke '+nq+' soal teks '+esc(V.paket.sub)+'</button>':'<div class="card empty">Belum ada teks di bank. <a href="#bank">Tempel paket harian.</a></div>'; }
   else h+='<div class="actions"><a class="btn ghost" href="#beranda">Pilihan latihan</a><button class="btn primary" type="button" data-action="drill" data-v="'+esc(D.mode)+'">Drill lagi</button></div>';
   return h+'<button class="btn ghost block" type="button" data-action="qreview" data-v="drill">Lihat pembahasan per nomor</button>';
 }
@@ -1847,7 +2030,9 @@ function startTeks(sub, teksId){
   const t=teksId?S.bank.find(x=>x.id===teksId):nextTeks(sub==='campur'?null:sub); if(!t){ location.hash='#bank'; return; }
   startTeksMulti([t],{sub});
 }
-function startDailyTeks(sub){ const ts=nextTexts(sub,2,false); if(!ts.length){ location.hash='#bank'; return; } startTeksMulti(ts,{sub,label:'Teks '+sub+(V.paket?' · 2/2':'')}); }
+/* paket teks harian: ambil teks (utama, pendek, lepas) sampai sekitar 10 soal */
+function dailyTexts(sub){ const out=[]; let n=0; for(const t of nextTexts(sub,999,false)){ if(n>=10) break; const k=t.soal.filter(q=>q.subtes===sub&&!S.bad[t.id+'#'+q.nomor]).length; if(!k) continue; out.push(t); n+=k; } return out; }
+function startDailyTeks(sub){ const ts=dailyTexts(sub); if(!ts.length){ location.hash='#bank'; return; } startTeksMulti(ts,{sub,label:'Teks '+sub+(V.paket?' · 2/2':'')}); }
 function simCount(sub){ let n=0; nextTexts(sub,99,true).forEach(t=>{ n+=t.soal.filter(q=>q.subtes===sub).length; }); return Math.min(20,n); }
 function startSim(sub){
   const all=nextTexts(sub,99,true), pick=[]; let n=0;
@@ -1948,11 +2133,12 @@ function viewKaidah(){
   return h;
 }
 /* ---------- Daftar teks ---------- */
+function tName(t){ return t.judul||((t.jenis==='lepas'?'Soal lepas':t.jenis==='pendek'?'Bacaan pendek':'Teks')+' · '+t.id); }
 function viewTeks(){
   if(!S.bank.length) return '<h1>Daftar teks</h1><div class="card empty">Belum ada teks. <a href="#bank">Tempel paket di Bank soal.</a></div>';
   return '<h1>Daftar teks</h1>'+S.bank.map(t=>{
     const h=S.history.filter(x=>x.teksId===t.id); const p=t.soal.filter(q=>q.subtes==='PBM').length, u=t.soal.length-p;
-    return '<section class="card"><div class="row"><div class="grow"><h2>'+esc(t.judul||t.id)+'</h2><div class="sub">'+[p?p+' PBM':'',u?u+' PPU':''].filter(Boolean).join(' + ')+' · '+(h.length?pct(h.filter(x=>x.correct).length,h.length)+'% benar':'belum dikerjakan')+'</div></div>'+(t._contoh?'<span class="chip plain">contoh</span>':'')+'</div>'+
+    return '<section class="card"><div class="row"><div class="grow"><h2>'+esc(tName(t))+'</h2><div class="sub">'+[p?p+' PBM':'',u?u+' PPU':''].filter(Boolean).join(' + ')+' · '+(h.length?pct(h.filter(x=>x.correct).length,h.length)+'% benar':'belum dikerjakan')+'</div></div>'+(t._contoh?'<span class="chip plain">contoh</span>':'')+'</div>'+
       '<div class="actions">'+(p?'<button class="btn ghost" type="button" data-action="teksid" data-id="'+esc(t.id)+'" data-v="PBM">PBM</button>':'')+(u?'<button class="btn ghost" type="button" data-action="teksid" data-id="'+esc(t.id)+'" data-v="PPU">PPU</button>':'')+(p&&u?'<button class="btn primary" type="button" data-action="teksid" data-id="'+esc(t.id)+'" data-v="campur">Semua</button>':'')+'</div></section>';
   }).join('');
 }
@@ -1970,7 +2156,7 @@ function viewBank(){
   const bad=Object.keys(S.bad||{});
   if(bad.length) h+='<section class="card"><div class="row"><h2 class="grow">Soal dilaporkan ('+bad.length+')</h2><button class="link" type="button" data-action="unbad" data-id="*">Pulihkan semua</button></div><div class="sub">Tidak muncul di latihan. Otomatis kembali saat perbaikannya ditempel di atas.</div>'+
     bad.map(id=>'<div class="row" style="font-size:13px"><span class="grow">'+esc(S.bad[id].label||id)+'</span><button class="link" type="button" data-action="unbad" data-id="'+esc(id)+'">Pulihkan</button></div>').join('')+'</section>';
-  h+='<h2>Teks tersimpan</h2>'+(S.bank.length?S.bank.map(t=>'<div class="card" style="flex-direction:row;align-items:center"><div class="grow"><div style="font-weight:700">'+esc(t.judul||t.id)+'</div><div class="sub">'+t.soal.length+' soal · '+esc(t.id)+'</div></div><button class="btn danger" type="button" data-action="delteks" data-id="'+esc(t.id)+'" aria-label="Hapus '+esc(t.judul||t.id)+'" style="min-height:40px;padding:0 12px">Hapus</button></div>').join(''):'<div class="card empty">Belum ada teks.</div>');
+  h+='<h2>Teks tersimpan</h2>'+(S.bank.length?S.bank.map(t=>'<div class="card" style="flex-direction:row;align-items:center"><div class="grow"><div style="font-weight:700">'+esc(tName(t))+'</div><div class="sub">'+t.soal.length+' soal · '+esc(t.id)+'</div></div><button class="btn danger" type="button" data-action="delteks" data-id="'+esc(t.id)+'" aria-label="Hapus '+esc(tName(t))+'" style="min-height:40px;padding:0 12px">Hapus</button></div>').join(''):'<div class="card empty">Belum ada teks.</div>');
   h+='<section class="card"><h2>Animasi</h2><div style="align-self:flex-start" class="seg" role="group" aria-label="Animasi"><button type="button" aria-pressed="'+(S.anim!=='on')+'" data-action="anim" data-v="auto">Ikuti perangkat</button><button type="button" aria-pressed="'+(S.anim==='on')+'" data-action="anim" data-v="on">Selalu nyala</button></div><div class="sub">Pilih Selalu nyala agar gerakan soal tetap muncul walau Kurangi Gerakan di perangkat menyala.</div></section>';
   h+='<section class="card"><h2>Atur ulang</h2><div class="sub">Menghapus riwayat jawaban, jadwal ulang, isi tambahan, dan daftar kata, lalu memuat ulang contoh.</div>'+
      (V.bank.confirmReset?'<div class="actions"><button class="btn ghost" type="button" data-action="resetno">Batal</button><button class="btn danger" type="button" data-action="resetyes">Ya, atur ulang</button></div>':'<button class="btn danger" type="button" data-action="reset">Atur ulang data</button>')+'</section>';
@@ -2000,17 +2186,17 @@ function paceProgres(){
   return '<section class="card"><h2>Kecepatan (30 hari)</h2>'+rows.map(r=>'<div class="row" style="font-size:13px"><span class="grow"><b style="color:var(--muted)">'+r.sub+'</b> rata-rata per soal</span><b style="font-variant-numeric:tabular-nums;color:var('+(r.avg>PACE[r.sub]?'--warn-ink,#8A5A00':'--ok-ink')+')">'+Math.round(r.avg)+' dtk</b><span class="sub" style="width:80px;text-align:right">target '+PACE[r.sub]+' dtk</span></div>').join('')+'<div class="sub">Dihitung dari waktu yang kamu habiskan di tiap soal teks.</div></section>';
 }
 function viewProgres(){
-  const bar=(label,n,p,meta)=>'<div style="display:flex;flex-direction:column;gap:4px"><div class="row" style="font-size:13px"><span class="grow">'+label+'</span><b style="font-variant-numeric:tabular-nums">'+(n?p+'%':'–')+'</b><span class="sub" style="width:58px;text-align:right">'+meta+'</span></div><div class="bar">'+(n?'<i class="'+(p<70?'low':'')+'" style="width:'+p+'%"></i>':'')+'</div></div>';
-  const kat=['tanda-baca','ejaan','kebahasaan','baku'].map(k=>({k,...drillAcc(k)}));
+  const bar=(label,n,p,meta)=>'<div style="display:flex;flex-direction:column;gap:4px"><div class="row" style="font-size:13px"><span class="grow">'+label+'</span><b style="font-variant-numeric:tabular-nums">'+(n?p+'%':'–')+'</b><span class="sub" style="width:58px;text-align:right">'+meta+'</span></div><div class="bar">'+(n?'<i class="'+(p<WEAK_PCT?'low':'')+'" style="width:'+p+'%"></i>':'')+'</div></div>';
+  const kat=['tanda-baca','ejaan','kebahasaan','baku','game'].map(k=>({k,...drillAcc(k)}));
   const subs=[]; MATERI.forEach(b=>b.topik.forEach(t=>{ const s=subStat(t.sub); if(s.n) subs.push({sub:t.sub,...s}); }));
   const rows=KELOMPOK_ORDER.map(([sub,k])=>{ const h=S.history.filter(x=>x.subtes===sub&&kelompok(x.pola_id)===k); return {sub,k,n:h.length,p:pct(h.filter(x=>x.correct).length,h.length)}; });
   return progSummary()+weekStrip()+weakCard()+
     '<section class="card"><h2>Drill per kategori</h2>'+kat.map(x=>bar(esc(KAT[x.k]),x.n,x.p,x.n+' butir')).join('')+'</section>'+
     (subs.length?'<section class="card"><h2>Drill per topik</h2>'+subs.sort((a,b)=>a.p-b.p).map(x=>bar(esc(x.sub),x.n,x.p,x.n+' butir')).join('')+'</section>':'')+
-    '<section class="card"><h2>Teks ala UTBK</h2>'+rows.map(r=>bar('<b style="color:var(--muted)">'+r.sub+'</b> '+esc(r.k),r.n,r.p,r.n+' soal')).join('')+'<div class="sub">Batang oranye: di bawah 70%.</div></section>'+
-    (function(){ const ps=polaStat().filter(x=>x.n>=3).slice(0,8), ms=modeStat(), any=ms.dasar.n+ms.geser.n+ms['2027'].n, lv=[0,0,0,0]; POLA_IDS.forEach(p=>lv[polaLevel(p)]++);
+    '<section class="card"><h2>Teks ala UTBK</h2>'+rows.map(r=>bar('<b style="color:var(--muted)">'+r.sub+'</b> '+esc(r.k),r.n,r.p,r.n+' soal')).join('')+'<div class="sub">Batang oranye: di bawah 80%.</div></section>'+
+    (function(){ const ps=polaStat().filter(x=>x.n>=3).slice(0,8), ms=modeStat(), any=ms.dasar.n+ms.geser.n+ms['2027'].n, lv=[0,0,0,0], naik=[]; KELOMPOK_ORDER.forEach(([s,k])=>{ const l=kelLevel(s+' '+k); lv[l]++; if(l>1) naik.push(s+' '+k+' (tahap '+l+')'); });
       return (ps.length?'<section class="card"><h2>Pola terlemah</h2>'+ps.map(x=>bar('<b style="color:var(--muted)">'+esc((POLA_BRIEF[x.id]||['?'])[0])+'</b> '+esc(x.id.replace(/^(PBM|PPU)-/,'')),x.n,x.p,x.n+' soal')).join('')+'<div class="sub">Dihitung per pola soal, minimal 3 soal.</div></section>':'')+
-        (any?'<section class="card"><h2>Bentuk lama vs bentuk baru</h2>'+['dasar','geser','2027'].map(k=>bar(MODE_LBL[k],ms[k].n,ms[k].p,ms[k].n+' soal')).join('')+'<div class="sub">Tahap pola: '+lv[1]+' bentuk lama · '+lv[2]+' mulai digeser · '+lv[3]+' bentuk baru. Pola naik tahap setelah 5 soal terakhirnya benar 70% ke atas.</div></section>':''); })()+
+        (any?'<section class="card"><h2>Bentuk lama vs bentuk baru</h2>'+['dasar','geser','2027'].map(k=>bar(MODE_LBL[k],ms[k].n,ms[k].p,ms[k].n+' soal')).join('')+'<div class="sub">Tahap 8 kelompok: '+lv[1]+' bentuk lama · '+lv[2]+' mulai digeser · '+lv[3]+' bentuk baru.'+(naik.length?' Sudah naik: '+esc(naik.join(', '))+'.':'')+' Kelompok naik tahap setelah 10 soal terakhirnya (minimal 8) benar 80% ke atas.</div></section>':''); })()+
     paceProgres()+
     '<section class="card"><h2>Kelemahan untuk prompt besok</h2><div class="sub">Bagian ini otomatis masuk ke prompt hari berikutnya.</div><textarea id="weak" readonly>'+esc(weakText())+'</textarea></section>';
 }
@@ -2075,7 +2261,7 @@ function viewSwipe(){
 function viewSwipeDone(){
   const W=V.sw, p=pct(W.ok,W.seen);
   let h=navbar('Latihan','Hasil kata baku','',null);
-  h+='<div class="card" style="align-items:center;text-align:center;padding-block:22px"><div class="stat">'+W.ok+' / '+W.seen+'</div><div class="sub">'+p+'% benar</div><div class="bar" style="width:100%"><i class="'+(p<70?'low':'')+'" style="width:'+p+'%"></i></div></div>';
+  h+='<div class="card" style="align-items:center;text-align:center;padding-block:22px"><div class="stat">'+W.ok+' / '+W.seen+'</div><div class="sub">'+p+'% benar</div><div class="bar" style="width:100%"><i class="'+(p<WEAK_PCT?'low':'')+'" style="width:'+p+'%"></i></div></div>';
   if(W.wrong.length){
     h+='<div class="sh">Masih salah ('+W.wrong.length+')</div><div class="group">'+W.wrong.map(x=>'<div class="cell"><span class="txt"><span class="t1">'+esc(x.baku)+'</span><span class="t2">bukan '+esc(x.non.join(', '))+'</span></span></div>').join('')+'</div>';
     h+='<button class="btn primary block" type="button" data-action="swretry">Ulangi yang salah</button>';
@@ -2094,6 +2280,88 @@ function viewSwipeDone(){
   document.addEventListener('pointerup',end); document.addEventListener('pointercancel',end);
   document.addEventListener('keydown',e=>{ if(route()!=='swipe'||!V.sw||V.sw.done) return; if(e.key==='Enter'&&V.sw.fb){ e.preventDefault(); swNext(); return; } if(e.key==='ArrowRight'){ e.preventDefault(); if(V.sw.fb) swNext(); else swAnswer(true); } else if(e.key==='ArrowLeft'){ e.preventDefault(); if(V.sw.fb) swNext(); else swAnswer(false); } });
 })();
+
+
+/* ---------- Mini game (lokal, tanpa Claude) ---------- */
+const GAME_INFO={
+  susun:{t:'Susun Paragraf',d:'Urutkan kalimat satu paragraf',sub:'Susun Paragraf',n:5,ic:'pbm'},
+  sumbang:{t:'Kalimat Penyusup',d:'Temukan kalimat yang tidak padu',sub:'Kalimat Penyusup',n:5,ic:'pbm'},
+  baku:{t:'Baku di Kalimat',d:'Kalimat bernomor dengan kata tidak baku',sub:'Baku di Kalimat',n:10,ic:'baku'}
+};
+/* tugas kata baku pindah ke Baku di Kalimat mulai tanggal ini; hari sebelumnya tetap memakai kartu geser */
+const BAKU_KAL_START=new Date(2026,10,13);
+/* kalimat pembawa: {kata} adalah kata baku dari daftar yang ditukar menjadi bentuk tidak bakunya */
+const BAKU_KAL=['Pengurus koperasi menyusun {jadwal} piket untuk seluruh anggota.','Petugas puskesmas meminta warga mengisi {kuesioner} sebelum pemeriksaan.','Setiap pelamar wajib melampirkan salinan {ijazah} terakhir.','Hasil {analisis} air sumur itu akan diumumkan pekan depan.','Warga diminta {antre} dengan tertib di depan loket pembayaran.','Obat itu hanya dapat dibeli di {apotek} dengan resep dokter.','Guru memberikan {nasihat} kepada siswa yang sering terlambat.','Pengelola kantin berjanji meningkatkan {kualitas} makanan.','Pemerintah desa memperbarui {sistem} pengelolaan sampah tahun ini.','Petani mengeluhkan harga {cabai} yang turun saat panen raya.','Pengendara sepeda motor wajib membawa surat {izin} mengemudi.','Para peneliti mencatat {frekuensi} kunjungan wisatawan setiap bulan.','Bengkel itu memberikan {servis} gratis bagi pelanggan baru.','Dokter menjelaskan {risiko} operasi kepada keluarga pasien.','Ibu membeli dua {lusin} gelas untuk acara arisan.','Kakak ingin meniti {karier} di bidang perbankan.','Mahasiswa kedokteran menjalani {praktik} di rumah sakit daerah.','Panitia lomba mengumumkan {kategori} pemenang melalui papan informasi.','Pedagang itu mencatat {omzet} hariannya di buku kecil.','Kakak memesan {taksi} untuk berangkat ke bandara.','Barang yang sudah {kedaluwarsa} harus segera ditarik dari rak.','Ayah menyimpan dokumen penting di dalam {lemari} besi.','Pengunjung {museum} meningkat selama musim liburan.','Udara di dalam ruang arsip itu terasa {lembap} dan dingin.','Perusahaan itu membuka lowongan untuk posisi {manajer} pemasaran.','Pengurus RT mengadakan {survei} kepuasan warga terhadap layanan posyandu.','Pengelola parkir menetapkan {tarif} baru mulai bulan depan.','Toko kue itu juga menerima pesanan {katering} untuk acara pernikahan.','Mahasiswa itu sedang merumuskan {hipotesis} untuk penelitiannya.','Kebun itu menghasilkan tiga {kuintal} jagung setiap musim.','Wali kelas meminta orang tua mengambil {rapor} pada hari Sabtu.','Pengemudi {ojek} daring menunggu penumpang di depan stasiun.','Penjahit itu dikenal sangat {terampil} membuat kebaya.','Pabrik itu menambah {kuantitas} produksi menjelang hari raya.','Petugas imigrasi memeriksa {paspor} setiap penumpang.','Peneliti itu memakai {metode} wawancara mendalam.','Pertunjukan {teater} sekolah dipentaskan di aula.','Anak-anak belajar mengaji di {masjid} dekat rumah.','Pemilik warung menyediakan {sambal} terasi untuk pembeli.','Juri memuji {kreativitas} siswa dalam lomba poster.','Kepala sekolah menilai kegiatan itu cukup {efektif} untuk mengurangi sampah.','Para siswa menunggu {bus} sekolah di halte.','Penulis itu mengirimkan {esai} untuk lomba tingkat provinsi.','Para peserta membawa {ransel} berisi perlengkapan berkemah.','Nenek menanam {cengkih} di kebun belakang rumah.','Harga {telur} ayam naik menjelang akhir tahun.','Pemuda desa membentuk {grup} musik keroncong.','Para pendaki berteduh di dalam {gua} saat hujan turun.','Rumah itu tampak {rapi} setelah dibersihkan bersama.','Para siswa mengikuti {tes} kemampuan bahasa Inggris.'];
+const WCH='A-Za-zÀ-ÿ';
+function gBadSet(t){ const bad=new Set(); (t.soal||[]).forEach(q=>{ if(q.subtes==='PBM'||/^PBM-/.test(q.pola_id||'')) (q.bukti||[]).forEach(b=>bad.add(b)); }); return bad; }
+function gParas(){ const out=[]; S.bank.forEach(t=>{ if((t.jenis||'bernomor')!=='bernomor'||!Array.isArray(t.kalimat)||t.kalimat.length<3) return;
+  const st=(t.paragraf_mulai&&t.paragraf_mulai.length?t.paragraf_mulai:[1]), skip=new Set();
+  t.soal.forEach(q=>{ if(/^PBM-kepaduan-(sisipan|urutan|kalimat-sumbang)/.test(q.pola_id||'')) (q.bukti||[]).forEach(b=>skip.add(b)); });
+  st.forEach((a,pi)=>{ const end=(st[pi+1]||t.kalimat.length+1)-1, idx=[]; for(let i=a;i<=end;i++) idx.push(i);
+    if(idx.length<3||idx.length>7||idx.some(i=>skip.has(i)||!t.kalimat[i-1]||/\[\.\.\.\]/.test(t.kalimat[i-1]))) return;
+    out.push({t,idx,id:t.id+'-p'+(pi+1)}); }); });
+  return out; }
+function gLast(sub,id){ let ts=0; S.dhist.forEach(x=>{ if(x.sub===sub&&x.id===id&&x.ts>ts) ts=x.ts; }); return ts; }
+function gRoundSusun(P){ let order=shuffle(P.idx), g=0; while(order.join()===P.idx.join()&&g++<10) order=shuffle(P.idx); return {id:'g-'+P.id,t:P.t,idx:P.idx,pool:order,picked:[]}; }
+function gRoundSumbang(P){ const others=[]; S.bank.forEach(t=>{ if(t.id===P.t.id||!Array.isArray(t.kalimat)) return; const bad=gBadSet(t); t.kalimat.forEach((k,i)=>{ if(!bad.has(i+1)&&k&&!/\[\.\.\.\]/.test(k)&&k.length<260) others.push(k); }); });
+  if(!others.length) return null;
+  const lines=P.idx.map(i=>P.t.kalimat[i-1]), pos=1+Math.floor(Math.random()*lines.length);
+  lines.splice(pos,0,others[Math.floor(Math.random()*others.length)]); return {id:'g-'+P.id,t:P.t,lines,ans:pos,pick:null}; }
+function gSwap(sent,word,non){
+  const re=new RegExp('(^|[^'+WCH+'-])('+word.replace(/[.*+?^${}()|[\]\\]/g,'\\$&')+')(?=$|[^'+WCH+'-])','i');
+  return sent.replace(re,(m0,pre,w)=>pre+(w[0]!==w[0].toLowerCase()?non[0].toUpperCase()+non.slice(1):non)); }
+function gBakuPool(){ const m=new Map(), nonSet=new Set(), out=[], seen=new Set();
+  S.baku.forEach(p=>{ m.set(p.baku.toLowerCase(),p); p.non.forEach(n=>nonSet.add(n.toLowerCase())); });
+  const clean=k=>!(k.toLowerCase().match(new RegExp('['+WCH+']+(?:-['+WCH+']+)*','g'))||[]).some(w=>nonSet.has(w));
+  BAKU_KAL.forEach(c=>{ const w=(/\{([^}]+)\}/.exec(c)||[])[1], p=w&&m.get(w.toLowerCase()), k=c.replace('{'+w+'}',w); if(p&&clean(k)&&!seen.has(k)){ seen.add(k); out.push({p,kata:w,teks:k}); } });
+  S.bank.forEach(t=>{ if(!Array.isArray(t.kalimat)) return; const bad=gBadSet(t); t.kalimat.forEach((k,i)=>{ if(!k||bad.has(i+1)||/\[\.\.\.\]/.test(k)||k.length>200||seen.has(k)||!clean(k)) return;
+    for(const w of (k.match(new RegExp('['+WCH+']+(?:-['+WCH+']+)*','g'))||[])){ const p=m.get(w.toLowerCase()); if(p){ seen.add(k); out.push({p,kata:w,teks:k}); break; } } }); });
+  return out; }
+function gRoundBaku(pool,used){ if(pool.length<5) return null;
+  const now=Date.now(), rank=x=>{ const s=srsOf(pairId(x.p)); if(s.n&&s.ok<s.n&&s.due<=now) return 0; if(!s.n) return 1; if(s.due<=now) return 2; return 3; };
+  const cand=pool.filter(x=>!used.includes(x.teks)), src=cand.length?cand:pool, best=Math.min(...src.map(rank));
+  const tgt=shuffle(src.filter(x=>rank(x)===best))[0], non=tgt.p.non[Math.floor(Math.random()*tgt.p.non.length)], wrong=gSwap(tgt.teks,tgt.kata,non);
+  if(wrong===tgt.teks) return null;
+  const lines=shuffle(shuffle(pool.filter(x=>x.teks!==tgt.teks&&x.p!==tgt.p)).slice(0,4).map(x=>x.teks).concat([wrong]));
+  return {id:pairId(tgt.p),p:tgt.p,non,teks:tgt.teks,lines,ans:lines.indexOf(wrong),pick:null}; }
+function startGame(kind){ const info=GAME_INFO[kind]; if(!info) return;
+  const G={kind,info,k:0,res:[],used:[],cur:null,fb:false,done:false};
+  if(kind==='baku'){ G.pool=gBakuPool(); G.n=info.n; }
+  else { G.paras=shuffle(gParas()).sort((a,b)=>gLast(info.sub,'g-'+a.id)-gLast(info.sub,'g-'+b.id)).slice(0,info.n); G.n=G.paras.length; }
+  V.game=G; gNext(G,true); go('game'); }
+function gNext(G,first){ if(!first) G.k++; G.fb=false; if(G.k>=G.n){ G.done=true; G.cur=null; return; }
+  G.cur=G.kind==='baku'?gRoundBaku(G.pool,G.used):G.kind==='susun'?gRoundSusun(G.paras[G.k]):gRoundSumbang(G.paras[G.k]);
+  if(!G.cur){ G.n=G.k; G.done=true; } else if(G.kind==='baku') G.used.push(G.cur.teks); }
+function gRecord(G,ok){ const c=G.cur; G.res.push({ok,c}); G.fb=true;
+  if(G.kind==='baku'){ const s=srsOf(c.id), int=ok?(s.int?Math.round(s.int*2.5):3):0; S.srs[c.id]={due:ok?Date.now()+int*DAY:0,int,n:s.n+1,ok:s.ok+(ok?1:0)}; S.dhist.push({id:c.id,kat:'baku',sub:'Baku di Kalimat',correct:ok,ts:Date.now()}); }
+  else S.dhist.push({id:c.id,kat:'game',sub:G.info.sub,correct:ok,ts:Date.now()});
+  buzz(ok); save(); }
+function gameToday(kind){ const k=dayKey(Date.now()), sub=GAME_INFO[kind].sub; return S.dhist.filter(x=>x.sub===sub&&dayKey(x.ts)===k).length; }
+function viewGame(){ const G=V.game; if(!G) return viewBeranda(); if(G.done) return viewGameDone();
+  const c=G.cur, last=G.res[G.res.length-1];
+  let h=navbar('Keluar',esc(G.info.t),(G.k+1)+'/'+G.n,pct(G.k,G.n))+'<section class="card game">';
+  if(G.kind==='susun'){
+    h+='<p class="lead">Susun kalimat berikut menjadi paragraf yang padu. Ketuk kalimat sesuai urutan.</p>';
+    h+='<ol class="cbt-list gpick">'+(c.picked.length?c.picked.map((i,j)=>'<li'+(G.fb?(i===c.idx[j]?' class="hit"':' class="miss"'):'')+'><span class="no">'+(j+1)+'.</span><span class="grow">'+esc(c.t.kalimat[i-1])+'</span>'+(G.fb?'':'<button type="button" class="gx" data-action="gundo" data-j="'+j+'" aria-label="Lepas kalimat ini">✕</button>')+'</li>').join(''):'<li class="ph">Belum ada kalimat yang dipilih.</li>')+'</ol>';
+    if(!G.fb){ const rest=c.pool.filter(i=>!c.picked.includes(i)); if(rest.length) h+='<div class="sh" style="margin:6px 0 0">Kalimat</div><div class="ropts">'+rest.map(i=>'<button type="button" class="ropt gopt" data-action="gtap" data-i="'+i+'"><span class="t">'+esc(c.t.kalimat[i-1])+'</span></button>').join('')+'</div>'; }
+    else h+='<div class="pemb '+(last.ok?'ok':'bad')+'"><div class="pemb-h">'+(last.ok?'Urutan tepat':'Urutan belum tepat')+'</div><div class="pemb-b">Urutan asli:</div><ol class="cbt-list">'+c.idx.map((i,j)=>'<li><span class="no">'+(j+1)+'.</span><span>'+esc(c.t.kalimat[i-1])+'</span></li>').join('')+'</ol><div class="pemb-n">Dari '+esc(tName(c.t))+'. Perhatikan kata rujukan (itu, tersebut, hal ini) dan kata penghubung antarkalimat.</div></div>';
+  } else {
+    h+='<p class="lead">'+(G.kind==='baku'?'Perhatikan kalimat-kalimat berikut!':'Bacalah paragraf berikut!')+'</p>';
+    h+='<div class="ropts">'+c.lines.map((x,i)=>{ let cl='ropt gopt'; if(G.fb) cl+=i===c.ans?' right':i===c.pick?' wrong':' dim'; return '<button type="button" class="'+cl+'" data-action="gpick" data-i="'+i+'"'+(G.fb?' disabled':'')+'><span class="gno">('+(i+1)+')</span><span class="t">'+esc(x)+'</span></button>'; }).join('')+'</div>';
+    h+='<div class="cbt-q">'+(G.kind==='baku'?'Kalimat yang memuat kata tidak baku adalah kalimat nomor ....':'Kalimat yang tidak padu dengan paragraf tersebut adalah kalimat nomor ....')+'</div>';
+    if(G.fb) h+='<div class="pemb '+(last.ok?'ok':'bad')+'"><div class="pemb-h">'+(last.ok?'Benar':'Belum tepat · Kunci: '+(c.ans+1))+'</div><div class="pemb-b">'+(G.kind==='baku'?'<b>'+esc(c.non)+'</b> seharusnya <b>'+esc(c.p.baku)+'</b>.':'Kalimat ('+(c.ans+1)+') diambil dari teks lain, jadi tidak mendukung gagasan utama paragraf.')+'</div></div>';
+  }
+  h+='</section>';
+  if(G.kind==='susun'&&!G.fb) h+='<button class="btn primary block" type="button" data-action="gcek"'+(c.picked.length===c.idx.length?'':' disabled')+'>Periksa</button>';
+  if(G.fb) h+='<button class="btn primary block" type="button" data-action="gnext">'+(G.k+1>=G.n?'Lihat hasil':'Lanjut')+'</button>';
+  return h+'<button class="btn ghost block" type="button" data-action="gstop"'+(G.res.length?'':' disabled')+'>Selesai dan lihat hasil</button>'; }
+function viewGameDone(){ const G=V.game, ok=G.res.filter(r=>r.ok).length, n=G.res.length;
+  let h=navbar('Latihan','Hasil '+esc(G.info.t),'',null);
+  if(!n) return h+'<div class="card empty">'+(G.kind==='baku'?'Butuh minimal 5 kalimat dari daftar kata baku.':'Belum ada paragraf yang bisa dipakai. Game ini memakai paragraf 3–7 kalimat dari teks bernomor di Bank soal'+(G.kind==='sumbang'?', dan butuh minimal 2 teks berbeda':'')+'. <a href="#bank">Tempel paket di Bank soal.</a>')+'</div><a class="btn ghost block" href="#beranda">Kembali</a>';
+  h+=ring(ok,n)+'<div class="sub">benar · '+esc(G.info.t)+'</div></section>';
+  const wrong=G.res.filter(r=>!r.ok);
+  if(G.kind==='baku'&&wrong.length) h+='<div class="sh">Masih salah ('+wrong.length+')</div><div class="group">'+wrong.map(r=>'<div class="cell"><span class="txt"><span class="t1">'+esc(r.c.p.baku)+'</span><span class="t2">bukan '+esc(r.c.non)+'</span></span></div>').join('')+'</div>';
+  return h+'<div class="actions"><a class="btn ghost" href="#beranda">Selesai</a><button class="btn primary" type="button" data-action="game" data-v="'+G.kind+'">Main lagi</button></div>'; }
 
 /* ---------- Kalender konsep ---------- */
 function nextDays(n){ let h=''; const d0=new Date(); d0.setHours(0,0,0,0);
@@ -2145,10 +2413,10 @@ function viewKalender(){
 /* ---------- Render ---------- */
 function render(){
   const r=route(); if(r!=='kaidah'&&V.kaidah) V.kaidah.from=null;
-  const views={progres:viewProgres,kalender:viewKalender,beranda:viewBeranda,kaidah:viewKaidah,teks:viewTeks,bank:viewBank,progres:viewProgres,drill:viewDrill,soal:viewSoal,selesai:viewSelesai,prompt:viewPrompt,swipe:viewSwipe};
+  const views={progres:viewProgres,kalender:viewKalender,beranda:viewBeranda,kaidah:viewKaidah,teks:viewTeks,bank:viewBank,progres:viewProgres,drill:viewDrill,soal:viewSoal,selesai:viewSelesai,prompt:viewPrompt,swipe:viewSwipe,game:viewGame};
   $('#view').innerHTML=(views[r]||viewBeranda)();
   renderNav();
-  document.body.classList.toggle('sess', (r==='drill'&&!!V.drill&&!(V.drill.fin&&!V.drill.review))||(r==='soal'&&!!V.run)||(r==='swipe'&&!!V.sw));
+  document.body.classList.toggle('sess', (r==='drill'&&!!V.drill&&!(V.drill.fin&&!V.drill.review))||(r==='soal'&&!!V.run)||(r==='swipe'&&!!V.sw)||(r==='game'&&!!V.game&&!V.game.done));
   const h1=$('#view h1'); $('#topbar').textContent=h1?h1.textContent:''; onScrollTop(); taskWatch(); ringkasPPU();
 }
 function onScrollTop(){ const h1=$('#view h1'), tb=$('#topbar'); if(!tb) return; tb.classList.toggle('on', !!h1 && h1.getBoundingClientRect().bottom<44); }
@@ -2173,6 +2441,13 @@ document.addEventListener('click',e=>{
   else if(a==='mgrp'){ V.kaidah.nav=Object.assign({},V.kaidah.nav,{g:+b.dataset.v}); render(); window.scrollTo(0,0); }
   else if(a==='mup'){ V.kaidah.nav=navUp(V.kaidah.nav||{}); render(); window.scrollTo(0,0); }
   else if(a==='swipe'){ startSwipe(null); }
+  else if(a==='game'){ startGame(b.dataset.v); }
+  else if(a==='gtap'){ const G=V.game; if(!G||G.fb||G.kind!=='susun') return; const i=+b.dataset.i; if(!G.cur.picked.includes(i)) G.cur.picked.push(i); render(); }
+  else if(a==='gundo'){ const G=V.game; if(!G||G.fb) return; G.cur.picked.splice(+b.dataset.j,1); render(); }
+  else if(a==='gcek'){ const G=V.game; if(!G||G.fb) return; const c=G.cur; if(c.picked.length!==c.idx.length) return; gRecord(G,c.picked.join()===c.idx.join()); render(); }
+  else if(a==='gpick'){ const G=V.game; if(!G||G.fb||G.kind==='susun') return; G.cur.pick=+b.dataset.i; gRecord(G,G.cur.pick===G.cur.ans); render(); }
+  else if(a==='gnext'){ const G=V.game; if(!G||!G.fb) return; gNext(G,false); render(); window.scrollTo(0,0); }
+  else if(a==='gstop'){ const G=V.game; if(!G) return; G.done=true; render(); window.scrollTo(0,0); }
   else if(a==='swyes'){ swAnswer(true); }
   else if(a==='swno'){ swAnswer(false); }
   else if(a==='swnext'){ swNext(); }
@@ -2184,6 +2459,7 @@ document.addEventListener('click',e=>{
   else if(a==='teks'){ V.paket=null; startTeks(b.dataset.v); }
   else if(a==='teksid'){ V.paket=null; startTeks(b.dataset.v,b.dataset.id); }
   else if(a==='qpick'){ const C=sessCtx(); if(!C) return; const s=C.s, x=s.A[s.cur]; if(x.done||s.review) return; x.c=+b.dataset.i; if(cekMode()==='langsung'){ recordAt(C,s.cur); buzz(x.ok); save(); } render(); }
+  else if(a==='qpgk'){ const C=sessCtx(); if(!C) return; const s=C.s, it=C.items[s.cur], x=s.A[s.cur]; if(x.done||s.review||it.tipe!=='pgk') return; if(!Array.isArray(x.c)) x.c=it.pernyataan.map(()=>null); x.c[+b.dataset.i]=b.dataset.v==='1'; if(cekMode()==='langsung'&&isAns(it,x)){ recordAt(C,s.cur); buzz(x.ok); save(); } render(); }
   else if(a==='qcheck'){ const C=sessCtx(); if(!C) return; const s=C.s, x=s.A[s.cur]; if(x.done||!String(x.is).trim()) return; recordAt(C,s.cur); buzz(x.ok); save(); render(); }
   else if(a==='qgo'||a==='qprev'||a==='qnext'){ const C=sessCtx(); if(!C) return; const s=C.s, k=a==='qgo'?+b.dataset.k:s.cur+(a==='qnext'?1:-1); if(k<0||k>=C.items.length) return; if(s.T) s.T[s.cur]+=Date.now()-s.qStart; s.cur=k; s.qStart=Date.now(); V.confirmEnd=false; render(); window.scrollTo(0,0); }
   else if(a==='qreport'){ const C=sessCtx(); if(!C) return; reportItem(C); render(); }
@@ -2243,8 +2519,8 @@ document.addEventListener('keydown',e=>{
   if(k==='r'){ click('[data-action="qflag"]'); }
 });
 document.addEventListener('paste',e=>{ if(e.target.id==='paste'){ setTimeout(()=>{ V.bank.text=$('#paste').value; V.bank.check=validate(V.bank.text); render(); },0); } });
-window.addEventListener('hashchange',()=>{ const r=route(); if(((r==='soal'||r==='selesai')&&!V.run)||(r==='drill'&&!V.drill)||(r==='swipe'&&!V.sw)){ location.hash='#beranda'; return; } render(); window.scrollTo(0,0); });
-if(['soal','selesai','drill','swipe'].includes(route())) location.hash='#beranda';
+window.addEventListener('hashchange',()=>{ const r=route(); if(((r==='soal'||r==='selesai')&&!V.run)||(r==='drill'&&!V.drill)||(r==='swipe'&&!V.sw)||(r==='game'&&!V.game)){ location.hash='#beranda'; return; } render(); window.scrollTo(0,0); });
+if(['soal','selesai','drill','swipe','game'].includes(route())) location.hash='#beranda';
 function applyAnim(){ try{ if(S.anim==='on') document.documentElement.setAttribute('data-anim','on'); else document.documentElement.removeAttribute('data-anim'); }catch(_){} }
 applyAnim();
 render();
