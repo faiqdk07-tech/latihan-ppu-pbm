@@ -1114,8 +1114,30 @@ SAMPLE.drill = SAMPLE.drill.concat(SAMPLE_KEB);
 
 /* ---------- Konstanta ---------- */
 const KAT = {'tanda-baca':'Tanda baca','ejaan':'EYD V','kebahasaan':'Kebahasaan','baku':'Kata baku'};
-const POLA_IDS = ['PBM-ejaan-kapital','PBM-ejaan-tanda-baca','PBM-ejaan-penulisan-kata','PBM-ejaan-nama-ilmiah','PBM-diksi-seharusnya','PBM-diksi-pengganti','PBM-diksi-dihilangkan','PBM-rumpang-kata','PBM-rumpang-konjungsi','PBM-rumpang-pernyataan','PBM-efektif-sempurnakan','PBM-efektif-perbaikan','PBM-efektif-penggabungan','PBM-efektif-kalimat-inti','PBM-makna-ungkap-kembali','PBM-makna-informasi-utama','PBM-kepaduan-judul','PBM-kepaduan-sisipan','PBM-kepaduan-urutan',
-'PPU-makna-sinonim','PPU-makna-antonim','PPU-makna-luas-sempit','PPU-makna-asosiasi','PPU-makna-simpulan-situasi','PPU-frasa-makna','PPU-frasa-pasangan-tetap','PPU-frasa-pola-makna','PPU-imbuhan-makna','PPU-majas-kiasan','PPU-majas-perumpamaan','PPU-majas-makna-sebenarnya','PPU-hubungan-kata','PPU-konjungsi-fungsi','PPU-konjungsi-antarparagraf','PPU-struktur-pola-kalimat','PPU-struktur-tidak-logis','PPU-struktur-melengkapi','PPU-struktur-pembagian-paragraf','PPU-pandangan-penulis','PPU-bahasa-buatan'];
+const POLA_IDS = ['PBM-ejaan-kapital','PBM-ejaan-tanda-baca','PBM-ejaan-penulisan-kata','PBM-ejaan-nama-ilmiah','PBM-diksi-seharusnya','PBM-diksi-pengganti','PBM-diksi-dihilangkan','PBM-rumpang-kata','PBM-rumpang-konjungsi','PBM-rumpang-pernyataan','PBM-efektif-sempurnakan','PBM-efektif-perbaikan','PBM-efektif-penggabungan','PBM-efektif-kalimat-inti','PBM-efektif-variasi-kalimat','PBM-efektif-paling-ringkas','PBM-makna-ungkap-kembali','PBM-makna-informasi-utama','PBM-kepaduan-judul','PBM-kepaduan-sisipan','PBM-kepaduan-urutan',
+'PPU-makna-sinonim','PPU-makna-antonim','PPU-makna-luas-sempit','PPU-makna-asosiasi','PPU-makna-simpulan-situasi','PPU-makna-ungkap-kembali','PPU-frasa-makna','PPU-frasa-pasangan-tetap','PPU-frasa-pola-makna','PPU-frasa-variasi-kata','PPU-imbuhan-makna','PPU-majas-kiasan','PPU-majas-perumpamaan','PPU-majas-makna-sebenarnya','PPU-hubungan-kata','PPU-konjungsi-fungsi','PPU-konjungsi-antarparagraf','PPU-struktur-pola-kalimat','PPU-struktur-tidak-logis','PPU-struktur-melengkapi','PPU-struktur-pembagian-paragraf','PPU-pandangan-penulis','PPU-bahasa-buatan'];
+/* Kunci Pola Soal (brief Nov 2026): pola_id -> [kemampuan, bentuk lama terdekat] */
+const POLA_BRIEF = {
+'PBM-ejaan-kapital':['PBM-C','PBM-8'],'PBM-ejaan-tanda-baca':['PBM-C','PBM-8'],'PBM-ejaan-penulisan-kata':['PBM-C','PBM-9'],'PBM-ejaan-nama-ilmiah':['PBM-C','tambahan 2026'],
+'PBM-diksi-seharusnya':['PBM-C','PBM-14'],'PBM-diksi-pengganti':['PBM-A','PBM-2'],'PBM-diksi-dihilangkan':['PBM-C','PBM-12'],
+'PBM-rumpang-kata':['PBM-A','PBM-3'],'PBM-rumpang-konjungsi':['PBM-C','PBM-10'],'PBM-rumpang-pernyataan':['PBM-A','PBM-3'],
+'PBM-efektif-sempurnakan':['PBM-C','PBM-11'],'PBM-efektif-perbaikan':['PBM-C','PBM-13'],'PBM-efektif-penggabungan':['PBM-B','PBM-6'],'PBM-efektif-kalimat-inti':['PBM-B','PBM-5'],
+'PBM-efektif-variasi-kalimat':['PBM-B','belum pernah keluar'],'PBM-efektif-paling-ringkas':['PBM-C','belum pernah keluar'],
+'PBM-makna-ungkap-kembali':['PBM-B','PBM-7'],'PBM-makna-informasi-utama':['PBM-B','PBM-5'],
+'PBM-kepaduan-judul':['PBM-A','PBM-1'],'PBM-kepaduan-sisipan':['PBM-B','PBM-4'],'PBM-kepaduan-urutan':['PBM-B','tambahan 2026'],
+'PPU-makna-sinonim':['PPU-A','PPU-1'],'PPU-makna-antonim':['PPU-A','PPU-1'],'PPU-makna-luas-sempit':['PPU-A','PPU-2'],'PPU-makna-asosiasi':['PPU-A','PPU-4'],
+'PPU-makna-simpulan-situasi':['PPU-A','PPU-15'],'PPU-makna-ungkap-kembali':['PPU-D','PPU-13'],
+'PPU-frasa-makna':['PPU-C','PPU-6'],'PPU-frasa-pasangan-tetap':['PPU-A','PPU-7'],'PPU-frasa-pola-makna':['PPU-C','PPU-6'],'PPU-frasa-variasi-kata':['PPU-B','tambahan 2026'],
+'PPU-imbuhan-makna':['PPU-B','PPU-5'],
+'PPU-majas-kiasan':['PPU-A','PPU-8'],'PPU-majas-perumpamaan':['PPU-A','tambahan 2026'],'PPU-majas-makna-sebenarnya':['PPU-A','PPU-8'],
+'PPU-hubungan-kata':['PPU-A','PPU-3'],'PPU-konjungsi-fungsi':['PPU-C','PPU-11'],'PPU-konjungsi-antarparagraf':['PPU-D','PPU-11'],
+'PPU-struktur-pola-kalimat':['PPU-C','PPU-9'],'PPU-struktur-tidak-logis':['PPU-D','PPU-10'],'PPU-struktur-melengkapi':['PPU-D','PPU-12'],'PPU-struktur-pembagian-paragraf':['PPU-D','PPU-14'],
+'PPU-pandangan-penulis':['PPU-D','tambahan 2026'],'PPU-bahasa-buatan':['PPU-E','PPU-16']};
+const MODE_LBL = {dasar:'Mode Dasar', geser:'Satu hal diubah', '2027':'Mode 2027'};
+/* Tahap pola: 1 = bentuk lama dulu, 2 = boleh satu hal diubah, 3 = boleh bentuk baru. Naik jika 5+ soal terakhir di tahap sebelumnya benar 70% ke atas. */
+const LVL_MIN = 5;
+function polaLevel(pid){ const h=S.history.filter(x=>x.pola_id===pid); const st=m=>{ const a=h.filter(x=>(x.mode||'dasar')===m).slice(-10); return {n:a.length,p:pct(a.filter(x=>x.correct).length,a.length)}; }; const d=st('dasar'), g=st('geser'); if(d.n<LVL_MIN||d.p<70) return 1; if(g.n<LVL_MIN||g.p<70) return 2; return 3; }
+function polaLabel(it){ const b=POLA_BRIEF[it.pola_id]; if(!b) return ''; return 'Kemampuan: '+b[0]+' · Bentuk lama terdekat: '+b[1]+(MODE_LBL[it.mode]?' · '+MODE_LBL[it.mode]:'')+(it.geser?' · Yang diubah: '+it.geser:''); }
 function kelompok(pid){
   if(/^PBM-ejaan/.test(pid)) return 'Ejaan';
   if(/^PBM-(diksi|rumpang)/.test(pid)) return 'Diksi & rumpang';
@@ -1169,7 +1191,9 @@ if(S.bakuVer!==BAKU_VER){ S.baku=parseBaku(SAMPLE_BAKU).pairs; S.bakuVer=BAKU_VE
 function save(){ try{ localStorage.setItem(KEY, JSON.stringify(S)); }catch(e){} ringkasPPU(); }
 /* ringkasan harian untuk Progres Harian (domain yang sama) */
 function ringkasPPU(){ try{ const d=new Date(), t=tasksOn(d), k=dayKey(d.getTime()), h=S.dhist.concat(S.history).filter(x=>dayKey(x.ts)===k);
-  localStorage.setItem('ppu.ringkas',JSON.stringify({app:'latihan-ppu-pbm',tanggal:ymd(d),tugas_selesai:t.filter(x=>x.done).length,tugas_total:t.length,soal:h.length,benar:h.filter(x=>x.correct).length,diperbarui:Date.now()})); }catch(e){} }
+  localStorage.setItem('ppu.ringkas',JSON.stringify({app:'latihan-ppu-pbm',tanggal:ymd(d),tugas_selesai:t.filter(x=>x.done).length,tugas_total:t.length,soal:h.length,benar:h.filter(x=>x.correct).length,pola:ringkasPola(),diperbarui:Date.now()})); }catch(e){} }
+/* tahap pola untuk Progres Harian: [bentuk lama, mulai digeser, bentuk baru] + pola terlemah */
+function ringkasPola(){ const tahap=[0,0,0]; POLA_IDS.forEach(p=>tahap[polaLevel(p)-1]++); const w=polaStat().filter(x=>x.n>=LVL_MIN&&x.p<70)[0]; return {tahap,lemah:w?{id:w.id,p:w.p,n:w.n}:null}; }
 function mergeImport(st,data,isSample){
   let addT=0, addD=0;
   st.bad=st.bad||{};
@@ -1347,6 +1371,7 @@ function validate(raw){
       const w=where+', soal '+(q.nomor||qi+1);
       if(q.subtes!=='PBM'&&q.subtes!=='PPU') errs.push(w+': subtes harus "PBM" atau "PPU".');
       if(!POLA_IDS.includes(q.pola_id)) errs.push(w+': pola_id "'+(q.pola_id||'')+'" tidak dikenali.');
+      if(q.mode!=null&&!MODE_LBL[q.mode]) errs.push(w+': mode harus "dasar", "geser", atau "2027".');
       if(!q.perintah) errs.push(w+': kalimat perintah kosong.');
       (q.bukti||[]).forEach(b=>{ if(!(b>=1&&b<=nK)) errs.push(w+': bukti kalimat ('+b+') tidak ada di teks.'); });
       (q.drill_terkait||[]).forEach(s=>{ if(!SUB_KAT[s]) errs.push(w+': drill_terkait "'+s+'" tidak ada di daftar materi.'); });
@@ -1369,27 +1394,31 @@ function weakText(){
   const m={}; S.dhist.filter(x=>x.ts>=since).forEach(x=>{ const r=m[x.sub]=m[x.sub]||{sub:x.sub,n:0,bad:0}; r.n++; if(!x.correct) r.bad++; });
   Object.values(m).filter(x=>x.n>=WEAK_MIN&&pct(x.n-x.bad,x.n)<70).sort((a,b)=>pct(a.n-a.bad,a.n)-pct(b.n-b.bad,b.n)).slice(0,5).forEach(x=>lines.push('- Drill '+x.sub+': salah '+x.bad+' dari '+x.n));
   KELOMPOK_ORDER.forEach(([s,k])=>{ const h=S.history.filter(x=>x.ts>=since&&x.subtes===s&&kelompok(x.pola_id)===k); if(h.length>=WEAK_MIN){ const p=pct(h.filter(x=>x.correct).length,h.length); if(p<70) lines.push('- Teks '+s+' '+k+': '+p+'% dari '+h.length+' soal'); } });
+  polaStat(since).filter(x=>x.n>=WEAK_MIN&&x.p<70).slice(0,5).forEach(x=>lines.push('- Pola '+x.id+' ('+(POLA_BRIEF[x.id]||['?'])[0]+'): '+x.p+'% dari '+x.n+' soal'));
   return lines.length?lines.join('\n'):'- (belum ada data)';
 }
+function polaStat(since){ const m={}; S.history.filter(x=>x.ts>=(since||0)&&x.pola_id).forEach(x=>{ const r=m[x.pola_id]=m[x.pola_id]||{id:x.pola_id,n:0,ok:0}; r.n++; if(x.correct) r.ok++; }); return Object.values(m).map(r=>({...r,p:pct(r.ok,r.n)})).sort((a,b)=>a.p-b.p||b.n-a.n); }
+function modeStat(since){ const o={dasar:{n:0,ok:0},geser:{n:0,ok:0},'2027':{n:0,ok:0}}; S.history.filter(x=>x.ts>=(since||0)).forEach(x=>{ const r=o[x.mode||'dasar']; if(!r) return; r.n++; if(x.correct) r.ok++; }); Object.values(o).forEach(r=>r.p=pct(r.ok,r.n)); return o; }
 function buildPrompt(o){
   const part=o.part, isD=part==='drill', isSim=part==='sim';
   const intro=isD
-    ? 'Kamu adalah pembuat DRILL harian UTBK-SNBT untuk subtes PBM (Pemahaman Bacaan dan Menulis) dan PPU (Pengetahuan dan Pemahaman Umum). Butirnya pendek, tetapi bentuk, kalimat perintah, dan jebakannya setia pada soal UTBK asli.'
+    ? 'Kamu adalah pembuat DRILL harian UTBK-SNBT untuk subtes PBM (Pemahaman Bacaan dan Menulis) dan PPU (Pengetahuan dan Pemahaman Umum). Drill ini Mode Dasar: melatih kaidah dengan bentuk dan kalimat perintah yang sudah dikenal.'
     : isSim
       ? 'Kamu adalah pembuat SIMULASI UTBK-SNBT subtes '+o.simSub+' ('+(o.simSub==='PBM'?'Pemahaman Bacaan dan Menulis':'Pengetahuan dan Pemahaman Umum')+'): 20 soal berbasis teks yang setara dengan satu subtes asli.'
-      : 'Kamu adalah pembuat SOAL TEKS harian UTBK-SNBT subtes '+o.teks+' ('+(o.teks==='PBM'?'Pemahaman Bacaan dan Menulis':'Pengetahuan dan Pemahaman Umum')+'). Bentuk, kalimat perintah, dan jebakannya setia pada soal UTBK asli.';
+      : 'Kamu adalah pembuat SOAL TEKS harian UTBK-SNBT subtes '+o.teks+' ('+(o.teks==='PBM'?'Pemahaman Bacaan dan Menulis':'Pengetahuan dan Pemahaman Umum')+'). Tujuannya membangun fondasi: bentuk lama dikuasai dulu, lalu bentuk baru diperkenalkan sedikit demi sedikit sesuai bagian "Mode pola".';
   const nT=isSim?4:2, sub=isSim?o.simSub:o.teks;
+  const l2=POLA_IDS.filter(p=>p.startsWith(sub)&&polaLevel(p)>=2), l3=l2.filter(p=>polaLevel(p)===3);
   const teksRules=`1. ${nT} teks berbeda topik (sains populer, sosial, ekonomi, budaya, lingkungan, kesehatan), masing-masing 6–10 kalimat dalam 1–3 paragraf, gaya artikel berita atau ilmiah populer, dengan sumber fiktif ("Diadaptasi dari ...").
 2. Setiap teks berisi TEPAT 5 soal; semua soal ber-"subtes": "${sub}". Total ${nT*5} soal.
 3. ${sub==='PBM'?'PBM: sebar pola_id PBM (ejaan dan tanda baca, diksi, kalimat efektif, kepaduan paragraf, kalimat sumbang/sisipan, rumpang). Tepat 1 isian angka per teks (UTBK asli sekitar 1 dari 7 soal).'+(isSim?'':' Minimal 2 soal menguji konsep EYD hari ini.'):'PPU: sebar pola_id PPU (makna kata dan frasa, imbuhan, majas dan kiasan, hubungan antarkata, konjungsi, struktur dan isi teks).'+(isSim?'':' Minimal 2 soal menguji konsep kebahasaan hari ini.')}
 4. Rancang dari target: tentukan dulu pola soal, baru tulis teks yang menanam target itu.${sub==='PBM'?' Setiap kesalahan PBM hanya ada di SATU kalimat.':''}
-5. Kalimat perintah meniru gaya UTBK, misalnya "Kata X dalam kalimat (n) seharusnya ...." atau "Bentuk pe-an pada kata X dalam kalimat (n) mempunyai makna yang sama dengan bentuk pe-an pada kalimat ....".
+5. Hanya soal ber-"mode": "dasar" yang kalimat perintahnya meniru templat UTBK, misalnya "Kata X dalam kalimat (n) seharusnya ...." atau "Bentuk pe-an pada kata X dalam kalimat (n) mempunyai makna yang sama dengan bentuk pe-an pada kalimat ....".
 6. PG tepat 5 opsi (A–E) dan tepat satu kunci. Isian: opsi kosong, jawaban angka di "kunci_isian".
 7. Soal "seharusnya" memakai lima opsi tetap: dihilangkan, dibiarkan saja, diganti ..., didahului ..., diikuti .... "Dibiarkan saja" boleh menjadi kunci.
-8. "bukti" = nomor kalimat dasar jawaban. "pembahasan" paling banyak 2 kalimat. "drill_terkait" = subkategori (EYD atau kebahasaan) yang berkaitan, boleh kosong.
+8. "bukti" = nomor kalimat dasar jawaban. "pembahasan" ringkas: langkah menuju kunci (1–2 kalimat), lalu satu frasa per pengecoh tentang kesalahan yang diwakilinya, misalnya "A: sinonim makna lain; C: imbuhan sama, makna beda". "drill_terkait" = subkategori (EYD atau kebahasaan) yang berkaitan, boleh kosong.
 9. Kata uji paling banyak 5 per teks di "kata_uji", tanpa angka superskrip di dalam kalimat. Rumpang ditulis [...].
 10. "nomor" soal dimulai dari 1 di setiap teks.
-11. Tingkat kesulitan setara UTBK asli: sekitar ${isSim?'30:50:20':'20:50:30'} untuk mudah : sedang : sulit. Soal sulit menuntut membaca dua kalimat atau lebih, atau membedakan dua opsi yang sama-sama terdengar benar.
+11. Tingkat kesulitan mengikuti mode: "dasar" mudah sampai sedang, "geser" sedang, "2027" sulit. Soal sulit menuntut membaca dua kalimat atau lebih, atau membedakan dua opsi yang sama-sama terdengar benar.
 
 ## Pengecoh gaya UTBK (WAJIB, ini yang membuat soal tidak mudah ditebak)
 P1. Setiap opsi salah harus "hampir benar": terdengar masuk akal sekilas dan salah karena SATU alasan yang hanya terlihat jika teks dibaca teliti. Minimal 2 opsi per soal harus tampak benar bagi pembaca yang terburu-buru.
@@ -1406,7 +1435,20 @@ P3. Pengecoh per tipe soal:
    - Sisipan/urutan: pengecoh = satu posisi lebih awal atau lebih akhir.
    - Ejaan/tanda baca (isian nomor kalimat): selain satu kalimat yang memang salah, tanam 1–2 "kalimat umpan" yang tampak salah tetapi sebenarnya benar menurut EYD V (misalnya koma setelah keterangan awal yang panjang, kata baku yang jarang dipakai, huruf kapital nama jenis yang benar ditulis kecil).
 P4. Uji anti-tebak sebelum mengirim. Untuk tiap soal tanyakan: (a) apakah bisa dijawab tanpa membaca teks? (b) apakah ada opsi yang bisa dicoret dalam 2 detik karena topiknya lain, tata bahasanya rusak, atau jelas absurd? (c) apakah kunci menonjol karena panjang atau gayanya? Jika salah satu jawabannya "ya", ganti opsi atau soalnya.
-P5. Sebar kunci A–E merata dan jangan lebih dari 2 kunci sama berturut-turut.`;
+P5. Sebar kunci A–E merata dan jangan lebih dari 2 kunci sama berturut-turut.
+
+## Mode pola (WAJIB)
+Latihan ini membangun fondasi setiap hari. Bentuk baru diperkenalkan bertahap, hanya pada pola yang bentuk lamanya sudah dikuasai; jangan memaksakan bentuk baru pada pola yang masih lemah.
+M1. Isi "mode" di setiap soal: "dasar" (kerangka pertanyaan persis bentuk lama; untuk pola yang belum pernah keluar, bentuk paling sederhana dan eksplisit), "geser" (satu hal diubah), atau "2027" (bentuk yang belum pernah keluar; ubah sedikitnya dua dari: jenis stimulus, arah tanya, format jawaban).
+   - Pola yang boleh "geser": ${l2.length?l2.join(', '):'belum ada'}
+   - Pola yang boleh "2027": ${l3.length?l3.join(', '):'belum ada'}
+   - Pola lain WAJIB "dasar".
+   Per 10 soal: paling sedikit 3 "dasar", paling banyak 5 "geser", paling banyak 2 "2027". ${l2.length?'Jangan menaikkan mode hanya untuk memenuhi batas itu.':'Karena belum ada pola yang naik tahap, buat tepat 1 soal "geser" per paket sebagai pengenalan pada pola yang paling sederhana; sisanya "dasar".'}
+M2. Mulai dari kemampuan (lihat daftar pola_id di bawah), bukan dari templat. Lima tuas pemutar: ganti bungkus cerita; sembunyikan struktur dalam narasi; tambah satu langkah; balik arah tanya; ganti format jawaban.
+M3. Isi "geser" pada soal "geser" dan "2027" dengan apa yang diubah, misalnya "arah tanya" atau "stimulus dan format jawaban". Pada soal "dasar", "geser" = "".
+M4. Periksa: soal masih menguji kemampuan yang sama; bisa dijawab hanya dari teks; selesai dalam ${sub==='PBM'?'75':'45'} detik. Jika soal bisa dijawab cukup dengan mengenali templat tanpa bernalar, rancang ulang.
+M5. Dalam satu paket, pola_id yang sama tidak boleh muncul dua kali dengan bentuk yang sama.
+M6. Arah geser ${sub}: ${sub==='PBM'?'butir yang jarang keluar (kata gabung, kata serapan, tanda hubung, titik dua, variasi kalimat, kalimat paling ringkas); kata bercetak tebal bernomor; lima kalimat lepas yang diurutkan menjadi paragraf.':'kata, imbuhan, dan kata tugas yang belum pernah ditanya (selain pe-an, ke-an, per-an, ber-an); pandangan penulis; variasi kata; perumpamaan; bahasa buatan dengan kalimat tanya atau ingkar; arah tanya dibalik (yang TIDAK sama, yang BUKAN).'}`;
   const drillRules=`A. 10 butir konsep EYD hari ini: "kategori" = "tanda-baca" (Bab III) atau "ejaan" (Bab I–II), "subkategori" persis seperti di atas.
 B. 10 butir konsep kebahasaan hari ini: "kategori" = "kebahasaan", "subkategori" persis seperti di atas.
 Aturan untuk keduanya:
@@ -1442,10 +1484,10 @@ Aturan untuk keduanya:
      "kata_uji": [{"nomor": 1, "kata": "...", "kalimat": 2}],
      "sumber_fiktif": "Diadaptasi dari ...",
      "soal": [
-       {"nomor": 1, "subtes": "${sub}", "pola_id": "${sub==='PBM'?'PBM-ejaan-tanda-baca':'PPU-imbuhan-makna'}", "tipe": "isian",
+       {"nomor": 1, "subtes": "${sub}", "pola_id": "${sub==='PBM'?'PBM-ejaan-tanda-baca':'PPU-imbuhan-makna'}", "mode": "dasar", "geser": "", "tipe": "isian",
         "perintah": "...", "opsi": [], "kunci_isian": "3", "bukti": [3],
         "pembahasan": "...", "drill_terkait": ["${sub==='PBM'?'Tanda koma':'Makna imbuhan: akhiran dan konfiks'}"]},
-       {"nomor": 2, "subtes": "${sub}", "pola_id": "...", "tipe": "PG",
+       {"nomor": 2, "subtes": "${sub}", "pola_id": "...", "mode": "2027", "geser": "arah tanya dan stimulus", "tipe": "PG",
         "perintah": "...", "opsi": [{"huruf": "A", "teks": "...", "benar": true}, {"huruf": "B", "teks": "..."}, {"huruf": "C", "teks": "..."}, {"huruf": "D", "teks": "..."}, {"huruf": "E", "teks": "..."}],
         "kunci_isian": null, "bukti": [2], "pembahasan": "...", "drill_terkait": []}
      ]},
@@ -1458,7 +1500,7 @@ Aturan untuk keduanya:
 - "kategori" dan "subkategori" persis dari daftar yang sah.`
     : `- Tepat ${nT} teks, masing-masing 5 soal (${nT*5} soal), semua "subtes": "${sub}".
 - PG 5 opsi dan 1 kunci; isian punya kunci angka; nomor di "bukti" dan "kata_uji" ada di teks.
-- "drill_terkait" persis dari daftar yang sah; "pola_id" dari daftar yang boleh.
+- "drill_terkait" persis dari daftar yang sah; "pola_id" dari daftar yang boleh; setiap soal punya "mode" ("dasar", "geser", atau "2027") sesuai batas M1.
 - Setiap id teks berbeda.`;
   return `${intro} Hasilmu akan kutempel langsung ke aplikasi, jadi keluarkan HANYA satu blok kode json yang valid, tanpa teks lain.
 
@@ -1487,7 +1529,8 @@ EYD: ${o.allEyd}
 Kebahasaan: ${o.allKeb}
 ${isD?'':`
 ## pola_id yang boleh dipakai di teks
-${sub}: ${POLA_IDS.filter(p=>p.startsWith(sub)).join(', ')}
+Format: pola_id (kemampuan · bentuk lama terdekat). Bentuk lama adalah yang dihindari pada mode "2027", bukan yang ditiru.
+${POLA_IDS.filter(p=>p.startsWith(sub)).map(p=>p+' ('+POLA_BRIEF[p].join(' · ')+')').join('\n')}
 `}
 ## Format keluaran
 ${isD?fmtDrill:fmtTeks}
@@ -1683,7 +1726,7 @@ function recordAt(C,k){
     S.dhist.push({id:it.id,kat:it.kategori,sub:it.subkategori,correct:ok,ts:Date.now()});
     s.res.push({id:it.id,ok,it});
   } else {
-    S.history.push({teksId:(it._t||C.t).id,nomor:it.nomor,subtes:it.subtes,pola_id:it.pola_id,correct:ok,ms:Math.min(spent(s,k),600000),ts:Date.now()});
+    S.history.push({teksId:(it._t||C.t).id,nomor:it.nomor,subtes:it.subtes,pola_id:it.pola_id,mode:it.mode,correct:ok,ms:Math.min(spent(s,k),600000),ts:Date.now()});
     if(!ok) (it.drill_terkait||[]).forEach(sub=>S.drill.filter(d=>d.subkategori===sub).forEach(d=>{ S.srs[d.id]=Object.assign({},srsOf(d.id),{due:0}); }));
     s.res.push(ok);
   }
@@ -1762,7 +1805,7 @@ function viewCbt(C){
     let note='';
     if(isD){ if(!a.ok) note='Butir ini diulang di drill berikutnya.'; }
     else { const subs=it.drill_terkait||[]; note='Bukti: kalimat '+(it.bukti||[]).map(b=>'('+b+')').join(', ')+(subs.length?' · Drill terkait: '+subs.map(esc).join(', ')+(a.ok?'':' (dimajukan ke drill berikutnya)'):''); }
-    h+='<div class="pemb '+(a.ok?'ok':'bad')+'"><div class="pemb-h">'+head+combo+'</div><div class="pemb-b">'+(isD?rich(it.kaidah||''):esc(humanCodes(it.pembahasan||'')))+'</div>'+(note?'<div class="pemb-n">'+note+'</div>':'')+(a.ok?'':materiBtn(isD?[it.subkategori]:(it.drill_terkait||[]),itemText(it,isD)))+
+    h+='<div class="pemb '+(a.ok?'ok':'bad')+'"><div class="pemb-h">'+head+combo+'</div><div class="pemb-b">'+(isD?rich(it.kaidah||''):esc(humanCodes(it.pembahasan||'')))+'</div>'+(note?'<div class="pemb-n">'+note+'</div>':'')+(!isD&&polaLabel(it)?'<div class="pemb-n">'+esc(polaLabel(it))+'</div>':'')+(a.ok?'':materiBtn(isD?[it.subkategori]:(it.drill_terkait||[]),itemText(it,isD)))+
       (S.bad[badId(C,it)]?'<div class="pemb-n">⚑ Soal ini sudah dilaporkan dan tidak akan muncul lagi sampai diperbaiki.</div>':'<button type="button" class="link rep" data-action="qreport">⚑ Kunci meragukan? Laporkan soal</button>')+'</div>';
   }
   h+='</div></div>';
@@ -1965,6 +2008,9 @@ function viewProgres(){
     '<section class="card"><h2>Drill per kategori</h2>'+kat.map(x=>bar(esc(KAT[x.k]),x.n,x.p,x.n+' butir')).join('')+'</section>'+
     (subs.length?'<section class="card"><h2>Drill per topik</h2>'+subs.sort((a,b)=>a.p-b.p).map(x=>bar(esc(x.sub),x.n,x.p,x.n+' butir')).join('')+'</section>':'')+
     '<section class="card"><h2>Teks ala UTBK</h2>'+rows.map(r=>bar('<b style="color:var(--muted)">'+r.sub+'</b> '+esc(r.k),r.n,r.p,r.n+' soal')).join('')+'<div class="sub">Batang oranye: di bawah 70%.</div></section>'+
+    (function(){ const ps=polaStat().filter(x=>x.n>=3).slice(0,8), ms=modeStat(), any=ms.dasar.n+ms.geser.n+ms['2027'].n, lv=[0,0,0,0]; POLA_IDS.forEach(p=>lv[polaLevel(p)]++);
+      return (ps.length?'<section class="card"><h2>Pola terlemah</h2>'+ps.map(x=>bar('<b style="color:var(--muted)">'+esc((POLA_BRIEF[x.id]||['?'])[0])+'</b> '+esc(x.id.replace(/^(PBM|PPU)-/,'')),x.n,x.p,x.n+' soal')).join('')+'<div class="sub">Dihitung per pola soal, minimal 3 soal.</div></section>':'')+
+        (any?'<section class="card"><h2>Bentuk lama vs bentuk baru</h2>'+['dasar','geser','2027'].map(k=>bar(MODE_LBL[k],ms[k].n,ms[k].p,ms[k].n+' soal')).join('')+'<div class="sub">Tahap pola: '+lv[1]+' bentuk lama · '+lv[2]+' mulai digeser · '+lv[3]+' bentuk baru. Pola naik tahap setelah 5 soal terakhirnya benar 70% ke atas.</div></section>':''); })()+
     paceProgres()+
     '<section class="card"><h2>Kelemahan untuk prompt besok</h2><div class="sub">Bagian ini otomatis masuk ke prompt hari berikutnya.</div><textarea id="weak" readonly>'+esc(weakText())+'</textarea></section>';
 }
