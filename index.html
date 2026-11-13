@@ -1137,6 +1137,19 @@ body[data-r="game"] main{min-height:calc(100vh - 40px);min-height:calc(100dvh - 
 .gintro li{font-size:15px;padding:10px 12px}
 .gover{margin-top:0;padding:20px}
 .gover .masc{width:110px;height:110px}
+
+/* ===== v6: menu 4 tombol, beranda ringkas ===== */
+nav.bottom .in{grid-template-columns:repeat(4,minmax(0,1fr))!important}
+nav.bottom,body.sess nav.bottom{width:min(380px,calc(100% - 24px))!important}
+nav.bottom a{font-size:11.5px}
+nav.bottom a:nth-child(1){--c:var(--yellow);color:var(--ink)} nav.bottom a:nth-child(2){--c:var(--blue);color:#fff} nav.bottom a:nth-child(3){--c:var(--purple);color:#fff} nav.bottom a:nth-child(4){--c:var(--green);color:#fff}
+nav.bottom a:nth-child(1)[aria-current="page"]{color:var(--ink)}
+.bstatus{background:#fff;border:2px solid var(--line2);border-left:6px solid var(--yellow);border-radius:10px;padding:9px 12px;font-size:14px;font-weight:600;margin-bottom:-6px}
+.bstatus.ok{border-left-color:var(--green)}
+.plinks{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.plinks a{display:flex;gap:10px;align-items:center;background:#fff;border:2px solid var(--pl);border-radius:11px;box-shadow:0 4px 0 var(--sh);padding:10px 11px;text-decoration:none;color:var(--ink)}
+.plinks a:active{transform:translateY(4px);box-shadow:none}
+.plinks b{display:block;font-size:14px}.plinks small{display:block;font-size:11.5px;color:var(--muted);line-height:1.3}
 </style>
 
 </head>
@@ -2042,17 +2055,15 @@ const V={ lang:'id', drill:null, run:null, paket:null, kaidah:{q:'',tab:'hari-in
 
 /* ---------- Navigasi ---------- */
 const NAV=[
- ['beranda','Latihan','<path d="M3 11l9-7 9 7v9a1 1 0 0 1-1 1h-5v-6H9v6H4a1 1 0 0 1-1-1z"/>'],
- ['kalender','Kalender','<rect x="3" y="5" width="18" height="16" rx="3"/><path d="M3 10h18M8 3v4M16 3v4"/>'],
+ ['beranda','Hari ini','<path d="M3 11l9-7 9 7v9a1 1 0 0 1-1 1h-5v-6H9v6H4a1 1 0 0 1-1-1z"/>'],
  ['kaidah','Materi','<path d="M4 5a2 2 0 0 1 2-2h13v16H6a2 2 0 0 0-2 2z"/><path d="M4 19V5"/>'],
- ['progres','Progres','<path d="M4 20V10M10 20V4M16 20v-7M22 20H2"/>'],
  ['main','Game','<rect x="2.5" y="7" width="19" height="11" rx="5"/><path d="M7 11v3M5.5 12.5h3"/><circle cx="15.5" cy="11.5" r="1" fill="currentColor" stroke="none"/><circle cx="17.5" cy="13.8" r="1" fill="currentColor" stroke="none"/>'],
- ['bank','Bank','<path d="M12 3v12M7 10l5 5 5-5"/><path d="M4 19h16"/>']
+ ['progres','Progres','<path d="M4 20V10M10 20V4M16 20v-7M22 20H2"/>']
 ];
 const ROUTES=['beranda','kalender','kaidah','progres','teks','bank','drill','soal','selesai','prompt','swipe','game','main','latihan'];
 function route(){ const h=(location.hash||'').slice(1); return ROUTES.includes(h)?h:'beranda'; }
 function renderNav(){
-  let r=route(); if(['drill','soal','selesai','prompt','swipe','latihan'].includes(r)) r='beranda'; if(r==='game') r='main'; if(r==='teks') r='bank';
+  let r=route(); if(['drill','soal','selesai','prompt','swipe','latihan'].includes(r)) r='beranda'; if(r==='game') r='main'; if(['kalender','bank','teks'].includes(r)) r='progres';
   $('#nav').innerHTML=NAV.map(([id,label,ic])=>'<a href="#'+id+'"'+(r===id?' aria-current="page"':'')+'><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">'+ic+'</svg>'+label+'</a>').join('');
 }
 
@@ -2117,7 +2128,7 @@ function progSummary(){
   const box=(v,l,p)=>'<div><b>'+v+'</b><span>'+l+'</span>'+(p!=null?'<span class="tbar"><i style="width:'+p+'%"></i></span>':'')+'</div>';
   let heat=''; const d0=new Date(); d0.setHours(0,0,0,0);
   for(let i=29;i>=0;i--){ const d=new Date(d0); d.setDate(d0.getDate()-i); const r=dayRatio(d); heat+='<i class="'+(r===1?'full':r>=.6?'p3':r>=.4?'p2':r>0?'p1':'')+'" title="'+esc(d.toLocaleDateString('id-ID',{day:'numeric',month:'short'}))+': '+Math.round(r*t.length)+'/'+t.length+' tugas"></i>'; }
-  return '<h1>Progres</h1>'+
+  return '<h1>Progres</h1><div class="plinks"><a href="#kalender">'+icon('today')+'<span><b>Kalender</b><small>Jadwal materi per hari</small></span></a><a href="#bank">'+icon('ppu')+'<span><b>Bank soal</b><small>Tempel paket dan kelola teks</small></span></a></div>'+
     '<section class="card"><div class="mini">'+box(td+'/'+t.length,'tugas hari ini',pct(td,t.length))+box(fullStreak(),'hari lengkap beruntun')+box(daysToUtbk(),'hari menuju UTBK')+
       box(dm+'/'+S.drill.length,'butir drill dikuasai',pct(dm,S.drill.length))+box(bm+'/'+S.baku.length,'kata baku dikuasai',pct(bm,S.baku.length))+box(h7.length?acc+'%':'–','akurasi 7 hari',h7.length?acc:null)+'</div>'+
       '<div class="sub" style="font-size:12px">Dikuasai = benar 2 kali berturut-turut.</div></section>'+
@@ -2198,16 +2209,16 @@ function bloki(pose){
   '<circle cx="66" cy="92" r="6" fill="'+ink+'"/><circle cx="98" cy="92" r="6" fill="'+ink+'"/><circle cx="68.5" cy="89" r="2.2" fill="#fff"/><circle cx="100.5" cy="89" r="2.2" fill="#fff"/>'+
   '<ellipse cx="50" cy="107" rx="7" ry="4.2" fill="#ff8fa3" opacity=".6"/><ellipse cx="110" cy="107" rx="7" ry="4.2" fill="#ff8fa3" opacity=".6"/>'+mouth+prop+'</svg>';
 }
+function statusLine(){ const t=tasksOn(new Date()), d=t.filter(x=>x.done).length, n=t.length;
+  return '<div class="bstatus'+(d===n?' ok':'')+'">'+(d===n?'Semua tugas hari ini beres. Sampai besok!':d?'Tinggal '+(n-d)+' dari '+n+' tugas lagi hari ini.':n+' tugas menunggu hari ini. Mulai dari paket harian.')+'</div>'; }
 function blokiHero(){ const t=tasksOn(new Date()), d=t.filter(x=>x.done).length, n=t.length;
   const [pose,msg]=d===n?['trophy','Semua tugas hari ini beres. Sampai besok, ya!']:d?['pencil','Mantap! Tinggal '+(n-d)+' tugas lagi hari ini.']:['wave','Hai, aku Bloki! Yuk susun balok PPU & PBM hari ini.'];
   return '<div class="bhero"><div class="bubble">'+esc(msg)+'</div>'+bloki(pose)+'</div>'; }
 function viewBeranda(){
   const dateStr=new Date().toLocaleDateString('id-ID',{weekday:'long',day:'numeric',month:'long'});
-  const gb=Object.keys(GAMES).reduce((m,k)=>Math.max(m,(S.gbest||{})[k]||0),0);
-  return blokiHero()+tasksCard()+
-    '<div class="sh">Mau latihan apa lagi?</div><div class="bgrid g3">'+
+  return statusLine()+tasksCard()+weakCard()+
+    '<div class="sh">Latihan lain</div><div class="bgrid">'+
       btile('go','latihan:drill','mix','blue','Latihan bebas','Drill, teks, kartu kata baku','')+
-      btile('go','main','game','purple','Mini game','3 permainan kaidah',gb?'🏆 '+gb:'Main')+
       btile('go','latihan:sim','sim','red','Simulasi','20 soal ala UTBK','')+
     '</div>';
 }
