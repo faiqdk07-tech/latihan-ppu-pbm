@@ -1093,6 +1093,50 @@ body[data-r="game"] main{gap:14px}
 .gover .masc{width:96px;height:96px}
 .gmiss{display:flex;flex-wrap:wrap;gap:6px}
 .gmiss span{background:#fff;border:2px solid var(--line2);border-radius:8px;padding:4px 9px;font-size:13px}
+
+/* ===== v5: lebar lebih ramping, game di tengah layar ===== */
+body .app{max-width:500px}
+body.sess .app{max-width:600px}
+body.sess .cbt-panel.split .cbt-body{display:flex!important;flex-direction:column}
+body.sess .cbt-panel.split .cbt-left{position:static;max-height:none;overflow:visible;border-right:0;padding-right:0}
+body[data-r="game"] .app{max-width:520px!important;padding-top:env(safe-area-inset-top,0px)}
+body[data-r="game"] main{min-height:calc(100vh - 40px);min-height:calc(100dvh - 40px);justify-content:center;gap:16px;padding:16px 0}
+.ghud{padding-top:0}
+.gquit{width:40px;height:40px;font-size:16px}
+.ghearts i{width:24px;height:24px}
+.gpips i{width:10px;height:10px}
+.gscore b{font-size:26px}
+.gtime{height:10px}
+.gstage{padding:16px;border-radius:18px}
+.gstage.sky{min-height:340px;padding:14px 14px 0}
+.gtb{width:min(300px,82%);font-size:12.5px;padding:7px 10px 7px 34px}
+.gtop .masc{width:70px;height:70px}
+.gcap{margin:0 -14px;padding:11px 14px 13px;font-size:15px}
+.gcard2{min-height:120px;padding:14px}
+.gcard2 p{font-size:16px}
+.garrow{width:40px}
+.gbtn{min-height:54px;font-size:18px}
+.gbtn.ghost{flex:0 0 84px}
+.gstage.village{min-height:360px;gap:14px}
+.gsign{font-size:14.5px;padding:10px 13px}
+.gsays{font-size:15.5px;padding:12px 14px}
+.bchar{width:80px;height:80px}
+.gqueue i{width:26px;height:24px}
+.gw{font-size:17px;padding:6px 11px}
+.gstage.shop{min-height:260px;justify-content:space-between}
+.gmech .masc{width:60px;height:60px}
+.gtool{font-size:17px;padding:10px 4px}
+.gsheet{padding:14px 16px 16px}
+.gsheet>b{font-size:21px}
+.gsheet p{font-size:14.5px}
+.gintro{margin-top:0;padding:26px 22px 22px;gap:10px}
+.gi-ic{width:64px;height:64px;margin-top:-56px}
+.gi-ic svg{width:32px;height:32px}
+.gintro h2{font-size:28px}
+.gi-tag{font-size:15px}
+.gintro li{font-size:15px;padding:10px 12px}
+.gover{margin-top:0;padding:20px}
+.gover .masc{width:110px;height:110px}
 </style>
 
 </head>
