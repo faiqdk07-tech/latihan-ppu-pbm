@@ -868,6 +868,123 @@ a.btile{text-decoration:none;color:#fff}a.btile.yk{color:var(--ink)}
 .mini div span{color:inherit;opacity:.95}
 .mini .tbar{border-color:rgba(0,0,0,.25);background:rgba(255,255,255,.4)} .mini .tbar i{background:#fff}
 .mini div:nth-child(6n+1) .tbar i{background:var(--ink)}
+
+/* ===== v3: judul lurus, halaman berkarakter, mini game ===== */
+#view h1{transform:none;background:none;border:0;box-shadow:none;padding:0;margin:6px 0 -10px;font-size:26px;display:flex;align-items:center;gap:10px;color:var(--ink)}
+#view h1::before{content:"";flex:none;width:22px;height:16px;border-radius:4px;background:var(--lc);border:2px solid color-mix(in srgb,var(--lc) 60%,#1f2a4d);box-shadow:0 2px 0 color-mix(in srgb,var(--lc) 60%,#1f2a4d)}
+body[data-r="main"] #view h1{--lc:var(--purple)} body[data-r="latihan"] #view h1{--lc:var(--blue)}
+.lt-sub{font-size:13.5px;margin-top:-4px}
+.bgrid.g3>.btile{min-height:132px}
+.segbar{display:flex;background:#3a4f86;border:2px solid #2e3f6e;border-radius:11px;padding:4px;gap:4px;box-shadow:0 4px 0 var(--sh)}
+.segbar button{flex:1;min-height:38px;border:0;border-radius:8px;background:transparent;color:#cdd8f3;font-family:var(--f-disp);font-size:15px;cursor:pointer}
+.segbar button[aria-pressed="true"]{background:var(--yellow);color:#2f333d;box-shadow:0 3px 0 color-mix(in srgb,var(--yellow) 60%,#7a5200)}
+/* hub mini game */
+.gcards{display:flex;flex-direction:column;gap:18px}
+.gcard{background:var(--surface);border:2px solid var(--pl);border-radius:14px;box-shadow:0 5px 0 var(--sh);overflow:hidden}
+.gchead{display:flex;gap:11px;align-items:center;padding:13px 14px;background:var(--c);color:#fff;border-bottom:2px solid color-mix(in srgb,var(--c) 62%,#1f2a4d)}
+.gchead.yk{color:var(--ink)}
+.gchead .bic{width:40px;height:40px;border-radius:9px;display:grid;place-items:center;background:#fff;color:color-mix(in srgb,var(--c) 75%,#1f2a4d);border:2px solid color-mix(in srgb,var(--c) 62%,#1f2a4d);flex:none}
+.gchead .bic svg{width:22px;height:22px}
+.gchead b{display:block;font-family:var(--f-disp);font-weight:400;font-size:20px;line-height:1.1}
+.gchead small{display:block;font-size:12.5px;opacity:.95;margin-top:2px}
+.gcara{margin:0;padding:12px 14px 4px 34px;font-size:13.5px;line-height:1.5;color:var(--ink);display:flex;flex-direction:column;gap:4px}
+.gcara li::marker{font-family:var(--f-disp);color:var(--muted)}
+.gcfoot{display:flex;align-items:center;justify-content:space-between;gap:10px;padding:8px 14px 14px}
+.gmeta{font-size:13px;font-weight:600;color:var(--muted)}
+.gcfoot .btn{min-width:110px}
+/* layar permainan */
+.ghud{display:flex;align-items:center;gap:10px;padding-top:8px}
+.gquit{width:38px;height:38px;border-radius:9px;border:2px solid var(--pl);background:var(--surface);box-shadow:0 3px 0 var(--sh);font-size:16px;font-weight:700;color:var(--ink);cursor:pointer;flex:none}
+.ghearts{display:flex;gap:3px}
+.ghearts i{width:24px;height:24px;color:#d5dbe8;display:block}
+.ghearts i.on{color:var(--red);animation:gbeat 1.6s ease-in-out infinite}
+.ghearts svg{width:100%;height:100%;fill:currentColor;stroke:color-mix(in srgb,currentColor 60%,#1f2a4d);stroke-width:1.5}
+@keyframes gbeat{0%,100%{transform:scale(1)}50%{transform:scale(1.12)}}
+.gscore{margin-left:auto;display:flex;flex-direction:column;align-items:flex-end;line-height:1}
+.gscore small{font-size:10.5px;color:var(--muted);font-weight:700;text-transform:uppercase;letter-spacing:.05em}
+.gscore b{font-family:var(--f-disp);font-weight:400;font-size:24px}
+.gcombo{background:var(--orange);color:#fff;font-family:var(--f-disp);font-size:15px;padding:3px 8px;border-radius:7px;border:2px solid color-mix(in srgb,var(--orange) 60%,#1f2a4d);animation:gpop .4s cubic-bezier(.3,1.6,.5,1)}
+.gstage{font-size:12px;font-weight:700;color:var(--muted)}
+.groad{display:flex;gap:5px;margin-top:-10px}
+.groad i{flex:1;height:8px;border-radius:3px;background:var(--surface);border:2px solid var(--line2)}
+.groad i.ok{background:var(--green);border-color:color-mix(in srgb,var(--green) 60%,#1f2a4d)}
+.groad i.bad{background:var(--red);border-color:color-mix(in srgb,var(--red) 60%,#1f2a4d)}
+.groad i.cur{background:var(--yellow);border-color:color-mix(in srgb,var(--yellow) 55%,#6b4a00)}
+.gtime{position:relative;height:18px;border-radius:9px;background:var(--surface);border:2px solid var(--pl);overflow:hidden;margin-top:-12px}
+.gtime i{position:absolute;inset:0 auto 0 0;background:var(--sky);transition:width .1s linear}
+.gtime i.low{background:var(--red)}
+.gtime b{position:relative;display:block;text-align:center;font-size:11px;line-height:14px;font-weight:700;color:var(--ink)}
+.gsay{position:relative;display:flex;align-items:center;gap:6px;margin:-8px 0 -10px}
+.gsay .masc{width:72px;height:72px;flex:none;animation:bhop 3.2s ease-in-out infinite}
+.gbub{position:relative;background:#fff;border:2px solid #b9c9e6;border-radius:12px;padding:7px 11px;font-size:13px;font-weight:600;line-height:1.4;box-shadow:0 3px 0 #d3e0f3}
+.gbub::before{content:"";position:absolute;left:-8px;top:50%;width:12px;height:12px;background:#fff;border-left:2px solid #b9c9e6;border-bottom:2px solid #b9c9e6;transform:translateY(-50%) rotate(45deg)}
+.gfx{position:absolute;right:6px;top:-6px;font-family:var(--f-disp);font-size:18px;pointer-events:none;animation:gfly 1.1s ease-out forwards}
+.gfx.ok{color:var(--ok-ink)} .gfx.bad{color:var(--bad-ink)}
+@keyframes gfly{0%{opacity:0;transform:translateY(10px) scale(.8)}20%{opacity:1;transform:translateY(0) scale(1.1)}100%{opacity:0;transform:translateY(-28px)}}
+@keyframes gpop{0%{transform:scale(.6)}100%{transform:scale(1)}}
+@keyframes gshake{0%,100%{transform:translateX(0)}20%{transform:translateX(-7px) rotate(-1deg)}40%{transform:translateX(6px) rotate(1deg)}60%{transform:translateX(-4px)}80%{transform:translateX(3px)}}
+@keyframes gdrop{0%{transform:translateY(-26px);opacity:0}70%{transform:translateY(3px);opacity:1}100%{transform:translateY(0)}}
+.shake{animation:gshake .45s ease}
+.gboard{background:#fff;border:2px solid var(--pl);border-radius:14px;box-shadow:0 5px 0 var(--sh);padding:12px}
+.gboard.tower{background:linear-gradient(180deg,#f4f8ff,#fff)}
+.gtitle{font-family:var(--f-disp);font-size:15px;color:var(--muted);margin-bottom:10px}
+.gstack{display:flex;flex-direction:column;gap:12px}
+.gbrick{position:relative;display:flex;gap:9px;align-items:flex-start;background:var(--c);color:#fff;border:2px solid color-mix(in srgb,var(--c) 62%,#1f2a4d);border-radius:9px;box-shadow:0 3px 0 color-mix(in srgb,var(--c) 70%,#1f2a4d);padding:9px 11px;font-size:14px;line-height:1.45}
+.gbrick:last-child.in{animation:gdrop .45s ease-out}
+.gbrick::before,.gbrick::after{content:"";position:absolute;top:-8px;width:16px;height:6px;background:var(--c);border:2px solid color-mix(in srgb,var(--c) 62%,#1f2a4d);border-bottom:0;border-radius:4px 4px 0 0}
+.gbrick::before{left:14px}.gbrick::after{left:38px}
+.gbrick[style*="yellow"]{color:var(--ink)}
+.gno{flex:none;min-width:24px;height:22px;border-radius:5px;background:rgba(255,255,255,.9);color:var(--ink);display:grid;place-items:center;font-family:var(--f-disp);font-size:12.5px;border:1.5px solid rgba(0,0,0,.15)}
+.gslot{min-height:44px;border:2px dashed var(--line2);border-radius:9px;display:grid;place-items:center;font-size:12px;color:var(--faint);font-weight:600}
+.gslot.next{border-color:var(--blue);color:var(--blue);background:var(--accent-soft);animation:gglow 1.4s ease-in-out infinite}
+@keyframes gglow{50%{background:#fff}}
+.ghint{background:#fff8e0;border:2px solid color-mix(in srgb,var(--yellow) 55%,#6b4a00);border-radius:10px;padding:9px 12px;font-size:13.5px;line-height:1.45;animation:gpop .3s ease-out}
+.gpool{display:flex;flex-direction:column;gap:9px}
+.gpiece{text-align:left;background:#fff;border:2px solid var(--pl);border-radius:9px;box-shadow:0 3px 0 var(--sh);padding:10px 12px;font:inherit;font-size:14.5px;line-height:1.45;color:var(--ink);cursor:pointer}
+.gpiece:active{transform:translateY(3px);box-shadow:none}
+.gpu{align-self:center;display:inline-flex;align-items:center;gap:6px;min-height:40px;padding:0 16px;border-radius:999px;border:2px solid var(--pl);background:#fff;box-shadow:0 3px 0 var(--sh);font-weight:700;font-size:14px;color:var(--ink);cursor:pointer}
+.gpu.ok{background:var(--green);color:#fff;border-color:color-mix(in srgb,var(--green) 60%,#1f2a4d);box-shadow:0 3px 0 color-mix(in srgb,var(--green) 70%,#1f2a4d)}
+.gpu[disabled]{opacity:.45;cursor:default}
+.gsus{display:flex;flex-direction:column;gap:9px}
+.gsuspect{position:relative;display:flex;gap:9px;align-items:flex-start;text-align:left;background:#fff;border:2px solid var(--pl);border-radius:10px;box-shadow:0 3px 0 var(--sh);padding:10px 12px;font:inherit;font-size:14.5px;line-height:1.5;color:var(--ink);cursor:crosshair}
+.gsuspect .gtx{flex:1}
+.gsuspect.safe{background:var(--ok-soft);border-color:var(--green);opacity:.85}
+.gsuspect.caught{background:#fff1f0;border-color:var(--red);animation:gpop .4s cubic-bezier(.3,1.6,.5,1)}
+.gsuspect.dim{opacity:.55}
+.gtag{flex:none;font-size:11px;font-weight:700;padding:2px 7px;border-radius:5px;color:#fff;align-self:center}
+.gtag.ok{background:var(--green)}.gtag.bad{background:var(--red)}
+mark.gkw{background:#d9f0ff;color:inherit;border-radius:3px;padding:0 2px;box-shadow:inset 0 -2px 0 var(--sky)}
+mark.gclue{background:#fff1b8;color:inherit;border-radius:3px;padding:0 2px}
+.gbrick mark.gclue{background:rgba(255,255,255,.85)}
+.gsent{margin:0;font-size:18px;line-height:2.1}
+.gword{font:inherit;color:inherit;background:#fff;border:2px solid var(--line2);border-radius:7px;padding:0 6px;box-shadow:0 2px 0 #dbe3f1;cursor:pointer}
+.gword:not([disabled]):active{transform:translateY(2px);box-shadow:none}
+.gword[disabled]{cursor:default}
+.gword.broken{background:var(--orange);color:#fff;border-color:color-mix(in srgb,var(--orange) 60%,#1f2a4d);animation:gshake 1.2s ease infinite}
+.gword.fixed{background:var(--green);color:#fff;border-color:color-mix(in srgb,var(--green) 60%,#1f2a4d);animation:gpop .45s cubic-bezier(.3,1.6,.5,1)}
+.gfix{background:#fff;border:2px solid var(--pl);border-radius:12px;padding:12px;box-shadow:0 4px 0 var(--sh);display:flex;flex-direction:column;gap:10px;animation:gpop .3s ease-out}
+.gfix>span{font-weight:700;font-size:14px}
+.gfix>div{display:flex;gap:10px;flex-wrap:wrap}
+.gopt2{flex:1;min-width:90px;min-height:46px;background:var(--c);color:#fff;border:2px solid color-mix(in srgb,var(--c) 62%,#1f2a4d);border-radius:9px;box-shadow:0 4px 0 color-mix(in srgb,var(--c) 70%,#1f2a4d);font-family:var(--f-disp);font-size:17px;cursor:pointer}
+.gopt2:active{transform:translateY(4px);box-shadow:none}
+.gexp{gap:6px}.gexp b{font-family:var(--f-disp);font-weight:400;font-size:16px}.gexp p{margin:0;font-size:14px;line-height:1.55}.gexp small{color:var(--muted)}
+.gexp s{color:var(--bad-ink)}
+.gparty{position:fixed;left:0;right:0;top:30%;height:0;pointer-events:none;z-index:20}
+.gparty i{position:absolute;top:0;width:16px;height:11px;border-radius:3px;background:var(--c);animation:gburst 1.2s ease-out forwards}
+@keyframes gburst{0%{transform:translate(0,0) rotate(0);opacity:1}100%{transform:translate(var(--x),260px) rotate(var(--r));opacity:0}}
+.gover{align-items:center;text-align:center;padding:18px 16px}
+.gover .masc{width:120px;height:120px}
+.gover h2{margin:0}
+.gstars{display:flex;gap:6px;font-size:34px;line-height:1}
+.gstars i{font-style:normal;color:#d5dbe8}.gstars i.on{color:var(--yellow);text-shadow:0 2px 0 #c9971a;animation:gpop .5s cubic-bezier(.3,1.6,.5,1)}
+.gfinal{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;width:100%}
+.gfinal div{background:var(--sunk);border-radius:9px;padding:8px 4px;display:flex;flex-direction:column}
+.gfinal b{font-family:var(--f-disp);font-weight:400;font-size:22px}.gfinal span{font-size:11.5px;color:var(--muted)}
+.gnew{font-family:var(--f-disp);color:#fff;background:var(--red);padding:3px 12px;border-radius:7px}
+.gbest{font-size:13px;color:var(--muted);font-weight:600}
+nav.bottom a:nth-child(5){--c:var(--purple)} nav.bottom a:nth-child(6){--c:var(--orange)}
+nav.bottom a{font-size:10.5px;min-width:0}
+nav.bottom .in{display:grid!important;grid-template-columns:repeat(6,minmax(0,1fr))!important}
 </style>
 
 </head>
@@ -1777,12 +1894,13 @@ const NAV=[
  ['kalender','Kalender','<rect x="3" y="5" width="18" height="16" rx="3"/><path d="M3 10h18M8 3v4M16 3v4"/>'],
  ['kaidah','Materi','<path d="M4 5a2 2 0 0 1 2-2h13v16H6a2 2 0 0 0-2 2z"/><path d="M4 19V5"/>'],
  ['progres','Progres','<path d="M4 20V10M10 20V4M16 20v-7M22 20H2"/>'],
- ['bank','Bank soal','<path d="M12 3v12M7 10l5 5 5-5"/><path d="M4 19h16"/>']
+ ['main','Game','<rect x="2.5" y="7" width="19" height="11" rx="5"/><path d="M7 11v3M5.5 12.5h3"/><circle cx="15.5" cy="11.5" r="1" fill="currentColor" stroke="none"/><circle cx="17.5" cy="13.8" r="1" fill="currentColor" stroke="none"/>'],
+ ['bank','Bank','<path d="M12 3v12M7 10l5 5 5-5"/><path d="M4 19h16"/>']
 ];
-const ROUTES=['beranda','kalender','kaidah','progres','teks','bank','drill','soal','selesai','prompt','swipe','game'];
+const ROUTES=['beranda','kalender','kaidah','progres','teks','bank','drill','soal','selesai','prompt','swipe','game','main','latihan'];
 function route(){ const h=(location.hash||'').slice(1); return ROUTES.includes(h)?h:'beranda'; }
 function renderNav(){
-  let r=route(); if(['drill','soal','selesai','prompt','swipe','game'].includes(r)) r='beranda'; if(r==='teks') r='bank';
+  let r=route(); if(['drill','soal','selesai','prompt','swipe','latihan'].includes(r)) r='beranda'; if(r==='game') r='main'; if(r==='teks') r='bank';
   $('#nav').innerHTML=NAV.map(([id,label,ic])=>'<a href="#'+id+'"'+(r===id?' aria-current="page"':'')+'><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">'+ic+'</svg>'+label+'</a>').join('');
 }
 
@@ -1815,7 +1933,7 @@ function taskRows(tasks,live){
   }).join('');
 }
 /* ---------- Header aplikasi & ubin balok ---------- */
-const HDR_ROUTES=['beranda','kalender','kaidah','progres','bank','teks','prompt'];
+const HDR_ROUTES=['beranda'];
 function appHeader(){ const ds=new Date().toLocaleDateString('id-ID',{weekday:'long',day:'numeric',month:'long'}), st=fullStreak();
   return '<header class="apphd"><svg class="logo" viewBox="0 0 34 34" aria-hidden="true"><rect x="7" y="2" width="8" height="5" rx="2" fill="#ffd24f" stroke="#9a6f00" stroke-width="2"/><rect x="19" y="2" width="8" height="5" rx="2" fill="#ffd24f" stroke="#9a6f00" stroke-width="2"/><rect x="2" y="6" width="30" height="16" rx="3" fill="#ffd24f" stroke="#9a6f00" stroke-width="2.5"/><rect x="2" y="21" width="30" height="10" rx="3" fill="#4b8ae8" stroke="#2b4f99" stroke-width="2.5"/></svg><span class="hdt"><b>Latihan PPU-PBM</b><small>'+esc(ds)+' · '+daysToUtbk()+' hari menuju UTBK</small></span><span class="hchip" title="Hari tugas lengkap beruntun"><svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 2c1 3.5 5 5.5 5 11a5 5 0 0 1-10 0c0-2.4 1.2-4 2.5-5.2.2 1.8 1 2.9 2.2 3.2C11.2 8.4 11 5 12 2z"/></svg>'+st+'</span></header>'; }
 function icoSvg(k){ return '<svg viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">'+ICONS[k][1]+'</svg>'; }
@@ -1828,7 +1946,7 @@ function taskTile(x,i){ const c=TASK_C[i%5], attrs=x.done?' disabled':x.act==='p
 function tasksCard(){
   const t=tasksOn(new Date()), d=t.filter(x=>x.done).length, all=d===t.length;
   return '<section class="card tasks"><div class="row"><h2 class="grow">Tugas hari ini</h2><span class="tsum'+(all?' ok':'')+'">'+d+'/'+t.length+' selesai</span></div><div class="pips">'+t.map(x=>'<i class="'+(x.done?'on':'')+'"></i>').join('')+'</div>'+
-    (all?'<div class="tdone">Semua tugas hari ini selesai. Mantap!</div>':'')+'</section><div class="bgrid">'+t.map(taskTile).join('')+'</div>'+(t.filter(x=>['eyd','keb','teks'].includes(x.id)).every(x=>x.done)?'':'<button class="btn primary block" type="button" data-action="paket">Mulai paket harian · tugas 2–4</button>');
+    (all?'<div class="tdone">Semua tugas hari ini selesai. Mantap!</div>':'')+'<div class="tlist">'+taskRows(t,true)+'</div>'+(t.filter(x=>['eyd','keb','teks'].includes(x.id)).every(x=>x.done)?'':'<button class="btn primary block" type="button" data-action="paket">Mulai paket harian · tugas 2–4</button>')+'</section>';
 }
 function weekStrip(){
   const now=new Date(); now.setHours(0,0,0,0); const mon=new Date(now); mon.setDate(now.getDate()-((now.getDay()+6)%7));
@@ -1897,6 +2015,7 @@ const ICONS={
  susun:['orange','<rect x="3" y="4" width="12" height="4.5" rx="1.5"/><rect x="9" y="10" width="12" height="4.5" rx="1.5"/><rect x="3" y="16" width="12" height="4.5" rx="1.5"/>'],
  sumbang:['teal','<circle cx="10.5" cy="10.5" r="6.5"/><path d="M15.3 15.3L20.5 20.5M10.5 7.4v3.6"/><circle cx="10.5" cy="13.7" r=".95" fill="currentColor" stroke="none"/>'],
  bakukal:['green','<path d="M4 6h12M4 10.5h8M4 15h5"/><path d="M12.5 17l2.6 2.6L21 13.7"/>'],
+ game:['purple','<rect x="2.5" y="7" width="19" height="11" rx="5"/><path d="M7 11v3M5.5 12.5h3"/><circle cx="15.5" cy="11.5" r="1" fill="currentColor" stroke="none"/><circle cx="17.5" cy="13.8" r="1" fill="currentColor" stroke="none"/>'],
  weak:['red','<path d="M12 4l9 16H3z"/><path d="M12 10v4"/><circle cx="12" cy="17" r="1" fill="currentColor" stroke="none"/>']
 };
 function icon(k){ const [c,p]=ICONS[k]; return '<span class="ic ic-'+c+'" aria-hidden="true"><svg viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round">'+p+'</svg></span>'; }
@@ -1932,18 +2051,13 @@ function blokiHero(){ const t=tasksOn(new Date()), d=t.filter(x=>x.done).length,
   return '<div class="bhero"><div class="bubble">'+esc(msg)+'</div>'+bloki(pose)+'</div>'; }
 function viewBeranda(){
   const dateStr=new Date().toLocaleDateString('id-ID',{weekday:'long',day:'numeric',month:'long'});
-  const dc=(k,ic,c,t1,t2)=>{ const n=poolFor(k).length; return btile('drill',k,ic,c,t1,t2,n?dueCount(k)+' siap':'kosong',!n); };
-  const tc=(s,c)=>{ const t=nextTeks(s); return btile('teks',s,s==='PBM'?'pbm':'ppu',c,'Teks '+s,s==='PBM'?'Ejaan, diksi, kalimat efektif':'Makna kata, imbuhan, majas',t?t.soal.filter(q=>q.subtes===s).length+' soal':'kosong',!t); };
+  const gb=Object.keys(GAMES).reduce((m,k)=>Math.max(m,(S.gbest||{})[k]||0),0);
   return blokiHero()+tasksCard()+
-    '<div class="sh">Latihan lain</div><div class="bgrid">'+
-      btile('swipe','','baku','green','Kartu kata baku','Pemanasan: geser baku/tidak baku',S.baku.length+' kata')+
-      dc('kebahasaan','keb','purple','Kebahasaan','Imbuhan, makna, analogi')+
-      dc('tanda-baca','tb','orange','Tanda baca','Koma, titik, hubung, petik')+
-      dc('ejaan','eyd','sky','EYD V','Huruf, penulisan kata')+
-      tc('PBM','pink')+tc('PPU','blue')+
-      dc('campur','mix','red','Campur','Semua kategori diacak')+
-    '</div><div class="sh">Mini game</div><div class="bgrid g3">'+['susun','sumbang','baku'].map(k=>{ const n=gameToday(k), g=GAME_INFO[k]; return btile('game',k,g.ic,g.c,g.t,g.d,n?n+' hari ini':'Main'); }).join('')+
-    '</div><div class="sh">Simulasi</div><div class="bgrid">'+['PBM','PPU'].map((k,i)=>btile('sim',k,'sim',i?'blue':'red','Simulasi '+k,'20 soal, diperiksa di akhir',simCount(k)+'/20 soal')).join('')+'</div>';
+    '<div class="sh">Mau latihan apa lagi?</div><div class="bgrid g3">'+
+      btile('go','latihan:drill','mix','blue','Latihan bebas','Drill, teks, kartu kata baku','')+
+      btile('go','main','game','purple','Mini game','3 permainan kaidah',gb?'🏆 '+gb:'Main')+
+      btile('go','latihan:sim','sim','red','Simulasi','20 soal ala UTBK','')+
+    '</div>';
 }
 function weakCard(){
   const w=weakSubs().slice(0,3);
@@ -2359,11 +2473,6 @@ function viewSwipeDone(){
 
 
 /* ---------- Mini game (lokal, tanpa Claude) ---------- */
-const GAME_INFO={
-  susun:{t:'Susun Paragraf',d:'Urutkan kalimat satu paragraf',sub:'Susun Paragraf',n:5,ic:'susun',c:'yellow'},
-  sumbang:{t:'Kalimat Penyusup',d:'Temukan kalimat yang tidak padu',sub:'Kalimat Penyusup',n:5,ic:'sumbang',c:'sky'},
-  baku:{t:'Baku di Kalimat',d:'Kalimat bernomor dengan kata tidak baku',sub:'Baku di Kalimat',n:10,ic:'bakukal',c:'lime'}
-};
 /* tugas kata baku pindah ke Baku di Kalimat mulai tanggal ini; hari sebelumnya tetap memakai kartu geser */
 const BAKU_KAL_START=new Date(2026,10,13);
 /* kalimat pembawa: {kata} adalah kata baku dari daftar yang ditukar menjadi bentuk tidak bakunya */
@@ -2378,11 +2487,20 @@ function gParas(){ const out=[]; S.bank.forEach(t=>{ if((t.jenis||'bernomor')!==
     out.push({t,idx,id:t.id+'-p'+(pi+1)}); }); });
   return out; }
 function gLast(sub,id){ let ts=0; S.dhist.forEach(x=>{ if(x.sub===sub&&x.id===id&&x.ts>ts) ts=x.ts; }); return ts; }
-function gRoundSusun(P){ let order=shuffle(P.idx), g=0; while(order.join()===P.idx.join()&&g++<10) order=shuffle(P.idx); return {id:'g-'+P.id,t:P.t,idx:P.idx,pool:order,picked:[]}; }
-function gRoundSumbang(P){ const others=[]; S.bank.forEach(t=>{ if(t.id===P.t.id||!Array.isArray(t.kalimat)) return; const bad=gBadSet(t); t.kalimat.forEach((k,i)=>{ if(!bad.has(i+1)&&k&&!/\[\.\.\.\]/.test(k)&&k.length<260) others.push(k); }); });
+/* ---------- Mesin mini game (interaktif, skor, nyawa, waktu) ---------- */
+const GSTOP=new Set('yang dan atau dengan untuk dari pada dalam akan telah sudah sebagai karena adalah bahwa juga tidak lebih setiap secara kepada oleh agar namun para mereka tersebut sejumlah menjadi masih hanya dapat harus banyak ketika antara bagian setelah sebelum sejak mulai kembali hampir sekitar kini'.split(' '));
+const GCLUE=/\b(selain itu|oleh karena itu|oleh sebab itu|dengan demikian|akan tetapi|sementara itu|karena itu|hal ini|hal itu|tersebut|akibatnya|kemudian|sehingga|bahkan|misalnya|contohnya|pertama|kedua|ketiga|akhirnya|meskipun|padahal|selanjutnya|namun|lalu|itu|mereka)\b/i;
+function gWords(k){ return (String(k).toLowerCase().match(new RegExp('['+WCH+']+','g'))||[]).filter(w=>w.length>=5&&!GSTOP.has(w)); }
+function gStem(w){ return w.replace(/(nya|kan|an|lah)$/,'').replace(/^(meng|meny|mem|men|me|peng|pem|pen|pe|ber|ter|di|ke|se)/,''); }
+function gKeywords(lines){ const cnt={}, show={}; lines.forEach(k=>{ new Set(gWords(k).map(gStem)).forEach(s=>{ if(s.length>=4) cnt[s]=(cnt[s]||0)+1; }); gWords(k).forEach(w=>{ const s=gStem(w); if(!show[s]) show[s]=w; }); }); return Object.keys(cnt).filter(s=>cnt[s]>=2).sort((a,b)=>cnt[b]-cnt[a]).map(s=>({s,w:show[s]})); }
+function gMark(k,stems){ return esc(k).replace(new RegExp('['+WCH+']+','g'),w=>{ const s=gStem(w.toLowerCase()); return w.length>=5&&stems.includes(s)?'<mark class="gkw">'+w+'</mark>':w; }); }
+function gMarkClue(k){ return esc(k).replace(new RegExp(GCLUE.source,'gi'),m=>'<mark class="gclue">'+m+'</mark>'); }
+function gRoundSusun(P){ let pool=shuffle(P.idx.slice()), g=0; while(pool.join()===P.idx.join()&&g++<10) pool=shuffle(P.idx.slice()); return {id:'g-'+P.id,t:P.t,idx:P.idx,pool,placed:[],miss:0,hint:'',wrong:null}; }
+function gRoundSumbang(P){ const others=[]; S.bank.forEach(t=>{ if(t.id===P.t.id||!Array.isArray(t.kalimat)) return; const bad=gBadSet(t); t.kalimat.forEach((k,i)=>{ if(!bad.has(i+1)&&k&&!/\[\.\.\.\]/.test(k)&&k.length<260) others.push({k,t}); }); });
   if(!others.length) return null;
-  const lines=P.idx.map(i=>P.t.kalimat[i-1]), pos=1+Math.floor(Math.random()*lines.length);
-  lines.splice(pos,0,others[Math.floor(Math.random()*others.length)]); return {id:'g-'+P.id,t:P.t,lines,ans:pos,pick:null}; }
+  const o=others[Math.floor(Math.random()*others.length)], lines=P.idx.map(i=>P.t.kalimat[i-1]), pos=1+Math.floor(Math.random()*lines.length);
+  lines.splice(pos,0,o.k); const kw=gKeywords(lines.filter((_,i)=>i!==pos)).slice(0,4);
+  return {id:'g-'+P.id,t:P.t,src:o.t,lines,ans:pos,safe:[],wrong:null,kw,scan:false,miss:0}; }
 function gSwap(sent,word,non){
   const re=new RegExp('(^|[^'+WCH+'-])('+word.replace(/[.*+?^${}()|[\]\\]/g,'\\$&')+')(?=$|[^'+WCH+'-])','i');
   return sent.replace(re,(m0,pre,w)=>pre+(w[0]!==w[0].toLowerCase()?non[0].toUpperCase()+non.slice(1):non)); }
@@ -2393,51 +2511,159 @@ function gBakuPool(){ const m=new Map(), nonSet=new Set(), out=[], seen=new Set(
   S.bank.forEach(t=>{ if(!Array.isArray(t.kalimat)) return; const bad=gBadSet(t); t.kalimat.forEach((k,i)=>{ if(!k||bad.has(i+1)||/\[\.\.\.\]/.test(k)||k.length>200||seen.has(k)||!clean(k)) return;
     for(const w of (k.match(new RegExp('['+WCH+']+(?:-['+WCH+']+)*','g'))||[])){ const p=m.get(w.toLowerCase()); if(p){ seen.add(k); out.push({p,kata:w,teks:k}); break; } } }); });
   return out; }
-function gRoundBaku(pool,used){ if(pool.length<5) return null;
+function gDecoys(p,shown){ const bset=new Set(S.baku.map(x=>x.baku.toLowerCase())), out=new Set(), b=p.baku;
+  p.non.forEach(n=>{ if(n.toLowerCase()!==shown.toLowerCase()&&!/\s/.test(n)) out.add(n); });
+  const muts=[w=>w.replace(/f/,'p'),w=>w.replace(/v/,'f'),w=>w.replace(/p/,'f'),w=>w.replace(/e/,'i'),w=>w.replace(/i(?=[^i]*$)/,'e'),w=>w.replace(/u/,'o'),w=>w.replace(/o/,'u'),w=>w+'h',w=>w.replace(/h$/,''),w=>w.replace(/s/,'z'),w=>w.replace(/ks/,'x'),w=>w.replace(/a(?=[^a]*$)/,'e'),w=>w.replace(/k(?=[^k]*$)/,'g'),w=>w.replace(/([^aiueo])\1/,'$1'),w=>w.replace(/t(?=[^t]*$)/,'tt')];
+  shuffle(muts).forEach(f=>{ if(out.size>=4) return; const x=f(b); if(x&&x!==b&&x.toLowerCase()!==shown.toLowerCase()&&!bset.has(x.toLowerCase())) out.add(x); });
+  return shuffle([...out]).slice(0,2); }
+function gRoundBaku(G){ const pool=G.pool; if(pool.length<2) return null;
   const now=Date.now(), rank=x=>{ const s=srsOf(pairId(x.p)); if(s.n&&s.ok<s.n&&s.due<=now) return 0; if(!s.n) return 1; if(s.due<=now) return 2; return 3; };
-  const cand=pool.filter(x=>!used.includes(x.teks)), src=cand.length?cand:pool, best=Math.min(...src.map(rank));
-  const tgt=shuffle(src.filter(x=>rank(x)===best))[0], non=tgt.p.non[Math.floor(Math.random()*tgt.p.non.length)], wrong=gSwap(tgt.teks,tgt.kata,non);
-  if(wrong===tgt.teks) return null;
-  const lines=shuffle(shuffle(pool.filter(x=>x.teks!==tgt.teks&&x.p!==tgt.p)).slice(0,4).map(x=>x.teks).concat([wrong]));
-  return {id:pairId(tgt.p),p:tgt.p,non,teks:tgt.teks,lines,ans:lines.indexOf(wrong),pick:null}; }
-function startGame(kind){ const info=GAME_INFO[kind]; if(!info) return;
-  const G={kind,info,k:0,res:[],used:[],cur:null,fb:false,done:false};
-  if(kind==='baku'){ G.pool=gBakuPool(); G.n=info.n; }
+  const fresh=pool.filter(x=>!G.used.includes(x.teks)), src=fresh.length?fresh:pool, clean=Math.random()<.25;
+  const best=Math.min(...src.map(rank)), x=clean?shuffle(src)[0]:shuffle(src.filter(y=>rank(y)===best&&y.p.non.some(n=>!/\s/.test(n))))[0]||shuffle(src)[0];
+  G.used.push(x.teks);
+  const tok=s=>s.split(' ');
+  if(clean||!x.p.non.some(n=>!/\s/.test(n))) return {p:x.p,id:pairId(x.p),words:tok(x.teks),broken:-1,step:'find',miss:0,wrong:null,fixed:false};
+  const nons=x.p.non.filter(n=>!/\s/.test(n)), non=nons[Math.floor(Math.random()*nons.length)], wrong=gSwap(x.teks,x.kata,non), words=tok(wrong);
+  const bi=words.findIndex(w=>w.toLowerCase().replace(new RegExp('[^'+WCH+'-]','g'),'')===non.toLowerCase());
+  if(bi<0) return {p:x.p,id:pairId(x.p),words:tok(x.teks),broken:-1,step:'find',miss:0,wrong:null,fixed:false};
+  return {p:x.p,id:pairId(x.p),non,words,broken:bi,step:'find',miss:0,wrong:null,fixed:false,opts:shuffle([x.p.baku].concat(gDecoys(x.p,non)))}; }
+const GAMES={
+  susun:{t:'Menara Paragraf',sub:'Susun Paragraf',n:5,ic:'susun',c:'yellow',tag:'Tumpuk kalimat jadi paragraf yang padu',cara:['Ketuk kalimat yang paling cocok sebagai lanjutan menara.','Salah tumpuk, menara goyang dan 1 nyawa hilang.','Perhatikan kata rujukan: itu, tersebut, hal ini.'],pu:'Petunjuk'},
+  sumbang:{t:'Tangkap Penyusup',sub:'Kalimat Penyusup',n:5,ic:'sumbang',c:'sky',tag:'Satu kalimat menyusup dari teks lain',cara:['Baca paragraf, cari kalimat yang tidak sejalan.','Tangkap sebelum waktu habis. Makin cepat, makin besar poinnya.','Pakai Lacak untuk menyorot kata kunci topik.'],pu:'Lacak'},
+  baku:{t:'Bengkel Kata Baku',sub:'Baku di Kalimat',n:10,ic:'bakukal',c:'lime',tag:'Temukan kata rusak, lalu perbaiki',cara:['Ketuk kata yang tidak baku, atau tekan "Semua baku".','Pilih bentuk baku yang benar untuk memperbaikinya.','Kalimat tanpa kesalahan juga ada. Jangan asal ketuk!'],pu:null}
+};
+const GAME_INFO={susun:{sub:'Susun Paragraf'},sumbang:{sub:'Kalimat Penyusup'},baku:{sub:'Baku di Kalimat'}};
+let gTimer=null;
+function gStopTimer(){ clearInterval(gTimer); gTimer=null; }
+function gLimit(G){ return G.kind==='sumbang'?Math.max(18,36-G.k*4):G.kind==='baku'?Math.max(12,22-G.k):0; }
+function gStartTimer(G){ gStopTimer(); const lim=gLimit(G); if(!lim||!G.cur) return; G.cur.lim=lim; G.cur.end=Date.now()+lim*1000;
+  gTimer=setInterval(()=>{ if(V.game!==G||G.phase!=='play'){ gStopTimer(); return; } const left=Math.max(0,G.cur.end-Date.now()), bar=$('.gtime i'), lb=$('.gtime b');
+    if(bar){ bar.style.width=(left/(lim*1000)*100)+'%'; bar.classList.toggle('low',left<5000); } if(lb) lb.textContent=Math.ceil(left/1000)+' dtk';
+    if(!left){ gStopTimer(); gTimeout(G); render(); } },100); }
+function gSecLeft(G){ return G.cur&&G.cur.end?Math.max(0,Math.ceil((G.cur.end-Date.now())/1000)):0; }
+function startGame(kind){ const info=GAMES[kind]; if(!info) return; gStopTimer();
+  const G={kind,info,k:0,hearts:3,score:0,combo:0,maxCombo:0,res:[],used:[],cur:null,phase:'play',pu:2,say:'',fx:null,party:false,shake:null};
+  if(kind==='baku'){ G.pool=gBakuPool(); G.n=G.pool.length>=2?info.n:0; }
   else { G.paras=shuffle(gParas()).sort((a,b)=>gLast(info.sub,'g-'+a.id)-gLast(info.sub,'g-'+b.id)).slice(0,info.n); G.n=G.paras.length; }
-  V.game=G; gNext(G,true); go('game'); }
-function gNext(G,first){ if(!first) G.k++; G.fb=false; if(G.k>=G.n){ G.done=true; G.cur=null; return; }
-  G.cur=G.kind==='baku'?gRoundBaku(G.pool,G.used):G.kind==='susun'?gRoundSusun(G.paras[G.k]):gRoundSumbang(G.paras[G.k]);
-  if(!G.cur){ G.n=G.k; G.done=true; } else if(G.kind==='baku') G.used.push(G.cur.teks); }
-function gRecord(G,ok){ const c=G.cur; G.res.push({ok,c}); G.fb=true;
-  if(G.kind==='baku'){ const s=srsOf(c.id), int=ok?(s.int?Math.round(s.int*2.5):3):0; S.srs[c.id]={due:ok?Date.now()+int*DAY:0,int,n:s.n+1,ok:s.ok+(ok?1:0)}; S.dhist.push({id:c.id,kat:'baku',sub:'Baku di Kalimat',correct:ok,ts:Date.now()}); }
+  V.game=G; gLoad(G); go('game'); }
+function gLoad(G){ G.shake=null;
+  if(G.k>=G.n||G.hearts<=0){ gEnd(G); return; }
+  G.cur=G.kind==='baku'?gRoundBaku(G):G.kind==='susun'?gRoundSusun(G.paras[G.k]):gRoundSumbang(G.paras[G.k]);
+  if(!G.cur){ G.n=G.k; gEnd(G); return; }
+  G.phase='play'; G.say=G.kind==='susun'?'Mulai dari kalimat yang memperkenalkan topik.':G.kind==='sumbang'?'Ada satu penyusup di paragraf ini. Cari!':'Ada kata yang rusak? Ketuk kata itu.';
+  gStartTimer(G); }
+function gEnd(G){ gStopTimer(); G.phase='over'; G.cur=null; S.gbest=S.gbest||{}; const b=S.gbest[G.kind]||0; G.newBest=G.score>b&&G.score>0; if(G.newBest) S.gbest[G.kind]=G.score; save(); }
+function gPts(G,base){ G.combo++; G.maxCombo=Math.max(G.maxCombo,G.combo); const p=base*Math.min(G.combo,4); G.score+=p; G.fx={t:'+'+p+(G.combo>1?' · kombo x'+Math.min(G.combo,4):''),c:'ok'}; return p; }
+function gHurt(G,why){ G.hearts--; G.combo=0; G.fx={t:'-1 nyawa',c:'bad'}; G.say=why; buzz(false); }
+function gRecord(G,ok){ const c=G.cur; G.res.push({ok,c});
+  if(G.kind==='baku'){ const s=srsOf(c.id), int=ok?(s.int?Math.round(s.int*2.5):3):0; if(c.broken>=0) S.srs[c.id]={due:ok?Date.now()+int*DAY:0,int,n:s.n+1,ok:s.ok+(ok?1:0)}; S.dhist.push({id:c.id,kat:'baku',sub:'Baku di Kalimat',correct:ok,ts:Date.now()}); }
   else S.dhist.push({id:c.id,kat:'game',sub:G.info.sub,correct:ok,ts:Date.now()});
-  buzz(ok); save(); }
-function gameToday(kind){ const k=dayKey(Date.now()), sub=GAME_INFO[kind].sub; return S.dhist.filter(x=>x.sub===sub&&dayKey(x.ts)===k).length; }
-function viewGame(){ const G=V.game; if(!G) return viewBeranda(); if(G.done) return viewGameDone();
-  const c=G.cur, last=G.res[G.res.length-1];
-  let h=navbar('Keluar',esc(G.info.t),(G.k+1)+'/'+G.n,pct(G.k,G.n))+'<section class="card game">';
-  if(G.kind==='susun'){
-    h+='<p class="lead">Susun kalimat berikut menjadi paragraf yang padu. Ketuk kalimat sesuai urutan.</p>';
-    h+='<ol class="cbt-list gpick">'+(c.picked.length?c.picked.map((i,j)=>'<li'+(G.fb?(i===c.idx[j]?' class="hit"':' class="miss"'):'')+'><span class="no">'+(j+1)+'.</span><span class="grow">'+esc(c.t.kalimat[i-1])+'</span>'+(G.fb?'':'<button type="button" class="gx" data-action="gundo" data-j="'+j+'" aria-label="Lepas kalimat ini">✕</button>')+'</li>').join(''):'<li class="ph">Belum ada kalimat yang dipilih.</li>')+'</ol>';
-    if(!G.fb){ const rest=c.pool.filter(i=>!c.picked.includes(i)); if(rest.length) h+='<div class="sh" style="margin:6px 0 0">Kalimat</div><div class="ropts">'+rest.map(i=>'<button type="button" class="ropt gopt" data-action="gtap" data-i="'+i+'"><span class="t">'+esc(c.t.kalimat[i-1])+'</span></button>').join('')+'</div>'; }
-    else h+='<div class="pemb '+(last.ok?'ok':'bad')+'"><div class="pemb-h">'+(last.ok?'Urutan tepat':'Urutan belum tepat')+'</div><div class="pemb-b">Urutan asli:</div><ol class="cbt-list">'+c.idx.map((i,j)=>'<li><span class="no">'+(j+1)+'.</span><span>'+esc(c.t.kalimat[i-1])+'</span></li>').join('')+'</ol><div class="pemb-n">Dari '+esc(tName(c.t))+'. Perhatikan kata rujukan (itu, tersebut, hal ini) dan kata penghubung antarkalimat.</div></div>';
-  } else {
-    h+='<p class="lead">'+(G.kind==='baku'?'Perhatikan kalimat-kalimat berikut!':'Bacalah paragraf berikut!')+'</p>';
-    h+='<div class="ropts">'+c.lines.map((x,i)=>{ let cl='ropt gopt'; if(G.fb) cl+=i===c.ans?' right':i===c.pick?' wrong':' dim'; return '<button type="button" class="'+cl+'" data-action="gpick" data-i="'+i+'"'+(G.fb?' disabled':'')+'><span class="gno">('+(i+1)+')</span><span class="t">'+esc(x)+'</span></button>'; }).join('')+'</div>';
-    h+='<div class="cbt-q">'+(G.kind==='baku'?'Kalimat yang memuat kata tidak baku adalah kalimat nomor ....':'Kalimat yang tidak padu dengan paragraf tersebut adalah kalimat nomor ....')+'</div>';
-    if(G.fb) h+='<div class="pemb '+(last.ok?'ok':'bad')+'"><div class="pemb-h">'+(last.ok?'Benar':'Belum tepat · Kunci: '+(c.ans+1))+'</div><div class="pemb-b">'+(G.kind==='baku'?'<b>'+esc(c.non)+'</b> seharusnya <b>'+esc(c.p.baku)+'</b>.':'Kalimat ('+(c.ans+1)+') diambil dari teks lain, jadi tidak mendukung gagasan utama paragraf.')+'</div></div>';
+  save(); }
+function gWin(G,ok,say){ gStopTimer(); G.phase='reveal'; G.party=ok; G.say=say; gRecord(G,ok); if(ok) buzz(true); }
+function gTimeout(G){ const c=G.cur; if(!c||G.phase!=='play') return; gHurt(G,'Waktu habis!');
+  if(G.kind==='sumbang') gWin(G,false,'Waktu habis. Penyusupnya kalimat ('+(c.ans+1)+').');
+  else if(G.kind==='baku'){ c.fixed=true; gWin(G,false,c.broken>=0?'Waktu habis. "'+c.non+'" seharusnya "'+c.p.baku+'".':'Waktu habis. Semua kata di kalimat itu sudah baku.'); } }
+function gNextRound(G){ G.k++; if(G.hearts<=0) gEnd(G); else gLoad(G); }
+/* aksi permainan */
+function gAct(a,b){ const G=V.game; if(!G) return; const c=G.cur, i=+b.dataset.i;
+  if(a==='gquit'){ gStopTimer(); V.game=null; go('main'); return; }
+  if(a==='gnext'){ if(G.phase!=='reveal') return; gNextRound(G); render(); window.scrollTo(0,0); return; }
+  if(a==='gagain'){ startGame(G.kind); return; }
+  if(G.phase!=='play'||!c) return;
+  if(a==='g1'){ // menara
+    const need=c.idx[c.placed.length], v=c.pool[i];
+    if(v===need){ c.pool.splice(i,1); c.placed.push(v); c.hint=''; c.wrong=null; gPts(G,10); G.say=['Kokoh!','Pas sekali!','Menara makin tinggi!','Sambungannya tepat.'][Math.floor(Math.random()*4)];
+      if(!c.pool.length){ const bonus=c.miss?0:20; G.score+=bonus; gWin(G,c.miss===0,c.miss?'Paragraf utuh! Coba tanpa salah di ronde berikutnya.':'Sempurna! Bonus +20 karena tanpa salah.'); } }
+    else { c.miss++; c.wrong=i; G.shake=v; c.hint=gSusunHint(c); gHurt(G,'Menaranya goyang! Kalimat itu belum waktunya.'); if(G.hearts<=0){ gWin(G,false,'Nyawa habis. Lihat urutan yang benar di bawah.'); } }
   }
+  else if(a==='g1hint'){ if(G.pu<=0||c.hint) return; G.pu--; c.hint=gSusunHint(c); G.say='Ini petunjuknya.'; }
+  else if(a==='g2'){ if(c.safe.includes(i)) return;
+    if(i===c.ans){ gPts(G,10+gSecLeft(G)); gWin(G,c.miss===0,'Tertangkap! Kalimat ('+(i+1)+') berasal dari teks lain.'); }
+    else { c.miss++; c.safe.push(i); G.shake=i; const kw=gKeywords(c.lines.filter((_,j)=>j!==c.ans)).map(x=>x.s), hit=gWords(c.lines[i]).find(w=>kw.includes(gStem(w))); gHurt(G,'Itu warga asli'+(hit?', kalimatnya membahas "'+hit+'"':'')+'.'); if(G.hearts<=0) gWin(G,false,'Nyawa habis. Penyusupnya kalimat ('+(c.ans+1)+').'); }
+  }
+  else if(a==='g2scan'){ if(G.pu<=0||c.scan) return; G.pu--; c.scan=true; G.say='Kata kunci topik disorot. Kalimat tanpa sorotan patut dicurigai.'; }
+  else if(a==='g3word'){ if(c.step!=='find') return;
+    if(i===c.broken){ c.step='fix'; G.say='Ketemu! Sekarang pilih bentuk bakunya.'; }
+    else { c.miss++; G.shake='w'+i; gHurt(G,'"'+c.words[i].replace(new RegExp('[^'+WCH+'-]','g'),'')+'" sudah baku.'); if(G.hearts<=0){ c.fixed=true; gWin(G,false,'Nyawa habis.'); } }
+  }
+  else if(a==='g3all'){ if(c.step!=='find') return;
+    if(c.broken<0){ gPts(G,8+gSecLeft(G)); c.fixed=true; gWin(G,c.miss===0,'Betul, kalimat ini sudah baku semua.'); }
+    else { c.miss++; gHurt(G,'Ada kata yang rusak: "'+c.non+'". Perbaiki dulu.'); c.step='fix'; if(G.hearts<=0){ c.fixed=true; gWin(G,false,'Nyawa habis.'); } }
+  }
+  else if(a==='g3fix'){ if(c.step!=='fix') return; const o=c.opts[i];
+    if(o===c.p.baku){ c.fixed=true; gPts(G,10+gSecLeft(G)); gWin(G,c.miss===0,'"'+c.non+'" diperbaiki jadi "'+c.p.baku+'".'); }
+    else { c.miss++; G.shake='o'+i; gHurt(G,'"'+o+'" juga bukan bentuk baku.'); if(G.hearts<=0){ c.fixed=true; gWin(G,false,'Nyawa habis. Bentuk bakunya "'+c.p.baku+'".'); } }
+  }
+  render(); }
+function gSusunHint(c){ const k=c.placed.length, nx=c.t.kalimat[c.idx[k]-1];
+  if(k===0) return 'Kalimat pertama biasanya memperkenalkan topik dan tidak diawali kata rujukan seperti "itu" atau "tersebut".';
+  const m=nx.match(GCLUE); if(m) return 'Kalimat berikutnya memuat kata "'+m[0]+'", penanda yang menyambung ke kalimat sebelumnya.';
+  const prev=c.t.kalimat[c.idx[k-1]-1], ps=new Set(gWords(prev).map(gStem)), w=gWords(nx).find(x=>ps.has(gStem(x)));
+  return w?'Kalimat berikutnya masih membahas "'+w+'" dari kalimat terakhir.':'Cari kalimat yang melanjutkan gagasan kalimat terakhir di menara.'; }
+/* tampilan */
+const HEART='<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 21s-7.5-4.6-9.6-9.3C.9 8.2 3 4.5 6.6 4.5c2.1 0 3.6 1.2 5.4 3.2 1.8-2 3.3-3.2 5.4-3.2 3.6 0 5.7 3.7 4.2 7.2C19.5 16.4 12 21 12 21z"/></svg>';
+function gHud(G){ const lim=G.cur&&G.cur.lim, left=lim?gSecLeft(G):0;
+  return '<div class="ghud"><button type="button" class="gquit" data-action="gquit" aria-label="Keluar">✕</button><span class="ghearts" aria-label="'+G.hearts+' nyawa">'+[0,1,2].map(j=>'<i class="'+(j<G.hearts?'on':'')+'">'+HEART+'</i>').join('')+'</span><span class="gscore"><small>Skor</small><b>'+G.score+'</b></span>'+(G.combo>1?'<span class="gcombo">x'+Math.min(G.combo,4)+'</span>':'')+'<span class="gstage">Ronde '+(G.k+1)+'/'+G.n+'</span></div>'+
+    '<div class="groad">'+Array.from({length:G.n},(_,j)=>'<i class="'+(j<G.k?(G.res[j]&&G.res[j].ok?'ok':'bad'):j===G.k?'cur':'')+'"></i>').join('')+'</div>'+
+    (lim?'<div class="gtime"><i style="width:'+(G.phase==='play'?left/lim*100:0)+'%"></i><b>'+left+' dtk</b></div>':''); }
+function gSay(G){ const pose=G.phase==='reveal'?(G.party?'trophy':'wave'):G.fx&&G.fx.c==='ok'?'pencil':'';
+  return '<div class="gsay">'+bloki(pose)+'<div class="gbub">'+esc(G.say)+'</div>'+(G.fx?'<span class="gfx '+G.fx.c+'">'+esc(G.fx.t)+'</span>':'')+'</div>'; }
+const GCOL=['var(--yellow)','var(--red)','var(--blue)','var(--green)','var(--orange)','var(--purple)','var(--sky)'];
+function viewGame(){ const G=V.game; if(!G) return viewMain(); if(G.phase==='over') return viewGameOver();
+  const c=G.cur; let h=gHud(G)+gSay(G);
+  if(G.kind==='susun'){
+    const slots=c.idx.length;
+    h+='<section class="gboard tower"><div class="gtitle">Menara paragraf · '+c.placed.length+'/'+slots+' balok</div><div class="gstack">'+
+      c.placed.map((v,j)=>'<div class="gbrick in" style="--c:'+GCOL[j%GCOL.length]+'"><span class="gno">'+(j+1)+'</span><span>'+(G.phase==='reveal'&&j>0?gMarkClue(c.t.kalimat[v-1]):esc(c.t.kalimat[v-1]))+'</span></div>').join('')+
+      (G.phase==='play'?Array.from({length:slots-c.placed.length},(_,j)=>'<div class="gslot'+(j===0?' next':'')+'">'+(j===0?'Balok ke-'+(c.placed.length+1)+' di sini':'')+'</div>').join(''):'')+'</div></section>';
+    if(G.phase==='play'){
+      if(c.hint) h+='<div class="ghint">💡 '+esc(c.hint)+'</div>';
+      h+='<div class="gpool">'+c.pool.map((v,j)=>'<button type="button" class="gpiece'+(G.shake===v?' shake':'')+'" data-action="g1" data-i="'+j+'">'+esc(c.t.kalimat[v-1])+'</button>').join('')+'</div>';
+      h+='<button type="button" class="gpu" data-action="g1hint"'+(G.pu&&!c.hint?'':' disabled')+'>💡 Petunjuk · sisa '+G.pu+'</button>';
+    } else {
+      if(c.placed.length<c.idx.length) h+='<section class="card gexp"><b>Urutan yang benar</b><ol class="cbt-list">'+c.idx.map((v,j)=>'<li><span class="no">'+(j+1)+'.</span><span>'+(j?gMarkClue(c.t.kalimat[v-1]):esc(c.t.kalimat[v-1]))+'</span></li>').join('')+'</ol></section>';
+      h+='<section class="card gexp"><b>Kenapa urutannya begitu?</b><p>Kata yang disorot kuning adalah rujukan atau penghubung. Kata itu menandakan kalimatnya melanjutkan gagasan kalimat sebelumnya, jadi tidak bisa berdiri di awal.</p><small>Dari '+esc(tName(c.t))+'</small></section>';
+    }
+  } else if(G.kind==='sumbang'){
+    const stems=c.kw.map(x=>x.s);
+    h+='<section class="gboard"><div class="gtitle">Paragraf dengan satu penyusup</div><div class="gsus">'+c.lines.map((x,j)=>{ const safe=c.safe.includes(j), hit=G.phase==='reveal'&&j===c.ans;
+      return '<button type="button" class="gsuspect'+(safe?' safe':'')+(hit?' caught':'')+(G.phase==='reveal'&&j!==c.ans?' dim':'')+(G.shake===j?' shake':'')+'" data-action="g2" data-i="'+j+'"'+(safe||G.phase!=='play'?' disabled':'')+'><span class="gno">'+(j+1)+'</span><span class="gtx">'+(c.scan||G.phase==='reveal'?gMark(x,stems):esc(x))+'</span>'+(safe?'<span class="gtag ok">aman</span>':hit?'<span class="gtag bad">penyusup</span>':'')+'</button>'; }).join('')+'</div></section>';
+    if(G.phase==='play') h+='<button type="button" class="gpu" data-action="g2scan"'+(G.pu&&!c.scan?'':' disabled')+'>🔍 Lacak kata kunci · sisa '+G.pu+'</button>';
+    else h+='<section class="card gexp"><b>Cara mengenalinya</b><p>Kata kunci paragraf: '+(c.kw.length?c.kw.map(x=>'<mark class="gkw">'+esc(x.w)+'</mark>').join(' '):'(tidak ada yang berulang)')+'. Kalimat penyusup tidak membahas kata kunci itu. Kalimat ('+(c.ans+1)+') diambil dari teks "'+esc(tName(c.src))+'".</p></section>';
+  } else {
+    h+='<section class="gboard"><div class="gtitle">'+(c.step==='fix'?'Perbaiki kata yang rusak':'Ada kata tidak baku?')+'</div><p class="gsent">'+c.words.map((w,j)=>{ const br=j===c.broken, done=br&&c.fixed;
+      const lead=w.match(new RegExp('^[^'+WCH+']*'))[0], tail=w.match(new RegExp('[^'+WCH+'-]*$'))[0], core=w.slice(lead.length,w.length-tail.length||undefined);
+      const shown=done?c.p.baku.replace(/^./,ch=>/[A-Z]/.test(core[0]||'')?ch.toUpperCase():ch):core;
+      return lead+'<button type="button" class="gword'+(br&&c.step==='fix'&&!done?' broken':'')+(done?' fixed':'')+(G.shake==='w'+j?' shake':'')+'" data-action="g3word" data-i="'+j+'"'+(c.step!=='find'||G.phase!=='play'?' disabled':'')+'>'+esc(shown)+'</button>'+esc(tail); }).join(' ')+'</p></section>';
+    if(G.phase==='play'&&c.step==='find') h+='<button type="button" class="gpu ok" data-action="g3all">✓ Semua kata sudah baku</button>';
+    if(G.phase==='play'&&c.step==='fix') h+='<div class="gfix"><span>Ganti "'+esc(c.non)+'" dengan:</span><div>'+c.opts.map((o,j)=>'<button type="button" class="gopt2'+(G.shake==='o'+j?' shake':'')+'" style="--c:'+GCOL[j+2]+'" data-action="g3fix" data-i="'+j+'">'+esc(o)+'</button>').join('')+'</div></div>';
+    if(G.phase==='reveal'&&c.broken>=0) h+='<section class="card gexp"><b>Catat di bengkel</b><p><s>'+esc(c.non)+'</s> → <mark class="gkw">'+esc(c.p.baku)+'</mark></p></section>';
+  }
+  if(G.phase==='reveal') h+='<button class="btn primary block" type="button" data-action="gnext">'+(G.k+1>=G.n||G.hearts<=0?'Lihat skor akhir':'Ronde berikutnya →')+'</button>';
+  if(G.party) h+='<div class="gparty" aria-hidden="true">'+Array.from({length:14},(_,j)=>'<i style="--c:'+GCOL[j%7]+';--x:'+(Math.random()*240-120).toFixed(0)+'px;--r:'+(Math.random()*540-270).toFixed(0)+'deg;left:'+(10+Math.random()*80).toFixed(0)+'%"></i>').join('')+'</div>';
+  G.fx=null; G.shake=null; G.party=false;
+  return h; }
+function viewGameOver(){ const G=V.game, ok=G.res.filter(r=>r.ok).length, n=G.res.length, stars=!n?0:G.hearts<=0?1:ok===n?3:ok>=n/2?2:1;
+  let h='<section class="card gover"><div class="gstars">'+[1,2,3].map(j=>'<i class="'+(j<=stars?'on':'')+'">★</i>').join('')+'</div>'+bloki(stars===3?'trophy':'wave')+'<h2>'+(!n?'Belum bisa main':G.hearts<=0?'Nyawa habis!':'Permainan selesai!')+'</h2>';
+  if(!n) h+='<p>'+(G.kind==='baku'?'Butuh minimal 2 kalimat dari daftar kata baku.':'Permainan ini memakai paragraf 3–7 kalimat dari teks bernomor di Bank soal'+(G.kind==='sumbang'?', dan butuh minimal 2 teks berbeda':'')+'. Tempel paket di Bank soal dulu.')+'</p>';
+  else h+='<div class="gfinal"><div><b>'+G.score+'</b><span>skor</span></div><div><b>'+ok+'/'+n+'</b><span>ronde sempurna</span></div><div><b>x'+Math.min(G.maxCombo,4)+'</b><span>kombo tertinggi</span></div></div>'+(G.newBest?'<div class="gnew">Rekor baru!</div>':'<div class="gbest">Rekor: '+((S.gbest||{})[G.kind]||0)+'</div>');
   h+='</section>';
-  if(G.kind==='susun'&&!G.fb) h+='<button class="btn primary block" type="button" data-action="gcek"'+(c.picked.length===c.idx.length?'':' disabled')+'>Periksa</button>';
-  if(G.fb) h+='<button class="btn primary block" type="button" data-action="gnext">'+(G.k+1>=G.n?'Lihat hasil':'Lanjut')+'</button>';
-  return h+'<button class="btn ghost block" type="button" data-action="gstop"'+(G.res.length?'':' disabled')+'>Selesai dan lihat hasil</button>'; }
-function viewGameDone(){ const G=V.game, ok=G.res.filter(r=>r.ok).length, n=G.res.length;
-  let h=navbar('Latihan','Hasil '+esc(G.info.t),'',null);
-  if(!n) return h+'<div class="card empty">'+(G.kind==='baku'?'Butuh minimal 5 kalimat dari daftar kata baku.':'Belum ada paragraf yang bisa dipakai. Game ini memakai paragraf 3–7 kalimat dari teks bernomor di Bank soal'+(G.kind==='sumbang'?', dan butuh minimal 2 teks berbeda':'')+'. <a href="#bank">Tempel paket di Bank soal.</a>')+'</div><a class="btn ghost block" href="#beranda">Kembali</a>';
-  h+=ring(ok,n)+'<div class="sub">benar · '+esc(G.info.t)+'</div></section>';
-  const wrong=G.res.filter(r=>!r.ok);
-  if(G.kind==='baku'&&wrong.length) h+='<div class="sh">Masih salah ('+wrong.length+')</div><div class="group">'+wrong.map(r=>'<div class="cell"><span class="txt"><span class="t1">'+esc(r.c.p.baku)+'</span><span class="t2">bukan '+esc(r.c.non)+'</span></span></div>').join('')+'</div>';
-  return h+'<div class="actions"><a class="btn ghost" href="#beranda">Selesai</a><button class="btn primary" type="button" data-action="game" data-v="'+G.kind+'">Main lagi</button></div>'; }
+  const miss=G.kind==='baku'?G.res.filter(r=>r.c.broken>=0&&!r.ok):[];
+  if(miss.length) h+='<div class="sh">Kata yang perlu diingat</div><div class="group">'+miss.map(r=>'<div class="cell"><span class="txt"><span class="t1">'+esc(r.c.p.baku)+'</span><span class="t2">bukan '+esc(r.c.non)+'</span></span></div>').join('')+'</div>';
+  return h+'<div class="actions"><button class="btn ghost" type="button" data-action="gquit">Pilih game lain</button><button class="btn primary" type="button" data-action="gagain">Main lagi</button></div>'; }
+function gameToday(kind){ const k=dayKey(Date.now()), sub=GAMES[kind].sub; return S.dhist.filter(x=>x.sub===sub&&dayKey(x.ts)===k).length; }
+function viewMain(){
+  return '<h1>Mini game</h1><div class="lt-sub">Belajar kaidah sambil main. Skor tidak mengubah tahap latihan.</div><div class="gcards">'+Object.keys(GAMES).map(k=>{ const g=GAMES[k], best=(S.gbest||{})[k]||0, td=gameToday(k);
+    return '<article class="gcard" style="--c:var(--'+g.c+')"><div class="gchead'+(g.c==='yellow'||g.c==='lime'?' yk':'')+'"><span class="bic">'+icoSvg(g.ic)+'</span><span><b>'+g.t+'</b><small>'+g.tag+'</small></span></div><ol class="gcara">'+g.cara.map(x=>'<li>'+esc(x)+'</li>').join('')+'</ol><div class="gcfoot"><span class="gmeta">🏆 '+best+(td?' · '+td+' ronde hari ini':'')+'</span><button type="button" class="btn primary" data-action="game" data-v="'+k+'">Main</button></div></article>'; }).join('')+'</div>'; }
+function viewLatihan(){ const tab=V.ltab||'drill';
+  const cell=(act,v,ic,t1,t2,val,dis)=>'<button type="button" class="cell has-ic" data-action="'+act+'"'+(v?' data-v="'+esc(v)+'"':'')+(dis?' disabled':'')+'>'+icon(ic)+'<span class="txt"><span class="t1">'+t1+'</span><span class="t2">'+t2+'</span></span><span class="val">'+val+'</span>'+CHEV+'</button>';
+  const dc=(k,ic,t1,t2)=>{ const n=poolFor(k).length; return cell('drill',k,ic,t1,t2,n?dueCount(k)+' siap':'kosong',!n); };
+  const tc=s=>{ const t=nextTeks(s); return cell('teks',s,s==='PBM'?'pbm':'ppu','Teks '+s,s==='PBM'?'Ejaan, diksi, kalimat efektif':'Makna kata, imbuhan, majas',t?t.soal.filter(q=>q.subtes===s).length+' soal':'kosong',!t); };
+  let h='<h1>Latihan bebas</h1><div class="lt-sub">Latihan di luar tugas harian. Pilih jenisnya dulu.</div><div class="segbar">'+[['drill','Drill'],['teks','Teks'],['sim','Simulasi']].map(([k,l])=>'<button type="button" data-action="ltab" data-v="'+k+'" aria-pressed="'+(tab===k)+'">'+l+'</button>').join('')+'</div>';
+  if(tab==='drill') h+='<div class="group">'+cell('swipe','','baku','Kartu kata baku','Pemanasan: geser baku/tidak baku',S.baku.length+' kata')+dc('kebahasaan','keb','Kebahasaan','Imbuhan, makna, analogi')+dc('tanda-baca','tb','Tanda baca','Koma, titik, hubung, petik')+dc('ejaan','eyd','EYD V','Huruf, penulisan kata')+dc('campur','mix','Campur','Semua kategori diacak')+'</div>';
+  else if(tab==='teks') h+='<div class="group">'+tc('PBM')+tc('PPU')+'</div><a class="link" href="#teks">Lihat daftar teks →</a>';
+  else h+='<div class="group">'+['PBM','PPU'].map(k=>cell('sim',k,'sim','Simulasi '+k,'20 soal, diperiksa di akhir',simCount(k)+'/20 soal')).join('')+'</div>';
+  return h; }
 
 /* ---------- Kalender konsep ---------- */
 function nextDays(n){ let h=''; const d0=new Date(); d0.setHours(0,0,0,0);
@@ -2489,11 +2715,11 @@ function viewKalender(){
 /* ---------- Render ---------- */
 function render(){
   const r=route(); if(r!=='kaidah'&&V.kaidah) V.kaidah.from=null;
-  const views={progres:viewProgres,kalender:viewKalender,beranda:viewBeranda,kaidah:viewKaidah,teks:viewTeks,bank:viewBank,progres:viewProgres,drill:viewDrill,soal:viewSoal,selesai:viewSelesai,prompt:viewPrompt,swipe:viewSwipe,game:viewGame};
+  const views={progres:viewProgres,kalender:viewKalender,beranda:viewBeranda,kaidah:viewKaidah,teks:viewTeks,bank:viewBank,progres:viewProgres,drill:viewDrill,soal:viewSoal,selesai:viewSelesai,prompt:viewPrompt,swipe:viewSwipe,game:viewGame,main:viewMain,latihan:viewLatihan};
   document.body.dataset.r=r;
   $('#view').innerHTML=(HDR_ROUTES.includes(r)?appHeader():'')+(views[r]||viewBeranda)();
   renderNav();
-  document.body.classList.toggle('sess', (r==='drill'&&!!V.drill&&!(V.drill.fin&&!V.drill.review))||(r==='soal'&&!!V.run)||(r==='swipe'&&!!V.sw)||(r==='game'&&!!V.game&&!V.game.done));
+  document.body.classList.toggle('sess', (r==='drill'&&!!V.drill&&!(V.drill.fin&&!V.drill.review))||(r==='soal'&&!!V.run)||(r==='swipe'&&!!V.sw)||(r==='game'&&!!V.game&&V.game.phase!=='over'));
   const h1=$('#view h1'); $('#topbar').textContent=h1?h1.textContent:''; onScrollTop(); taskWatch(); ringkasPPU();
 }
 function onScrollTop(){ const h1=$('#view h1'), tb=$('#topbar'); if(!tb) return; tb.classList.toggle('on', !!h1 && h1.getBoundingClientRect().bottom<44); }
@@ -2519,12 +2745,9 @@ document.addEventListener('click',e=>{
   else if(a==='mup'){ V.kaidah.nav=navUp(V.kaidah.nav||{}); render(); window.scrollTo(0,0); }
   else if(a==='swipe'){ startSwipe(null); }
   else if(a==='game'){ startGame(b.dataset.v); }
-  else if(a==='gtap'){ const G=V.game; if(!G||G.fb||G.kind!=='susun') return; const i=+b.dataset.i; if(!G.cur.picked.includes(i)) G.cur.picked.push(i); render(); }
-  else if(a==='gundo'){ const G=V.game; if(!G||G.fb) return; G.cur.picked.splice(+b.dataset.j,1); render(); }
-  else if(a==='gcek'){ const G=V.game; if(!G||G.fb) return; const c=G.cur; if(c.picked.length!==c.idx.length) return; gRecord(G,c.picked.join()===c.idx.join()); render(); }
-  else if(a==='gpick'){ const G=V.game; if(!G||G.fb||G.kind==='susun') return; G.cur.pick=+b.dataset.i; gRecord(G,G.cur.pick===G.cur.ans); render(); }
-  else if(a==='gnext'){ const G=V.game; if(!G||!G.fb) return; gNext(G,false); render(); window.scrollTo(0,0); }
-  else if(a==='gstop'){ const G=V.game; if(!G) return; G.done=true; render(); window.scrollTo(0,0); }
+  else if(['gquit','gnext','gagain','g1','g1hint','g2','g2scan','g3word','g3all','g3fix'].includes(a)){ gAct(a,b); }
+  else if(a==='ltab'){ V.ltab=b.dataset.v; render(); }
+  else if(a==='go'){ const [r,t]=b.dataset.v.split(':'); if(t) V.ltab=t; go(r); }
   else if(a==='swyes'){ swAnswer(true); }
   else if(a==='swno'){ swAnswer(false); }
   else if(a==='swnext'){ swNext(); }
@@ -2596,7 +2819,7 @@ document.addEventListener('keydown',e=>{
   if(k==='r'){ click('[data-action="qflag"]'); }
 });
 document.addEventListener('paste',e=>{ if(e.target.id==='paste'){ setTimeout(()=>{ V.bank.text=$('#paste').value; V.bank.check=validate(V.bank.text); render(); },0); } });
-window.addEventListener('hashchange',()=>{ const r=route(); if(((r==='soal'||r==='selesai')&&!V.run)||(r==='drill'&&!V.drill)||(r==='swipe'&&!V.sw)||(r==='game'&&!V.game)){ location.hash='#beranda'; return; } render(); window.scrollTo(0,0); });
+window.addEventListener('hashchange',()=>{ const r=route(); if(((r==='soal'||r==='selesai')&&!V.run)||(r==='drill'&&!V.drill)||(r==='swipe'&&!V.sw)){ location.hash='#beranda'; return; } if(r==='game'&&!V.game){ location.hash='#main'; return; } if(r!=='game') gStopTimer(); render(); window.scrollTo(0,0); });
 if(['soal','selesai','drill','swipe','game'].includes(route())) location.hash='#beranda';
 function applyAnim(){ try{ if(S.anim==='on') document.documentElement.setAttribute('data-anim','on'); else document.documentElement.removeAttribute('data-anim'); }catch(_){} }
 applyAnim();
