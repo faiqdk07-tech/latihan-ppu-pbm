@@ -1713,6 +1713,31 @@ body[data-r="game"] .gscore em{border:2px solid color-mix(in srgb,var(--orange) 
 .vrow.caught .vbub{background:color-mix(in srgb,var(--red) 10%,#fff);border-color:color-mix(in srgb,var(--red) 62%,#1f2a4d);box-shadow:0 4px 0 color-mix(in srgb,var(--red) 60%,#1f2a4d)}
 .vgate .vbub{border-radius:12px;font-weight:500}
 .gdrop{border-radius:12px}
+
+/* ===== LEGO RAPI · Tahap 4c: Bengkel Kata Baku ===== */
+/* meja kerja: slot tujuan berupa bayangan balok, seperti lantai kosong di Menara Paragraf */
+.bench{border-radius:12px;box-shadow:0 4px 0 var(--sh)}
+.bench-l{font-size:14px;color:#5d76a8;text-align:center}
+.bench-slot{border:2px dashed #8fa6d0;border-radius:10px;background:rgba(255,255,255,.7);color:#5d76a8}
+/* kotak perkakas: semua alat balok biru yang sama (warna tidak membocorkan jawaban) */
+.toolbox{border-radius:14px}
+.toolbox .gtool.tl{--tc:var(--sky);position:relative;overflow:visible;background:var(--tc);color:#fff;border:2px solid color-mix(in srgb,var(--tc) 62%,#1f2a4d);box-shadow:0 4px 0 color-mix(in srgb,var(--tc) 62%,#1f2a4d);border-radius:10px;padding:10px 4px 8px;margin-top:8px}
+.toolbox .gtool.tl::before,.toolbox .gtool.tl::after{content:"";position:absolute;top:-9px;width:16px;height:7px;background:var(--tc);border:2px solid color-mix(in srgb,var(--tc) 62%,#1f2a4d);border-bottom:0;border-radius:4px 4px 0 0}
+.toolbox .gtool.tl::before{left:22%}.toolbox .gtool.tl::after{right:22%}
+.toolbox .gtool.tl b{color:#fff;font-size:16px}
+.toolbox .gtool.tl:active{transform:translateY(3px);box-shadow:0 1px 0 color-mix(in srgb,var(--tc) 62%,#1f2a4d)}
+.toolbox .gtool.tl.shake{--c:var(--red)}
+/* balok retak: abu tua agar tulisannya tetap terbaca */
+.gw.lb.broken{background:#7d88a1;border-color:#4d566b}
+.gw.lb.broken::before{background:#7d88a1}
+/* varian Peti mulus: peti kayu diganti balok oranye bertonjolan berlabel putih */
+.vcrate{--c:var(--orange);background:var(--c)!important;background-image:none!important;border:2px solid color-mix(in srgb,var(--c) 62%,#1f2a4d)!important;border-radius:12px!important;box-shadow:0 5px 0 color-mix(in srgb,var(--c) 62%,#1f2a4d)!important;padding:12px!important;margin-top:8px;overflow:visible}
+.vcrate::before,.vcrate::after{content:"";position:absolute;top:-10px;width:20px;height:8px;background:var(--c);border:2px solid color-mix(in srgb,var(--c) 62%,#1f2a4d);border-bottom:0;border-radius:5px 5px 0 0}
+.vcrate::before{left:18px}.vcrate::after{left:46px}
+.vcrate .lbl{border-radius:8px;box-shadow:none;background:#fff;color:#26304b}
+.vcrate.ok{--c:var(--green)}.vcrate.bad{--c:var(--red)}
+.vcrate em{border:2px solid rgba(31,42,77,.28);border-radius:7px;transform:none}
+.gdrop.truck{--c:var(--orange)}
 </style>
 
 </head>
