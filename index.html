@@ -1761,6 +1761,19 @@ body[data-r="game"] .gscore em{border:2px solid color-mix(in srgb,var(--orange) 
 .lres.bad{--pc:var(--red)}
 .lres .grule{font-weight:600}
 .gcard3.lset[data-action="gnext"]{cursor:pointer}
+
+/* ===== LEGO RAPI · Tahap 4e: Pangkas ===== */
+/* kata di pita: balok putih bertonjolan, jarak antarkata seragam (garis potong hias dihapus agar tidak nyasar di awal baris) */
+.strip{column-gap:10px;row-gap:16px;padding-top:22px}
+.strip .cutl{display:none}
+.strip .gw.pc{position:relative;overflow:visible;background:#fff;border:2px solid var(--pl);box-shadow:0 3px 0 var(--sh);border-radius:8px;padding:6px 10px;color:#26304b}
+.strip .gw.pc::before{content:"";display:block;position:absolute;top:-8px;left:8px;width:14px;height:6px;background:#fff;border:2px solid var(--pl);border-bottom:0;border-radius:4px 4px 0 0}
+.strip .gw.pc:not([disabled]):active{background:color-mix(in srgb,var(--red) 10%,#fff);transform:translateY(2px);box-shadow:0 1px 0 var(--sh)}
+@media (hover:hover){.strip .gw.pc:not([disabled]):hover{background:color-mix(in srgb,var(--red) 10%,#fff)}}
+.strip .gw.must{background:color-mix(in srgb,var(--red) 10%,#fff);border-color:color-mix(in srgb,var(--red) 62%,#1f2a4d);box-shadow:0 3px 0 color-mix(in srgb,var(--red) 60%,#1f2a4d)}
+.strip .gw.must::before{background:color-mix(in srgb,var(--red) 10%,#fff);border-color:color-mix(in srgb,var(--red) 62%,#1f2a4d)}
+/* varian Rapi atau pangkas: penanda hasil jadi balok mini */
+.vdone span{border:2px solid rgba(31,42,77,.28);box-shadow:0 2px 0 rgba(31,42,77,.22);border-radius:6px}
 </style>
 
 </head>
