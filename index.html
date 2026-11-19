@@ -1558,7 +1558,7 @@ body[data-r="game"] .pzk{font-size:15px}
 /* ===== LEGO RAPI · Tahap 1: tata letak & presisi ===== */
 /* layar game: konten mulai dari atas (HUD tidak melompat); layar pembuka & skor tetap di tengah */
 body[data-r="game"] main{justify-content:flex-start;padding-top:12px}
-body[data-r="game"] main>.gintro,body[data-r="game"] main>.gover{margin-block:auto}
+body[data-r="game"] main:has(>.gintro),body[data-r="game"] main:has(>.gover){justify-content:center}
 /* HUD: pelat lego putih yang menempel di atas, tidak tertutup awan */
 body[data-r="game"] .ghud{position:sticky;top:calc(8px + env(safe-area-inset-top,0px));z-index:20;background:#fff;border:2px solid var(--pl);border-radius:14px;box-shadow:0 4px 0 var(--sh);padding:6px 10px 6px 6px;min-height:54px}
 body[data-r="game"] .ghud .gquit{box-shadow:0 3px 0 var(--sh)}
@@ -1617,6 +1617,38 @@ body.sess:not([data-r="game"]) .app{padding-bottom:calc(32px + env(safe-area-ins
 /* notifikasi (toast): lebih lebar & mudah dibaca, tetap balok kuning */
 .toast{width:max-content;max-width:min(340px,calc(100% - 32px));text-align:center;font-family:var(--f-ui);font-weight:700;font-size:14px;line-height:1.4;padding:10px 16px}
 body.sess:not([data-r="game"]) .toast{bottom:calc(24px + env(safe-area-inset-bottom,0px))}
+
+/* ===== LEGO RAPI · Tahap 3: layar pembuka & skor game ===== */
+/* kartu pembuka dan skor: kartu lego berbingkai warna game, dengan tonjolan di atas pita */
+.gintro,.gover{--cd:color-mix(in srgb,var(--c) 62%,#1f2a4d);position:relative;overflow:visible;background:#fff;border:2px solid var(--cd);border-top:14px solid var(--c);border-radius:16px;box-shadow:0 6px 0 var(--cd);margin-top:14px}
+.gintro::before,.gintro::after,.gover::before,.gover::after{content:"";position:absolute;top:-24px;width:24px;height:10px;background:var(--c);border:2px solid var(--cd);border-bottom:0;border-radius:5px 5px 0 0}
+.gintro::before,.gover::before{left:22px}
+.gintro::after,.gover::after{right:22px}
+.gintro{padding:30px 22px 22px;gap:10px}
+.gintro .gi-ic{margin-top:-62px;width:64px;height:64px;border-radius:14px;border-color:var(--cd);box-shadow:0 4px 0 var(--cd)}
+.gintro h2{font-size:28px;line-height:1.15}
+.gintro .gi-tag{font-size:15px;line-height:1.45;max-width:30ch}
+/* chip mode permainan: balok kecil */
+.gi-chips{gap:8px;margin:4px 0 6px}
+.gi-chips span{font-family:var(--f-disp);font-weight:400;font-size:13px;background:#fff;color:var(--ink);border:2px solid var(--pl);border-radius:8px;box-shadow:0 2px 0 var(--sh);padding:4px 10px}
+.gi-chips span.new{background:var(--orange);color:#fff;border-color:color-mix(in srgb,var(--orange) 62%,#1f2a4d);box-shadow:0 2px 0 color-mix(in srgb,var(--orange) 62%,#1f2a4d)}
+.gintro .btn.primary{margin-top:6px;min-height:52px;font-size:18px}
+/* skor akhir */
+.gover{padding:18px 18px 20px;gap:8px}
+.gover h2{font-size:26px}
+.gfinal{gap:10px;margin-top:4px}
+.gfinal div{--fc:var(--blue);background:var(--fc);color:#fff;border:2px solid color-mix(in srgb,var(--fc) 62%,#1f2a4d);box-shadow:0 4px 0 color-mix(in srgb,var(--fc) 62%,#1f2a4d);border-radius:12px;padding:10px 4px 8px;gap:2px}
+.gfinal div:nth-child(1){--fc:var(--blue)}.gfinal div:nth-child(2){--fc:var(--green)}.gfinal div:nth-child(3){--fc:var(--orange)}
+.gfinal b{font-size:24px;line-height:1.1}
+.gfinal span{color:#fff;opacity:.92;font-size:12px;font-weight:700}
+.gnew{border:2px solid color-mix(in srgb,var(--red) 62%,#1f2a4d);box-shadow:0 3px 0 color-mix(in srgb,var(--red) 62%,#1f2a4d);border-radius:9px;padding:4px 14px;margin-top:4px}
+.gbest{margin-top:4px}
+.gmiss{justify-content:center}
+.gmiss span{border:2px solid var(--pl);box-shadow:0 2px 0 var(--sh)}
+/* tombol di bawah kartu skor: sejajar, tidak terlipat */
+.gover~.gbtns{margin-top:12px}
+.gover~.gbtns .gbtn.ghost{flex:0 0 auto;padding-inline:18px;white-space:nowrap}
+.gover~.gbtns .gbtn.go{flex:1}
 </style>
 
 </head>
