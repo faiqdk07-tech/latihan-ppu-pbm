@@ -1576,6 +1576,47 @@ body.sess:not([data-r="game"]) nav.bottom{display:none!important}
 body.sess:not([data-r="game"]) .app{padding-bottom:calc(32px + env(safe-area-inset-bottom,0px))!important}
 /* bacaan di layar sempit: rata kiri agar jarak antarkata tidak renggang */
 @media (max-width:600px){.cbt-passage p{text-align:left;-webkit-hyphens:manual;hyphens:manual}}
+
+/* ===== LEGO RAPI · Tahap 2: layar soal ===== */
+/* pilihan A–E: balok putih; warna balok huruf ikut mewarnai pilihan yang dipilih */
+.ropt:nth-child(1){--rc:var(--yellow)}.ropt:nth-child(2){--rc:var(--red)}.ropt:nth-child(3){--rc:var(--blue)}.ropt:nth-child(4){--rc:var(--green)}.ropt:nth-child(5){--rc:var(--orange)}
+.ropts{gap:12px}
+.ropt{min-height:54px;padding:11px 12px 11px 12px;gap:12px;border-radius:12px;box-shadow:0 4px 0 var(--sh);font-weight:500;line-height:1.45;transition:transform .08s,box-shadow .08s}
+.ropt .radio{margin-top:5px;align-self:flex-start}
+.ropt .t{flex:1;min-width:0}
+.ropt:not([disabled]):active{transform:translateY(3px);box-shadow:0 1px 0 var(--sh)}
+.ropt.sel{background:color-mix(in srgb,var(--rc) 14%,#fff);border-color:color-mix(in srgb,var(--rc) 62%,#1f2a4d);box-shadow:0 4px 0 color-mix(in srgb,var(--rc) 60%,#1f2a4d);transform:none}
+.ropt.right{background:color-mix(in srgb,var(--green) 14%,#fff);border-color:color-mix(in srgb,var(--green) 62%,#1f2a4d);box-shadow:0 4px 0 color-mix(in srgb,var(--green) 60%,#1f2a4d);opacity:1}
+.ropt.wrong{background:color-mix(in srgb,var(--red) 12%,#fff);border-color:color-mix(in srgb,var(--red) 62%,#1f2a4d);box-shadow:0 4px 0 color-mix(in srgb,var(--red) 60%,#1f2a4d)}
+.ropt.dim{opacity:.55;box-shadow:0 2px 0 var(--sh)}
+.ropt .otag{align-self:center;font-family:var(--f-disp);font-weight:400;font-size:12px;padding:3px 8px;border-radius:7px;border:2px solid rgba(31,42,77,.25);box-shadow:0 2px 0 rgba(31,42,77,.2)}
+.ropt .otag.ok{background:var(--green)}
+.ropt .otag.bad{background:var(--red)}
+/* isian nomor */
+.cbt-isian input{width:96px;text-align:center}
+.cbt-isian input::placeholder{font-family:var(--f-ui);font-size:14px;font-weight:500;color:var(--muted)}
+/* kotak pembahasan: kartu lego berwarna sesuai hasil */
+.pemb,.pemb.ok,.pemb.bad{--pc:var(--green);background:color-mix(in srgb,var(--pc) 7%,#fff);border:2px solid color-mix(in srgb,var(--pc) 62%,#1f2a4d);border-top-width:2px;border-radius:12px;box-shadow:0 4px 0 color-mix(in srgb,var(--pc) 60%,#1f2a4d);position:relative;margin-top:14px;padding-top:12px}
+.pemb.bad{--pc:var(--red)}
+.pemb::before,.pemb::after{content:"";position:absolute;top:-8px;left:16px;width:16px;height:8px;background:var(--pc);border:2px solid color-mix(in srgb,var(--pc) 62%,#1f2a4d);border-bottom:0;border-radius:4px 4px 0 0}
+.pemb::after{left:40px}
+.pemb-h{color:color-mix(in srgb,var(--pc) 70%,#1f2a4d)}
+.pemb .rep{font-size:13px}
+/* hasil drill: label kaidah panjang tidak lagi mendorong tombol keluar kartu */
+.rule .row{flex-wrap:wrap;gap:8px;align-items:center}
+.rule .chip{white-space:normal;min-width:0;max-width:100%;text-align:left}
+.rule .row .mbtn{margin-left:auto}
+/* kartu kata baku: warna hasil kembali tampil, tombol lebih jelas */
+.swcard.fb.good{background:color-mix(in srgb,var(--green) 12%,#fff)!important;border-color:color-mix(in srgb,var(--green) 62%,#1f2a4d)!important;box-shadow:0 5px 0 color-mix(in srgb,var(--green) 60%,#1f2a4d)!important}
+.swcard.fb.badc{background:color-mix(in srgb,var(--red) 10%,#fff)!important;border-color:color-mix(in srgb,var(--red) 62%,#1f2a4d)!important;box-shadow:0 5px 0 color-mix(in srgb,var(--red) 60%,#1f2a4d)!important}
+.swcard .swverdict{font-family:var(--f-disp);font-size:20px}
+.swbtns{gap:14px!important}
+.swb{width:132px!important;height:60px!important;flex-direction:row!important;gap:8px!important;font-size:16px!important;font-weight:400}
+.swb svg{width:22px!important;height:22px!important}
+.swb:not([disabled]):active{transform:translateY(3px)}
+/* notifikasi (toast): lebih lebar & mudah dibaca, tetap balok kuning */
+.toast{width:max-content;max-width:min(340px,calc(100% - 32px));text-align:center;font-family:var(--f-ui);font-weight:700;font-size:14px;line-height:1.4;padding:10px 16px}
+body.sess:not([data-r="game"]) .toast{bottom:calc(24px + env(safe-area-inset-bottom,0px))}
 </style>
 
 </head>
