@@ -1774,6 +1774,36 @@ body[data-r="game"] .gscore em{border:2px solid color-mix(in srgb,var(--orange) 
 .strip .gw.must::before{background:color-mix(in srgb,var(--red) 10%,#fff);border-color:color-mix(in srgb,var(--red) 62%,#1f2a4d)}
 /* varian Rapi atau pangkas: penanda hasil jadi balok mini */
 .vdone span{border:2px solid rgba(31,42,77,.28);box-shadow:0 2px 0 rgba(31,42,77,.22);border-radius:6px}
+
+/* ===== LEGO RAPI · Tahap 4f: Relasi Kilat ===== */
+/* kepingan puzzle diganti balok lego: tiap bagian kalimat bertonjolan di atas, ditumpuk */
+.pzs{gap:18px}
+.pz,.pz.a,.pz.b{--bc:var(--blue);background:color-mix(in srgb,var(--bc) 12%,#fff);border:2px solid color-mix(in srgb,var(--bc) 62%,#1f2a4d);border-radius:12px;box-shadow:0 4px 0 color-mix(in srgb,var(--bc) 60%,#1f2a4d);color:#26304b}
+.pz.b{--bc:var(--green)}
+/* dua tonjolan di atas setiap balok (pseudo yang dulu jadi kait puzzle dipakai ulang) */
+.pz.a::before,.pz.a::after,.pz.b::before,.pz.b::after,.pz.slot::before,.pz.slot::after,.pz.k::before,.pz.k::after{content:"";display:block;position:absolute;top:-10px;bottom:auto;margin:0;width:20px;height:8px;background:inherit;border:2px solid color-mix(in srgb,var(--bc) 62%,#1f2a4d);border-bottom:0;border-radius:5px 5px 0 0;z-index:1}
+.pz.a::before,.pz.b::before,.pz.slot::before,.pz.k::before{left:22px}
+.pz.a::after,.pz.b::after,.pz.slot::after,.pz.k::after{left:auto;right:22px}
+.pz.slot{--bc:var(--purple);background:rgba(255,255,255,.7);border:2px dashed color-mix(in srgb,var(--purple) 55%,#fff);box-shadow:none;color:color-mix(in srgb,var(--purple) 70%,#1f2a4d)}
+.pz.slot::before,.pz.slot::after{border-style:dashed;border-color:color-mix(in srgb,var(--purple) 55%,#fff);background:rgba(255,255,255,.7)}
+.pz.k{--bc:var(--purple);background:var(--bc);color:#fff}
+.pz.k.key,.pzs.locked .pz.k{--bc:var(--green);background:var(--bc)}
+.pzs.locked{gap:0}
+.pzs.locked .pz{border-color:color-mix(in srgb,var(--bc) 62%,#1f2a4d);box-shadow:none}
+.pzs.locked .pz.b{box-shadow:0 4px 0 color-mix(in srgb,var(--bc) 60%,#1f2a4d)}
+.pzs.locked .pz.k::before,.pzs.locked .pz.k::after,.pzs.locked .pz.b::before,.pzs.locked .pz.b::after{display:none}
+/* kepingan konjungsi: balok warna palet aplikasi, tonjolan di atas saja */
+.vtray{display:grid;grid-template-columns:1fr 1fr;gap:20px 12px;padding-top:14px}
+.pzp,.vtray .pzp:nth-child(n){--pc:var(--purple);background:var(--pc);border:2px solid color-mix(in srgb,var(--pc) 62%,#1f2a4d);box-shadow:0 4px 0 color-mix(in srgb,var(--pc) 62%,#1f2a4d);border-radius:10px;min-height:52px;min-width:0}
+.vtray .pzp:nth-child(4n+2){--pc:var(--blue)}.vtray .pzp:nth-child(4n+3){--pc:var(--orange)}.vtray .pzp:nth-child(4n+4){--pc:var(--green)}
+.pzp::before,.pzp::after{top:-10px;bottom:auto;left:auto;margin:0;width:20px;height:8px;background:var(--pc);border:2px solid color-mix(in srgb,var(--pc) 62%,#1f2a4d);border-bottom:0;border-radius:5px 5px 0 0}
+.pzp::before{left:22%}.pzp::after{right:22%}
+.pzp:active{transform:translateY(3px);box-shadow:0 1px 0 color-mix(in srgb,var(--pc) 62%,#1f2a4d)}
+/* varian Sambungan putus & Jenis sambungan: baris kalimat jadi balok putih */
+.vlink{border-radius:12px;box-shadow:0 3px 0 var(--sh)}
+.vlink.brk{border-style:solid;border-color:color-mix(in srgb,var(--red) 62%,#1f2a4d);box-shadow:0 3px 0 color-mix(in srgb,var(--red) 60%,#1f2a4d)}
+.pzk{border-radius:7px}
+.vrel{gap:14px 10px}
 </style>
 
 </head>
