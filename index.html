@@ -1566,8 +1566,8 @@ body[data-r="game"] .gpips{flex:1;justify-content:center}
 body[data-r="game"] .gpnum{font-family:var(--f-disp);font-size:15px;color:var(--ink)}
 body[data-r="game"] .gtime{margin-top:-4px;height:10px;border-radius:5px;background:#fff;border:2px solid var(--pl)}
 body[data-r="game"] .gtime i{border-radius:0}
-/* efek "+poin / −1 nyawa": lencana lego sejajar HUD, tidak menimpa teks soal */
-.gfx{position:fixed!important;top:calc(22px + env(safe-area-inset-top,0px))!important;bottom:auto!important;left:50%!important;right:auto!important;z-index:40;margin:0;padding:4px 14px!important;border-radius:10px!important;font-family:var(--f-disp);font-size:16px!important;line-height:1.2;color:#fff!important;text-shadow:none!important;white-space:nowrap;pointer-events:none;animation:gchip 1.2s ease-out forwards!important}
+/* efek "+poin / −1 nyawa": lencana lego menggantung di bawah HUD, tidak menutupi nyawa atau teks soal */
+.gfx{position:fixed!important;top:calc(60px + env(safe-area-inset-top,0px))!important;bottom:auto!important;left:50%!important;right:auto!important;z-index:40;margin:0;padding:4px 14px!important;border-radius:10px!important;font-family:var(--f-disp);font-size:16px!important;line-height:1.2;color:#fff!important;text-shadow:none!important;white-space:nowrap;pointer-events:none;animation:gchip 1.2s ease-out forwards!important}
 .gfx.bad{background:var(--red)!important;border:2px solid color-mix(in srgb,var(--red) 62%,#1f2a4d)!important;box-shadow:0 3px 0 color-mix(in srgb,var(--red) 62%,#1f2a4d)!important}
 .gfx.ok{background:var(--green)!important;border:2px solid color-mix(in srgb,var(--green) 62%,#1f2a4d)!important;box-shadow:0 3px 0 color-mix(in srgb,var(--green) 62%,#1f2a4d)!important}
 @keyframes gchip{0%{opacity:0;transform:translate(-50%,8px) scale(.8)}15%{opacity:1;transform:translate(-50%,0) scale(1.08)}25%{transform:translate(-50%,0) scale(1)}75%{opacity:1;transform:translate(-50%,0)}100%{opacity:0;transform:translate(-50%,-10px);visibility:hidden}}
@@ -1649,6 +1649,40 @@ body.sess:not([data-r="game"]) .toast{bottom:calc(24px + env(safe-area-inset-bot
 .gover~.gbtns{margin-top:12px}
 .gover~.gbtns .gbtn.ghost{flex:0 0 auto;padding-inline:18px;white-space:nowrap}
 .gover~.gbtns .gbtn.go{flex:1}
+
+/* ===== LEGO RAPI · Tahap 4a: HUD kombo & Menara Paragraf ===== */
+/* lencana kombo sejajar skor (HUD tidak membesar) */
+body[data-r="game"] .gscore{flex-direction:row;align-items:center;gap:6px}
+body[data-r="game"] .gscore em{border:2px solid color-mix(in srgb,var(--orange) 62%,#1f2a4d);box-shadow:0 2px 0 color-mix(in srgb,var(--orange) 62%,#1f2a4d);border-radius:7px;padding:1px 7px}
+/* lantai kosong: bayangan balok bertonjolan putus-putus */
+.gtower2 .gfloor.empty{border:2px dashed #8fa6d0;background:rgba(255,255,255,.6);border-radius:12px;color:#5d76a8}
+.gtower2 .gfloor.empty::before,.gtower2 .gfloor.empty::after{background:rgba(255,255,255,.6);border:2px dashed #8fa6d0;border-bottom:0}
+.gtower2 .gfloor.empty span{border:2px solid #8fa6d0;background:#fff;color:#5d76a8}
+.gtower2 .gfloor.empty.ready{border-color:var(--blue);color:color-mix(in srgb,var(--blue) 75%,#1f2a4d)}
+.gtower2 .gfloor.empty.ready::before,.gtower2 .gfloor.empty.ready::after{border-color:var(--blue);background:#fff}
+/* lantai yang terlewat saat pembahasan: balok warna pudar, bukan kotak putih */
+.gtower2 .gfloor.miss{--e:color-mix(in srgb,var(--c) 62%,#1f2a4d);background:color-mix(in srgb,var(--c) 20%,#fff);border:2px dashed var(--e);border-radius:12px;color:#26304b;box-shadow:0 4px 0 color-mix(in srgb,var(--c) 30%,#fff)}
+.gtower2 .gfloor.miss::before,.gtower2 .gfloor.miss::after{content:"";display:block;position:absolute;top:-9px;width:18px;height:7px;background:color-mix(in srgb,var(--c) 20%,#fff);border:2px dashed var(--e);border-bottom:0;border-radius:5px 5px 0 0}
+.gtower2 .gfloor.miss::before{left:14px}.gtower2 .gfloor.miss::after{left:40px}
+.gtower2 .gfloor.miss span{background:#fff;border:2px solid var(--e);color:var(--e)}
+.gtower2 .gfloor.miss p{font-weight:500}
+/* kotak petunjuk: kartu lego kuning */
+.ghint{background:color-mix(in srgb,var(--yellow) 18%,#fff);border:2px solid color-mix(in srgb,var(--yellow) 55%,#6b4a00);box-shadow:0 3px 0 color-mix(in srgb,var(--yellow) 60%,#7a5200);border-radius:12px;color:#26304b;font-weight:500}
+/* varian "Susunan mana yang kokoh?": kalimat & pilihan menara jadi balok */
+.vlist li{border-radius:12px;box-shadow:0 3px 0 var(--sh);align-items:center}
+.vlist li .nbk{align-self:flex-start;margin-top:1px}
+.vtwr{background:#fff;border:2px solid var(--pl);box-shadow:0 4px 0 var(--sh);padding-top:18px}
+.vtwr:active:not([disabled]){transform:translateY(3px);box-shadow:0 1px 0 var(--sh)}
+.vtwr.ok{background:color-mix(in srgb,var(--green) 14%,#fff);border-color:color-mix(in srgb,var(--green) 62%,#1f2a4d);box-shadow:0 4px 0 color-mix(in srgb,var(--green) 60%,#1f2a4d)}
+.vtwr.bad{background:color-mix(in srgb,var(--red) 12%,#fff);border-color:color-mix(in srgb,var(--red) 62%,#1f2a4d);box-shadow:0 4px 0 color-mix(in srgb,var(--red) 60%,#1f2a4d)}
+/* varian "selipkan": celah tempat menyelipkan balok */
+.vgap{border-radius:12px;border-color:#8fa6d0;color:#5d76a8;background:rgba(255,255,255,.7)}
+/* lembar hasil ronde (semua game): kartu lego hijau/merah seperti kotak pembahasan */
+.gsheet,.gsheet.ok,.gsheet.bad{--pc:var(--green);position:relative;overflow:visible;background:color-mix(in srgb,var(--pc) 7%,#fff);border:2px solid color-mix(in srgb,var(--pc) 62%,#1f2a4d);border-radius:14px;box-shadow:0 5px 0 color-mix(in srgb,var(--pc) 60%,#1f2a4d);margin-top:10px}
+.gsheet.bad{--pc:var(--red)}
+.gsheet::before,.gsheet::after{content:"";position:absolute;top:-10px;left:18px;width:18px;height:8px;background:var(--pc);border:2px solid color-mix(in srgb,var(--pc) 62%,#1f2a4d);border-bottom:0;border-radius:5px 5px 0 0}
+.gsheet::after{left:44px}
+.gsheet>b{color:color-mix(in srgb,var(--pc) 70%,#1f2a4d)}
 </style>
 
 </head>
