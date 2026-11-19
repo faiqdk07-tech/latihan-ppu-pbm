@@ -1683,6 +1683,36 @@ body[data-r="game"] .gscore em{border:2px solid color-mix(in srgb,var(--orange) 
 .gsheet::before,.gsheet::after{content:"";position:absolute;top:-10px;left:18px;width:18px;height:8px;background:var(--pc);border:2px solid color-mix(in srgb,var(--pc) 62%,#1f2a4d);border-bottom:0;border-radius:5px 5px 0 0}
 .gsheet::after{left:44px}
 .gsheet>b{color:color-mix(in srgb,var(--pc) 70%,#1f2a4d)}
+
+/* ===== LEGO RAPI · Tahap 4b: Tangkap Penyusup ===== */
+/* papan desa: balok kuning bertonjolan di atas dua tiang balok (bukan papan kayu) */
+.vsign{--sc:var(--yellow);--sd:color-mix(in srgb,var(--yellow) 55%,#6b4a00);background:var(--sc);color:#26304b;border:2px solid var(--sd);border-radius:12px;box-shadow:0 4px 0 var(--sd);padding:8px 16px 9px;margin:10px 0 14px}
+.vsign b{color:#26304b}
+.vsign small{color:#4a4020;font-weight:600}
+.vsign::before,.vsign::after{bottom:-17px;width:10px;height:13px;background:#8d99b8;border:2px solid #5b6d99;border-top:0;border-radius:0 0 3px 3px}
+.vsign::before{left:22%}.vsign::after{right:22%}
+/* tonjolan papan */
+.gstage.village .vsign b::before{content:"";position:absolute;top:-10px;left:18px;width:20px;height:8px;background:var(--sc);border:2px solid var(--sd);border-bottom:0;border-radius:5px 5px 0 0;box-shadow:none}
+.gstage.village .vsign b::after{content:"";position:absolute;top:-10px;right:18px;width:20px;height:8px;background:var(--sc);border:2px solid var(--sd);border-bottom:0;border-radius:5px 5px 0 0}
+/* gelembung bicara: satu bentuk yang sama, sudut & bayangan seragam */
+.vp .vbub,.vp.s1 .vbub,.vp.s2 .vbub,.vp.s3 .vbub,.vp.s4 .vbub,.vp.r.s1 .vbub{border-radius:12px;flex:1 1 auto;font-weight:500;box-shadow:0 4px 0 color-mix(in srgb,var(--c) 60%,#1f2a4d)}
+.vp .vbub::after{bottom:14px}
+.gperson.vp:not([disabled]):active .vbub{transform:translateY(2px);box-shadow:0 2px 0 color-mix(in srgb,var(--c) 60%,#1f2a4d)}
+/* dicurigai: garis tegas merah (bukan putus-putus) & sedikit terangkat */
+.vp.sel .vbub{background:color-mix(in srgb,var(--red) 10%,#fff);border:2px solid color-mix(in srgb,var(--red) 62%,#1f2a4d);box-shadow:0 4px 0 color-mix(in srgb,var(--red) 60%,#1f2a4d);transform:translateY(-2px)}
+.vp.sel .vbub::after{border-color:color-mix(in srgb,var(--red) 62%,#1f2a4d)}
+.vp.safe .vbub{background:color-mix(in srgb,var(--green) 8%,#fff);border-color:color-mix(in srgb,var(--green) 45%,#fff);box-shadow:0 3px 0 color-mix(in srgb,var(--green) 30%,#fff)}
+.vp.caught .vbub{background:color-mix(in srgb,var(--red) 10%,#fff);border-color:color-mix(in srgb,var(--red) 62%,#1f2a4d);box-shadow:0 4px 0 color-mix(in srgb,var(--red) 60%,#1f2a4d)}
+/* lencana warga asli / penyusup / dicurigai: balok mini */
+.gbadge{font-family:var(--f-disp);font-weight:400;border:2px solid rgba(31,42,77,.28);box-shadow:0 2px 0 rgba(31,42,77,.22);border-radius:7px;padding:1px 7px;line-height:1.35}
+.vbub .gbadge{top:-13px}
+/* nomor warga */
+.vno{border-radius:6px;box-shadow:0 2px 0 var(--sh)}
+/* varian ketuk/seret & gerbang desa: gelembung seragam dengan versi utama */
+.vrow .vbub{border-color:color-mix(in srgb,var(--c) 60%,#1f2a4d);border-radius:12px;box-shadow:0 4px 0 color-mix(in srgb,var(--c) 60%,#1f2a4d)}
+.vrow.caught .vbub{background:color-mix(in srgb,var(--red) 10%,#fff);border-color:color-mix(in srgb,var(--red) 62%,#1f2a4d);box-shadow:0 4px 0 color-mix(in srgb,var(--red) 60%,#1f2a4d)}
+.vgate .vbub{border-radius:12px;font-weight:500}
+.gdrop{border-radius:12px}
 </style>
 
 </head>
