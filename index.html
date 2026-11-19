@@ -1554,6 +1554,28 @@ body[data-r="game"] .pzk{font-size:15px}
 .vrb span{background:#fff;border:2px solid color-mix(in srgb,var(--c) 62%,#1f2a4d);color:color-mix(in srgb,var(--c) 75%,#1f2a4d)}
 .vrb[style*="lime"],.vrb[style*="yellow"]{color:var(--ink,#26304b)}
 .vrb.dim,.vcard.dim{opacity:.45}
+
+/* ===== LEGO RAPI · Tahap 1: tata letak & presisi ===== */
+/* layar game: konten mulai dari atas (HUD tidak melompat); layar pembuka & skor tetap di tengah */
+body[data-r="game"] main{justify-content:flex-start;padding-top:12px}
+body[data-r="game"] main>.gintro,body[data-r="game"] main>.gover{margin-block:auto}
+/* HUD: pelat lego putih yang menempel di atas, tidak tertutup awan */
+body[data-r="game"] .ghud{position:sticky;top:calc(8px + env(safe-area-inset-top,0px));z-index:20;background:#fff;border:2px solid var(--pl);border-radius:14px;box-shadow:0 4px 0 var(--sh);padding:6px 10px 6px 6px;min-height:54px}
+body[data-r="game"] .ghud .gquit{box-shadow:0 3px 0 var(--sh)}
+body[data-r="game"] .gpips{flex:1;justify-content:center}
+body[data-r="game"] .gpnum{font-family:var(--f-disp);font-size:15px;color:var(--ink)}
+body[data-r="game"] .gtime{margin-top:-4px;height:10px;border-radius:5px;background:#fff;border:2px solid var(--pl)}
+body[data-r="game"] .gtime i{border-radius:0}
+/* efek "+poin / −1 nyawa": lencana lego sejajar HUD, tidak menimpa teks soal */
+.gfx{position:fixed!important;top:calc(22px + env(safe-area-inset-top,0px))!important;bottom:auto!important;left:50%!important;right:auto!important;z-index:40;margin:0;padding:4px 14px!important;border-radius:10px!important;font-family:var(--f-disp);font-size:16px!important;line-height:1.2;color:#fff!important;text-shadow:none!important;white-space:nowrap;pointer-events:none;animation:gchip 1.2s ease-out forwards!important}
+.gfx.bad{background:var(--red)!important;border:2px solid color-mix(in srgb,var(--red) 62%,#1f2a4d)!important;box-shadow:0 3px 0 color-mix(in srgb,var(--red) 62%,#1f2a4d)!important}
+.gfx.ok{background:var(--green)!important;border:2px solid color-mix(in srgb,var(--green) 62%,#1f2a4d)!important;box-shadow:0 3px 0 color-mix(in srgb,var(--green) 62%,#1f2a4d)!important}
+@keyframes gchip{0%{opacity:0;transform:translate(-50%,8px) scale(.8)}15%{opacity:1;transform:translate(-50%,0) scale(1.08)}25%{transform:translate(-50%,0) scale(1)}75%{opacity:1;transform:translate(-50%,0)}100%{opacity:0;transform:translate(-50%,-10px);visibility:hidden}}
+/* sesi soal (drill, teks, kartu kata baku): menu bawah disembunyikan agar tidak menutupi soal */
+body.sess:not([data-r="game"]) nav.bottom{display:none!important}
+body.sess:not([data-r="game"]) .app{padding-bottom:calc(32px + env(safe-area-inset-bottom,0px))!important}
+/* bacaan di layar sempit: rata kiri agar jarak antarkata tidak renggang */
+@media (max-width:600px){.cbt-passage p{text-align:left;-webkit-hyphens:manual;hyphens:manual}}
 </style>
 
 </head>
