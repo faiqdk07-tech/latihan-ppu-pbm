@@ -1738,6 +1738,29 @@ body[data-r="game"] .gscore em{border:2px solid color-mix(in srgb,var(--orange) 
 .vcrate.ok{--c:var(--green)}.vcrate.bad{--c:var(--red)}
 .vcrate em{border:2px solid rgba(31,42,77,.28);border-radius:7px;transform:none}
 .gdrop.truck{--c:var(--orange)}
+
+/* ===== LEGO RAPI · Tahap 4d: Pisah atau Sambung ===== */
+/* dua balok kata selalu sejajar dalam satu baris; ukuran huruf menyesuaikan panjang kata */
+.gcard3.lset .lbk{font-size:clamp(15px,calc(360px / (var(--n,10) + 1)),28px);padding:14px 12px 12px;white-space:nowrap;min-width:76px;text-align:center}
+.gcard3.lset .lbk::before{left:10px}.gcard3.lset .lbk::after{right:10px}
+.gcard3.lset{flex-wrap:nowrap!important}
+.gcard3.lset .lq{flex:none}
+/* varian "Kenapa begitu?": kartu alasan jadi balok bertonjolan */
+.vcards{gap:14px 10px;margin-top:6px}
+.vcards .vcard{position:relative;overflow:visible;margin-top:8px}
+.vcards .vcard::before,.vcards .vcard::after{content:"";position:absolute;top:-10px;width:18px;height:8px;background:var(--c);border:2px solid color-mix(in srgb,var(--c) 62%,#1f2a4d);border-bottom:0;border-radius:5px 5px 0 0}
+.vcards .vcard::before{left:20%}.vcards .vcard::after{right:20%}
+.vcards .vcard:not([disabled]):active{transform:translateY(3px);box-shadow:0 1px 0 color-mix(in srgb,var(--c) 70%,#1f2a4d)}
+/* varian "Mana yang salah rakit?": pilihan jadi alas balok putih, bukan kotak putus-putus */
+.vset{background:#fff;border:2px solid var(--pl);box-shadow:0 4px 0 var(--sh);padding-top:20px}
+.vset:active:not([disabled]){transform:translateY(3px);box-shadow:0 1px 0 var(--sh)}
+.vset.ok{background:color-mix(in srgb,var(--green) 14%,#fff);border-color:color-mix(in srgb,var(--green) 62%,#1f2a4d);box-shadow:0 4px 0 color-mix(in srgb,var(--green) 60%,#1f2a4d)}
+.vset.bad{background:color-mix(in srgb,var(--red) 12%,#fff);border-color:color-mix(in srgb,var(--red) 62%,#1f2a4d);box-shadow:0 4px 0 color-mix(in srgb,var(--red) 60%,#1f2a4d)}
+/* kotak hasil kartu: kartu lego hijau/merah seperti lembar hasil ronde */
+.lres,.lres.ok,.lres.bad{--pc:var(--green);background:color-mix(in srgb,var(--pc) 7%,#fff);border:2px solid color-mix(in srgb,var(--pc) 62%,#1f2a4d);box-shadow:0 4px 0 color-mix(in srgb,var(--pc) 60%,#1f2a4d)}
+.lres.bad{--pc:var(--red)}
+.lres .grule{font-weight:600}
+.gcard3.lset[data-action="gnext"]{cursor:pointer}
 </style>
 
 </head>
@@ -3781,7 +3804,7 @@ function viewGame(){ const G=V.game; if(!G) return viewMain(); if(G.phase==='ove
   } else if(G.kind==='pisah'){
     const res=rv?(c.join?c.a+c.b:c.a+' '+c.b):'';
     h+='<section class="gstage arena lplate">'+gFx(G)+'<div class="gcount">Kartu '+(G.k+1)+' dari '+G.n+'</div>'+
-      '<div class="gcard3 lset'+(G.anim==='walk'?' in':'')+(rv?(c.join?' join':' split')+(G.lastOk?' ok':' bad'):'')+'" data-swipe="g4"'+(rv?' data-action="gnext"':'')+'>'+
+      '<div class="gcard3 lset'+(G.anim==='walk'?' in':'')+(rv?(c.join?' join':' split')+(G.lastOk?' ok':' bad'):'')+'" data-swipe="g4"'+(rv?' data-action="gnext"':'')+' style="--n:'+(c.a+c.b).length+'">'+
       (rv?(c.join?'<span class="lbk one g">'+esc(c.a+c.b)+'</span>':'<span class="lbk a">'+esc(c.a)+'</span><span class="lsp" aria-hidden="true">✂</span><span class="lbk b">'+esc(c.b)+'</span>'):'<span class="lbk a">'+esc(c.a)+'</span><span class="lq">?</span><span class="lbk b">'+esc(c.b)+'</span>')+'</div>'+
       (rv?'<div class="lres '+(G.lastOk?'ok':'bad')+'"><b class="gform">'+(G.lastOk?'✓ ':'✗ ')+esc(res)+'</b><span class="grule">'+esc(c.rule)+'</span>'+(G.lastOk?'':'<span class="gyour">'+(c.pick===null?'Waktu habis':'Kamu memilih '+(c.pick?'sambung':'pisah'))+'</span>')+'</div>'
         :'<div class="ghintx"><span>👈 geser: pisah</span><span>geser: sambung 👉</span></div>')+'</section>';
