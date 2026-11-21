@@ -1091,6 +1091,17 @@ body[data-r="game"] .scene .fbrick{opacity:.22}
 .nb::before{content:"";position:absolute;top:-7px;left:50%;transform:translateX(-50%);width:12px;height:5px;background:inherit;border:2px solid;border-color:inherit;border-bottom:0;border-radius:3px 3px 0 0}
 .cbt-passage{background:#fffdf6;border:2px dashed #c9d5ea;border-radius:10px;padding:12px 13px}
 .cbt-q{font-weight:600}
+.sandi{display:flex;flex-direction:column;gap:8px}
+.sandi .lead{margin:0}
+.sandi-t{width:100%;border-collapse:separate;border-spacing:0;background:var(--surface);border:2px solid var(--pl,var(--line));border-radius:11px;box-shadow:0 3px 0 var(--sh,transparent);overflow:hidden;font-size:16px;line-height:1.45}
+.sandi-t th{font-size:12px;font-weight:700;letter-spacing:.04em;text-transform:uppercase;color:var(--muted);text-align:left;padding:7px 12px;background:var(--accent-soft)}
+.sandi-t td{padding:9px 12px;border-top:1.5px solid var(--line);vertical-align:middle}
+.sandi-t td.no{width:1%;white-space:nowrap;color:var(--muted);font-variant-numeric:tabular-nums;padding-right:0}
+.sandi-t td.kode{width:46%}
+.sandi-t .w{display:inline-block;margin:2px 4px 2px 0;padding:1px 8px;border-radius:6px;background:var(--accent-soft);color:var(--ink);font-weight:700;font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-size:14.5px}
+.sandi-t td.arti{color:var(--ink)}
+.sandi-t td.arti::before{content:"→ ";color:var(--faint)}
+.sandi-q{border-left:4px solid var(--accent);padding-left:10px}
 .ropts{gap:11px}
 .ropt{align-items:center;background:#fff;border:2px solid var(--pl);border-radius:11px;box-shadow:0 3px 0 var(--sh);padding:10px 12px;transition:transform .08s}
 .ropt .radio{--rc:var(--yellow);position:relative;flex:none;width:30px;height:26px;margin-top:4px;border-radius:6px;display:grid;place-items:center;background:var(--rc);border:2px solid color-mix(in srgb,var(--rc) 55%,#1f2a4d);box-shadow:0 2px 0 color-mix(in srgb,var(--rc) 65%,#1f2a4d);color:#fff;font-family:var(--f-disp);font-size:14px}
@@ -2329,7 +2340,7 @@ function ringkasPola(){ const tahap=[0,0,0]; KELOMPOK_ORDER.forEach(([s,k])=>tah
 function mergeImport(st,data,isSample){
   let addT=0, addD=0;
   st.bad=st.bad||{};
-  (data.teks||[]).forEach(t=>{ const c=JSON.parse(JSON.stringify(t)); c._contoh=!!isSample; if(c.jenis==='lepas'&&!Array.isArray(c.kalimat)) c.kalimat=[]; const i=st.bank.findIndex(b=>b.id===c.id);
+  (data.teks||[]).forEach(t=>{ const c=JSON.parse(JSON.stringify(t)); c._contoh=!!isSample; c._imp=Date.now(); if(c.jenis==='lepas'&&!Array.isArray(c.kalimat)) c.kalimat=[]; const i=st.bank.findIndex(b=>b.id===c.id);
     if(i>=0&&!Array.isArray(c.kalimat)){ /* perbaikan: hanya soal yang dikirim, cocokkan lewat nomor */
       const old=st.bank[i]; (c.soal||[]).forEach(q=>{ const j=old.soal.findIndex(x=>x.nomor===q.nomor); if(j>=0) old.soal[j]=q; else old.soal.push(q); delete st.bad[old.id+'#'+q.nomor]; }); addT++; return; }
     if(i>=0) st.bank[i]=c; else st.bank.push(c); (c.soal||[]).forEach(q=>delete st.bad[c.id+'#'+q.nomor]); addT++; });
@@ -2550,6 +2561,15 @@ function weakText(){
   Object.values(m).filter(x=>x.n>=WEAK_MIN&&pct(x.n-x.bad,x.n)<WEAK_PCT).sort((a,b)=>pct(a.n-a.bad,a.n)-pct(b.n-b.bad,b.n)).slice(0,5).forEach(x=>lines.push('- Drill '+x.sub+': salah '+x.bad+' dari '+x.n));
   KELOMPOK_ORDER.forEach(([s,k])=>{ const h=S.history.filter(x=>x.ts>=since&&x.subtes===s&&kelompok(x.pola_id)===k); if(h.length>=WEAK_MIN){ const p=pct(h.filter(x=>x.correct).length,h.length); if(p<WEAK_PCT) lines.push('- Teks '+s+' '+k+': '+p+'% dari '+h.length+' soal'); } });
   polaStat(since).filter(x=>x.n>=WEAK_MIN&&x.p<WEAK_PCT).slice(0,5).forEach(x=>lines.push('- Pola '+x.id+' ('+(POLA_BRIEF[x.id]||['?'])[0]+'): '+x.p+'% dari '+x.n+' soal'));
+  /* kesalahan 7 hari terakhir: selalu ditampilkan walau belum memenuhi ambang di atas */
+  const since7=Date.now()-7*DAY, rec={};
+  const add=(key,ok)=>{ const r=rec[key]=rec[key]||{n:0,bad:0}; r.n++; if(!ok) r.bad++; };
+  const d7=S.dhist.filter(x=>x.ts>=since7&&x.kat!=='game'&&x.sub!=='Baku di Kalimat'), h7=S.history.filter(x=>x.ts>=since7);
+  d7.forEach(x=>add('Drill '+x.sub,x.correct));
+  h7.forEach(x=>add('Teks '+x.subtes+(x.pola_id?' '+(kelompok(x.pola_id)||'')+' · '+x.pola_id:''),x.correct));
+  const salah=Object.entries(rec).filter(([,r])=>r.bad).sort((a,b)=>b[1].bad-a[1].bad||b[1].n-a[1].n).slice(0,8);
+  if(salah.length){ lines.push('- Salah dalam 7 hari terakhir:'); salah.forEach(([k,r])=>lines.push('  - '+k+': salah '+r.bad+' dari '+r.n)); }
+  else if(d7.length+h7.length) lines.push('- '+(d7.length+h7.length)+' soal dalam 7 hari terakhir dijawab benar semua; belum ada kelemahan.');
   return lines.length?lines.join('\n'):'- (belum ada data)';
 }
 function polaStat(since){ const m={}; S.history.filter(x=>x.ts>=(since||0)&&x.pola_id).forEach(x=>{ const r=m[x.pola_id]=m[x.pola_id]||{id:x.pola_id,n:0,ok:0}; r.n++; if(x.correct) r.ok++; }); return Object.values(m).map(r=>({...r,p:pct(r.ok,r.n)})).sort((a,b)=>a.p-b.p||b.n-a.n); }
@@ -2574,7 +2594,7 @@ function buildPrompt(o){
 7. Soal "seharusnya" tetap 5 opsi, tetapi pilih dari daftar tindakan: dihilangkan, dibiarkan saja, diganti X, diganti Y, didahului ..., diikuti ..., dipindah ke .... Boleh memakai "diganti" dua kali dengan kata berbeda dan tidak harus memakai "didahului". "Dibiarkan saja" muncul di sebagian soal saja, dan boleh menjadi kunci.
 8. "bukti" = nomor kalimat dasar jawaban. "pembahasan" ringkas: langkah menuju kunci (1–2 kalimat), lalu satu frasa per pengecoh tentang kesalahan yang diwakilinya, misalnya "A: sinonim makna lain; C: imbuhan sama, makna beda". "drill_terkait" = subkategori (EYD atau kebahasaan) yang berkaitan, boleh kosong.
 9. Kata uji paling banyak 5 per teks di "kata_uji", tanpa angka superskrip di dalam kalimat. Rumpang ditulis [...].
-10. "nomor" soal dimulai dari 1 di setiap teks; soal pendek dan lepas bernomor 1.
+10. "nomor" soal dimulai dari 1 di setiap teks; soal pendek dan lepas bernomor 1. Teks yang memuat soal menentukan judul tetap boleh diberi "judul" (aplikasi menyembunyikannya saat soal dikerjakan), tetapi judul itu tidak boleh sama persis dengan salah satu opsi. Soal bahasa buatan pada jenis "lepas" atau "pendek": tulis setiap contoh di "kalimat" dengan format "kode = arti" (misal "rema tiko salu = ayah membeli sepeda"), dan "perintah" hanya berisi pertanyaannya.
 11. Tingkat kesulitan mengikuti mode: "dasar" mudah sampai sedang, "geser" sedang, "2027" sulit. Soal sulit menuntut membaca dua kalimat atau lebih, atau membedakan dua opsi yang sama-sama terdengar benar.
 12. Teks harus terasa ditulis wartawan atau penulis sungguhan, bukan AI:
    - Isi spesifik: angka, tahun, nama lembaga atau lokasi fiktif yang masuk akal, istilah bidang, hasil penelitian, atau kutipan narasumber fiktif.
@@ -2992,6 +3012,21 @@ function materiSubs(list){ const all=[]; MATERI.forEach(b=>b.topik.forEach(t=>al
 function materiBtn(subs,text,short){ subs=materiSubs(subs); if(!subs.length) return ''; const f=text?bestRule(subs,text):null, g=f?grupOf(f.sub,f.i):null;
   const lbl=short?'Buka materi →':'Buka materi: '+(f?f.sub+(g?' › '+g:'')+' (kaidah '+(f.i+1)+')':subs.join(', '))+' →';
   return '<button type="button" class="obtn blue tgo mbtn" data-action="qmateri" data-v="'+esc(subs.join('|'))+'"'+(f?' data-r="'+esc(f.sub)+'#'+f.i+'"':'')+'>'+esc(lbl)+'</button>'; }
+/* bahasa buatan: pasangan "kode = arti" ditampilkan sebagai tabel, pertanyaan dipisah di bawahnya */
+const SANDI_INTRO=/^(.*?\bbahasa\s+(?:buatan|sandi|rahasia)\b)\s*[:,.]?\s*/i;
+function sandiPair(x){ const m=String(x||'').match(/^\s*(.+?)\s*(?:=|:|\bberarti\b|\bartinya\b)\s*['"‘“]?(.+?)['"’”]?\s*$/i); return m?[m[1],m[2]]:null; }
+function sandiParse(txt){
+  txt=String(txt||''); let intro='', rest=txt; const mi=txt.match(SANDI_INTRO); if(mi){ intro=mi[1]; rest=txt.slice(mi[0].length); }
+  const re=/([A-Za-z][A-Za-z\s\-]*?)\s+(?:berarti|artinya|=)\s+['"‘“]([^'"’”]+)['"’”][.,;]?/g; const pairs=[]; let m, last=0, first=-1;
+  while((m=re.exec(rest))){ if(first<0) first=m.index; else if(rest.slice(last,m.index).trim()) break; pairs.push([m[1].trim(),m[2].trim()]); last=re.lastIndex; }
+  if(pairs.length<2) return null;
+  const pre=rest.slice(0,first).trim(); if(pre) intro=(intro?intro+' ':'')+pre;
+  return {intro:intro.replace(/[:,]\s*$/,''), pairs, q:rest.slice(last).trim()};
+}
+function sandiTable(pairs,f){ f=f||esc; return '<table class="sandi-t"><thead><tr><th colspan="2">Bahasa buatan</th><th>Arti</th></tr></thead><tbody>'+pairs.map((p,i)=>'<tr><td class="no">('+(i+1)+')</td><td class="kode">'+p[0].split(/\s+/).map(w=>'<span class="w">'+esc(w)+'</span>').join('')+'</td><td class="arti">'+f(p[1])+'</td></tr>').join('')+'</tbody></table>'; }
+function isSandiList(it,list){ return it.subkategori==='Bahasa buatan'||/bahasa-buatan|sandi/i.test(it.pola_id||'')||(list.length>=2&&list.every(x=>/^[^=]+=[^=]+$/.test(x))); }
+/* teks yang punya soal menentukan judul: judul disembunyikan supaya jawabannya tidak bocor */
+function askJudul(t){ return (t.soal||[]).some(q=>q.pola_id==='PBM-kepaduan-judul'||/\bjudul\b/i.test(q.perintah||'')); }
 function viewCbt(C){
   const s=C.s, n=C.items.length, k=s.cur, it=C.items[k], a=s.A[k], fb=a.done, rv=s.review, isD=C.kind==='drill';
   const en=enterOnce(C.kind+(C.t?C.t.id:'')+'|'+k+'|'+(rv?'r':'')+'|'+C.items.length);
@@ -3009,12 +3044,18 @@ function viewCbt(C){
     const t=it._t||C.t, focus=[], proof=fb?(it.bukti||[]):[], qa=C.items.findIndex(x=>(x._t||C.t)===t)+1, qb=C.items.length-[...C.items].reverse().findIndex(x=>(x._t||C.t)===t);
     const starts=(t.paragraf_mulai&&t.paragraf_mulai.length?t.paragraf_mulai:[1]);
     let paras=''; starts.forEach((st,pi)=>{ const end=(starts[pi+1]||t.kalimat.length+1)-1; let p=''; for(let i=st-1;i<end;i++) p+=renderSentence(t,i,focus,proof); paras+='<p>'+p+'</p>'; });
-    h+='<div class="cbt-left cbt-passage"><p class="lead">Bacalah teks berikut untuk menjawab soal nomor '+(qb>qa?qa+' sampai dengan '+qb:qa)+'!</p>'+(t.judul?'<div class="ptitle">'+esc(t.judul)+'</div>':'')+paras+(t.sumber_fiktif?'<div class="src">'+esc(t.sumber_fiktif)+'</div>':'')+'</div>';
+    if(t.kalimat.length>=2&&t.kalimat.every(x=>/^[^=]+=[^=]+$/.test(x))) paras=sandiTable(t.kalimat.map(sandiPair));
+    h+='<div class="cbt-left cbt-passage"><p class="lead">Bacalah teks berikut untuk menjawab soal nomor '+(qb>qa?qa+' sampai dengan '+qb:qa)+'!</p>'+(t.judul&&(rv||!askJudul(t))?'<div class="ptitle">'+esc(t.judul)+'</div>':'')+paras+(t.sumber_fiktif?'<div class="src">'+esc(t.sumber_fiktif)+'</div>':'')+'</div>';
   }
   const tx=v=>isD?rich(v):esc(v);
   h+='<div class="cbt-right">';
-  if(isD&&it.kalimat&&it.kalimat.length) h+='<div><p class="lead" style="margin-bottom:8px">Perhatikan '+(it.tipe==='isian'||it.bentuk==='perbaiki'?'kalimat':'pola')+' berikut!</p><ol class="cbt-list">'+it.kalimat.map((x,i)=>'<li class="'+(fb&&it.tipe==='isian'&&String(i+1)===String(it.kunci_isian)?'hit':'')+'"><span class="no">('+(i+1)+')</span><span>'+rich(x)+'</span></li>').join('')+'</ol></div>';
-  h+='<div class="cbt-q'+en+'">'+tx(it.perintah)+'</div>';
+  const kl=(isD||lepas)&&Array.isArray(it.kalimat)&&it.kalimat.length?it.kalimat:(lepas&&(it._t||C.t).kalimat&&(it._t||C.t).kalimat.length?(it._t||C.t).kalimat:null);
+  const kp=kl&&isSandiList(it,kl)?kl.map(sandiPair):null;
+  if(kp&&kp.every(Boolean)) h+='<div class="sandi"><p class="lead">Perhatikan pola bahasa buatan berikut!</p>'+sandiTable(kp,isD?rich:esc)+'</div>';
+  else if(kl) h+='<div><p class="lead" style="margin-bottom:8px">Perhatikan '+(it.tipe==='isian'||it.bentuk==='perbaiki'?'kalimat':'pola')+' berikut!</p><ol class="cbt-list">'+kl.map((x,i)=>'<li class="'+(fb&&it.tipe==='isian'&&String(i+1)===String(it.kunci_isian)?'hit':'')+'"><span class="no">('+(i+1)+')</span><span>'+rich(x)+'</span></li>').join('')+'</ol></div>';
+  const sd=sandiParse(it.perintah);
+  if(sd) h+='<div class="sandi"><p class="lead">'+(sd.intro?esc(sd.intro.replace(/^./,c=>c.toUpperCase()))+':':'Perhatikan pola bahasa buatan berikut!')+'</p>'+sandiTable(sd.pairs)+'</div><div class="cbt-q sandi-q'+en+'">'+tx(sd.q||'Pilih jawaban yang tepat.')+'</div>';
+  else h+='<div class="cbt-q'+en+'">'+tx(it.perintah)+'</div>';
   if(it.tipe==='isian'){
     h+='<div class="cbt-isian"><label for="qisian">Jawaban</label><input id="qisian" inputmode="numeric" autocomplete="off" placeholder="nomor" value="'+esc(a.is)+'"'+(fb||rv?' disabled':'')+'>'+'</div>';
   } else if(it.tipe==='pgk'){
@@ -3965,8 +4006,20 @@ function viewKalender(){
   return h;
 }
 
+/* teks yang semua soalnya sudah dijawab otomatis dihapus dari bank (riwayat tetap disimpan untuk Progres dan Kelemahan) */
+function purgeDone(){
+  const r=route(), keep=new Set(V.run&&(r==='soal'||r==='selesai')?(V.run.teksIds||[V.run.teksId]):[]);
+  const done=t=>{ if(keep.has(t.id)) return false; const qs=(t.soal||[]).filter(q=>!S.bad[t.id+'#'+q.nomor]); if(!qs.length) return false;
+    const seen=new Set(S.history.filter(x=>x.teksId===t.id&&x.ts>=(t._imp||0)).map(x=>String(x.nomor))); return qs.every(q=>seen.has(String(q.nomor))); };
+  const gone=S.bank.filter(done); if(!gone.length) return;
+  const ids=new Set(gone.map(t=>t.id)); S.bank=S.bank.filter(t=>!ids.has(t.id));
+  Object.keys(S.bad).forEach(k=>{ if(ids.has(k.split('#')[0])) delete S.bad[k]; });
+  if(V.run&&(V.run.teksIds||[V.run.teksId]).some(id=>ids.has(id))) V.run=null;
+  save();
+}
 /* ---------- Render ---------- */
 function render(){
+  purgeDone();
   const r=route(); if(r!=='kaidah'&&V.kaidah) V.kaidah.from=null;
   const views={progres:viewProgres,kalender:viewKalender,beranda:viewBeranda,kaidah:viewKaidah,teks:viewTeks,bank:viewBank,progres:viewProgres,drill:viewDrill,soal:viewSoal,selesai:viewSelesai,prompt:viewPrompt,swipe:viewSwipe,game:viewGame,main:viewMain,latihan:viewLatihan,pengaturan:viewPengaturan};
   document.body.dataset.r=r; document.body.classList.remove('cbt');
