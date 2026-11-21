@@ -2529,6 +2529,17 @@ function validate(raw){
       } else errs.push(w+': tipe harus "PG", "isian", atau "pgk".');
     });
   });
+  /* cek kunci menonjol: hanya untuk opsi berupa frasa/kalimat (median >= 4 kata) */
+  const wc=t=>String(t||'').trim().split(/\s+/).filter(Boolean).length;
+  let nPG=0,nLong=0; const tonjol=[];
+  const cekOpsi=(o,lbl)=>{ if(!Array.isArray(o)||o.length!==5) return; const w=o.map(x=>wc(x&&x.teks)), srt=w.slice().sort((a,b)=>a-b);
+    if(srt[2]<4) return; const ki=o.findIndex(x=>x&&x.benar===true); if(ki<0) return; nPG++;
+    const mx=srt[4], lain=w.filter((_,i)=>i!==ki);
+    if(w[ki]===mx&&w.filter(x=>x===mx).length===1){ nLong++; if(w[ki]>=1.4*Math.max(...lain)) tonjol.push(lbl); } };
+  D.forEach((d,i)=>{ if(d.tipe==='PG') cekOpsi(d.opsi,'Drill '+(i+1)); });
+  T.forEach((t,ti)=>(Array.isArray(t.soal)?t.soal:[]).forEach((q,qi)=>{ if(q.tipe==='PG') cekOpsi(q.opsi,'Teks '+(ti+1)+', soal '+(q.nomor||qi+1)); }));
+  if(tonjol.length) errs.push('Kunci terlalu menonjol (jauh lebih panjang dari opsi lain) di: '+tonjol.join('; ')+'. Minta Claude menyamakan panjang opsi soal itu.');
+  if(nPG>=5&&nLong/nPG>0.4) errs.push('Kunci menjadi opsi terpanjang di '+nLong+' dari '+nPG+' soal PG. Minta Claude menulis ulang opsi supaya kunci tidak bisa ditebak dari panjangnya.');
   return {errs,data,nDrill:D.length,nTeks:T.length,nSoal};
 }
 
@@ -2565,10 +2576,16 @@ function buildPrompt(o){
 9. Kata uji paling banyak 5 per teks di "kata_uji", tanpa angka superskrip di dalam kalimat. Rumpang ditulis [...].
 10. "nomor" soal dimulai dari 1 di setiap teks; soal pendek dan lepas bernomor 1.
 11. Tingkat kesulitan mengikuti mode: "dasar" mudah sampai sedang, "geser" sedang, "2027" sulit. Soal sulit menuntut membaca dua kalimat atau lebih, atau membedakan dua opsi yang sama-sama terdengar benar.
+12. Teks harus terasa ditulis wartawan atau penulis sungguhan, bukan AI:
+   - Isi spesifik: angka, tahun, nama lembaga atau lokasi fiktif yang masuk akal, istilah bidang, hasil penelitian, atau kutipan narasumber fiktif.
+   - Panjang kalimat bervariasi; kalimat pendek boleh berdampingan dengan kalimat majemuk yang padat.
+   - Kalimat pertama langsung ke fakta, temuan, atau kejadian. Kalimat terakhir berupa fakta, data, atau pendapat narasumber, bukan nasihat.
+   - Hindari: "Di era modern ini", "Dalam kehidupan sehari-hari", "Seiring perkembangan zaman", "memainkan peran penting", "tidak dapat dimungkiri", "hal ini menunjukkan bahwa", kalimat yang terus dibuka "Selain itu"/"Oleh karena itu"/"Dengan demikian", deretan tiga kata sifat, pertanyaan retoris, dan penutup "kita semua harus …".
+   - Kesalahan PBM yang ditanam harus wajar seperti kesalahan penulis sungguhan.
 
 ## Pengecoh gaya UTBK (WAJIB, ini yang membuat soal tidak mudah ditebak)
 P1. Setiap opsi salah harus "hampir benar": terdengar masuk akal sekilas dan salah karena SATU alasan yang hanya terlihat jika teks dibaca teliti. Minimal 2 opsi per soal harus tampak benar bagi pembaca yang terburu-buru.
-P2. Opsi sejajar: panjang, struktur, dan tingkat formalitas mirip. Kunci tidak boleh selalu opsi terpanjang, paling lengkap, atau paling formal. Kata mutlak (selalu, pasti, semua, satu-satunya) boleh muncul di kunci jika teks memang mendukung, dan opsi salah boleh memakai kata yang terdengar hati-hati.
+P2. Opsi sejajar: panjang, struktur, dan tingkat formalitas mirip. Selisih jumlah kata opsi terpanjang dan terpendek paling banyak 30%. Dalam satu paket, kunci menjadi opsi terpanjang paling banyak 1 dari 5 soal; kunci boleh menjadi salah satu opsi terpendek. Kunci tidak boleh menjadi opsi yang paling lengkap atau paling formal. Kata mutlak (selalu, pasti, semua, satu-satunya) boleh muncul di kunci jika teks memang mendukung, dan opsi salah boleh memakai kata yang terdengar hati-hati.
 P3. Pengecoh per tipe soal:
    - Makna kata/sinonim/antonim kontekstual: pakai kata yang bermakna polisemi; pengecoh utama = sinonim kata itu dalam MAKNA LAIN (makna kamus yang tidak cocok dengan konteks kalimat).
    - Ungkapan kembali/makna sama: satu opsi per modalitas (pasti, biasanya, seharusnya, sepertinya); tukar pelaku dan sasaran; pindahkan induk klausa "yang"; kunci mempertahankan isi DAN kadar kepastian.
@@ -2609,7 +2626,7 @@ Aturan untuk keduanya:
 4. "kaidah": satu kalimat aturan; untuk EYD sertakan rujukan bab, misalnya "(III.B.3)".
 5. Variasikan konteks (sekolah, kesehatan, lingkungan, ekonomi, budaya). Nama orang dan lembaga fiktif. Huruf miring ditulis dengan *...*. Jangan mengulang kalimat yang sama antarbutir.
 6. Jika Kelemahan menyebut subkategori hari ini, minimal separuh butir subkategori itu menyasarnya dengan contoh baru.
-7. Uji anti-tebak: tiap butir tidak boleh bisa dijawab tanpa menguasai kaidahnya. Opsi sejajar panjang dan gayanya, kunci tidak menonjol, dan minimal 2 opsi tampak benar sekilas. Untuk butir "yang tepat", pengecoh mengandung kesalahan halus yang sering terjadi; untuk butir "yang salah", sisipkan kalimat benar yang tampak janggal.`;
+7. Uji anti-tebak: tiap butir tidak boleh bisa dijawab tanpa menguasai kaidahnya. Opsi sejajar panjang dan gayanya (selisih jumlah kata terpanjang dan terpendek paling banyak 30%; kunci menjadi opsi terpanjang paling banyak 2 dari 10 butir PG), kunci tidak menonjol, dan minimal 2 opsi tampak benar sekilas. Untuk butir "yang tepat", pengecoh mengandung kesalahan halus yang sering terjadi; untuk butir "yang salah", sisipkan kalimat benar yang tampak janggal.`;
   const idb=o.idbase+(isSim?'-sim'+sub.toLowerCase():'');
   const fmtDrill=`{
   "versi": 3,
