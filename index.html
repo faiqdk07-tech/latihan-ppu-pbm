@@ -2168,7 +2168,7 @@ const MATERI = [
 ];
 const SUB_KAT = {}; MATERI.forEach(b=>b.topik.forEach(t=>{ SUB_KAT[t.sub]=b.bab.indexOf('Tanda Baca')>=0?'tanda-baca':'ejaan'; }));
 
-/* ---------- Rotasi konsep 14 hari ---------- */
+/* ---------- Rotasi konsep (urutan berbobot, lihat KONSEP_U) ---------- */
 const KONSEP = [
  {n:'Tanda koma (1): perincian, pertentangan, anak kalimat', subs:['Tanda koma'], fokus:'koma dalam perincian; sebelum tetapi, melainkan, sedangkan; anak kalimat yang mendahului induk kalimat dan sebaliknya'},
  {n:'Tanda koma (2): penghubung, seru, petikan, aposisi', subs:['Tanda koma'], fokus:'koma setelah ungkapan penghubung antarkalimat; kata seru dan sapaan; petikan langsung; nama dan gelar; aposisi vs pewatas; tidak sebelum bahwa'},
@@ -2493,7 +2493,8 @@ const KONSEP_U=[], KONSEP2_U=[];
   const w1=[[K[0],2],[K[1],2],[K[2],1],[K[3],1],[K[4],2],
     [{n:'Tanda petik dan tanda kurung',subs:['Tanda petik','Tanda kurung'],fokus:'petik ganda vs tunggal; judul puisi atau artikel memakai petik; kurung vs kurung siku'},1],
     [{n:'Garis miring, elipsis, tanya, seru, apostrof',subs:['Tanda garis miring','Tanda elipsis','Tanda tanya dan seru','Tanda apostrof'],fokus:'garis miring pengganti dan/atau/setiap; elipsis di akhir kalimat; tanda tanya dalam kurung; apostrof'},1],
-    [K[6],2],[K[7],2],[K[8],1],[K[9],2],[K[10],2],[K[11],2],[K[12],1],[K[13],1]];
+    [K[6],2],[K[7],2],[K[8],1],[K[9],2],[K[10],2],[K[11],2],[K[12],1],[K[13],1],
+    [{n:'Unsur serapan',subs:['Unsur serapan'],fokus:'c/cc/ch/ck/ct menjadi k, s, atau ks; ph, th, q, x; vokal ganda menurut lafal (tim, teater); konsonan ganda menjadi tunggal kecuali massa dan teller; bentuk lazim (napas, paham, pikir, telepon)'},1]];
   const W2={'Hubungan kata (analogi)':3,'Relasi makna':3,'Ungkapan, idiom, dan pasangan tetap':2,'Kalimat efektif: kesepadanan':2,'Konjungsi':2,'Makna imbuhan: akhiran dan konfiks':2};
   const w2=KONSEP2.map(k=>[k,W2[k.n]||1]);
   const swrr=list=>{ const cur=list.map(()=>0), total=list.reduce((a,x)=>a+x[1],0), seq=[]; for(let s=0;s<total;s++){ let bi=0; list.forEach((x,i)=>{ cur[i]+=x[1]; if(cur[i]>cur[bi]) bi=i; }); cur[bi]-=total; seq.push(list[bi][0]); } return seq; };
