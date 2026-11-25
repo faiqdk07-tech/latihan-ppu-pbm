@@ -589,6 +589,19 @@ details.topic{scroll-margin-top:56px}
 h1.mh{margin-top:0}
 .mrules{padding:14px 14px 4px}
 .mrules ol.rules{margin:0 0 10px}
+ol.rules .rk{font-weight:600}
+.rpasal{display:inline-block;font-size:10.5px;font-weight:700;color:var(--muted);border:1px solid var(--line);border-radius:4px;padding:0 5px;margin-left:2px;vertical-align:1px;white-space:nowrap}
+ol.rules .rexp{font-size:13.5px;color:var(--muted);margin-top:4px;line-height:1.45}
+ol.rules .ex div+div{margin-top:3px}
+.exl{display:block;font-family:var(--f-ui);font-size:11px;font-weight:700;letter-spacing:.02em;margin-bottom:3px;color:var(--ok)}
+ol.rules .ex.bad{background:color-mix(in srgb,var(--bad) 8%,transparent)}
+ol.rules .ex.bad .exl{color:var(--bad)}
+.ex.bad .wr{text-decoration:line-through;text-decoration-color:var(--bad);color:var(--muted)}
+.ex.bad .ar{color:var(--muted)} .ex.bad .rt{font-weight:600}
+.mdef p{margin:0 0 8px;line-height:1.5} .mdef p:last-child{margin:0}
+.mdef .mguna{font-size:14px;color:var(--muted)}
+.mdef .muji{font-size:13px;color:var(--muted);border-top:1px solid var(--line);margin-top:10px;padding-top:8px;line-height:1.45} .mdef .muji b{display:block;color:var(--ink);font-size:12px;margin-bottom:2px}
+.mtrap ul{margin:0;padding-left:20px;display:flex;flex-direction:column;gap:6px;line-height:1.45;font-size:14px}
 .mres{display:flex;align-items:center;justify-content:space-between;width:100%;border:0;background:none;padding:0 0 4px;font-weight:700;font-size:15px;color:var(--ink);text-align:left}
 .mres .chev{color:var(--faint)}
 /* Menu bawah mengambang,selalu tampil */
@@ -1832,160 +1845,330 @@ body[data-r="game"] .gscore em{border:2px solid color-mix(in srgb,var(--orange) 
 <script>
 (function(){
 'use strict';
-/* ---------- Materi EYD V (ringkasan dari SK EYD Edisi V, 2022) ---------- */
+/* ---------- Materi EYD V (SK Kepala Badan Bahasa No. 0424/I/BS.00.01/2022) ----------
+   Topik: {sub, ref, def (pengertian), guna (cara memahami), aturan, jebakan}
+   Kaidah: [0 kaidah, 1 contoh benar, 2 penjelasan, 3 salah → benar, 4 nomor butir EYD V]
+   Contoh dipisah " · ", baris baru " ↵ ", pasangan salah/benar "salah → benar". */
 const MATERI = [
- {bab:'Bab I · Pemakaian Huruf', kat:'ejaan', topik:[
-  {sub:'Huruf kapital', ref:'I.F', aturan:[
-   ['Huruf pertama awal kalimat dan awal kalimat dalam petikan langsung.','Ibu berpesan, "Berhati-hatilah, Nak!"'],
-   ['Unsur nama orang dan julukan; tidak dipakai jika nama orang menjadi nama jenis atau satuan.','James Watt · 15 watt · mesin diesel · ikan mujair'],
-   ['Nama orang pada nama teori, hukum, dan rumus tetap kapital.','hukum Archimedes · teori Darwin'],
-   ['Bin, binti, boru, dan van tidak kapital, kecuali di awal nama.','Abdul Rahman bin Zaini'],
-   ['Gelar, jabatan, dan pangkat kapital jika diikuti nama orang atau dipakai sebagai sapaan.','Wakil Presiden Adam Malik · Selamat pagi, Dokter.'],
-   ['Nama bangsa, suku, bahasa, dan aksara kapital, kecuali sebagai bentuk dasar kata turunan.','bahasa Tolaki · suku Dani · keinggris-inggrisan'],
-   ['Nama tahun, bulan, hari, hari raya, dan peristiwa sejarah kapital; peristiwa yang tidak dipakai sebagai nama ditulis kecil.','hari Jumat · Perang Dunia II · memperingati proklamasi kemerdekaan'],
-   ['Nama geografi kapital; unsur geografi tanpa nama diri dan nama geografi yang menjadi nama jenis ditulis kecil; nama geografi asal daerah kapital.','Danau Toba · mandi di sungai · jeruk bali · soto Banjar'],
-   ['Setiap kata nama negara, lembaga, dokumen, judul buku, dan media massa kapital, kecuali kata tugas yang tidak di awal.','Perserikatan Bangsa-Bangsa · Dari Ave Maria ke Jalan Lain ke Roma'],
-   ['Kata kekerabatan sebagai sapaan atau pengacuan kapital; jika diikuti kata kepemilikan ditulis kecil. Kata Anda selalu kapital.','"Kapan Bapak berangkat?" · bapak dan ibu kita · Sudahkah Anda tahu?']
-  ]},
-  {sub:'Huruf miring dan tebal', ref:'I.G–H', aturan:[
-   ['Huruf miring untuk judul buku, film, album, acara televisi, siniar, lakon, dan nama media massa yang dikutip.','buku *Salah Asuhan* · surat kabar *Cakrawala*'],
-   ['Huruf miring untuk menegaskan huruf, bagian kata, kata, atau kelompok kata.','Huruf terakhir kata *abad* adalah *d*.'],
-   ['Huruf miring untuk kata bahasa daerah, bahasa asing, dan nama ilmiah.','*Garcinia mangostana* · *tut wuri handayani*'],
-   ['Nama diri asing (orang, lembaga, organisasi, merek) tidak ditulis miring.','Ia bekerja di Sinar Data Corporation.'],
-   ['Judul puisi, lagu, artikel, dan bab ditulis dengan tanda petik, bukan miring.','puisi "Pahlawanku"'],
-   ['Huruf tebal menegaskan bagian yang sudah miring dan menandai judul bab atau subbab.','Kata ***et*** dalam *ora et labora* berarti \'dan\'.']
-  ]}
+ {bab:'Bab I · Penggunaan Huruf', kat:'ejaan', topik:[
+  {sub:'Huruf kapital', ref:'I.F',
+   def:'Huruf kapital (huruf besar) dipakai sebagai huruf pertama kata tertentu untuk menandai awal kalimat dan nama diri, yaitu nama yang merujuk pada satu orang, tempat, lembaga, peristiwa, atau karya tertentu.',
+   guna:'Pertanyaan kunci: apakah kata itu nama diri (khusus, merujuk satu hal tertentu) atau hanya nama jenis/sebutan umum? Nama diri ditulis kapital; nama jenis dan sebutan umum ditulis kecil.',
+   aturan:[
+   ['Huruf pertama awal kalimat ditulis kapital.','Apa maksudnya? · Tolong ambilkan buku itu! · Kita harus bekerja keras.','Berlaku untuk semua jenis kalimat: pernyataan, tanya, dan perintah.','','I.F.1'],
+   ['Huruf pertama awal kalimat dalam petikan langsung ditulis kapital.','Ibu berpesan, "Berhati-hatilah, Nak!" · "Besok pagi," kata Rino, "mereka akan berangkat."','Jika petikan disela keterangan pengutip (kata Rino), lanjutan petikannya tidak diawali kapital karena masih satu kalimat.','"Besok pagi," kata Rino, "Mereka akan berangkat." → "Besok pagi," kata Rino, "mereka akan berangkat."','I.F.6'],
+   ['Huruf pertama setiap unsur nama orang, termasuk julukan, ditulis kapital.','Dewi Sartika · André-Marie Ampère · Bapak Koperasi · Jenderal Kancil','Julukan yang merujuk satu orang tertentu diperlakukan seperti nama diri.','dewi Sartika → Dewi Sartika','I.F.2'],
+   ['Nama orang yang dipakai sebagai nama jenis atau satuan ukuran ditulis kecil.','5 ampere · 15 watt · ikan mujair · mesin diesel','Di sini nama orang tidak lagi merujuk pada orangnya, tetapi pada jenis benda atau satuan.','15 Watt → 15 watt · mesin Diesel → mesin diesel','I.F.3'],
+   ['Nama orang dalam nama teori, hukum, dan rumus tetap kapital; kata teori, hukum, dan rumus ditulis kecil.','teori Darwin · hukum Archimedes · rumus Phytagoras','Berbeda dari kaidah sebelumnya: nama orang di sini masih merujuk pada penemunya.','Ia mempelajari Teori Darwin. → Ia mempelajari teori Darwin.','I.F.4'],
+   ['Kata yang bermakna ‘anak dari’ (bin, binti, boru, van) dan kata tugas dari di dalam nama ditulis kecil, kecuali menjadi awal nama.','Abdul Rahman bin Zaini · Indani boru Sitanggang · Ayam Jantan dari Timur · Van Basten','','Fatimah Binti Salim → Fatimah binti Salim','I.F.5'],
+   ['Nama agama, kitab suci, dan Tuhan ditulis kapital, termasuk sebutan, kata ganti, dan singkatan nama Tuhan.','Islam · Konghucu · Alkitab · Weda · Allah · jalan-Nya · Engkau · Tuhan YME · Allah Swt.','Kata ganti untuk Tuhan ditulis kapital; -Nya dirangkai dengan tanda hubung.','rahmat-nya (untuk Tuhan) → rahmat-Nya','I.F.7'],
+   ['Gelar kehormatan, kebangsawanan, keturunan, keagamaan, atau akademik yang diikuti nama orang ditulis kapital; begitu juga gelar akademik yang mengikuti nama orang.','Teuku Umar · Kiai Haji Hasjim Asjarie · Doktor Mohammad Hatta · Irwansyah, Magister Humaniora','Tanpa nama orang, gelar hanyalah kata biasa: Ia meraih gelar doktor.','Ia meraih gelar Doktor. → Ia meraih gelar doktor.','I.F.8'],
+   ['Gelar, profesi, jabatan, dan pangkat yang dipakai sebagai sapaan ditulis kapital.','Selamat datang, Yang Mulia. · Terima kasih, Kiai. · Selamat pagi, Dokter. · Siap, Jenderal.','Ciri sapaan: kata itu dipakai untuk memanggil lawan bicara.','Silakan masuk, dokter. → Silakan masuk, Dokter.','I.F.9'],
+   ['Jabatan dan pangkat ditulis kapital jika diikuti nama orang atau jika menggantikan nama orang, instansi, atau tempat tertentu.','Wakil Presiden Adam Malik · Profesor Anton M. Moeliono · Gubernur Papua Barat · Sekretaris Jenderal Kementerian Luar Negeri','Jika jabatan hanya disebut secara umum, tanpa nama orang, instansi, atau tempat tertentu, tulis kecil.','Ia bercita-cita menjadi Presiden. → Ia bercita-cita menjadi presiden.','I.F.10'],
+   ['Huruf pertama unsur singkatan gelar dan pangkat ditulis kapital.','S.E. · M.Si. · Hj. · Pdt. · Dt. · Kol.','Bedakan dr. (dokter) yang kecil dengan Dr. (doktor) yang kapital; artinya berbeda.','','I.F.22'],
+   ['Nama bangsa, suku, bahasa, dan aksara ditulis kapital; kata bangsa, suku, bahasa, dan aksara di depannya ditulis kecil.','bangsa Indonesia · suku Dani · bahasa Tolaki · aksara Kaganga','','Ia fasih berbahasa Jawa dan Bahasa Inggris. → … dan bahasa Inggris.','I.F.11'],
+   ['Nama bangsa, suku, bahasa, atau aksara yang menjadi bentuk dasar kata turunan ditulis kecil.','pengindonesiaan kata asing · keinggris-inggrisan · kesunda-sundaan','Begitu mendapat imbuhan (peng-an, ke-an), kata itu tidak lagi berfungsi sebagai nama diri.','pengIndonesiaan → pengindonesiaan · keinggris-Inggrisan → keinggris-inggrisan','I.F.12'],
+   ['Nama tahun, bulan, hari, dan hari besar atau hari raya ditulis kapital; kata tahun, bulan, dan hari di depannya ditulis kecil.','tahun Hijriah · tarikh Masehi · bulan Agustus · hari Jumat · hari Lebaran · hari Natal','','Rapat diadakan pada Hari Jumat. → … pada hari Jumat.','I.F.13'],
+   ['Unsur nama peristiwa sejarah ditulis kapital.','Konferensi Asia Afrika · Perang Dunia II · Proklamasi Kemerdekaan Indonesia · Hari Pendidikan Nasional','Kata Hari ikut kapital pada Hari Pendidikan Nasional karena menjadi bagian dari nama peringatan itu.','','I.F.14'],
+   ['Peristiwa sejarah yang tidak dipakai sebagai nama ditulis kecil.','Kami memperingati proklamasi kemerdekaan setiap tahun. · Perlombaan senjata membawa risiko pecahnya perang dunia.','Uji: apakah kata itu merujuk satu peristiwa bernama tertentu, atau hanya menyebut jenis peristiwanya?','… risiko pecahnya Perang Dunia. → … risiko pecahnya perang dunia.','I.F.15'],
+   ['Nama geografi ditulis kapital, termasuk unsur geografinya (gunung, sungai, jalan, kota, dan sebagainya) jika diikuti nama diri.','Gunung Semeru · Danau Toba · Selat Lombok · Kota Kupang · Jalan Polonia · Lantai II Gedung Tabrani','','mendaki gunung Semeru → mendaki Gunung Semeru','I.F.16'],
+   ['Unsur geografi yang tidak diikuti nama diri ditulis kecil.','berlayar ke teluk · mandi di sungai · menyeberangi selat · berenang di danau','','mandi di Sungai → mandi di sungai','I.F.17'],
+   ['Nama geografi yang dipakai sebagai nama jenis ditulis kecil.','jeruk bali · kacang bogor · petai cina · gula jawa · kunci inggris','Nama jenis biasanya dapat disejajarkan dengan jenis lain dalam kelompoknya: gula jawa, gula pasir, gula aren.','jeruk Bali → jeruk bali · petai Cina → petai cina','I.F.18'],
+   ['Nama geografi yang menyatakan asal daerah ditulis kapital.','batik Cirebon · bubur Manado · kopi Gayo · soto Banjar · tari Bali · film Indonesia','Bedakan dengan kaidah sebelumnya: di sini nama daerah menunjukkan asal sesuatu, bukan nama jenis.','soto banjar → soto Banjar','I.F.19'],
+   ['Semua kata dalam nama negara, lembaga, badan, organisasi, atau dokumen ditulis kapital, termasuk unsur bentuk ulang utuh, kecuali kata tugas.','Bosnia dan Herzegovina · Perserikatan Bangsa-Bangsa · Kitab Undang-Undang Hukum Pidana','Kata tugas antara lain dan, di, ke, dari, yang, untuk, dan tentang.','Perserikatan Bangsa-bangsa → Perserikatan Bangsa-Bangsa','I.F.20'],
+   ['Setiap kata dalam judul buku, karangan, artikel, makalah, dan nama media massa ditulis kapital, kecuali kata tugas yang tidak terletak di awal.','Dari Ave Maria ke Jalan Lain ke Roma · majalah Bahasa dan Sastra · makalah "Penerapan Asas-Asas Hukum Perdata"','Kata tugas di awal judul tetap kapital, seperti Dari pada judul pertama.','"Listrik Sahabat Petani Dan Nelayan" → "Listrik Sahabat Petani dan Nelayan"','I.F.21'],
+   ['Kata kekerabatan (bapak, ibu, kakak, adik) dan kata atau ungkapan lain yang dipakai sebagai sapaan ditulis kapital.','"Kapan Bapak berangkat?" tanya Hasan. · "Itu apa, Bu?" · Selamat belajar, Anak-Anak.','','"Silakan duduk, dik!" → "Silakan duduk, Dik!"','I.F.23'],
+   ['Kata Anda selalu ditulis dengan huruf awal kapital.','Sudahkah Anda tahu? · Hanya teman Anda yang mengerti masalah itu.','','Terima kasih atas kehadiran anda. → … kehadiran Anda.','I.F.23 cat. a'],
+   ['Kata kekerabatan yang dipakai untuk mengacu pada orang yang diajak bicara atau dibicarakan ditulis kapital.','"Bu, saya sudah melaporkan hal ini kepada Bapak." · "Besok Paman akan datang bersama kakakmu."','','','I.F.23 cat. b'],
+   ['Kata kekerabatan yang diikuti kata yang menunjukkan kepemilikan ditulis kecil.','bapak dan ibu kita · kakak dan adik saya · kakakmu','Ada kata pemilik (kita, saya, -mu), jadi kata itu hanya menyebut hubungan kekerabatan, bukan sapaan.','Kita harus menghormati Bapak dan Ibu kita. → … bapak dan ibu kita.','I.F.23 cat. c']
+   ],
+   jebakan:['Jabatan tanpa nama orang, instansi, atau tempat ditulis kecil: menjadi presiden, diangkat sebagai gubernur.','Pada hari Jumat dan bahasa Inggris, hanya nama dirinya yang kapital, sedangkan kata hari dan bahasa tetap kecil.','jeruk bali dan petai cina (nama jenis) ditulis kecil, tetapi soto Banjar dan batik Cirebon (asal daerah) kapital.','Kekerabatan + kata pemilik ditulis kecil: bapak saya, ibu kita.','Kata tugas di tengah judul atau nama lembaga ditulis kecil, tetapi kedua unsur bentuk ulang utuh kapital: Bangsa-Bangsa.']},
+  {sub:'Huruf miring dan tebal', ref:'I.G–H',
+   def:'Huruf miring adalah huruf yang dicetak condong ke kanan; huruf tebal adalah huruf yang dicetak lebih tebal. Keduanya dipakai untuk membedakan bagian tertentu dari teks di sekitarnya.',
+   guna:'Huruf miring dipakai untuk judul karya utuh (buku, film), penegasan, serta kata asing atau daerah. Huruf tebal hanya dipakai untuk menegaskan bagian yang sudah miring dan untuk judul bab atau subbab.',
+   aturan:[
+   ['Huruf miring dipakai untuk judul buku, film, album lagu, acara televisi, siniar, lakon, dan nama media massa yang dikutip dalam tulisan, termasuk dalam daftar pustaka.','buku *Salah Asuhan* · majalah *Poedjangga Baroe* · film *Habibie dan Ainun* · siniar *Celetuk Bahasa*','Patokannya: judul karya yang utuh dan berdiri sendiri.','buku "Salah Asuhan" → buku *Salah Asuhan*','I.G.1'],
+   ['Huruf miring dipakai untuk menegaskan atau mengkhususkan huruf, bagian kata, kata, atau kelompok kata dalam kalimat.','Huruf terakhir kata *abad* adalah *d*. · Imbuhan *ber-* pada kata *berjasa* bermakna ‘memiliki’. · Buatlah kalimat dengan ungkapan *lepas tangan*!','','','I.G.2'],
+   ['Huruf miring dipakai untuk kata atau ungkapan dalam bahasa daerah dan bahasa asing, termasuk nama ilmiah.','*malapeh awo* · *Garcinia mangostana* · *tut wuri handayani* · *men sana in corpore sano*','Kata serapan yang ejaannya sudah disesuaikan dengan bahasa Indonesia, misalnya televisi dan kualitas, tidak dimiringkan.','Nama ilmiah manggis adalah Garcinia mangostana. → … adalah *Garcinia mangostana*.','I.G.3'],
+   ['Dalam tulisan tangan atau mesin tik, bagian yang akan dicetak miring ditandai dengan garis bawah satu.','Salah Asuhan (digarisbawahi satu kali)','','','I.G.3 cat. b'],
+   ['Nama diri berbahasa asing atau daerah, seperti nama orang, lembaga, organisasi, atau merek dagang, tidak dimiringkan.','Ia bekerja di Sinar Data Corporation.','Nama diri sudah ditandai dengan huruf kapital, jadi tidak perlu dimiringkan.','Ia bekerja di *Sinar Data Corporation*. → Ia bekerja di Sinar Data Corporation.','I.G.3 cat. a'],
+   ['Judul puisi, lagu, artikel, naskah, bab buku, dan pidato di dalam kalimat diapit tanda petik, bukan dimiringkan.','puisi "Pahlawanku" · lagu "Maju Tak Gentar"','Ini kaidah tanda petik, tetapi sering menjadi pengecoh soal huruf miring. Bagian dari karya atau karya pendek (puisi, lagu, artikel, bab) memakai tanda petik; karya utuh (buku, album, film) dimiringkan.','lagu *Maju Tak Gentar* → lagu "Maju Tak Gentar"','III.J.2'],
+   ['Huruf tebal dipakai untuk menegaskan bagian tulisan yang sudah ditulis miring.','Kata ***et*** dalam ungkapan *ora* ***et*** *labora* berarti ‘dan’. · Huruf ***dh***, seperti pada kata *Ramadhan*, tidak terdapat dalam ejaan bahasa Indonesia.','Dalam tulisan tangan atau mesin tik, bagian yang akan dicetak tebal ditandai garis bawah dua.','','I.H.1'],
+   ['Huruf tebal dipakai untuk menegaskan bagian karangan, seperti judul bab atau subbab.','**BAB I** ↵ **PENDAHULUAN** · **1.1 Latar Belakang dan Masalah**','Untuk menegaskan kata di dalam kalimat biasa, pakai huruf miring, bukan huruf tebal.','','I.H.2']
+   ],
+   jebakan:['Judul buku, film, dan album dimiringkan; judul puisi, lagu, artikel, dan bab diapit tanda petik.','Nama merek, lembaga, atau orang asing tidak dimiringkan.','Penegasan kata dalam kalimat memakai huruf miring, bukan huruf tebal.','Kata asing yang belum diserap dimiringkan; kata serapan yang sudah diindonesiakan tidak.']}
  ]},
  {bab:'Bab II · Penulisan Kata', kat:'ejaan', topik:[
-  {sub:'Kata berimbuhan dan bentuk terikat', ref:'II.B.1', aturan:[
-   ['Imbuhan ditulis serangkai dengan kata dasarnya.','dijual · mempermudah · kemauan · seniman'],
-   ['Bentuk terikat ditulis serangkai.','antargolongan · pascasarjana · nonkolaborasi · subbagian · swadaya · ekstrakurikuler'],
-   ['Bentuk terikat + kata berhuruf awal kapital dirangkai dengan tanda hubung.','non-ASEAN · pro-Barat · pasca-Orba'],
-   ['Bentuk terikat + kata yang ditulis miring dirangkai dengan tanda hubung.','pasca-*reshuffle* · anti-*mainstream*'],
-   ['Maha- untuk nama atau sifat Tuhan ditulis terpisah dengan huruf awal kapital.','Tuhan Yang Maha Esa']
-  ]},
-  {sub:'Bentuk ulang dan gabungan kata', ref:'II.B.2–3', aturan:[
-   ['Bentuk ulang memakai tanda hubung.','anak-anak · sayur-mayur · berjalan-jalan'],
-   ['Bentuk ulang gabungan kata hanya mengulang unsur pertama.','surat-surat kabar · rak-rak buku'],
-   ['Unsur gabungan kata ditulis terpisah.','ibu kota · orang tua · rumah sakit · wali kota'],
-   ['Gabungan kata yang mendapat awalan dan akhiran sekaligus ditulis serangkai.','menyebarluaskan · pertanggungjawaban · dilipatgandakan'],
-   ['Gabungan kata yang hanya mendapat awalan atau akhiran tetap terpisah.','bertanggung jawab · bertepuk tangan · garis bawahi'],
-   ['Gabungan kata yang sudah padu ditulis serangkai.','kacamata · olahraga · matahari · sukacita · beasiswa · kosakata · saputangan']
-  ]},
-  {sub:'Pemenggalan kata', ref:'II.C', aturan:[
-   ['Dua vokal berurutan dipenggal di antaranya; diftong ai, au, ei, oi tidak dipenggal.','bu-ah · sau-da-ra'],
-   ['Satu konsonan di antara dua vokal dipenggal sebelum konsonan itu; gabungan konsonan satu bunyi tidak dipenggal.','ba-pak · ba-nyak · makh-luk'],
-   ['Kata berimbuhan dipenggal di antara bentuk dasar dan imbuhannya.','ber-jalan · makan-an'],
-   ['Singkatan tidak dipenggal, dan pemenggalan tidak boleh menyisakan satu huruf.','BKKBN (utuh)']
-  ]},
-  {sub:'Kata depan', ref:'II.D', aturan:[
-   ['Kata depan di, ke, dan dari ditulis terpisah dari kata yang mengikutinya.','di dalam lemari · ke luar kota · dari Pulau Penyengat'],
-   ['Bedakan dengan awalan di- dan ke- yang ditulis serangkai.','disimpan · keluar (pergi dari rumah)']
-  ]},
-  {sub:'Partikel', ref:'II.E', aturan:[
-   ['Partikel -lah, -kah, dan -tah ditulis serangkai.','Bacalah · Apakah · Apatah'],
-   ['Partikel pun ditulis terpisah.','Apa pun masalahnya · tengah malam pun'],
-   ['Pun yang menjadi bagian kata penghubung ditulis serangkai.','adapun · meskipun · walaupun · maupun · bagaimanapun · sekalipun'],
-   ['Partikel per yang berarti demi, tiap, mulai, atau melalui ditulis terpisah.','satu per satu · Rp50.000,00 per meter · per 1 Januari']
-  ]},
-  {sub:'Singkatan dan akronim', ref:'II.F', aturan:[
-   ['Singkatan nama orang, gelar, sapaan, dan pangkat diberi titik di setiap unsur.','A.H. Nasution · S.E. · M.Hum. · Sdr. Lukman'],
-   ['Singkatan dari huruf awal setiap kata: kapital tanpa titik.','KTP · PBB · SD · SIM'],
-   ['Singkatan surat-menyurat tiga huruf atau lebih diberi satu titik; dua huruf diberi titik di setiap huruf.','dll. · dsb. · hlm. · yth. · a.n. · s.d.'],
-   ['Singkatan alamat diakhiri titik.','Jl. Rawamangun · Gg. Kelinci · No. 9'],
-   ['Singkatan satuan, lambang kimia, dan mata uang tanpa titik.','km · kg · Cu · Rp'],
-   ['Akronim nama diri berhuruf awal kapital; akronim bukan nama diri ditulis kecil.','Bappenas · Kalteng · pemilu · puskesmas']
-  ]},
-  {sub:'Angka dan bilangan', ref:'II.G', aturan:[
-   ['Bilangan yang dapat ditulis dengan satu atau dua kata ditulis dengan huruf, kecuali dalam perincian.','tiga kali · lebih dari seribu buku'],
-   ['Angka dipakai untuk ukuran dan nilai.','5 kilogram · 4 hektare · Rp5.000,00 · 5%'],
-   ['Bilangan di awal kalimat didahului sebanyak, sejumlah, atau sebesar, atau kalimatnya disusun ulang.','Sebanyak 2.500 orang peserta diundang panitia.'],
-   ['Bilangan tingkat: angka Romawi, ke- + angka Arab dengan tanda hubung, atau huruf.','abad VII · abad ke-7 · abad ketujuh'],
-   ['Angka + akhiran -an dirangkai dengan tanda hubung.','tahun 2000-an · uang 5000-an'],
-   ['Pecahan dengan huruf: per- dilekatkan pada penyebut.','tiga perempat · dua persepuluh']
-  ]},
-  {sub:'Kata ganti dan kata sandang', ref:'II.H–I', aturan:[
-   ['Ku- dan kau- serangkai dengan kata sesudahnya; -ku, -mu, -nya serangkai dengan kata sebelumnya.','kujual · kaubaca · bukumu · rumahnya'],
-   ['Kau yang bukan bentuk terikat ditulis terpisah.','Kau masih muda.'],
-   ['Si dan sang ditulis terpisah; Sang kapital jika unsur nama Tuhan.','si pengirim · sang kakak · Sang Pencipta']
-  ]}
+  {sub:'Kata berimbuhan dan bentuk terikat', ref:'II.A–B.1',
+   def:'Imbuhan (afiks) adalah bentuk yang dilekatkan pada kata dasar, yaitu awalan (ber-, di-), sisipan (-el-, -em-, -er-, -in-), akhiran (-an, -kan, -wan, -wi), dan gabungan awalan-akhiran (ke-an, per-an). Bentuk terikat adalah unsur yang tidak dapat berdiri sendiri sebagai kata, seperti antar-, pasca-, non-, sub-, swa-, dan pra-.',
+   guna:'Prinsipnya: imbuhan dan bentuk terikat selalu ditulis serangkai. Tanda hubung baru dipakai jika kata yang dilekati berhuruf awal kapital atau ditulis miring.',
+   aturan:[
+   ['Kata dasar ditulis mandiri.','kantor · pergi · ramai · sangat','','','II.A'],
+   ['Imbuhan (awalan, sisipan, akhiran, serta gabungan awalan dan akhiran) ditulis serangkai dengan kata dasarnya.','berjalan · dijual · mempermudah · gelembung · kinerja · gerejawi · seniman · sukuisme · kemauan · perbaikan','Sisipan juga termasuk imbuhan: gelembung (g-el-embung) dan kinerja (k-in-erja).','di jual → dijual · ke mauan → kemauan','II.B.1a'],
+   ['Bentuk terikat ditulis serangkai dengan kata yang mengikutinya.','antargolongan · pascasarjana · nonkolaborasi · subbagian · swadaya · ekstrakurikuler · multilateral · antikekerasan · prajabatan · tunakarya','Contoh bentuk terikat lain: adi-, bio-, dwi-, eka-, infra-, mikro-, nir-, purna-, semi-, super-, tele-, trans-, tri-, ultra-.','non kolaborasi → nonkolaborasi · pasca sarjana → pascasarjana · anti kekerasan → antikekerasan','II.B.1b'],
+   ['Bentuk terikat yang dilekatkan pada kata berhuruf awal kapital dirangkai dengan tanda hubung.','non-Indonesia · pan-Afrika · pro-Barat · non-ASEAN · anti-PKI · pasca-Orba','','nonASEAN → non-ASEAN · non Indonesia → non-Indonesia','II.B.1c'],
+   ['Bentuk terikat yang dilekatkan pada kata bercetak miring (asing atau daerah) dirangkai dengan tanda hubung.','anti-*mainstream* · pasca-*reshuffle* · super-*jegeg*','','pascareshuffle → pasca-*reshuffle*','II.B.1d'],
+   ['Maha- yang diikuti kata dasar atau kata berimbuhan yang mengacu pada nama atau sifat Tuhan ditulis terpisah dengan huruf awal kapital.','Yang Maha Esa · Tuhan Yang Maha Kuasa · Yang Maha Pengasih · Tuhan Yang Maha Pemberi Rezeki','Di luar nama atau sifat Tuhan, maha- tetap serangkai: mahasiswa, mahakarya.','Tuhan Yang Mahakuasa → Tuhan Yang Maha Kuasa','II.B.1e']
+   ],
+   jebakan:['Bentuk terikat sering sengaja dipisah dalam soal: non aktif, pasca panen, antar kota → nonaktif, pascapanen, antarkota.','Tanda hubung hanya dipakai jika kata yang dilekati berhuruf kapital (non-Indonesia) atau bercetak miring (anti-*mainstream*).','Maha- ditulis terpisah hanya untuk nama atau sifat Tuhan; mahasiswa dan mahaguru tetap serangkai.']},
+  {sub:'Bentuk ulang dan gabungan kata', ref:'II.B.2–3',
+   def:'Bentuk ulang (reduplikasi) adalah kata yang dibentuk dengan mengulang bentuk dasar, seluruhnya atau sebagian, dengan atau tanpa perubahan bunyi. Gabungan kata (kata majemuk) adalah dua kata atau lebih yang bersama-sama membentuk satu makna, misalnya rumah sakit dan orang tua.',
+   guna:'Bentuk ulang selalu memakai tanda hubung. Gabungan kata pada dasarnya ditulis terpisah, dan baru ditulis serangkai jika mendapat awalan dan akhiran sekaligus atau sudah dianggap padu.',
+   aturan:[
+   ['Bentuk ulang ditulis dengan tanda hubung di antara unsurnya, termasuk ulang berubah bunyi dan ulang berimbuhan.','anak-anak · berjalan-jalan · sayur-mayur · mondar-mandir · terus-menerus · kupu-kupu · cas-cis-cus','Kata yang memang berbentuk ulang sejak asalnya, seperti kupu-kupu dan biri-biri, juga memakai tanda hubung.','anak anak → anak-anak · anak2 → anak-anak','II.B.2a'],
+   ['Bentuk ulang gabungan kata hanya mengulang unsur pertamanya.','kapal-kapal barang · rak-rak buku · surat-surat kabar · kereta-kereta api cepat','','surat kabar-surat kabar → surat-surat kabar','II.B.2b'],
+   ['Unsur gabungan kata, termasuk istilah khusus, ditulis terpisah.','ibu kota · orang tua · rumah sakit · wali kota · duta besar · kambing hitam · cendera mata · segi empat','','ibukota → ibu kota · walikota → wali kota · orangtua → orang tua','II.B.3a'],
+   ['Gabungan kata yang dapat menimbulkan salah pengertian ditulis dengan tanda hubung di antara unsurnya.','buku-sejarah baru ‘buku sejarah yang baru’ · buku sejarah-baru ‘buku tentang sejarah baru’ · ibu-bapak kami ‘ibu dan bapak kami’ · ibu bapak-kami ‘nenek’','Tanda hubung menunjukkan unsur mana yang lebih dulu bersatu.','','II.B.3b'],
+   ['Gabungan kata yang hanya mendapat awalan atau hanya mendapat akhiran tetap ditulis terpisah.','bertepuk tangan · menganak sungai · garis bawahi · sebar luaskan · bertanggung jawab','','bertanggungjawab → bertanggung jawab · garisbawahi → garis bawahi','II.B.3d'],
+   ['Gabungan kata yang mendapat awalan dan akhiran sekaligus ditulis serangkai.','dilipatgandakan · menggarisbawahi · menyebarluaskan · penghancurleburan · pertanggungjawaban','Cirinya: ada awalan dan akhiran yang mengapit gabungan kata itu.','menggaris bawahi → menggarisbawahi · pertanggung jawaban → pertanggungjawaban','II.B.3c'],
+   ['Gabungan kata tertentu yang sudah padu ditulis serangkai.','acapkali · apalagi · barangkali · beasiswa · belasungkawa · daripada · kacamata · kosakata · matahari · olahraga · padahal · peribahasa · saputangan · segitiga · sukacita · sukarela','Daftar ini perlu dihafal karena tidak dapat ditebak dari kaidah. Contohnya, segitiga ditulis serangkai, tetapi segi empat terpisah.','olah raga → olahraga · kaca mata → kacamata · kosa kata → kosakata','II.B.3e']
+   ],
+   jebakan:['bertanggung jawab (hanya awalan, terpisah) berbeda dari pertanggungjawaban (awalan dan akhiran, serangkai).','segitiga ditulis serangkai, tetapi segi empat dan segi lima terpisah.','Pada bentuk ulang gabungan kata, yang diulang hanya unsur pertama: rumah-rumah sakit.','Jangan memakai angka 2 untuk bentuk ulang dalam tulisan resmi.']},
+  {sub:'Pemenggalan kata', ref:'II.C',
+   def:'Pemenggalan kata adalah pemisahan kata menjadi bagian-bagian ketika kata itu terpotong di akhir baris. Bagian yang terpotong ditandai dengan tanda hubung.',
+   guna:'Kata dasar dipenggal menurut suku katanya. Kata berimbuhan dipenggal di antara imbuhan dan bentuk dasarnya, kecuali jika bentuk dasarnya berubah (luluh).',
+   aturan:[
+   ['Dua vokal berurutan di tengah kata dasar dipenggal di antara kedua vokal itu.','bu-ah · ma-in · ni-at · sa-at','','','II.C.1a'],
+   ['Monoftong eu dan diftong ai, au, ei, serta oi tidak dipenggal.','seu-da-ti · pan-dai · sau-da-ra · sur-vei · am-boi','Diftong diucapkan sebagai satu bunyi, sehingga tidak dipisah.','sa-u-da-ra → sau-da-ra · pan-da-i → pan-dai','II.C.1b–c'],
+   ['Satu konsonan (termasuk gabungan konsonan) di antara dua vokal dipenggal sebelum konsonan itu.','ba-pak · de-ngan · ke-nyang · la-wan · mu-ta-khir · mu-sya-wa-rah','','bap-ak → ba-pak · deng-an → de-ngan','II.C.1d'],
+   ['Dua konsonan berurutan di tengah kata dasar dipenggal di antara kedua konsonan itu.','Ap-ril · ban-tu · man-di · som-bong · swas-ta','','ma-ndi → man-di','II.C.1e'],
+   ['Tiga konsonan atau lebih yang masing-masing melambangkan satu bunyi dipenggal di antara konsonan pertama dan kedua.','am-bruk · ben-trok · in-fra · ul-tra · in-stru-men','','amb-ruk → am-bruk','II.C.1f'],
+   ['Gabungan huruf konsonan yang melambangkan satu bunyi (kh, ng, ny, sy) tidak dipenggal.','ba-nyak · kong-res · makh-luk · masy-hur','','ban-yak → ba-nyak · mak-hluk → makh-luk','II.C.1g'],
+   ['Kata berimbuhan dipenggal di antara bentuk dasar dan unsur pembentuknya, termasuk bentuk terikat dan partikel.','ber-jalan · mem-bantu · makan-an · ke-kuat-an · per-tanggung-jawab-kan · non-aktif · swa-foto · apa-kah · pergi-lah','','be-rjalan → ber-jalan','II.C.2a'],
+   ['Kata berimbuhan yang bentuk dasarnya berubah, serta kata bersisipan, dipenggal seperti kata dasar.','me-ma-kai · me-nu-tup · pe-nga-rang · pe-nye-but · ge-lem-bung · te-lun-juk','Memakai berasal dari meN- + pakai. Huruf p luluh, sehingga batas imbuhannya tidak lagi tampak.','mem-akai → me-ma-kai · men-utup → me-nu-tup','II.C.2b–c'],
+   ['Kata yang terdiri atas dua unsur atau lebih yang salah satunya dapat bergabung dengan unsur lain dipenggal di antara unsur-unsur itu.','bio-grafi · bio-data · foto-kopi · kilo-meter · pasca-panen · intro-speksi','','','II.C.3'],
+   ['Nama orang dua kata atau lebih dipenggal di antara katanya. Singkatan tidak dipenggal. Pemenggalan yang menyisakan satu huruf di awal atau akhir baris tidak dilakukan.','Mohammad ↵ Tabrani · BKKBN (utuh) · R.Ng. (utuh)','Contoh pemenggalan yang dilarang: i-tu dan a-kan, karena menyisakan satu huruf.','i- ↵ tu → seluruh kata itu dipindah ke baris berikutnya','II.C.2d, 4, 5']
+   ],
+   jebakan:['ng, ny, kh, dan sy adalah satu bunyi: de-ngan, bukan deng-an.','Kata berimbuhan yang luluh (memakai, menulis) dipenggal seperti kata dasar: me-nu-lis, bukan men-ulis.','Diftong ai, au, dan oi tidak dipisah: pan-dai, sau-da-ra.']},
+  {sub:'Kata depan', ref:'II.D',
+   def:'Kata depan (preposisi) adalah kata tugas yang diletakkan di depan kata atau frasa untuk menunjukkan hubungan seperti tempat, arah, dan asal. Kata depan yang diatur penulisannya dalam EYD V adalah di, ke, dan dari.',
+   guna:'Kata depan ditulis terpisah, sedangkan awalan di- dan ke- ditulis serangkai. Cara cepat membedakannya ada di kaidah kedua.',
+   aturan:[
+   ['Kata depan di, ke, dan dari ditulis terpisah dari kata yang mengikutinya.','di mana · di mana-mana · di dalam lemari · ke tengah kancah · ke luar kota · dari Pulau Penyengat','','dimana → di mana · kesana → ke sana · didalam → di dalam','II.D'],
+   ['Awalan di- (pembentuk kata kerja pasif) dan ke- (pembentuk kata bilangan atau kata benda) ditulis serangkai.','disimpan · dijual · kedua · kehendak · ketua','Uji cepat: jika kata sesudahnya menunjukkan tempat atau arah (bisa ditanya dengan di mana? atau ke mana?), itu kata depan dan ditulis terpisah. Jika kata itu kata kerja yang bisa diubah ke bentuk me- (disimpan ↔ menyimpan), itu awalan dan ditulis serangkai.','di simpan → disimpan · di jual → dijual','II.B.1a'],
+   ['Keluar dan ke luar berbeda. Keluar (kata kerja, lawan dari masuk) ditulis serangkai; ke luar (arah, lawan dari ke dalam) ditulis terpisah.','Ia keluar dari rumah. · Saya pergi ke luar kota.','','Ia ke luar dari rumah. → Ia keluar dari rumah. · Saya pergi keluar kota. → Saya pergi ke luar kota.','II.D']
+   ],
+   jebakan:['daripada dan kepada adalah satu kata, sehingga ditulis serangkai.','di sana, di sini, ke sana, dan ke mana-mana selalu terpisah.','dikantor dan disekolah salah: kantor dan sekolah adalah tempat, jadi ditulis di kantor dan di sekolah.']},
+  {sub:'Partikel', ref:'II.E',
+   def:'Partikel adalah kata tugas pendek yang menegaskan atau memberi nuansa tertentu pada kata atau kalimat. Partikel yang diatur penulisannya dalam EYD V adalah -lah, -kah, -tah, pun, dan per.',
+   guna:'-lah, -kah, dan -tah selalu menempel. Pun umumnya terpisah, kecuali dalam 14 kata penghubung yang sudah padu.',
+   aturan:[
+   ['Partikel -lah, -kah, dan -tah ditulis serangkai dengan kata yang mendahuluinya.','Bacalah buku itu baik-baik! · Bertepuk tanganlah! · Apakah yang tersirat … · Siapakah gerangan dia? · Apatah gunanya bersedih hati?','','Baca lah buku itu! → Bacalah buku itu! · Apa kah … → Apakah …','II.E.1'],
+   ['Partikel pun ditulis terpisah dari kata yang mendahuluinya.','Apa pun permasalahannya … · Jika kita pulang tengah malam pun, … · Jangankan dua kali, sekali pun engkau belum pernah …','Pun di sini bermakna ‘juga’ atau menegaskan kata di depannya.','apapun masalahnya → apa pun masalahnya · siapapun → siapa pun','II.E.2'],
+   ['Pun yang menjadi bagian kata penghubung ditulis serangkai: adapun, andaipun, ataupun, bagaimanapun, biarpun, jikapun, kalaupun, kendatipun, maupun, meskipun, sekalipun, sementangpun, sungguhpun, dan walaupun.','Meskipun sibuk, dia dapat menyelesaikan tugasnya. · Adapun penyebab kemacetan itu belum diketahui. · Bagaimanapun pekerjaan itu harus selesai.','Uji: jika kata itu menghubungkan dua bagian kalimat dan dapat diganti walaupun, meskipun, atau dan, tulis serangkai.','walau pun → walaupun · meski pun → meskipun · baik … mau pun → baik … maupun','II.E.3'],
+   ['Sekalipun yang bermakna ‘walaupun’ ditulis serangkai, sedangkan sekali pun yang bermakna ‘satu kali pun’ ditulis terpisah.','Sekalipun teman dekat, dia belum pernah sekali pun datang ke rumahku.','Contoh ini tercantum langsung dalam EYD V dan sering dijadikan soal.','','II.E.2–3'],
+   ['Partikel per yang bermakna ‘demi’, ‘tiap’, ‘mulai’, atau ‘melalui’ ditulis terpisah dari kata yang mengikutinya.','satu per satu · Rp50.000,00 per meter · per 1 Januari · per telepon','Bedakan dengan per- pada bilangan pecahan, seperti seperempat dan tiga perempat, yang ditulis serangkai.','satu persatu → satu per satu · permeter → per meter','II.E.4']
+   ],
+   jebakan:['apa pun, siapa pun, di mana pun, dan kapan pun ditulis terpisah karena bukan kata penghubung.','bagaimanapun ditulis serangkai karena termasuk daftar kata penghubung, sedangkan apa pun terpisah.','satu per satu ditulis terpisah, tetapi tiga perempat serangkai.']},
+  {sub:'Singkatan dan akronim', ref:'II.F',
+   def:'Singkatan adalah bentuk pendek dari kata atau gabungan kata, yang dieja huruf demi huruf (KTP: ka-te-pe) atau dibaca seperti kata lengkapnya (dll.: dan lain-lain). Akronim adalah singkatan dari huruf awal, suku kata, atau gabungan keduanya yang dilafalkan seperti kata (pemilu, Bappenas).',
+   guna:'Ada tiga pertanyaan kunci: perlu titik atau tidak? Kapital atau kecil? Nama diri atau bukan?',
+   aturan:[
+   ['Singkatan nama orang, gelar, sapaan, dan pangkat diberi titik pada setiap unsurnya.','A.H. Nasution · H. Hamid · Suman Hs. · S.E. · M.Hum. · Ph.D. · Sdr. Lukman · Kol. Inf. Hendri','','SE → S.E. · M.Hum → M.Hum.','II.F.1'],
+   ['Singkatan nama orang dalam bentuk inisial ditulis tanpa titik.','LS (Lilis Suryaningsih) · SDD (Sapardi Djoko Damono) · STA (Sutan Takdir Alisjahbana)','Bandingkan A.H. Nasution (sebagian nama disingkat, bertitik) dengan SDD (seluruh nama menjadi inisial, tanpa titik).','S.D.D. → SDD','II.F.2'],
+   ['Singkatan dan akronim yang terdiri atas huruf awal setiap kata ditulis kapital tanpa titik.','KTP · KUHP · NKRI · PBB · SD · UI · WHO · BIN · PAUD · SIM','','K.T.P. → KTP · S.D. (sekolah dasar) → SD','II.F.3'],
+   ['Singkatan surat-menyurat yang terdiri atas lebih dari dua huruf diakhiri dengan satu titik.','dkk. · dll. · dsb. · dst. · hlm. · sda. · ttd. · ybs. · yth.','','d.l.l. → dll. · dll → dll.','II.F.4a'],
+   ['Singkatan surat-menyurat yang terdiri atas dua huruf diberi titik pada setiap hurufnya.','a.n. · d.a. · s.d. · u.b. · u.p.','','an. → a.n. · sd. → s.d.','II.F.4b'],
+   ['Singkatan dalam alamat ditulis dua huruf atau lebih dan diakhiri titik.','Gd. Tabrani · Jl. Rawamangun · Gg. Kelinci · Kav. 5 · Km. 57 · Lt. 2 · No. 9','','Jl Rawamangun → Jl. Rawamangun','II.F.4c'],
+   ['Singkatan satuan ukuran, takaran, timbangan, lambang kimia, dan mata uang tidak diberi titik.','km · kg · l · kVA · Cu · Rp','','Rp. 5.000,00 → Rp5.000,00 · 10 kg. → 10 kg','II.F.5'],
+   ['Akronim nama diri yang berupa gabungan huruf dan suku kata atau gabungan suku kata ditulis dengan huruf awal kapital saja.','Bappenas · Bulog · Kalteng · Kowani · Suramadu · Wita','','BAPPENAS → Bappenas · BULOG → Bulog','II.F.6'],
+   ['Akronim bukan nama diri yang berupa gabungan huruf dan suku kata atau gabungan suku kata ditulis dengan huruf kecil.','iptek · pemilu · puskesmas · rapim · rudal · tilang','','IPTEK → iptek · Pemilu (di tengah kalimat) → pemilu','II.F.7']
+   ],
+   jebakan:['Rp ditulis tanpa titik dan tanpa spasi: Rp5.000,00.','Km. 57 dalam alamat bertitik dan kapital, tetapi 57 km sebagai satuan ditulis kecil tanpa titik.','dr. (dokter) berbeda dari Dr. (doktor).','Akronim nama diri seperti Bappenas hanya kapital di huruf awal, sedangkan singkatan dari huruf awal setiap kata seperti BIN kapital semua.']},
+  {sub:'Angka dan bilangan', ref:'II.G',
+   def:'Bilangan adalah satuan jumlah. Bilangan dapat ditulis dengan huruf (tiga), angka Arab (3), atau angka Romawi (III). EYD V mengatur kapan bilangan ditulis dengan huruf dan kapan dengan angka.',
+   guna:'Patokan umum: dalam teks, bilangan yang dapat ditulis dengan satu kata memakai huruf. Ukuran, nilai, alamat, nomor, dan perincian berurutan memakai angka.',
+   aturan:[
+   ['Bilangan dalam teks yang dapat dinyatakan dengan satu kata ditulis dengan huruf, kecuali jika dipakai secara berurutan seperti dalam perincian.','Mereka menonton drama itu sampai tiga kali. · Koleksi saya lebih dari seribu buku. · … 52 orang setuju, 15 orang tidak setuju, dan 5 orang abstain.','EYD V memakai patokan satu kata (PUEBI sebelumnya: satu atau dua kata). Bilangan yang memerlukan lebih dari satu kata, misalnya 72, lazim ditulis dengan angka.','Ia menonton drama itu sampai 3 kali. → … sampai tiga kali.','II.G.2'],
+   ['Angka dipakai untuk menyatakan ukuran (panjang, berat, luas, isi, waktu) dan nilai (uang, persentase).','0,5 sentimeter · 5 kilogram · 4 hektare · 1 jam 20 menit · Rp5.000,00 · US$3,50 · 5% · 7 persen','','Rp 5.000 → Rp5.000,00','II.G.3'],
+   ['Bilangan di awal kalimat yang terdiri atas lebih dari satu kata tidak ditulis dengan angka. Tambahkan sebanyak, sejumlah, atau sebesar, atau ubah susunan kalimatnya.','Sebanyak 2.500 orang peserta diundang panitia. · Panitia mengundang 2.500 orang peserta. · Sejumlah 25 naskah kuno tersimpan di lemari itu.','Bilangan satu kata di awal kalimat cukup ditulis dengan huruf: Tiga orang datang terlambat.','2.500 orang peserta diundang panitia. → Sebanyak 2.500 orang peserta diundang panitia.','II.G.4'],
+   ['Angka untuk bilangan besar boleh ditulis sebagian dengan huruf agar mudah dibaca.','500 ribu dosis vaksin · 90 juta rupiah · 55 miliar rupiah · 7 triliun rupiah','','','II.G.5'],
+   ['Angka dipakai dalam alamat serta untuk menomori bagian karangan atau bagian kitab suci.','Jalan Kartika I No. 15 · Hotel Mahameru, Kamar 169 · Bab II, Pasal 3, halaman 13 · Surah Al-‘Alaq [96]: 1','','','II.G.6–7'],
+   ['Dalam peraturan, akta, dan kuitansi, bilangan utuh ditulis mandiri dan pecahan ditulis dengan per- yang dilekatkan pada penyebutnya. Bilangan juga boleh ditulis dengan angka lalu diikuti huruf dalam kurung.','dua belas · tiga puluh lima · tiga perempat · seperenam belas · satu persen · 1 (satu) tahun · Rp200.000.000,00 (dua ratus juta rupiah)','','tiga per empat → tiga perempat · dua per sepuluh → dua persepuluh','II.G.8, 11'],
+   ['Bilangan tingkat ditulis dengan angka Romawi, gabungan ke- dan angka Arab (dengan tanda hubung), atau huruf.','abad VII · abad ke-7 · abad ketujuh · Perang Dunia II · Perang Dunia Ke-2 · Perang Dunia Kedua','Jangan mencampur ke- dengan angka Romawi.','abad ke-VII → abad VII atau abad ke-7 · abad ke 7 → abad ke-7','II.G.9'],
+   ['Angka yang diikuti akhiran -an dirangkai dengan tanda hubung.','tahun 2000-an · uang 5000-an · seharga 5.000-an','','tahun 2000an → tahun 2000-an','II.G.10'],
+   ['Bilangan yang menjadi unsur nama geografi ditulis dengan huruf secara serangkai.','Kelapadua · Limapuluhkoto · Rajaampat · Simpanglima · Tigaraksa','','Kelapa Dua → Kelapadua','II.G.12']
+   ],
+   jebakan:['Angka tidak boleh mengawali kalimat.','ke- + angka Arab memakai tanda hubung (ke-7); ke- tidak digabung dengan angka Romawi.','Pecahan dengan per- ditulis serangkai (tiga perempat), sedangkan partikel per yang bermakna ‘tiap’ terpisah (per meter).','Rupiah ditulis Rp5.000,00: tanpa titik sesudah Rp dan tanpa spasi.']},
+  {sub:'Kata ganti dan kata sandang', ref:'II.H–I',
+   def:'Kata ganti (pronomina) menggantikan orang atau benda. Ku-, kau-, -ku, -mu, dan -nya adalah bentuk terikat kata ganti yang menempel pada kata lain. Kata sandang si dan sang adalah kata tugas yang mendahului nama atau sebutan orang dan benda.',
+   guna:'Bentuk terikat kata ganti selalu ditulis serangkai. Kau yang berdiri sendiri sebagai subjek serta kata sandang si dan sang ditulis terpisah.',
+   aturan:[
+   ['Ku- dan kau- ditulis serangkai dengan kata yang mengikutinya.','Rumah itu telah kujual. · Majalah ini boleh kaubaca. · apa yang kaukatakan','','ku jual → kujual · kau baca → kaubaca','II.H.1'],
+   ['-ku, -mu, dan -nya ditulis serangkai dengan kata yang mendahuluinya.','bukuku · bukumu · bukunya · rumahnya','Jika kata yang dilekati berhuruf awal kapital atau merujuk Tuhan, pakai tanda hubung: KTP-mu, rahmat-Nya.','KTPmu → KTP-mu','II.H.1; III.E.5'],
+   ['Kau yang bukan bentuk terikat ditulis terpisah.','Kau masih muda, Bung. · Aku ingin kau bersungguh-sungguh. · Sebaiknya kau mengurus adikmu saja.','Uji: kau yang menjadi subjek sebelum kata kerja aktif (kau mengurus) ditulis terpisah; kau sebagai pelaku dalam bentuk pasif (kaubaca, artinya ‘dibaca olehmu’) ditulis serangkai.','','II.H.2'],
+   ['Kata sandang si dan sang ditulis terpisah dari kata yang mengikutinya.','si pengirim · si Pitung · sang suami · sang Kancil','','sipengirim → si pengirim · sangkakak → sang kakak','II.I.1'],
+   ['Sang ditulis dengan huruf awal kapital jika menjadi unsur nama Tuhan.','Sang Pencipta · Sang Hyang Widhi Wasa','','sang Pencipta → Sang Pencipta','II.I.2']
+   ],
+   jebakan:['kaubaca (pasif) ditulis serangkai, sedangkan kau membaca (aktif) terpisah.','-nya untuk Tuhan ditulis -Nya dengan tanda hubung.']}
  ]},
  {bab:'Bab III · Penggunaan Tanda Baca', kat:'tanda-baca', topik:[
-  {sub:'Tanda titik', ref:'III.A', aturan:[
-   ['Di akhir kalimat pernyataan dan di belakang angka atau huruf dalam daftar.','Mereka duduk di sana.'],
-   ['Tidak dipakai di belakang angka terakhir judul tabel, bagan, atau gambar, dan tidak di akhir judul.','Tabel 1 Kondisi Kebahasaan di Indonesia'],
-   ['Memisahkan jam, menit, dan detik.','pukul 01.35.20'],
-   ['Memisahkan ribuan yang menunjukkan jumlah; tidak dipakai untuk tahun, halaman, atau nomor.','13.000 pulau · tahun 1998 · halaman 1553'],
-   ['Tidak dipakai di belakang alamat penerima dan tanggal surat.','12 Oktober 2021']
-  ]},
-  {sub:'Tanda koma', ref:'III.B', aturan:[
-   ['Di antara unsur perincian, termasuk sebelum dan/atau pada unsur terakhir.','Buku, majalah, dan jurnal termasuk sumber kepustakaan.'],
-   ['Sebelum tetapi, melainkan, dan sedangkan dalam kalimat majemuk pertentangan.','Saya ingin membeli kamera, tetapi uang saya belum cukup.'],
-   ['Memisahkan anak kalimat yang mendahului induk kalimat; tidak dipakai jika induk kalimat di depan.','Kalau diundang, saya akan datang. · Saya akan datang kalau diundang.'],
-   ['Di belakang ungkapan penghubung antarkalimat.','Oleh karena itu, · Jadi, · Meskipun demikian,'],
-   ['Sebelum atau sesudah kata seru dan sapaan.','Wah, bukan main! · Siapa namamu, Dik?'],
-   ['Memisahkan petikan langsung; tidak dipakai jika petikan diakhiri tanda tanya atau seru.','Kata nenek, "Kita harus berbagi." · "Di mana Saudara tinggal?" tanya Pak Lurah.'],
-   ['Di antara nama dan gelar akademis yang mengikutinya.','Siti Aminah, S.H., M.H.'],
-   ['Sebelum angka desimal dan di antara rupiah dan sen.','12,5 m · Rp500,50'],
-   ['Mengapit keterangan tambahan atau aposisi; keterangan pewatas tidak diapit koma.','Soekarno, Presiden I Republik Indonesia, … · Siswa yang lulus dengan nilai tinggi …'],
-   ['Di belakang keterangan awal kalimat untuk menghindari salah pengertian.','Dalam pengembangan bahasa Indonesia, kita …'],
-   ['Tidak dipakai sebelum bahwa dan tidak di antara subjek dan predikat.','Guru mengatakan bahwa ujian diundur.']
-  ]},
-  {sub:'Tanda titik koma', ref:'III.C', aturan:[
-   ['Pengganti kata penghubung di antara kalimat setara.','Hari sudah malam; anak-anak masih membaca buku.'],
-   ['Pada perincian berupa frasa verbal dan untuk memisahkan perincian yang sudah memakai koma.','Ibu membeli buku, pensil, dan tinta; baju dan kaus; serta pisang.'],
-   ['Memisahkan sumber-sumber kutipan.','(Keraf, 1997; Putra, 2011)']
-  ]},
-  {sub:'Tanda titik dua', ref:'III.D', aturan:[
-   ['Di akhir pernyataan lengkap yang langsung diikuti perincian atau penjelasan.','Mereka memerlukan perabot rumah tangga: kursi, meja, dan lemari.'],
-   ['Tidak dipakai jika perincian merupakan bagian dari kalimat.','Kita memerlukan kursi, meja, dan lemari.'],
-   ['Sesudah kata yang memerlukan pemerian dan dalam naskah drama.','Ketua: Ahmad Wijaya · Ibu: "Bawa koper ini, Nak!"'],
-   ['Di antara jilid dan halaman, surah dan ayat, judul dan anak judul; juga untuk rasio.','Surah Ibrahim: 2–5 · skala 1:10.000']
-  ]},
-  {sub:'Tanda hubung', ref:'III.E', aturan:[
-   ['Menyambung unsur bentuk ulang dan bagian kata yang terpenggal pergantian baris.','anak-anak · kemerah-merahan'],
-   ['Menyambung tanggal berangka, huruf yang dieja, dan skor.','11-11-2022 · p-a-n-i-t-i-a · 2-1'],
-   ['Di antara huruf kapital dan nonkapital, serta di antara huruf dan angka.','se-Indonesia · ke-2 · 2000-an · ber-KTP · S-1 · hari-H'],
-   ['Tidak dipakai jika angka melambangkan jumlah huruf.','P3K · BP2MI'],
-   ['Merangkai unsur bahasa Indonesia dengan unsur daerah, asing, atau slang.','mem-*back up* · di-*slepet*'],
-   ['Menandai dua unsur yang merupakan satu kesatuan.','suami-istri · Konferensi Asia-Afrika']
-  ]},
-  {sub:'Tanda pisah', ref:'III.F', aturan:[
-   ['Mengapit keterangan yang bukan bagian utama kalimat.','Kemerdekaan bangsa itu—saya yakin akan tercapai—diperjuangkan …'],
-   ['Di antara dua bilangan, tanggal, atau tempat yang berarti sampai dengan atau sampai ke.','2019—2022 · Senin—Jumat · Jakarta—Bandung']
-  ]},
-  {sub:'Tanda tanya dan seru', ref:'III.G–H', aturan:[
-   ['Tanda tanya di akhir kalimat tanya, dan dalam kurung untuk bagian yang diragukan.','Di Indonesia terdapat 740 (?) bahasa daerah.'],
-   ['Tanda seru untuk kekaguman, kesungguhan, emosi kuat, seruan, atau perintah.','Bayarlah pajak tepat waktu!']
-  ]},
-  {sub:'Tanda elipsis', ref:'III.I', aturan:[
-   ['Menandai bagian yang dihilangkan, ujaran yang tidak selesai, atau jeda.','Penyebab kemerosotan … akan diteliti.'],
-   ['Elipsis di akhir kalimat diikuti tanda akhir kalimat.','… bahasa negara ialah ….']
-  ]},
-  {sub:'Tanda petik', ref:'III.J–K', aturan:[
-   ['Tanda petik mengapit petikan langsung.','"Merdeka atau mati!" seru Bung Tomo.'],
-   ['Tanda petik mengapit judul puisi, lagu, artikel, bab, pidato, dan tema dalam kalimat.','lagu "Maju Tak Gentar"'],
-   ['Tanda petik mengapit istilah kurang dikenal atau kata berarti khusus.','Dilarang memberikan "amplop" kepada petugas!'],
-   ['Petik tunggal mengapit petikan di dalam petikan serta makna atau padanan kata.','noken \'tas khas Papua\'']
-  ]},
-  {sub:'Tanda kurung', ref:'III.L–M', aturan:[
-   ['Mengapit keterangan tambahan seperti singkatan atau padanan asing.','Uji Kemahiran Berbahasa Indonesia (UKBI) · pemengaruh (*influencer*)'],
-   ['Mengapit keterangan yang bukan bagian utama kalimat, atau kata yang boleh dihilangkan.','(lihat Tabel 10) · (bus) Transjakarta'],
-   ['Mengapit huruf atau angka penanda perincian dalam kalimat.','(a) bahan baku, (b) biaya, dan (c) tenaga kerja'],
-   ['Kurung siku untuk koreksi naskah asli orang lain dan keterangan di dalam tanda kurung.','men[d]engar']
-  ]},
-  {sub:'Tanda garis miring', ref:'III.N', aturan:[
-   ['Dalam nomor surat, nomor alamat, dan masa satu tahun yang terbagi dua tahun takwim.','Nomor: 7/PK/II/2022 · Jalan Kramat III/10'],
-   ['Pengganti kata dan, atau, serta setiap.','AD/ART · 150 km/jam']
-  ]},
-  {sub:'Tanda apostrof', ref:'III.O', aturan:[
-   ['Menunjukkan penghilangan bagian kata atau angka tahun; lazim dalam ragam nonstandar.','\'kan (akan) · 5-2-\'21']
-  ]}
+  {sub:'Tanda titik', ref:'III.A',
+   def:'Tanda titik (.) terutama menandai akhir kalimat pernyataan. Titik juga dipakai dalam daftar dan perincian, penulisan waktu, serta pemisah bilangan ribuan.',
+   guna:'Perhatikan juga kapan titik tidak dipakai: di akhir judul, di belakang alamat dan tanggal surat, pada tahun dan nomor, dan pada angka yang sudah bertanda kurung.',
+   aturan:[
+   ['Tanda titik dipakai di akhir kalimat pernyataan.','Mereka duduk di sana. · Dia akan datang pada pertemuan itu.','Kalimat tanya tidak langsung juga termasuk pernyataan, jadi diakhiri titik: Ia bertanya kapan saya datang.','','III.A.1'],
+   ['Tanda titik dipakai untuk mengakhiri pernyataan lengkap yang diikuti perincian berupa kalimat baru, paragraf baru, atau subjudul baru.','… seperti tampak pada paparan berikut. ↵ 1. Latar Belakang ↵ Masyarakat Indonesia yang heterogen …','Jika perincian langsung menyambung di dalam kalimat yang sama, pakai titik dua.','','III.A.2'],
+   ['Tanda titik dipakai di belakang angka atau huruf dalam daftar, perincian, tabel, atau bagan.','I. Kondisi Kebahasaan di Indonesia ↵ A. Bahasa Indonesia ↵ 1. Kedudukan','','','III.A.3'],
+   ['Tanda titik dipakai untuk memisahkan angka jam, menit, dan detik.','pukul 01.35.20 · 01.35.20 jam (1 jam, 35 menit, 20 detik)','Untuk waktu, titik dua juga boleh dipakai: 01:35:20.','','III.A.7'],
+   ['Tanda titik dipakai untuk memisahkan bilangan ribuan atau kelipatannya yang menunjukkan jumlah.','lebih dari 13.000 pulau · 7.000.000 orang · Rp225.000.000.000,00','','13,000 pulau → 13.000 pulau','III.A.8'],
+   ['Tanda titik tidak dipakai di belakang angka terakhir deret nomor bertingkat dan pada angka atau huruf yang sudah bertanda kurung.','2.1 Bahasa · 2.1.1 Fonologi · II.A.1 Fonologi · 1) bahasa nasional · a) lambang kebanggaan nasional','','2.1.1. Fonologi → 2.1.1 Fonologi · 1). → 1)','III.A.4–5'],
+   ['Tanda titik tidak dipakai di belakang angka terakhir judul tabel, bagan, grafik, atau gambar, dan tidak dipakai di akhir judul atau subjudul.','Tabel 1.1 Kondisi Bahasa Daerah di Indonesia · Gambar 3 Alat Ucap Manusia · Bentuk dan Kedaulatan (Bab I, UUD 1945)','','Tabel 1. Kondisi … → Tabel 1 Kondisi … · Gambar 3 Alat Ucap Manusia. → Gambar 3 Alat Ucap Manusia','III.A.6, 10'],
+   ['Tanda titik tidak dipakai untuk memisahkan bilangan yang tidak menunjukkan jumlah, seperti tahun, halaman, nomor rekening, dan NIP.','tahun 1998 · halaman 1553 · rekening 0015645678 · NIP 199701112015041002','','tahun 1.998 → tahun 1998 · halaman 1.553 → halaman 1553','III.A.9'],
+   ['Tanda titik tidak dipakai di belakang alamat penerima surat dan tanggal surat.','Yth. Rahmat Hidayat, S.T. ↵ Jalan Sumbawa I/18 ↵ Bandung · Jakarta, 12 Oktober 2021','','Jakarta, 12 Oktober 2021. → Jakarta, 12 Oktober 2021','III.A.11']
+   ],
+   jebakan:['Tahun, halaman, dan nomor tidak memakai titik ribuan.','Judul dan subjudul tidak diakhiri titik.','Angka terakhir pada nomor bertingkat dan judul tabel tidak diberi titik.']},
+  {sub:'Tanda koma', ref:'III.B',
+   def:'Tanda koma (,) menandai jeda di dalam kalimat. Koma memisahkan unsur perincian, klausa, keterangan, dan bagian kalimat lain agar maksud kalimat jelas.',
+   guna:'Koma adalah tanda baca yang paling sering diuji. Fokuskan pada perincian, kata penghubung pertentangan, letak anak kalimat, penghubung antarkalimat, dan aposisi.',
+   aturan:[
+   ['Tanda koma dipakai di antara unsur perincian berupa kata, frasa, atau bilangan, termasuk sebelum dan atau atau pada unsur terakhir.','Buku, majalah, dan jurnal termasuk sumber kepustakaan. · Telepon seluler, komputer, atau internet bukan barang mewah lagi.','Koma sebelum dan atau atau pada unsur terakhir dipakai jika perinciannya tiga unsur atau lebih. Dua unsur cukup dihubungkan tanpa koma: buku dan majalah.','Buku, majalah dan jurnal … → Buku, majalah, dan jurnal …','III.B.1'],
+   ['Tanda koma dipakai sebelum kata penghubung pertentangan tetapi, melainkan, dan sedangkan dalam kalimat majemuk.','Saya ingin membeli kamera, tetapi uang saya belum cukup. · Ini bukan milik saya, melainkan milik ayah saya. · Dia membaca cerita pendek, sedangkan adiknya melukis panorama.','Koma diletakkan sebelum kata penghubung, bukan sesudahnya.','Dia membaca cerita pendek sedangkan, adiknya melukis. → Dia membaca cerita pendek, sedangkan adiknya melukis.','III.B.2'],
+   ['Tanda koma dipakai untuk memisahkan anak kalimat yang mendahului induk kalimat.','Kalau diundang, saya akan datang. · Karena baik hati, dia mempunyai banyak teman. · Agar memiliki wawasan yang luas, kita harus banyak membaca buku.','Anak kalimat diawali kata penghubung seperti kalau, jika, karena, agar, supaya, meskipun, walaupun, ketika, dan setelah.','Kalau diundang saya akan datang. → Kalau diundang, saya akan datang.','III.B.3'],
+   ['Tanda koma tidak dipakai jika induk kalimat mendahului anak kalimat.','Saya akan datang kalau diundang. · Dia mempunyai banyak teman karena baik hati.','','Saya akan datang, kalau diundang. → Saya akan datang kalau diundang.','III.B.4'],
+   ['Tanda koma dipakai di belakang kata atau ungkapan penghubung antarkalimat.','… Oleh karena itu, dia memperoleh beasiswa. · … Jadi, dia berhasil menjadi penulis. · … Meskipun demikian, anak-anaknya berhasil menjadi sarjana.','Penghubung antarkalimat terletak di awal kalimat baru dan merujuk pada kalimat sebelumnya. Contoh lain: dengan demikian, sehubungan dengan itu.','Oleh karena itu dia memperoleh beasiswa. → Oleh karena itu, dia memperoleh beasiswa.','III.B.5'],
+   ['Tanda koma boleh dipakai di belakang keterangan di awal kalimat untuk menghindari salah pengertian.','Dalam pengembangan bahasa Indonesia, kita dapat memanfaatkan bahasa daerah. · Atas perhatian Saudara, kami ucapkan terima kasih.','Tanpa koma, Atas perhatian Saudara kami dapat terbaca sebagai ‘Saudara kami’.','','III.B.14'],
+   ['Tanda koma dipakai sebelum dan/atau sesudah kata seru (o, ya, wah, aduh, hai) dan kata sapaan (Bu, Dik, Nak).','O, begitu? · Wah, bukan main! · Hati-hati, ya, jalannya licin! · Nak, kapan kuliahmu selesai? · Siapa namamu, Dik?','','Wah bukan main! → Wah, bukan main! · Siapa namamu Dik? → Siapa namamu, Dik?','III.B.6'],
+   ['Tanda koma dipakai untuk memisahkan petikan langsung dari bagian lain dalam kalimat.','Kata nenek saya, "Kita harus berbagi dalam hidup ini." · "Kita harus berbagi dalam hidup ini," kata nenek saya, "karena manusia adalah makhluk sosial."','','','III.B.7'],
+   ['Tanda koma tidak dipakai untuk memisahkan petikan langsung yang diakhiri tanda tanya atau tanda seru dari bagian kalimat sesudahnya.','"Di mana Saudara tinggal?" tanya Pak Lurah. · "Masuk ke dalam kelas sekarang!" perintahnya.','','"Di mana Saudara tinggal?", tanya Pak Lurah. → "Di mana Saudara tinggal?" tanya Pak Lurah.','III.B.8'],
+   ['Tanda koma dipakai di antara nama dan alamat, bagian-bagian alamat, tempat dan tanggal, serta nama tempat dan wilayah yang ditulis berurutan.','Sdr. Rahmat Hidayat, Jalan Sumbawa I/18, Kelurahan Merdeka, Bandung · Surabaya, 10 Mei 1960 · Sofifi, Maluku Utara','','Surabaya 10 Mei 1960 → Surabaya, 10 Mei 1960','III.B.9'],
+   ['Tanda koma dipakai sesudah salam pembuka, salam penutup, dan nama jabatan penanda tangan surat.','Dengan hormat, · Salam sejahtera, · Hormat kami, · Kepala Badan,','','','III.B.10'],
+   ['Tanda koma dipakai di antara nama orang dan singkatan gelar akademis yang mengikutinya.','B. Ratulangi, S.E. · Siti Aminah, S.H., M.H. · Prof. Dr. Muh. Muhlis, S.E., M.A., Ph.D.','Koma membedakan gelar dari singkatan nama: Siti Khadijah, M.A. (Master of Arts) tidak sama dengan Siti Khadijah M.A. (Mas Agung). Gelar di depan nama, seperti Prof. dan Dr., tidak diberi koma.','Siti Aminah S.H. → Siti Aminah, S.H.','III.B.11'],
+   ['Tanda koma dipakai sebelum angka desimal dan di antara rupiah dan sen yang dinyatakan dengan angka.','12,5 m · 27,3 kg · Rp500,50 · Rp750,00','','12.5 m → 12,5 m','III.B.12'],
+   ['Tanda koma dipakai untuk mengapit keterangan tambahan atau aposisi. Keterangan pewatas tidak diapit koma.','Soekarno, Presiden I Republik Indonesia, merupakan salah seorang pendiri Gerakan Nonblok. · Di daerah kami, misalnya, masih banyak bahan tambang yang belum diolah. · Siswa yang lulus dengan nilai tinggi akan diterima tanpa tes. (pewatas, tanpa koma)','Aposisi dapat dihapus tanpa mengubah siapa yang dimaksud. Pewatas membatasi maknanya (hanya siswa yang lulus dengan nilai tinggi), jadi tidak diapit koma.','Soekarno Presiden I Republik Indonesia merupakan … → Soekarno, Presiden I Republik Indonesia, merupakan …','III.B.13']
+   ],
+   jebakan:['Koma diletakkan sebelum tetapi, melainkan, dan sedangkan, bukan sesudahnya.','Anak kalimat di depan diberi koma; anak kalimat di belakang tidak.','Penghubung antarkalimat (oleh karena itu, jadi) diikuti koma.','Pewatas seperti siswa yang lulus … tidak diapit koma, sedangkan aposisi seperti Soekarno, Presiden I …, diapit koma.','Koma tidak memisahkan subjek dan predikat: Mahasiswa yang rajin itu, mendapat beasiswa salah. Ini turunan dari struktur kalimat, bukan butir tersendiri dalam EYD V.']},
+  {sub:'Tanda titik koma', ref:'III.C',
+   def:'Tanda titik koma (;) menandai jeda yang lebih kuat daripada koma tetapi lebih lemah daripada titik. Titik koma memisahkan bagian-bagian yang setara.',
+   guna:'Gunakan titik koma jika bagian-bagian yang dipisahkan setara dan masing-masing sudah lengkap, atau jika koma saja akan membingungkan karena sudah dipakai di dalam bagian itu.',
+   aturan:[
+   ['Tanda titik koma boleh dipakai sebagai pengganti kata penghubung untuk memisahkan kalimat setara di dalam kalimat majemuk.','Hari sudah malam; anak-anak masih membaca buku. · Kerbau melenguh; kambing mengembik; kuda meringkik.','Setiap bagian di kiri dan kanan titik koma adalah klausa lengkap.','','III.C.1'],
+   ['Tanda titik koma dipakai pada bagian perincian yang berupa frasa verbal, dan sebelum unsur terakhir diberi dan.','Syarat … adalah ↵ (1) berkewarganegaraan Indonesia; ↵ (2) berijazah sarjana S-1; ↵ (3) berbadan sehat; dan ↵ (4) bersedia ditempatkan di seluruh wilayah NKRI.','Bandingkan: perincian yang berupa kata benda atau frasa nomina memakai koma.','','III.C.2'],
+   ['Tanda titik koma dipakai untuk memisahkan bagian perincian yang di dalamnya sudah memakai koma.','Ibu membeli buku, pensil, dan tinta; baju, celana, dan kaus; serta pisang, apel, dan jeruk.','','','III.C.3'],
+   ['Tanda titik koma dipakai untuk memisahkan sumber-sumber kutipan.','(Fishman, 1974; Moeliono, 1985; Samuel, 2008)','','(Keraf, 1997, Putra, 2011) → (Keraf, 1997; Putra, 2011)','III.C.4']
+   ],
+   jebakan:['Titik koma memisahkan klausa setara yang masing-masing dapat berdiri sendiri, bukan memisahkan anak kalimat dari induknya.','Perincian berupa frasa verbal dipisah titik koma; perincian berupa kata benda dipisah koma.']},
+  {sub:'Tanda titik dua', ref:'III.D',
+   def:'Tanda titik dua (:) mengantarkan perincian atau penjelasan. Titik dua juga dipakai dalam beberapa penulisan teknis, seperti pemerian, naskah drama, rujukan, waktu, dan rasio.',
+   guna:'Kunci utamanya: titik dua untuk perincian hanya dipakai jika bagian sebelum titik dua sudah menjadi kalimat lengkap.',
+   aturan:[
+   ['Tanda titik dua dipakai di akhir pernyataan lengkap yang langsung diikuti perincian atau penjelasan.','Mereka memerlukan perabot rumah tangga: kursi, meja, dan lemari. · Saya akan membeli alat tulis kantor: kertas, tinta, spidol, dan pensil.','Uji: tutup bagian sesudah titik dua. Jika bagian depannya sudah menjadi kalimat utuh, titik dua tepat.','','III.D.1'],
+   ['Tanda titik dua tidak dipakai jika perincian atau penjelasan itu merupakan bagian dari kalimat lengkap.','Kita memerlukan kursi, meja, dan lemari. · Tahap penelitian meliputi ↵ a. persiapan, ↵ b. pengumpulan data, ↵ c. pengolahan data, dan ↵ d. pelaporan.','Sesudah kata kerja seperti memerlukan, meliputi, dan terdiri atas, perincian itu berfungsi sebagai objek atau pelengkap, jadi tanpa titik dua.','Kita memerlukan: kursi, meja, dan lemari. → Kita memerlukan kursi, meja, dan lemari. · Tahap penelitian meliputi: → Tahap penelitian meliputi','III.D.2'],
+   ['Tanda titik dua dipakai sesudah kata atau frasa yang memerlukan pemerian.','Ketua: Ahmad Wijaya · Sekretaris: Siti Aryani · Narasumber: Prof. Dr. Saputra Effendi','','','III.D.3'],
+   ['Tanda titik dua dipakai dalam naskah drama sesudah kata yang menunjukkan pelaku percakapan.','Ibu: "Bawa koper ini, Nak!" · Amir: "Baik, Bu."','','','III.D.4'],
+   ['Tanda titik dua dipakai di antara jilid atau nomor dan halaman, surah dan ayat dalam kitab suci, serta judul dan anak judul karangan.','Ultimart 5 (2): 98–105 · Surah Ibrahim: 2–5 · Matius 2: 1–3 · Dari Pemburu ke Terapeutik: Antologi Cerpen Mastera','','','III.D.5'],
+   ['Tanda titik dua boleh dipakai untuk memisahkan jam, menit, dan detik, dan dipakai untuk menuliskan rasio atau perbandingan angka.','pukul 01:35:20 · Skala peta ini 1:10.000. · Perbandingan siswa laki-laki dan perempuan 2:3.','','','III.D.6–7']
+   ],
+   jebakan:['Titik dua sesudah memerlukan atau meliputi salah, karena perinciannya masih bagian dari kalimat.','Bagian sebelum titik dua harus berupa pernyataan lengkap.']},
+  {sub:'Tanda hubung', ref:'III.E',
+   def:'Tanda hubung (-) adalah garis pendek tanpa spasi yang menyambung unsur kata atau ungkapan. Jangan tertukar dengan tanda pisah (—) yang lebih panjang.',
+   guna:'Ingat tiga fungsi besarnya: menyambung (bentuk ulang, pemenggalan, tanggal), memperjelas hubungan antarunsur, dan merangkai unsur yang berbeda jenis (kapital dengan nonkapital, huruf dengan angka, bahasa Indonesia dengan unsur asing).',
+   aturan:[
+   ['Tanda hubung dipakai untuk menandai bagian kata yang terpenggal oleh pergantian baris.','Di samping cara lama, diterapkan juga cara ba- ↵ ru.','','','III.E.1'],
+   ['Tanda hubung dipakai untuk menyambung unsur bentuk ulang.','anak-anak · berulang-ulang · kemerah-merahan · mengorek-ngorek','','','III.E.2'],
+   ['Tanda hubung dipakai untuk menyambung tanggal, bulan, dan tahun yang ditulis dengan angka, huruf dalam kata yang dieja satu per satu, dan skor pertandingan.','11-11-2022 · p-a-n-i-t-i-a · 2-1','','','III.E.3'],
+   ['Tanda hubung dipakai untuk merangkaikan huruf kapital dengan huruf nonkapital, serta huruf dengan angka.','se-Indonesia · peringkat ke-2 · tahun 2000-an · hari-H · ber-KTP · di-SK-kan · ciptaan-Nya · D-3 · S-1 · KTP-mu','','seIndonesia → se-Indonesia · ke 2 → ke-2 · S1 → S-1','III.E.5'],
+   ['Tanda hubung tidak dipakai di antara huruf dan angka jika angka itu melambangkan jumlah huruf.','P3K · BP2MI · P4TK','Dalam P3K, angka 3 menggantikan tiga huruf P (pertolongan pertama pada).','P-3K → P3K','III.E.6'],
+   ['Tanda hubung dipakai untuk memperjelas hubungan bagian kata atau ungkapan.','ber-evolusi · meng-urus ‘mengatur’ dan me-ngurus ‘menjadi kurus’ · dua-puluh-lima ribuan (25 × 1.000) dan dua-puluh lima-ribuan (20 × 5.000)','Dipakai jika tanpa tanda hubung kata itu dapat dibaca dengan dua cara.','','III.E.4'],
+   ['Tanda hubung dipakai untuk menandai imbuhan atau bentuk terikat yang menjadi objek bahasan.','Imbuhan *pe-* pada *pekerja* bermakna ‘pelaku’. · Bentuk terikat *pasca-* berasal dari bahasa Sanskerta.','','','III.E.8'],
+   ['Tanda hubung dipakai untuk merangkai unsur bahasa Indonesia dengan unsur bahasa daerah, bahasa asing, atau slang.','di-*slepet* · ber-*pariban* · mem-*back up* · di-*bokisin*','','mem*back up* → mem-*back up*','III.E.7'],
+   ['Tanda hubung dipakai untuk menandai dua unsur yang merupakan satu kesatuan.','suami-istri · Soekarno-Hatta · Konferensi Asia-Afrika','','','III.E.9']
+   ],
+   jebakan:['ke-2 (dengan angka) memakai tanda hubung, sedangkan kedua (dengan huruf) ditulis serangkai.','Bentuk terikat + kata biasa tetap serangkai (nonaktif); tanda hubung hanya untuk kata berhuruf kapital (non-ASEAN).','Tanggal berangka memakai tanda hubung (11-11-2022), sedangkan rentang ‘sampai dengan’ memakai tanda pisah (2019—2022).']},
+  {sub:'Tanda pisah', ref:'III.F',
+   def:'Tanda pisah (—) adalah garis panjang, lebih panjang daripada tanda hubung, yang ditulis tanpa spasi. Fungsinya mengapit keterangan sisipan dan menyatakan rentang ‘sampai dengan’ atau ‘sampai ke’.',
+   guna:'',
+   aturan:[
+   ['Tanda pisah boleh dipakai untuk mengapit keterangan atau penjelasan yang bukan bagian utama kalimat.','Kemerdekaan bangsa itu—saya yakin akan tercapai—diperjuangkan oleh bangsa itu sendiri.','Keterangan yang diapit dapat dihapus tanpa merusak kalimat.','','III.F.1'],
+   ['Tanda pisah boleh dipakai untuk mengapit keterangan yang merupakan bagian utama kalimat dan dapat saling menggantikan dengan bagian yang dijelaskannya.','Soekarno-Hatta—Proklamator Kemerdekaan RI—diabadikan menjadi nama jalan. · Rangkaian temuan ini—evolusi, teori kenisbian, dan pembelahan atom—telah mengubah konsepsi kita tentang alam semesta.','Fungsinya mirip aposisi yang diapit koma, tetapi lebih menonjol.','','III.F.2'],
+   ['Tanda pisah dipakai di antara dua bilangan, tanggal, atau tempat yang berarti ‘sampai dengan’ atau ‘sampai ke’.','Tahun 2019—2022 · Tanggal 5—10 April 2022 · Senin—Jumat · Jakarta—Bandung','','2019-2022 (tanda hubung) → 2019—2022','III.F.3']
+   ],
+   jebakan:['Rentang ‘sampai dengan’ memakai tanda pisah (—), bukan tanda hubung (-).','Tanda pisah ditulis tanpa spasi sebelum dan sesudahnya.']},
+  {sub:'Tanda tanya dan seru', ref:'III.G–H',
+   def:'Tanda tanya (?) menandai kalimat tanya dan bagian yang diragukan. Tanda seru (!) menandai ungkapan bernada kuat: kekaguman, kesungguhan, emosi, seruan, atau perintah.',
+   guna:'',
+   aturan:[
+   ['Tanda tanya dipakai di akhir kalimat tanya.','Kapan Hari Pendidikan Nasional diperingati? · Siapa pencipta lagu "Indonesia Raya"?','Pertanyaan tidak langsung adalah kalimat pernyataan, sehingga diakhiri titik: Ia bertanya kapan saya datang.','Ia bertanya kapan saya datang? → Ia bertanya kapan saya datang.','III.G.1'],
+   ['Tanda tanya di dalam tanda kurung dipakai untuk menyatakan bagian kalimat yang diragukan atau kurang dapat dibuktikan kebenarannya.','Monumen Nasional mulai dibangun pada tahun 1961 (?). · Di Indonesia terdapat 740 (?) bahasa daerah.','','','III.G.2'],
+   ['Tanda seru dipakai untuk mengakhiri ungkapan yang menggambarkan kekaguman, kesungguhan, emosi yang kuat, seruan, atau perintah.','Alangkah indahnya Taman Laut Bunaken! · Saya tidak melakukannya! · Merdeka! · Bayarlah pajak tepat waktu!','','Alangkah indahnya Taman Laut Bunaken. → Alangkah indahnya Taman Laut Bunaken!','III.H']
+   ],
+   jebakan:['Kalimat yang diawali alangkah atau betapa adalah seruan, jadi diakhiri tanda seru.','Pertanyaan tidak langsung diakhiri titik, bukan tanda tanya.']},
+  {sub:'Tanda elipsis', ref:'III.I',
+   def:'Tanda elipsis (…) berupa tiga titik berderet yang menandai bagian yang dihilangkan, ujaran yang terputus, atau jeda dalam tuturan.',
+   guna:'',
+   aturan:[
+   ['Tanda elipsis dipakai untuk menunjukkan bagian kalimat atau kutipan yang dihilangkan atau tidak disebutkan.','Penyebab kemerosotan … akan diteliti lebih lanjut. · …, lain lubuk lain ikannya.','','','III.I.1'],
+   ['Tanda elipsis dipakai untuk menuliskan ujaran yang tidak selesai dalam dialog.','"Menurut saya, …, seperti …. Bagaimana, Bu?"','','','III.I.2'],
+   ['Tanda elipsis dipakai untuk menandai jeda dalam tuturan yang dituliskan.','Maju … jalan! · Kamera … siap! · Satu, dua, … tiga!','','','III.I.3'],
+   ['Tanda elipsis di akhir kalimat diikuti tanda baca akhir kalimat (titik, tanda tanya, atau tanda seru). Pada kalimat pernyataan, hasilnya tampak sebagai empat titik.','… bahwa bahasa negara ialah …. · "Jadi, mengapa selama ini dia bekerja sebagai …?" · "Pergi dari sini jika kamu …!"','','… bahasa negara ialah … → … bahasa negara ialah ….','III.I.4']
+   ],
+   jebakan:['Di akhir kalimat pernyataan, elipsis tetap diikuti titik, sehingga tampak empat titik.']},
+  {sub:'Tanda petik', ref:'III.J–K',
+   def:'Tanda petik ("…") mengapit petikan langsung, judul karya yang menjadi bagian dari karya lain, dan kata yang berarti khusus. Tanda petik tunggal (‘…’) mengapit petikan di dalam petikan serta makna atau padanan kata.',
+   guna:'',
+   aturan:[
+   ['Tanda petik dipakai untuk mengapit petikan langsung dari pembicaraan, naskah, atau bahan tertulis lain.','"Merdeka atau mati!" seru Bung Tomo dalam pidatonya. · Menurut Pasal 31 ayat (1) UUD 1945, "Setiap warga negara berhak mendapat pendidikan."','Tanda baca akhir petikan langsung (titik, tanda tanya, tanda seru) diletakkan di dalam tanda petik.','… "Setiap warga negara berhak mendapat pendidikan". → … "Setiap warga negara berhak mendapat pendidikan."','III.J.1'],
+   ['Tanda petik dipakai untuk mengapit judul puisi, lagu, artikel, naskah, bab buku, pidato atau khotbah, dan tema atau subtema di dalam kalimat.','Puisi "Pahlawanku" terdapat pada halaman 125. · lagu "Maju Tak Gentar" · Kongres Bahasa Indonesia XI bertema "Menjayakan Bahasa dan Sastra Indonesia".','Judul buku, film, album, dan media massa tidak dipetik, tetapi dimiringkan. Jika judul berpetik berada di akhir kalimat, titik diletakkan di luar tanda petik.','buku "Salah Asuhan" → buku *Salah Asuhan*','III.J.2'],
+   ['Tanda petik dipakai untuk mengapit istilah ilmiah yang kurang dikenal atau kata yang mempunyai arti khusus.','"Peladen" komputer ini sudah tidak berfungsi. · Dilarang memberikan "amplop" kepada petugas!','Di sini amplop bermakna ‘uang suap’, bukan sampul surat.','','III.J.3'],
+   ['Tanda petik tunggal dipakai untuk mengapit petikan yang terdapat di dalam petikan lain.','Tanya dia, "Kaudengar bunyi ‘kring-kring’ tadi?" · "Kita bangga karena lagu ‘Indonesia Raya’ berkumandang di arena Asian Games," kata Ketua KONI.','','"… lagu "Indonesia Raya" berkumandang …" → "… lagu ‘Indonesia Raya’ berkumandang …"','III.K.1'],
+   ['Tanda petik tunggal dipakai untuk mengapit makna, padanan, atau penjelasan kata atau ungkapan.','tergugat ‘yang digugat’ · noken ‘tas khas Papua’ · *lockdown* ‘karantina wilayah’','','noken "tas khas Papua" → noken ‘tas khas Papua’','III.K.2']
+   ],
+   jebakan:['Bagian dari karya atau karya pendek (puisi, lagu, artikel, bab) diapit tanda petik; karya utuh (buku, film, album) dimiringkan.','Petikan di dalam petikan memakai tanda petik tunggal.','Makna kata diapit tanda petik tunggal, bukan tanda petik ganda.']},
+  {sub:'Tanda kurung', ref:'III.L–M',
+   def:'Tanda kurung ((…)) mengapit keterangan tambahan yang bukan bagian utama kalimat. Tanda kurung siku ([…]) mengapit koreksi atau tambahan pada naskah asli tulisan orang lain, serta keterangan di dalam tanda kurung.',
+   guna:'',
+   aturan:[
+   ['Tanda kurung dipakai untuk mengapit keterangan tambahan, seperti singkatan atau padanan kata asing.','Uji Kemahiran Berbahasa Indonesia (UKBI) · Banyak pemengaruh (*influencer*) yang mendapat apresiasi.','','','III.L.1'],
+   ['Tanda kurung dipakai untuk mengapit keterangan atau penjelasan yang bukan bagian utama kalimat.','Puisi Tranggono yang berjudul "Ubud" (nama tempat yang terkenal di Bali) ditulis pada tahun 1962. · Keterangan itu (lihat Tabel 10) menunjukkan …','','','III.L.2'],
+   ['Tanda kurung dipakai untuk mengapit kata yang keberadaannya di dalam teks dapat dimunculkan atau dihilangkan.','Dia berangkat ke kantor dengan (bus) Transjakarta. · Pesepak bola itu berasal dari (Kota) Padang.','','','III.L.3'],
+   ['Tanda kurung dipakai untuk mengapit huruf atau angka penanda perincian di dalam kalimat.','Faktor produksi menyangkut (a) bahan baku, (b) biaya produksi, dan (c) tenaga kerja.','Huruf atau angka yang sudah dikurung tidak diberi titik.','(a). bahan baku → (a) bahan baku','III.L.4'],
+   ['Tanda kurung siku dipakai untuk mengapit huruf, kata, atau kelompok kata sebagai koreksi atau tambahan atas kesalahan atau kekurangan di dalam naskah asli tulisan orang lain.','Sang Sapurba men[d]engar bunyi gemerisik. · Penggunaan bahasa dalam karya ilmiah harus sesuai [dengan] kaidah bahasa Indonesia.','Pengutip tidak boleh mengubah naskah asli diam-diam; tambahan atau koreksinya ditandai dengan kurung siku.','','III.M.1'],
+   ['Tanda kurung siku dipakai untuk mengapit keterangan dalam kalimat penjelas yang sudah bertanda kurung.','Persamaan kedua proses itu (perbedaannya dibicarakan di dalam Bab II [lihat halaman 35—38]) perlu dibentangkan di sini.','','(… Bab II (lihat halaman 35—38)) → (… Bab II [lihat halaman 35—38])','III.M.2']
+   ],
+   jebakan:['Kurung di dalam kurung ditulis dengan kurung siku.','Tambahan atau koreksi pada kutipan memakai kurung siku, bukan kurung biasa.']},
+  {sub:'Tanda garis miring', ref:'III.N',
+   def:'Tanda garis miring (/) dipakai dalam penomoran tertentu, sebagai pengganti kata dan, atau, serta setiap, dan untuk menandai koreksi pada naskah asli tulisan orang lain.',
+   guna:'',
+   aturan:[
+   ['Tanda garis miring dipakai dalam nomor surat, nomor pada alamat, dan penandaan masa satu tahun yang terbagi dalam dua tahun takwim.','Nomor: 7/PK/II/2022 · Jalan Kramat III/10 · tahun ajaran 2022/2023','','','III.N.1'],
+   ['Tanda garis miring dipakai sebagai pengganti kata dan, atau, serta setiap.','AD/ART ‘dan’ · ketua/anggota ‘dan’ · darat/laut ‘atau’ · orang tua/wali ‘atau’ · Rp75.000,00/meter ‘setiap’ · 150 km/jam · dan/atau','Dan/atau bermakna ‘keduanya atau salah satunya’.','','III.N.2'],
+   ['Tanda garis miring boleh dipakai untuk mengapit huruf, kata, atau kelompok kata sebagai koreksi atau pengurangan atas kesalahan atau kelebihan di dalam naskah asli tulisan orang lain.','Asmara/n/dana merupakan salah satu tembang macapat. · Dia sedang menyelesaikan /h/utangnya di bank.','Bandingkan dengan kurung siku: kurung siku untuk menambahkan yang kurang, garis miring untuk menandai yang salah atau berlebih.','','III.N.3']
+   ],
+   jebakan:['Kurung siku menambahkan yang kurang; garis miring menandai yang salah atau berlebih.']},
+  {sub:'Tanda apostrof', ref:'III.O',
+   def:'Tanda apostrof (’) menunjukkan penghilangan bagian kata atau bagian angka tahun.',
+   guna:'',
+   aturan:[
+   ['Tanda apostrof boleh dipakai untuk menunjukkan penghilangan bagian kata atau bagian angka tahun dalam konteks tertentu.','Dia ’kan kusurati. (’kan = akan) · Malam ’lah tiba. (’lah = telah) · Diriku s’lalu dimanja. (s’lalu = selalu) · 5-2-’21 (’21 = 2021)','Pemakaian ini lazim dalam ragam nonstandar, seperti puisi, lirik lagu, atau percakapan. Dalam tulisan resmi, tulis katanya secara utuh.','','III.O']
+   ],
+   jebakan:['Apostrof tidak dipakai untuk menyatakan kepemilikan seperti dalam bahasa Inggris (Budi’s book).']}
+ ]}
+ ,{bab:'Bab IV · Penulisan Unsur Serapan', kat:'ejaan', topik:[
+  {sub:'Unsur serapan', ref:'IV',
+   def:'Unsur serapan adalah kata atau unsur dari bahasa daerah atau bahasa asing yang dipakai dalam bahasa Indonesia. Ada dua kelompok: unsur yang belum diserap (penulisan dan lafalnya masih mengikuti cara asing, misalnya *de facto*) dan unsur yang penulisan serta lafalnya sudah disesuaikan dengan kaidah bahasa Indonesia (misalnya konstruksi dari *construction*).',
+   guna:'EYD V memprioritaskan bentuk: ejaan diubah seperlunya sehingga bentuk Indonesianya masih dapat dibandingkan dengan bentuk asalnya. Pada contoh di bawah, kata serapan ditulis lebih dulu, lalu bentuk asalnya dalam kurung. Kaidah imbuhan serapan (misalnya -tion menjadi -si) diatur terpisah dalam Pedoman Umum Pembentukan Istilah (PUPI).',
+   aturan:[
+   ['Unsur asing yang belum diserap ditulis seperti aslinya dan dicetak miring.','*force majeure* · *de facto* · *de jure*','Unsur ini dipakai dalam konteks bahasa Indonesia, tetapi penulisan dan lafalnya masih mengikuti cara asing.','','IV'],
+   ['Huruf c di depan a, o, u, atau konsonan menjadi k; c di depan e, i, oe, atau y menjadi s.','katalis (*catalyst*) · konstruksi (*construction*) · kubik (*cubic*) · kristal (*crystal*) · sentral (*central*) · sirkulasi (*circulation*) · siber (*cyber*)','','','IV.A.11–12'],
+   ['Gabungan cc di depan o, u, atau konsonan menjadi k; cc di depan e atau i menjadi ks.','akomodasi (*accomodation*) · akulturasi (*acculturation*) · akreditasi (*accreditation*) · aksen (*accent*) · aksesori (*accessory*) · vaksin (*vaccine*)','','','IV.A.13–14'],
+   ['Gabungan ch di depan a, o, atau konsonan menjadi k; ch yang dilafalkan /s/ atau /sy/ menjadi s; ch yang dilafalkan /c/ menjadi c. Gabungan ck menjadi k.','karisma (*charisma*) · teknik (*technique*) · kromosom (*chromosome*) · brosur (*brochure*) · eselon (*echelon*) · carter (*charter*) · cek (*check*) · tiket (*ticket*)','','tehnik → teknik · kharisma → karisma','IV.A.16–19'],
+   ['Gabungan ct di akhir kata menjadi k.','abstrak (*abstract*) · kontak (*contact*) · kontrak (*contract*)','','','IV.A.21'],
+   ['Vokal ganda disesuaikan menurut lafalnya: ee menjadi e; ea yang dilafalkan /i/ menjadi i; oo dan ou yang dilafalkan /u/ menjadi u.','ide (*idee*) · apotek (*apotheek*) · tim (*team*) · krim (*cream*) · kartun (*cartoon*) · kupon (*coupon*) · suvenir (*souvenir*)','Patokannya lafal. Jika ea tidak dilafalkan /i/, tetap ea: teater, pankreas, alinea. Jika ou tidak dilafalkan /u/, tetap ou: voucer.','apotik → apotek · souvenir → suvenir','IV.A.26–28, 53–56'],
+   ['Gabungan ph menjadi f, th menjadi t, dan huruf q menjadi k.','mikrofon (*microphone*) · fase (*phase*) · metode (*methode*) · tesis (*thesis*) · akuarium (*aquarium*) · ekuator (*equator*) · frekuensi (*frequency*)','','frekwensi → frekuensi · methode → metode','IV.A.57, 62, 73'],
+   ['Gabungan sc di depan a, o, u, atau konsonan menjadi sk; sc di depan e, i, atau y menjadi s; sch di depan vokal menjadi sk.','skor (*score*) · skuba (*scuba*) · manuskrip (*manuscript*) · osilator (*oscilator*) · adolesens (*adolescence*) · skema (*schema*)','','','IV.A.67–69'],
+   ['Huruf t yang diikuti i dan dilafalkan /s/ menjadi s.','garansi (*garantie*) · pasien (*patient*) · polisi (*politie*)','','','IV.A.71'],
+   ['Huruf x di tengah kata atau di akhir suku kata menjadi ks; xc di depan e atau i menjadi ks; xc di depan a, o, u, atau konsonan menjadi ksk.','eksekutif (*executive*) · taksi (*taxi*) · kompleks (*complex*) · eksepsi (*exception*) · ekses (*excess*) · eksklusif (*exclusief*) · ekskavasi (*excavatie*)','','komplex → kompleks · taxi → taksi','IV.A.87–89'],
+   ['Huruf y yang dilafalkan /y/ tetap y; y yang dilafalkan /ai/ atau /i/ menjadi i.','yoga · yuan · siber (*cyber*) · dinamo (*dynamo*) · psikodrama (*psychodrama*)','','','IV.A.90–91'],
+   ['Konsonan ganda diserap menjadi konsonan tunggal, kecuali jika menimbulkan ketaksaan atau konotasi negatif.','komisi (*commission*) · efek (*effect*) · balet (*ballet*) · piza (*pizza*) · terakota (*terracotta*) · umat (*ummat*) · massa (bandingkan masa) · teller (bandingkan teler)','Massa dan teller tetap berkonsonan ganda agar tidak tertukar dengan masa dan teler.','ummat → umat · effek → efek','IV.B.3'],
+   ['Deret konsonan di akhir kata bahasa Arab disisipi vokal yang sama dengan vokal sebelumnya, atau ditambah vokal /u/.','akad (*‘aqd*) · fajar (*fajr*) · jilid (*jild*) · syukur (*syukr*) · umur (*‘umr*) · waktu (*waqt*) · fardu (*farḍ*) · salju (*ṡalj*)','','','IV.B.1–2'],
+   ['Unsur serapan yang sudah lazim dipakai tidak diubah walaupun tidak sesuai dengan kaidah umum penulisan unsur serapan.','alamat · sehat · kabar · makalah · napas · paham · pikir · khotbah · lafal · telepon · koperasi · populer · proyek · Senin · Selasa · Rabu · Kamis','Bentuk-bentuk ini perlu dihafal karena tidak dapat diturunkan dari kaidah.','nafas → napas · faham → paham · fikir → pikir · telefon → telepon · khutbah → khotbah','IV.B.4']
+   ],
+   jebakan:['Bentuk lazim harus dihafal: napas, paham, pikir, telepon, khotbah, kabar.','Patokan vokal ganda adalah lafal: *team* menjadi tim, tetapi *theater* menjadi teater.','Konsonan ganda dipertahankan pada massa dan teller agar tidak tertukar dengan masa dan teler.','Akhiran serapan diatur dalam PUPI, bukan EYD: aktivitas (bukan aktifitas), kualitas (bukan kwalitas).']}
  ]}
 ];
 const SUB_KAT = {}; MATERI.forEach(b=>b.topik.forEach(t=>{ SUB_KAT[t.sub]=b.bab.indexOf('Tanda Baca')>=0?'tanda-baca':'ejaan'; }));
 
-/* ---------- Rotasi konsep 14 hari ---------- */
+/* ---------- Rotasi konsep (urutan berbobot, lihat KONSEP_U) ---------- */
 const KONSEP = [
  {n:'Tanda koma (1): perincian, pertentangan, anak kalimat', subs:['Tanda koma'], fokus:'koma dalam perincian; sebelum tetapi, melainkan, sedangkan; anak kalimat yang mendahului induk kalimat dan sebaliknya'},
  {n:'Tanda koma (2): penghubung, seru, petikan, aposisi', subs:['Tanda koma'], fokus:'koma setelah ungkapan penghubung antarkalimat; kata seru dan sapaan; petikan langsung; nama dan gelar; aposisi vs pewatas; tidak sebelum bahwa'},
@@ -2071,119 +2254,232 @@ const SAMPLE_BAKU = "# Daftar kata baku | tidak baku, dipilah dari \"650 Contoh 
 
 /* ---------- Materi kebahasaan PBM–PPU (ringkasan tata bahasa baku) ---------- */
 MATERI.push({bab:'Kebahasaan PBM–PPU', kat:'kebahasaan', topik:[
- {sub:'Makna imbuhan: awalan', ref:'Morfologi', aturan:[
-  ['ber-: mempunyai, memakai, mengeluarkan, dalam keadaan, jumlah, atau berbuat untuk diri sendiri.','beratap (mempunyai) · bersepeda (memakai) · bertelur (mengeluarkan) · bergembira (keadaan) · bertiga (jumlah) · berdandan (diri sendiri)'],
-  ['meN-: melakukan tindakan, menjadi, menuju, atau menggunakan alat.','membaca · menghijau (menjadi hijau) · mendarat (menuju darat) · menggunting (memakai gunting)'],
-  ['di-: bentuk pasif dari meN-.','membaca → dibaca'],
-  ['ter-: paling, tidak sengaja, tiba-tiba, dapat di-, atau sudah dalam keadaan di-.','tertinggi · terinjak · terbangun · terangkat (dapat diangkat) · tertutup'],
-  ['peN-: pelaku, alat, orang yang bersifat, atau penyebab.','penulis (pelaku) · penggaris (alat) · pemalu (bersifat) · pemanis (penyebab)'],
-  ['pe- dari verba ber-: orang yang pekerjaannya ber-.','bertani → petani · berdagang → pedagang · berlari → pelari'],
-  ['se-: satu, seluruh, sama dengan, atau waktu.','seekor · sekampung · setinggi · sesampai'],
-  ['memper-: menjadikan lebih atau menjadikan sebagai.','memperluas · memperistri']
- ]},
- {sub:'Makna imbuhan: akhiran dan konfiks', ref:'Morfologi', aturan:[
-  ['-an: hasil, alat, tempat, sesuatu yang di-, kumpulan, atau tiap.','tulisan (hasil) · timbangan (alat) · pangkalan (tempat) · makanan (yang dimakan) · lautan · harian'],
-  ['-kan: membuat jadi, melakukan untuk orang lain, atau memasukkan ke.','membersihkan · membelikan · memenjarakan'],
-  ['-i: objek berupa tempat, perbuatan berulang, atau memberi sesuatu.','menanami ladang · memukuli · menggarami'],
-  ['ke-an: hal atau keadaan, menderita atau kena, terlalu, agak, atau tempat.','keadilan · kehujanan · kebesaran · kemerah-merahan · kelurahan'],
-  ['peN-an: proses atau perbuatan, hasil, tempat, atau alat. Berpasangan dengan verba meN-.','mengembangkan → pengembangan (proses) · pemandian (tempat) · penemuan (hasil)'],
-  ['per-an: hal atau perihal, tempat atau daerah, kumpulan. Berpasangan dengan verba ber-.','berkembang → perkembangan · perkebunan · peralatan'],
-  ['ber-an: saling, atau banyak dan berulang.','berpandangan · berdatangan'],
-  ['Jebakan UTBK: bentuknya sama tetapi maknanya berbeda. Parafrasekan dulu kedua kata.','pengelolaan (proses mengelola) ≠ penginapan (tempat menginap)']
- ]},
- {sub:'Kelas kata dan frasa', ref:'Sintaksis', aturan:[
-  ['Kelas kata utama: nomina, verba, adjektiva, adverbia, numeralia, pronomina, dan kata tugas (preposisi, konjungsi, partikel).','buku (N) · membaca (V) · rajin (Adj) · sangat (Adv) · dua (Num) · ia (Pron)'],
-  ['Frasa adalah gabungan dua kata atau lebih yang mengisi satu fungsi kalimat.','rumah besar · sedang belajar · di dapur'],
-  ['Pola frasa ditentukan oleh kelas kata unsurnya dan urutannya.','makanan enak (N + Adj) · sangat enak (Adv + Adj) · sedang belajar (Adv + V) · dua piring (Num + N)'],
-  ['Bahasa Indonesia umumnya berpola D-M: inti di depan, penjelas di belakang.','buku baru · rumah kayu'],
-  ['Kata majemuk padu (tidak bisa disisipi "yang"), frasa biasa bisa disisipi.','rumah sakit (padu) · rumah besar → rumah yang besar']
- ]},
- {sub:'Pola dan jenis kalimat', ref:'Sintaksis', aturan:[
-  ['Fungsi kalimat: subjek (S), predikat (P), objek (O), pelengkap (Pel), keterangan (K). Predikat wajib ada.','Ibu (S) memasak (P) sayur (O) di dapur (K).'],
-  ['Pola dasar: S-P, S-P-O, S-P-Pel, S-P-K, S-P-O-Pel, S-P-O-K.','Kakak membelikan adik buku. (S-P-O-Pel)'],
-  ['Objek dapat menjadi subjek kalimat pasif; pelengkap tidak.','Ibu memasak sayur. → Sayur dimasak ibu.'],
-  ['Kalimat majemuk setara memakai dan, atau, tetapi, lalu, sedangkan; majemuk bertingkat memiliki anak kalimat (karena, jika, agar, ketika, bahwa).','Adik menangis karena mainannya rusak. (bertingkat)'],
-  ['Kalimat inti atau informasi utama = S-P-(O) tanpa keterangan dan penjelas yang tidak wajib.','Para siswa kelas XII mengikuti ujian di aula. → Para siswa mengikuti ujian.'],
-  ['Pasif dengan pelaku persona: pelaku langsung di depan verba tanpa di-.','Buku itu saya baca. (bukan "Buku itu dibaca saya")']
- ]},
- {sub:'Kalimat efektif: kesepadanan', ref:'Kalimat efektif', aturan:[
-  ['Subjek dan predikat harus jelas. Kata depan di depan subjek (dalam, bagi, kepada, di) menghilangkan subjek.','Dalam rapat itu membahas anggaran. → Rapat itu membahas anggaran.'],
-  ['"Menurut …" tidak diikuti verba pelapor.','Menurut ketua menyampaikan … → Menurut ketua, … / Ketua menyampaikan …'],
-  ['"Yang" sebelum predikat membuat kalimat tidak memiliki predikat.','Siswa yang lulus tahun ini. → Siswa itu lulus tahun ini.'],
-  ['Anak kalimat tidak boleh berdiri sendiri tanpa induk kalimat.','Karena hujan deras. → Acara ditunda karena hujan deras.'],
-  ['Ketegasan: unsur yang dipentingkan diletakkan di awal kalimat, tanpa mengubah fungsi.','Harapan kami adalah …']
- ]},
- {sub:'Kalimat efektif: kehematan dan kecermatan', ref:'Kalimat efektif', aturan:[
-  ['Subjek yang sama tidak diulang dalam satu kalimat.','Ia langsung pulang setelah ia menerima kabar. → … setelah menerima kabar.'],
-  ['Hindari kata bermakna sama yang berderet (pleonasme).','agar supaya · adalah merupakan · sejak dari · demi untuk · naik ke atas · mundur ke belakang'],
-  ['Hindari jamak ganda.','para siswa-siswa · banyak rumah-rumah · semua guru-guru'],
-  ['Verba transitif langsung diikuti objek, tanpa kata depan.','membahas tentang · mendiskusikan mengenai · menyasar kepada (salah)'],
-  ['Daripada hanya untuk perbandingan; pasangan tetap tidak boleh ditukar.','lebih tinggi daripada · terbuat dari · bergantung pada · disebabkan oleh · sesuai dengan'],
-  ['Kecermatan: hindari kalimat yang dapat ditafsirkan ganda.','Istri kolonel yang nakal … (siapa yang nakal?)']
- ]},
- {sub:'Kalimat efektif: keparalelan dan kelogisan', ref:'Kalimat efektif', aturan:[
-  ['Unsur yang sejajar dalam perincian berbentuk sama (sama-sama nomina, sama-sama verba aktif, atau sama-sama pasif).','pengecatan, pemasangan, dan pembersihan (bukan "pengecatan, memasang, dan dibersihkan")'],
-  ['Makna kalimat harus masuk akal.','Untuk mempersingkat waktu (waktu tidak bisa disingkat) → Untuk menghemat waktu'],
-  ['Yang dipersilakan adalah orang, bukan waktu dan tempat.','Waktu dan tempat kami persilakan. → Bapak kami persilakan.'],
-  ['Kalimat tidak logis di PPU: hubungan sebab-akibat, pelaku, atau urutan yang mustahil.','Mayat itu sebelumnya sering terlihat di pasar. (tidak logis)']
- ]},
- {sub:'Konjungsi', ref:'Kata tugas', aturan:[
-  ['Setara (intrakalimat): dan, atau, tetapi, sedangkan, melainkan, lalu.','Ia pandai, tetapi malas.'],
-  ['Subordinatif: sebab (karena), akibat (sehingga, maka), syarat (jika), tujuan (agar), konsesif (meskipun), waktu (ketika, sejak), perbandingan (seperti), penjelas (bahwa).','Jalan tergenang sehingga kendaraan tertahan.'],
-  ['Korelatif harus berpasangan tepat.','baik … maupun · tidak hanya … tetapi juga · bukan … melainkan · entah … entah'],
-  ['Antarkalimat di awal kalimat dan diikuti koma.','oleh karena itu · dengan demikian · meskipun demikian · selain itu · namun · sebaliknya · jadi'],
-  ['Sehingga, sedangkan, dan karena adalah konjungsi intrakalimat; tidak dipakai untuk membuka kalimat baru.','Ia belajar keras. Sehingga ia lulus. (salah)'],
-  ['Antarparagraf: adapun, di samping itu, berdasarkan hal tersebut, sehubungan dengan itu.','Adapun cara pembuatannya …'],
-  ['Pilih konjungsi dari relasi dua bagian kalimat: tentukan relasinya dulu.','beban berat → tetap mendukung = pertentangan (meskipun demikian)']
- ]},
- {sub:'Relasi makna', ref:'Semantik', aturan:[
-  ['Sinonim: makna sama atau mirip, tidak selalu dapat saling menggantikan di semua konteks.','pandai – pintar · meninggal – wafat'],
-  ['Antonim: mutlak (hidup – mati), bertingkat (panas – dingin), relasional (membeli – menjual, guru – murid).','besar – kecil'],
-  ['Hiponim – hipernim: makna khusus – makna umum. Sesama hiponim disebut kohiponim.','mawar (hiponim) – bunga (hipernim) · mawar – melati (kohiponim)'],
-  ['Homonim: tulisan dan bunyi sama, makna berbeda; homofon: bunyi sama, tulisan beda; homograf: tulisan sama, lafal beda.','bisa (racun) – bisa (dapat) · bank – bang · apel (buah) – apel (upacara)'],
-  ['Polisemi: satu kata dengan beberapa makna yang masih berhubungan.','kepala (bagian tubuh, pemimpin, bagian atas surat)'],
-  ['Ambiguitas: frasa atau kalimat yang dapat ditafsirkan lebih dari satu.','anak dosen yang nakal']
- ]},
- {sub:'Jenis dan perubahan makna', ref:'Semantik', aturan:[
-  ['Denotatif: makna sebenarnya; konotatif: makna tambahan atau nilai rasa.','membeli kambing hitam (denotatif) · dijadikan kambing hitam (konotatif)'],
-  ['Leksikal: makna kata menurut kamus; gramatikal: makna yang muncul karena imbuhan atau susunan.','kuda (leksikal) · berkuda = mengendarai kuda (gramatikal)'],
-  ['Meluas (generalisasi) dan menyempit (spesialisasi).','saudara, bapak (meluas) · sarjana, pendeta (menyempit)'],
-  ['Ameliorasi: nilai rasa menjadi lebih halus; peyorasi: menjadi lebih kasar.','istri (lebih halus dari bini) · gerombolan (kini bernada buruk)'],
-  ['Sinestesia: pertukaran tanggapan indra; asosiasi: makna karena persamaan sifat.','kata-katanya pedas · memberi amplop (suap)']
- ]},
- {sub:'Hubungan kata (analogi)', ref:'Semantik', aturan:[
-  ['Rumuskan hubungan pasangan soal dalam satu kalimat, lalu uji ke setiap opsi.','gunting : penjahit → gunting adalah alat kerja penjahit'],
-  ['Jenis hubungan: sinonim, antonim, bagian–keseluruhan, jenis–golongan, alat–pengguna, bahan–hasil, sebab–akibat, pelaku–hasil, fungsi, tempat.','jari : tangan · mawar : bunga · benang : kain · hujan : banjir'],
-  ['Arah dan urutan hubungan harus sama.','kayu : meja (bahan → hasil) ≠ meja : kayu'],
-  ['Muatan harus sejajar; kata yang hanya dekat topiknya bukan jawaban.','gunting : penjahit ≠ kain : penjahit']
- ]},
- {sub:'Ungkapan, idiom, dan pasangan tetap', ref:'Semantik', aturan:[
-  ['Idiom: maknanya tidak dapat ditebak dari unsur-unsurnya.','membanting tulang (bekerja keras) · buah bibir (bahan pembicaraan) · panjang tangan (suka mencuri) · besar kepala (sombong)'],
-  ['Pasangan tetap (preposisi tetap) tidak boleh ditukar.','sesuai dengan · bergantung pada · berbeda dengan · sehubungan dengan · disebabkan oleh'],
-  ['Peribahasa menyatakan nasihat atau keadaan dengan perbandingan.','bagai air di daun talas (tidak berpendirian)'],
-  ['Pasangan tetap di PPU berupa gabungan yang membentuk istilah, bukan frasa biasa yang bisa diganti sinonim.','meja hijau (pengadilan) vs meja kayu']
- ]},
- {sub:'Majas', ref:'Stilistika', aturan:[
-  ['Perbandingan: metafora (dewi malam), simile (seperti, bagai), personifikasi (angin berbisik), hiperbola (tangisnya membanjiri), metonimia, sinekdoke.','Sudah lama tak tampak batang hidungnya. (sinekdoke pars pro toto)'],
-  ['Pertentangan: litotes (merendah), paradoks, antitesis.','Mampirlah ke gubuk kami. (litotes) · sepi di tengah keramaian (paradoks)'],
-  ['Sindiran: ironi, sinisme, sarkasme.','Rapi sekali kamarmu, seperti kapal pecah. (ironi)'],
-  ['Penegasan: repetisi, pleonasme, klimaks, antiklimaks, retoris.','Siapa yang tidak ingin bahagia? (retoris)'],
-  ['Di PPU, "kalimat yang mengandung makna lain dari yang tertulis" berarti kalimat yang memakai kiasan.','menguras waktu · menjadi jendela dunia']
- ]},
- {sub:'Paragraf dan ungkapan kembali', ref:'Wacana', aturan:[
-  ['Gagasan utama ada di kalimat utama: di awal (deduktif), di akhir (induktif), atau keduanya.','Kalimat utama memuat topik + pendapat tentang topik.'],
-  ['Kepaduan dibangun oleh rujukan (itu, tersebut, -nya), konjungsi, dan pengulangan kata kunci.','Hal tersebut … · Akibatnya, …'],
-  ['Kalimat pembuka paragraf tidak diawali kata rujukan atau konjungsi antarkalimat.','"Perpustakaan daerah kini buka hingga malam." (pembuka) vs "Hal tersebut …" (bukan pembuka)'],
-  ['Kalimat sisipan ditempatkan tepat setelah kalimat yang dirujuknya; kalimat sumbang tidak mendukung gagasan utama.','Kalimat sumbang dibuang saat menyunting paragraf.'],
-  ['Ungkapan kembali (parafrase): isi, pelaku dan sasaran, serta kadar kepastian harus sama.','dapat meningkatkan → berpotensi menambah (bukan "pasti meningkatkan")'],
-  ['Judul mencakup isi seluruh teks, tidak hanya satu paragraf.','Repot bagi Pengelola, Disambut Orang Tua']
- ]},
- {sub:'Bahasa buatan', ref:'Penalaran bahasa', aturan:[
-  ['Cari kata yang muncul di dua kalimat contoh atau lebih untuk menemukan artinya.','lo mesa kuti = saya makan nasi · lo mesa pira = saya makan roti → pira = roti'],
-  ['Perhatikan urutan kata: apakah sifat sesudah benda, pelaku di depan atau di belakang.','Urutan mengikuti contoh, bukan bahasa Indonesia.'],
-  ['Kalimat tanya biasanya ditandai partikel khusus atau perubahan posisi/pengulangan subjek.','ani ko sela na = apakah ibu membeli sayur?'],
-  ['Susun jawaban kata demi kata, lalu cek ulang ke semua contoh.','Satu kata yang tidak cocok dengan contoh berarti opsi salah.']
- ]}
+ {sub:'Makna imbuhan: awalan', ref:'Morfologi', src:'TBBI',
+   def:'Awalan (prefiks) adalah imbuhan yang dilekatkan di depan bentuk dasar, misalnya meng-, di-, ber-, ter-, per-, peng-, dan se-. Makna awalan tidak tetap: maknanya ditentukan oleh kelas kata bentuk dasarnya dan oleh konteks kalimat.',
+   guna:'Cara kerja di soal: (1) kenali bentuk dasar dan kelas katanya (verba, adjektiva, nomina, numeralia); (2) parafrasakan kata itu sesuai kalimatnya, misalnya bersepeda = ‘naik sepeda’; (3) pilih opsi yang parafrasenya sama, bukan opsi yang imbuhannya sama.',
+   aturan:[
+   ['meng- (transitif): ‘melakukan perbuatan yang dinyatakan bentuk dasar’ terhadap objek.','membuka · menutup · membangun · mendorong · memukul','Pada verba transitif, meng- tidak mengubah kelas kata; awalan ini membuat verba siap dipakai dalam kalimat aktif ragam baku: Dia sedang mencari pekerjaan, bukan Dia sedang cari pekerjaan.','','4.2.2.1'],
+   ['meng- (taktransitif): dari adjektiva bermakna ‘menjadi’; dari nomina bermakna ‘mengeluarkan bunyi’, ‘menuju’, ‘menjadi seperti’, atau ‘mengonsumsi’.','mengering, mereda (menjadi) · menjerit, mendesis (mengeluarkan bunyi) · mendarat, melaut, menepi (menuju) · menggunung, menyemut, membatu (menjadi seperti) · merokok, menyirih (mengonsumsi)','Bentuk dasarnya memberi petunjuk: bunyi → mengeluarkan; tempat → menuju; benda berbentuk khas → menjadi seperti.','','4.3.1.3'],
+   ['di-: bentuk pasif dari meng-; akhiran pada verba aktif tetap dipertahankan.','memakai → dipakai · menempati → ditempati · memandikan → dimandikan','','','4.2.2.2'],
+   ['ter- pada verba: ‘sudah di-’, ‘tidak sengaja atau tiba-tiba’, atau ‘dapat di-’ (biasanya bersama tidak atau belum).','terletak, tertulis (sudah di-) · tertinggal, terjatuh, terbawa (tidak sengaja) · tidak terbeli, tidak terdengar (tidak dapat di-) · tersangka, tergugat (orang yang sudah di-)','Makna tidak sengaja muncul dari sifat perbuatannya: Tasnya tertinggal (tidak sengaja) berbeda dari Tasnya ditinggalkan (sengaja).','','4.2.2.3; 4.3.1.4'],
+   ['ter- pada adjektiva: ‘paling’ (superlatif).','tertinggi · termahal · terpandai','ter- tidak dilekatkan pada adjektiva berimbuhan; pakai paling. Bentuk dasar yang suku pertamanya berakhir dengan r memakai te-: tepercaya.','terberbahaya → paling berbahaya · terpercaya → tepercaya','5.4.2.3; 5.5.2.1'],
+   ['ber- dari verba: ‘sedang dalam proses atau aktivitas’, ‘melakukan perbuatan’, atau ‘berbuat untuk diri sendiri’ (refleksif).','berpikir, belajar (aktivitas) · berubah, berbuat (perbuatan) · berjemur, berhias, bercukur (untuk diri sendiri)','','','4.3.1.1.1'],
+   ['ber- dari adjektiva: ‘dalam keadaan’. ber- dari nomina: ‘mempunyai’, ‘memakai atau naik’, ‘menghasilkan atau mengeluarkan’, ‘hubungan timbal balik’, atau ‘mata pencarian’.','bersedih, bergembira (keadaan) · berduri, bernama (mempunyai) · bersepeda, berdasi (memakai/naik) · bertelur, berkeringat (menghasilkan) · bersahabat, bertetangga (timbal balik) · bertani, berdagang (mata pencarian)','','','4.3.1.1.2–3'],
+   ['ber- dari numeralia: ‘dalam jumlah’, atau ‘dalam jumlah banyak’ jika diulang.','berdua · berenam · beratus-ratus · berjuta-juta','','','4.3.1.1.4'],
+   ['per- atau memper- pada verba: ‘menjadikan (lebih)’, ‘menjadikan sebagai atau memperlakukan sebagai’, atau ‘membagi menjadi’.','memperluas, perbesar, percepat (menjadikan lebih) · memperistri, memperalat (menjadikan sebagai) · memperdua (membagi dua)','memper- + adjektiva membuat sesuatu menjadi lebih dari keadaan semula; meng-…-kan membuat menjadi seperti bentuk dasarnya. Bandingkan memperbesar foto dengan membesarkan anak.','','4.2.2.4'],
+   ['peng-: ‘orang yang melakukan’, ‘orang yang pekerjaannya’, ‘orang yang bersifat’, atau ‘alat untuk’.','pembaca, pendengar (pelaku) · pelatih, penjahit (pekerjaan) · pemalu, pelupa, pemarah (sifat) · penghapus, penggali (alat)','peng- berpasangan dengan verba meng-: penulis ← menulis.','','7.1.4.2 (3)'],
+   ['pe- (alomorf per-): ‘orang yang ber-’, berpasangan dengan verba ber-.','petani ← bertani · pedagang ← berdagang · pejuang ← berjuang · pelajar ← belajar · petinju, pegolf (pelaku olahraga)','Cara menentukan asal pe-: jika verbanya meng-, pe- berasal dari peng- (pelatih ← melatih); jika verbanya ber-, pe- berasal dari per- (petani ← bertani). Pasangan penting: penyuruh (yang menyuruh) dan pesuruh (yang disuruh); peninju (yang meninju) dan petinju (yang bertinju).','','7.1.4.2 (2)'],
+   ['se-: ‘sama dengan’ pada adjektiva; ‘segera setelah’ pada verba; ‘sebanyak yang’ pada setahu, seingat, dan semau.','setinggi, sebesar (sama dengan) · sesampai, sepulang, setiba (segera setelah) · setahuku, seingat saya (sebanyak yang)','','','4.3.1.5; 5.5.2.1']
+   ],
+   jebakan:['Imbuhan sama belum tentu maknanya sama: bersepeda (naik), berduri (mempunyai), dan bertelur (menghasilkan). Bandingkan parafrasenya, bukan bentuknya.','pelatih (dari melatih, peng-) berbeda asal dari petani (dari bertani, per-).','tertinggal (tidak sengaja) berbeda dari ditinggalkan (sengaja); tidak terbeli = tidak dapat dibeli.','memperbesar (membuat lebih besar) berbeda dari membesarkan (membuat menjadi besar atau mengasuh).','penyuruh (yang menyuruh) berbeda dari pesuruh (yang disuruh).']},
+ {sub:'Makna imbuhan: akhiran dan konfiks', ref:'Morfologi', src:'TBBI',
+   def:'Akhiran (sufiks) dilekatkan di belakang bentuk dasar, misalnya -kan, -i, -an, dan -wan. Konfiks adalah pasangan awalan dan akhiran yang dilekatkan sekaligus dan membentuk satu makna, misalnya ke-…-an, peng-…-an, per-…-an, dan ber-…-an.',
+   guna:'Kunci membaca makna akhiran dan konfiks adalah verba pasangannya: peng-…-an berpasangan dengan meng- (penyatuan ← menyatukan), per-…-an dengan ber- (persatuan ← bersatu), dan -an biasanya bermakna hasil dari verba (tulisan ← menulis).',
+   aturan:[
+   ['-kan pada verba: ‘membuat menjadi’ (kausatif), ‘melakukan untuk orang lain’ (benefaktif), ‘membawa atau memasukkan ke’, atau objeknya menjadi alat.','membersihkan, mengamankan (membuat menjadi) · membelikan, mengambilkan, membuatkan (untuk orang lain) · mengandangkan, mengemukakan, mengesampingkan (membawa ke) · memukulkan kayu (kayu sebagai alat)','Verba -kan benefaktif dapat diikuti dua nomina: Kakak mengambilkan ibu (O) air (Pel).','','4.2.2.5'],
+   ['-kan pada adjektiva perasaan: ‘menimbulkan perasaan itu’ pada pihak lain, atau ‘merasakan’ oleh subjeknya.','memuaskan, mengagumkan, menyedihkan, memalukan (menimbulkan perasaan) · merindukan, membanggakan (subjek merasakan)','','','4.2.2.5.2'],
+   ['-i: objeknya tempat atau sasaran tindakan; ‘memberi atau membubuhi’; perbuatan berulang; atau subjek berada pada posisi yang dinyatakan bentuk dasar.','mendatangi, menduduki, memasuki (tempat) · menggarami, meminyaki, mewarnai (memberi) · memukuli, menciumi, menebangi (berulang) · mendekati, menjauhi, mengatasi (posisi)','Bandingkan -i dan -kan: menerangi gua (memberi terang pada tempat) dengan menerangkan manfaat (menjelaskan); memberati tali (memberi beban) dengan memberatkan (membuat menjadi berat).','','4.2.2.6'],
+   ['-an: ‘hasil’ atau ‘sesuatu yang di-’; ‘tempat’; ‘kelipatan’; atau ‘kumpulan’.','tulisan, kiriman, anjuran (hasil/yang di-) · belokan, tanjakan, daratan (tempat) · puluhan, ribuan (kelipatan) · kawanan, pasukan (kumpulan)','-an juga membentuk nomina untuk terbitan berkala: harian, mingguan.','','7.1.4.2 (4)'],
+   ['peng-…-an: ‘perbuatan’, ‘proses’, atau ‘hasil atau hal’ dari verba meng- transitif pasangannya.','pemukulan, pemberhentian (perbuatan) · pembangunan, penulisan, pembelajaran (proses) · pemberitahuan, pengakuan (hasil/hal)','Uji dengan mengganti katanya: Pembangunan jembatan berlangsung dua tahun = proses membangun. Ada yang maknanya khusus dan harus dipelajari tersendiri: pemandangan, pendapatan, pendirian.','','7.1.4.2 (5)'],
+   ['per-…-an: ‘hal’ atau ‘hasil’ dari verba ber- pasangannya, ‘perbuatan atau hasil’ dari verba memper-, atau ‘hal yang berkaitan dengan’ nomina dasarnya.','perjuangan, pertanian, peternakan (hal ber-) · percakapan, pertemuan, perjanjian (perbuatan/hasil ber-) · perhatian, pertunjukan (dari memper-) · perhotelan, perbukuan (hal yang berkaitan dengan)','Bandingkan persatuan (hal bersatu) dengan penyatuan (perbuatan menyatukan): Penyatuan Nusantara dilakukan oleh Hayam Wuruk berterima, sedangkan Persatuan Nusantara dilakukan oleh Hayam Wuruk tidak.','','7.1.4.2 (6)'],
+   ['ke-…-an pembentuk nomina: ‘hal atau keadaan’ (dari verba dan adjektiva), ‘hal mengenai’, atau ‘kantor atau wilayah’ (dari nomina).','kedatangan, keberhasilan (hal) · keberanian, kekosongan (keadaan) · kemanusiaan, keuangan (hal mengenai) · kelurahan, kecamatan, kedutaan (kantor/wilayah) · ketidakhadiran (hal tidak hadir)','','','7.1.4.2 (7)'],
+   ['ke-…-an pada verba dan adjektiva: ‘mengalami sesuatu yang tidak menyenangkan’ (adversatif), ‘terlalu’ (eksesif), atau ‘agak’ pada warna yang diulang.','kehujanan, kecopetan, kemalaman, ketiduran (mengalami) · kebesaran, kemahalan, kejauhan (terlalu) · kemerah-merahan, kekuning-kuningan (agak)','Konteks menentukan: Jas itu kebesaran = terlalu besar; kebesaran bangsa = keadaan besar (nomina).','','4.3.1.7; 5.4.1.4; 5.4.1.6'],
+   ['ber-…-an: ‘banyak dan tidak teratur’ (dari verba) atau ‘saling, timbal balik’.','berdatangan, berjatuhan, beterbangan (banyak, tidak teratur) · berpandangan, bersalaman, berdekatan (saling)','Bedakan konfiks ber-…-an dari ber- + kata berakhiran -an: berhalangan berasal dari ber- + halangan.','','4.3.1.2'],
+   ['-wan dan -wati: ‘orang yang ahli’, ‘orang yang bekerja di bidang’, atau ‘orang yang memiliki’; -wati khusus perempuan.','ilmuwan, sejarawan (ahli) · wartawan, karyawan (pekerjaan) · hartawan, dermawan, rupawan (memiliki/bersifat)','Pilihan bentuknya idiomatis: seniman, bukan peseni.','','7.1.4.2 (9)']
+   ],
+   jebakan:['penyatuan (perbuatan menyatukan) berbeda dari persatuan (hal bersatu).','kebesaran bisa bermakna ‘terlalu besar’ (jas itu kebesaran) atau ‘keadaan besar’ (kebesaran bangsa).','menerangi (memberi terang) berbeda dari menerangkan (menjelaskan).','Soal "imbuhan yang maknanya sama" menuntut parafrase: tulisan (hasil menulis) sejenis dengan kiriman (hasil mengirim), bukan dengan belokan (tempat).']},
+ {sub:'Kelas kata dan frasa', ref:'Sintaksis', src:'TBBI',
+   def:'Kelas kata (kategori leksikal) adalah golongan kata menurut perilakunya dalam kalimat: nomina, verba, adjektiva, adverbia, pronomina, numeralia, dan kata tugas (preposisi, konjungsi, artikula, interjeksi, partikel). Frasa adalah satuan dua kata atau lebih yang berpusat pada satu kata terpenting (inti); berbeda dengan klausa, frasa tidak membentuk hubungan subjek-predikat.',
+   guna:'Nama frasa mengikuti kelas kata intinya: frasa nominal berinti nomina, frasa verbal berinti verba, dan seterusnya. Kelas sebuah kata ditentukan oleh perilakunya dalam kalimat, bukan oleh bentuknya saja.',
+   aturan:[
+   ['Nomina (kata benda): mengacu pada orang, benda, tempat, atau konsep; diingkar dengan bukan dan dapat diikuti yang + adjektiva.','anak · buku · Bogor · persatuan · bukan buku · buku yang tebal','','','2.2.3.2.1; 7.1'],
+   ['Verba (kata kerja): menyatakan perbuatan, proses, atau keadaan; diingkar dengan tidak.','makan · tidur · bekerja · membaca · tidak membaca','','','2.2.3.2.1; 4.1'],
+   ['Adjektiva (kata sifat): menyatakan sifat atau keadaan; dapat diberi pewatas sangat, agak, lebih, atau paling.','besar · cantik · rajin · gelap · sangat rajin · paling gelap','','','2.2.3.2.1; 5.4'],
+   ['Adverbia (kata keterangan): menerangkan verba, adjektiva, atau kalimat.','amat · juga · lebih · sering · sudah','','','2.2.3.2.1; 6.1'],
+   ['Pronomina, numeralia, dan kata tugas: kata ganti, kata bilangan, dan kata yang terutama bertugas gramatikal.','aku, mereka (pronomina) · dua, kedua, sepuluh (numeralia) · di, kepada (preposisi) · dan, bahwa (konjungsi) · si, sang (artikula) · aduh (interjeksi) · -lah, pun (partikel)','','','2.2.3.2.1; 8.1'],
+   ['Satu bentuk kata dapat termasuk dua kelas atau lebih; kelasnya ditentukan oleh perilakunya dalam kalimat.','Kamarnya sudah saya sapu. (verba) · Jangan lupa membeli sapu. (nomina) · Sungai itu sangat dalam. (adjektiva) · Pekerjaan ini selesai dalam tiga minggu. (preposisi)','','','9.3.1'],
+   ['Frasa dinamai menurut kelas kata intinya: frasa nominal, verbal, adjektival, adverbial, numeral, dan preposisional.','anak kecil, dua ekor sapi (FN) · mengirim surat, sudah pergi (FV) · amat senang, agak besar (FAdj) · jarang sekali (FAdv) · lima puluhan (FNum) · di atas meja (FPrep)','Tidak ada frasa yang intinya konjungsi, interjeksi, artikula, atau partikel.','','2.2.3.2.2; 9.3.1'],
+   ['Frasa terdiri atas inti dan noninti (komplemen, pewatas, penentu). Frasa koordinatif tidak berinti: unsurnya setara dan dihubungkan dengan dan atau atau.','gambar anjing yang mereka bawa itu (inti: gambar) · sayuran, buah, dan ikan (koordinatif) · ayah dan ibu','','','2.2.3.3.1–3; 7.1.5.4.7'],
+   ['Dalam frasa nominal, pewatas umumnya berada di belakang inti (diterangkan–menerangkan). Pewatas berupa nomina mendahului pewatas adjektiva atau verba.','buku baru · rumah kayu · buku pelajaran (yang) baru · kendaraan air (yang) bermotor','Penentu jumlah boleh di depan (kedua mahasiswa itu), tetapi pewatas tetap di belakang inti.','buku baru pelajaran → buku pelajaran baru · lemari tua besi → lemari besi tua','7.1.5.5'],
+   ['Hubungan makna antara nomina inti dan nomina pewatas beragam, antara lain asal, bahan, dan peruntukan.','dodol garut, orang Medan (asal) · cincin emas, kursi rotan (bahan) · asrama putri, sepatu tenis (peruntukan) · lemari dinding (tempat)','Soal PPU sering menanyakan pola makna frasa: lemari besi ‘terbuat dari besi’, sedangkan lemari buku ‘untuk buku’.','','7.1.5.4.1'],
+   ['Gabungan verba atau adjektiva dengan nomina yang sudah padu atau idiomatis berfungsi sebagai satu kesatuan; nominanya bukan objek atau pelengkap.','naik haji · turun tangan · keras kepala · meninggal dunia · tembus cahaya · kurang darah','Frasa biasa dapat disisipi yang (rumah besar → rumah yang besar); gabungan padu tidak dapat (rumah sakit).','','9.3.2.4']
+   ],
+   jebakan:['Kelas kata dilihat dari fungsinya di kalimat: dalam bisa adjektiva, preposisi, atau nomina.','Pewatas berada di belakang inti: buku pelajaran baru, bukan buku baru pelajaran.','Untuk soal pola makna frasa, cari hubungan inti–pewatas yang sama: kursi rotan sejenis dengan cincin emas (bahan).','naik haji dan keras kepala adalah satu kesatuan; jangan dipotong saat mencari kalimat inti.']},
+ {sub:'Pola dan jenis kalimat', ref:'Sintaksis', src:'TBBI',
+   def:'Kalimat adalah satuan bahasa yang mengungkapkan pikiran yang utuh; dalam tulisan diawali huruf kapital dan diakhiri tanda titik, tanya, atau seru. Unsur kalimat dinamai menurut fungsinya: subjek (S), predikat (P), objek (O), pelengkap (Pel), dan keterangan (Ket).',
+   guna:'Predikat adalah pusat kalimat: jenis predikat menentukan unsur lain yang wajib hadir. Kalimat inti hanya memuat unsur wajib, sedangkan keterangan dan pewatas boleh dilepas.',
+   aturan:[
+   ['Predikat (P) adalah unsur pokok kalimat; dapat berupa frasa verbal, adjektival, nominal, numeral, atau preposisional.','Ayahnya guru bahasa Inggris. (FN) · Adiknya dua orang. (FNum) · Ibu sedang ke pasar. (FPrep) · Dia sedang tidur. (FV) · Gadis itu cantik sekali. (FAdj)','Jika subjek dan predikat sama-sama nomina, bagian yang diberi -lah adalah predikat: Dialah penulisnya.','','9.3.2.1'],
+   ['Subjek (S) adalah unsur yang dibicarakan; umumnya frasa nominal di sebelah kiri predikat, dan dapat berupa klausa.','Kesalahannya jelas. · Bahwa dia bersalah jelas.','Subjek tidak didahului preposisi; preposisi di depan subjek membuat kalimat kehilangan subjek.','Di dalam rapat itu membahas anggaran. → Rapat itu membahas anggaran.','9.3.2.2'],
+   ['Objek (O) hadir langsung sesudah verba transitif dalam kalimat aktif; dapat diganti -nya dan dapat menjadi subjek kalimat pasif.','Pembantu membersihkan ruangan saya. → Ruangan saya dibersihkan pembantu. · Saya sudah membacanya.','','','9.3.2.3'],
+   ['Pelengkap (Pel) melengkapi predikat, tetapi tidak dapat menjadi subjek kalimat pasif dan tidak dapat diganti -nya.','Dia berjualan barang elektronik. · Orang itu bertubuh raksasa. · Dia menjadi ketua koperasi. · Ayah membelikan saya (O) baju (Pel).','Uji pemasifan: Dia menjual barang (O) dapat menjadi Barang dijual olehnya; Dia berjualan barang (Pel) tidak dapat dipasifkan.','','9.3.2.4'],
+   ['Keterangan (Ket) memberi informasi tambahan (tempat, waktu, alat, tujuan, cara, sebab, akibat, dan lain-lain); letaknya dapat berpindah.','Dita membeli mangga kemarin. · Kemarin Dita membeli mangga. · Dita kemarin membeli mangga.','Kebanyakan keterangan tidak wajib. Pada verba seperti tinggal dan terletak, keterangan tempat wajib hadir: Buku itu terletak di meja.','','9.3.2.5; 9.4.1.1'],
+   ['Enam pola kalimat dasar: S-P, S-P-O, S-P-Pel, S-P-Ket, S-P-O-Pel, dan S-P-O-Ket.','Dia tidur. (S-P) · Mahasiswa mengadakan seminar. (S-P-O) · Mereka belajar bahasa Inggris. (S-P-Pel) · Buku itu terletak di meja. (S-P-Ket) · Ayah membelikan saya baju. (S-P-O-Pel) · Dia meletakkan uang di atas meja. (S-P-O-Ket)','Verba predikat menentukan polanya: membeli menuntut objek, sedangkan membelikan menuntut objek dan pelengkap.','','9.4.1.1–2'],
+   ['Kalimat inti hanya memuat unsur wajib; keterangan dan pewatas yang tidak wajib dilepas.','Para siswa kelas XII mengikuti ujian akhir di aula sejak pukul tujuh. → Para siswa mengikuti ujian akhir.','Jangan membuang unsur yang dituntut predikat: objek verba transitif, pelengkap verba menjadi, atau keterangan verba terletak. Gabungan padu seperti naik haji tetap utuh.','Para siswa mengikuti di aula. → Para siswa mengikuti ujian akhir.','9.2.2; 9.4.1'],
+   ['Menurut jumlah klausanya, kalimat dibagi menjadi kalimat simpleks (tunggal), kompleks (majemuk bertingkat), majemuk (majemuk setara), dan majemuk kompleks.','Dia akan pergi. (simpleks) · Pak Bayu datang ketika rapat telah selesai. (kompleks) · Frida membaca dan adiknya bermain catur. (majemuk) · Partai A setuju, tetapi partai B menentangnya karena tidak sesuai aspirasi rakyat. (majemuk kompleks)','Kalimat simpleks dapat panjang asalkan hanya terdiri atas satu klausa. Dalam kalimat kompleks, klausa subordinatif (anak kalimat) tidak dapat berdiri sendiri.','','9.5.1'],
+   ['Kalimat majemuk (setara) memakai dan, serta, atau, tetapi, sedangkan, padahal, atau melainkan; kalimat kompleks memakai konjungsi subordinatif seperti ketika, karena, jika, agar, meskipun, bahwa, atau yang.','Ibu memasak, sedangkan ayah membaca koran. (majemuk) · Yoga berkata bahwa ibunya akan datang. (kompleks) · Lukisan yang pernah menghebohkan itu dibuat Afgani. (kompleks)','','','9.5.1.2–3'],
+   ['Menurut bentuk sintaktisnya, kalimat dibagi menjadi deklaratif (berita), imperatif (perintah), interogatif (tanya), dan eksklamatif (seru).','Dia sudah pulang. · Tutup pintu itu! · Kapan dia pulang? · Alangkah indahnya pantai ini!','','','9.5.3'],
+   ['Kalimat pasif dibentuk dengan di- (pelaku sesudah verba, oleh boleh hadir) atau tanpa di- jika pelakunya pronomina persona (pelaku langsung di depan verba).','Seorang asisten diangkat (oleh) Pak Budi. · Mobil itu sudah saya cuci. · Buku ini perlu kaubaca.','oleh wajib hadir jika verba tidak langsung diikuti pelakunya: Rumah itu harus diperbaiki dengan segera oleh Pak Saleh. Kata seperti sudah dan akan diletakkan di depan pelaku.','Buku itu dibaca saya. → Buku itu saya baca. · Mobil itu saya sudah cuci. → Mobil itu sudah saya cuci.','9.5.2.1.3']
+   ],
+   jebakan:['Objek dapat menjadi subjek kalimat pasif; pelengkap tidak (berjualan barang, menjadi ketua).','Kalimat inti tidak boleh membuang objek atau pelengkap wajib.','Pasif dengan pronomina: Buku itu saya baca, bukan Buku itu dibaca saya.','Kalimat panjang belum tentu majemuk; hitung klausanya (pasangan subjek-predikat).','Preposisi di depan subjek menghilangkan subjek: Bagi siswa diwajibkan … → Siswa diwajibkan ….']},
+ {sub:'Kalimat efektif: kesepadanan', ref:'Kalimat efektif', src:'',
+   def:'Kalimat efektif adalah kalimat yang mewakili gagasan penulis secara tepat sehingga pembaca menangkap gagasan yang sama. Kesepadanan berarti struktur kalimat seimbang dengan gagasannya: unsur wajib, yaitu subjek dan predikat, hadir dan jelas.',
+   guna:'Langkah memeriksa: cari predikatnya, cari subjeknya, lalu pastikan unsur yang dituntut predikat (objek, pelengkap, keterangan wajib) hadir. Sebagian besar kalimat tidak efektif di soal gagal pada langkah ini.',
+   ruj:'TBBI edisi IV (9.2.2 unsur wajib, 9.3.2 fungsi sintaktis, 9.5.1.2 kalimat kompleks); contoh soal PBM dan PPU 2026 (KatKiel Project).',
+   aturan:[
+   ['Kalimat sekurang-kurangnya memiliki subjek dan predikat; keduanya unsur wajib.','Mereka menghadiri pertemuan itu kemarin sore.','Keterangan seperti barangkali dan kemarin sore boleh dihilangkan, sedangkan subjek dan predikat tidak.','Menghadiri pertemuan itu kemarin sore. → Mereka menghadiri pertemuan itu kemarin sore.','TBBI 9.2.2'],
+   ['Klausa subordinatif (anak kalimat) tidak boleh berdiri sendiri; ia harus bergabung dengan klausa utama.','Acara ditunda karena hujan deras. · Karena hujan deras, acara ditunda.','Kalimat yang diawali karena, jika, agar, meskipun, atau ketika tanpa klausa utama adalah kalimat tidak lengkap. Soal PPU 2026 menyebutnya kalimat tidak logis.','Acara ditunda. Karena hujan deras. → Acara ditunda karena hujan deras. · Karena galur unggul dapat dipatenkan sehingga penggunaannya dilindungi undang-undang. → Galur unggul dapat dipatenkan sehingga penggunaannya dilindungi undang-undang.','TBBI 9.5.1.2'],
+   ['Subjek tidak didahului preposisi (dalam, bagi, untuk, kepada, di, pada, dari). Preposisi mengubah subjek menjadi keterangan sehingga kalimat kehilangan subjek.','Rapat itu membahas anggaran. · Dalam rapat itu, peserta membahas anggaran. · Siswa diwajibkan memakai seragam.','Perbaikannya: hapus preposisinya, atau tambahkan subjek baru sesudah keterangan itu.','Dalam rapat itu membahas anggaran. → Rapat itu membahas anggaran. · Bagi siswa diwajibkan memakai seragam. → Siswa diwajibkan memakai seragam.','TBBI 9.3.2.2'],
+   ['Menurut … tidak digabung dengan verba pelapor (mengatakan, menyampaikan, menyatakan) untuk pelaku yang sama.','Menurut ketua, rapat ditunda. · Ketua menyampaikan bahwa rapat ditunda.','Menurut X menjadikan X keterangan, sedangkan menyampaikan menuntut X sebagai subjek. Pakai salah satu saja.','Menurut ketua menyampaikan bahwa rapat ditunda. → Ketua menyampaikan bahwa rapat ditunda.','UTBK PBM 2026'],
+   ['Dua subjek tidak menumpuk dalam satu klausa, dan pelaku pronomina pada kalimat pasif diletakkan langsung di depan verba.','Pemandu itu sangat ramah. · Tugas itu sudah kami selesaikan.','','Pemandu itu ia sangat ramah. → Pemandu itu sangat ramah. · Tugas itu kami sudah selesaikan. → Tugas itu sudah kami selesaikan.','TBBI 9.5.2.1.3'],
+   ['Kata yang tidak diletakkan tepat di depan predikat; yang mengubah predikat menjadi pewatas subjek sehingga kalimat kehilangan predikat.','Siswa itu lulus tahun ini. · Siswa yang lulus tahun ini mendapat beasiswa.','Jika ada yang, pastikan masih ada predikat sesudah bagian yang itu.','Siswa yang lulus tahun ini. → Siswa itu lulus tahun ini.','TBBI 7.1.5.4.5'],
+   ['Ketegasan: bagian yang dipentingkan dapat ditonjolkan dengan diletakkan di awal kalimat atau diberi partikel -lah, tanpa merusak struktur.','Dialah yang menulis laporan itu. · Kemarin Dita membeli mangga. (menekankan waktu)','TBBI mencatat bahwa keterangan di awal kalimat menambah informasi, misalnya peristiwa itu terjadi kemarin, bukan hari lain.','','TBBI 9.3.2.1; 9.4.1.1']
+   ],
+   jebakan:['Kalimat panjang yang diawali Dalam, Bagi, atau Menurut sering kehilangan subjek.','Kalimat yang diawali Karena tanpa klausa utama adalah kalimat tidak lengkap.','Menurut … menyampaikan: hapus salah satu.','Opsi perbaikan yang membuang preposisi tetapi mengubah makna juga salah.']},
+ {sub:'Kalimat efektif: kehematan dan kecermatan', ref:'Kalimat efektif', src:'',
+   def:'Kehematan berarti kalimat tidak memakai kata yang tidak perlu: tidak mengulang subjek, tidak memakai kata yang maknanya sudah terkandung dalam kata lain (pleonasme), dan tidak menjamakkan dua kali. Kecermatan berarti pilihan dan susunan kata tepat sehingga tidak menimbulkan tafsiran ganda.',
+   guna:'Uji kehematan: hapus satu kata. Jika makna tidak berubah dan kalimat tetap gramatikal, kata itu mubazir. Kerangka acuan PBM 2026 menyebut "penentuan kata yang mubazir" dan "penentuan kalimat ringkas" secara eksplisit.',
+   ruj:'Kerangka acuan UTBK 2026; TBBI edisi IV (4.1.2.6 preposisi tetap, 7.4 konsep jamak, 9.3.2.3 objek, 10.3 pelesapan); Chaer & Muliastuti, Semantik Bahasa Indonesia Modul 1 (makna kolokatif); contoh soal PBM 2026 (KatKiel Project).',
+   aturan:[
+   ['Subjek yang sama tidak diulang pada klausa kedua.','Ia langsung pulang setelah menerima kabar itu.','Subjek klausa kedua yang sama dengan klausa pertama lazim dilesapkan.','Ia langsung pulang setelah ia menerima kabar itu. → Ia langsung pulang setelah menerima kabar itu.','TBBI 10.3'],
+   ['Hindari kata bermakna sama yang berderet (pleonasme).','agar · adalah · sejak · demi · naik · mundur · sangat indah','','agar supaya → agar · adalah merupakan → adalah · sejak dari → sejak · demi untuk → demi · naik ke atas → naik · mundur ke belakang → mundur · sangat indah sekali → sangat indah',''],
+   ['Hindari jamak ganda: penanda jamak (para, banyak, semua, beberapa, bilangan) tidak digabung dengan bentuk ulang yang juga menyatakan jamak.','para siswa · banyak rumah · rumah-rumah · semua guru · dua ekor kucing','Bentuk ulang dan kata seperti para sudah menyatakan jamak.','para siswa-siswa → para siswa · banyak rumah-rumah → banyak rumah · semua guru-guru → semua guru','TBBI 7.4'],
+   ['Verba transitif langsung diikuti objek, tanpa preposisi.','membahas masalah · mendiskusikan rencana · menyasar pelajar · mempelajari bahasa','Objek berada langsung sesudah predikat verba transitif.','membahas tentang masalah → membahas masalah · mendiskusikan mengenai rencana → mendiskusikan rencana · menyasar kepada pelajar → menyasar pelajar','TBBI 9.3.2.3'],
+   ['Pakai preposisi tetap yang benar dan jangan menumpuk dua penanda untuk satu hubungan.','disebabkan oleh · bergantung pada · sesuai dengan · berbeda dengan · sehubungan dengan','','disebabkan karena hujan → disebabkan oleh hujan · tergantung dari cuaca → bergantung pada cuaca','TBBI 4.1.2.6'],
+   ['Kalimat ringkas: pilih bentuk yang paling pendek dengan makna yang tetap sama.','memperbaiki jalan · meneliti dampak banjir · mengevaluasi program','Kalimat paling ringkas tidak boleh membuang informasi penting dari kalimat asal.','melakukan perbaikan terhadap jalan → memperbaiki jalan · mengadakan penelitian mengenai dampak banjir → meneliti dampak banjir','Kerangka acuan 2026'],
+   ['Kecermatan: hindari susunan yang dapat ditafsirkan ganda.','kolonel yang istrinya nakal (jelas: yang nakal istrinya)','Ambiguitas muncul jika pewatas dapat merujuk ke dua kata.','istri kolonel yang nakal (siapa yang nakal?) → kolonel yang istrinya nakal',''],
+   ['Kecermatan memilih kata: kata harus cocok makna dan pasangannya (kolokasinya) dengan konteks.','gadis cantik · pemuda tampan · pemandangan indah','Chaer menyebutnya makna kolokatif: cantik lazim untuk perempuan, tampan untuk laki-laki, indah untuk alam atau pemandangan.','pemuda yang cantik → pemuda yang tampan','Chaer M1 KB3']
+   ],
+   jebakan:['Kata mubazir yang paling sering diuji: adalah merupakan, agar supaya, sejak dari, para + bentuk ulang, membahas tentang.','Kalimat paling ringkas tetap harus mempertahankan semua informasi.','Opsi "dihilangkan" pada soal perbaikan kata hanya benar jika maknanya tidak berubah.']},
+ {sub:'Kalimat efektif: keparalelan dan kelogisan', ref:'Kalimat efektif', src:'',
+   def:'Keparalelan berarti unsur-unsur yang setara dalam satu kalimat, terutama dalam perincian, memakai bentuk yang sama. Kelogisan berarti makna kalimat dapat diterima nalar dan unsur-unsurnya serasi maknanya.',
+   guna:'Pada soal perincian, cek bentuk setiap unsur: semuanya nomina (peng-…-an), semuanya verba aktif (meng-), atau semuanya pasif (di-). Pada soal kelogisan, cek apakah pelaku, sasaran, dan hubungan sebab-akibatnya masuk akal.',
+   ruj:'TBBI edisi IV (8.2.2.2 korelatif, 9.2.3.1 keserasian makna, 9.2.3.2 keserasian bentuk, 10.2.3 hubungan antarklausa); Chaer & Muliastuti, Semantik Bahasa Indonesia Modul 1 (komponen makna); contoh soal PPU 2026 (KatKiel Project; Tambahan UTBK PPU 2026).',
+   aturan:[
+   ['Unsur sejajar dalam perincian berbentuk sama: sama-sama nomina, sama-sama verba aktif, atau sama-sama pasif.','memproduksi pupuk, mengolah minyak dan gas, dan memproduksi bahan petrokimia · mengikuti kursus daring, mengakses materi, dan melakukan konsultasi dengan guru','Soal PPU 2026 menanyakan perbaikan frasa perincian seperti ini: pilih opsi yang semua unsurnya berbentuk meng-.','memproduksi pupuk, pengolahan minyak dan gas, dan produksi bahan petrokimia → memproduksi pupuk, mengolah minyak dan gas, dan memproduksi bahan petrokimia · mengikuti kursus daring, mengakses materi, dan konsultasi dengan guru dapat dilakukan → mengikuti kursus daring, mengakses materi, dan melakukan konsultasi dengan guru','UTBK PPU 2026'],
+   ['Keparalelan juga berlaku pada pasangan dua unsur dan pada konjungsi korelatif.','baik membaca maupun menulis · tidak hanya cepat, tetapi juga akurat','','baik membaca maupun penulisan → baik membaca maupun menulis','TBBI 8.2.2.2'],
+   ['Keserasian makna: pelaku dan sasaran harus cocok dengan verbanya.','Kambing itu memakan rumput. · Nenek membaca koran. · Biaya membangun gedung bertingkat mahal sekali.','Verba membaca menuntut pelaku manusia, sehingga Kucing membaca koran janggal. Mahal cocok untuk biaya, bukan untuk waktu.','Waktu membangun gedung bertingkat mahal sekali. → Biaya membangun gedung bertingkat mahal sekali.','TBBI 9.2.3.1'],
+   ['Keserasian bentuk: kata ganti harus sesuai jumlah yang digantikannya.','Pelamar banyak, tetapi mereka tidak memenuhi syarat. · Murid-murid itu menyelesaikan tugas mereka masing-masing.','','Pelamar banyak, tetapi dia tidak memenuhi syarat. → Pelamar banyak, tetapi mereka tidak memenuhi syarat.','TBBI 9.2.3.2'],
+   ['Hubungan antarklausa harus logis: konjungsinya sesuai dengan hubungan sebab, hasil, pertentangan, atau urutan.','Jalan licin sehingga banyak kendaraan tergelincir.','','Jalan licin karena banyak kendaraan tergelincir. → Jalan licin sehingga banyak kendaraan tergelincir.','TBBI 10.2.3'],
+   ['Ungkapan yang secara harfiah tidak masuk akal sebaiknya diganti.','Untuk menghemat waktu, … · Bapak kami persilakan.','Waktu tidak dapat dipersingkat, dan yang dipersilakan adalah orang, bukan waktu dan tempat.','Untuk mempersingkat waktu, … → Untuk menghemat waktu, … · Waktu dan tempat kami persilakan. → Bapak kami persilakan.',''],
+   ['Di soal PPU, "kalimat tidak logis" juga mencakup kalimat yang strukturnya tidak utuh, bukan hanya yang maknanya mustahil.','Salah satunya adalah memperkenalkan robot pintar di kelas.','Contoh soal PPU 2026: kalimat yang strukturnya rusak atau diawali Karena tanpa klausa utama dianggap tidak logis.','Salah satunya bagi yang memperkenalkan robot pintar di kelas. → Salah satunya adalah memperkenalkan robot pintar di kelas.','UTBK PPU 2026']
+   ],
+   jebakan:['Pada perincian, satu unsur yang bentuknya berbeda (peng-…-an di antara meng-) adalah sumber kesalahannya.','"Tidak logis" di soal PPU juga mencakup kalimat tidak lengkap.','Sebab dan akibat yang tertukar (karena vs sehingga) membuat kalimat tidak logis.']},
+ {sub:'Konjungsi', ref:'Kata tugas', src:'TBBI',
+   def:'Konjungsi (kata hubung) adalah kata tugas yang menghubungkan dua satuan bahasa, baik yang setara maupun yang tidak setara: kata dengan kata, frasa dengan frasa, klausa dengan klausa, atau kalimat dengan kalimat.',
+   guna:'Tentukan dulu hubungan makna kedua bagian yang dihubungkan (penambahan, pertentangan, sebab, hasil, syarat, tujuan, konsesif, waktu), baru pilih konjungsinya. TBBI membagi konjungsi menjadi empat kelompok: koordinatif, korelatif, subordinatif, dan antarkalimat.',
+   aturan:[
+   ['Konjungsi koordinatif menghubungkan unsur yang setara: dan, serta (penambahan), atau (pemilihan), tetapi, melainkan, padahal, sedangkan (perlawanan atau pertentangan).','Toni dan Ali sedang belajar. · Kamu mau ikut atau tinggal? · Anak itu pandai, tetapi malas. · Dia pura-pura tidak tahu, padahal tahu banyak. · Ibu memasak, sedangkan ayah membaca koran.','tetapi hanya menghubungkan dua unsur, sedangkan dan dan atau dapat lebih. melainkan dipakai sesudah bentuk ingkar bukan atau tidak.','Ini bukan milik saya, tetapi milik ayah saya. → Ini bukan milik saya, melainkan milik ayah saya.','8.2.2.1'],
+   ['Dan dalam kalimat majemuk dapat bermakna ‘tambahan’, ‘akibat’, ‘urutan waktu’, atau ‘komentar’.','Dia berbaju putih dan memakai dasi. (tambahan) · Saya melihat anak itu menangis dan langsung memanggil ibunya. (akibat) · Dia memarkir mobil dan berjalan ke kantor. (urutan)','Pada makna akibat dan urutan waktu, kedua klausa tidak dapat dipertukarkan.','','8.2.2.1'],
+   ['Atau dapat menyatakan pilihan eksklusif (salah satu saja) atau inklusif (salah satu atau keduanya); untuk makna inklusif dalam ragam formal dipakai dan/atau.','Anda pilih merah atau biru? (eksklusif) · Orang itu akan mendengar dan/atau melihat apa yang dikomunikasikan. (inklusif)','dan/atau tidak dipakai untuk pilihan eksklusif.','Anaknya laki-laki dan/atau perempuan? → Anaknya laki-laki atau perempuan?','8.2.2.1'],
+   ['Konjungsi korelatif berpasangan dan harus dipakai lengkap dengan pasangan yang tepat.','baik … maupun … · tidak hanya … tetapi juga … · bukan hanya … melainkan juga … · demikian … sehingga … · entah … entah … · jangankan …, … pun','','baik guru dan murid → baik guru maupun murid · tidak hanya pandai, namun juga rajin → tidak hanya pandai, tetapi juga rajin','8.2.2.2'],
+   ['Konjungsi subordinatif waktu, syarat, dan pengandaian.','sejak, ketika, selama, sambil, setelah, sebelum, hingga (waktu) · jika, kalau, apabila, asalkan (syarat) · seandainya, andaikan, sekiranya (pengandaian)','','','8.2.2.3'],
+   ['Konjungsi subordinatif tujuan, konsesif, dan pembandingan.','agar, supaya, biar (tujuan) · meskipun, walaupun, biarpun, kendatipun, sekalipun (konsesif) · seperti, seolah-olah, seakan-akan, ibarat, daripada (pembandingan)','Konsesif menyatakan bahwa klausa utama tetap terjadi walaupun ada keadaan yang berlawanan dengannya: Pembangunan tetap berjalan meskipun dana menipis.','','8.2.2.3'],
+   ['Konjungsi subordinatif sebab, hasil, alat atau cara, komplementasi, dan atributif.','karena, sebab, oleh karena (sebab) · sehingga, maka(nya), sampai-sampai (hasil) · dengan, tanpa (alat/cara) · bahwa (komplementasi) · yang (atributif)','karena menandai sebab, sedangkan sehingga menandai hasil. Jika keduanya ditukar, logika kalimat terbalik.','Jalan tergenang karena kendaraan tertahan. → Jalan tergenang sehingga kendaraan tertahan.','8.2.2.3'],
+   ['Bentuk yang sama dapat menjadi preposisi (jika diikuti kata atau frasa) atau konjungsi (jika diikuti klausa).','karena masalah keuangan (preposisi) · karena uangnya habis (konjungsi) · sebelum pukul lima (preposisi) · sebelum saya datang (konjungsi)','','','8.2.2; 8.2.2.3'],
+   ['Konjungsi antarkalimat menghubungkan kalimat dengan kalimat sebelumnya; selalu berada di awal kalimat baru, berhuruf awal kapital, dan diikuti koma.','Meskipun demikian, (pertentangan) · Kemudian, Setelah itu, (kelanjutan) · Selain itu, Lagi pula, (tambahan) · Sebaliknya, (kebalikan) · Bahkan, (penguatan) · Namun, Akan tetapi, (pertentangan) · Dengan demikian, (konsekuensi) · Oleh karena itu, (akibat)','sehingga, sedangkan, dan karena adalah konjungsi intrakalimat, jadi tidak dipakai untuk membuka kalimat baru.','Ia belajar keras. Sehingga ia lulus. → Ia belajar keras sehingga ia lulus. · Ia belajar keras. Sehingga ia lulus. → Ia belajar keras. Oleh karena itu, ia lulus.','8.2.2.4'],
+   ['Penghubung di awal paragraf baru merujuk isi paragraf sebelumnya. TBBI menggolongkannya sebagai konjungsi antarkalimat; soal UTBK kerap menyebutnya konjungsi antarparagraf.','Adapun … · Di samping itu, … · Sehubungan dengan itu, … · Oleh karena itu, …','','','8.2.2.4']
+   ],
+   jebakan:['Tentukan relasinya dulu: sebab (karena) berbeda dari hasil (sehingga); pertentangan (tetapi, padahal) berbeda dari konsesif (meskipun).','Jangan memakai dua konjungsi untuk satu hubungan: Meskipun hujan, tetapi ia datang → Meskipun hujan, ia datang.','Korelatif harus berpasangan tepat: baik … maupun, bukan … melainkan.','sehingga, sedangkan, dan karena tidak membuka kalimat baru.','padahal menyatakan kenyataan yang bertentangan dengan pernyataan sebelumnya; sedangkan membandingkan dua hal yang berbeda.']},
+ {sub:'Relasi makna', ref:'Semantik', src:'',
+   def:'Relasi makna adalah hubungan makna antara satu kata atau satuan bahasa dengan kata atau satuan bahasa lain, misalnya kesamaan (sinonim), kebalikan (antonim), ketercakupan (hiponim), dan kegandaan makna (polisemi, homonim).',
+   guna:'Soal PPU menguji relasi ini dalam konteks bacaan: "paling dekat maknanya", "berlawanan", "lebih luas atau lebih sempit", dan "variasi kata". Kuncinya selalu makna kata itu di kalimatnya, bukan makna pertama di kamus.',
+   ruj:'Chaer & Muliastuti, Semantik Bahasa Indonesia, Modul 1 (Universitas Terbuka); TBBI edisi IV; contoh soal PPU 2026 (KatKiel Project; Tambahan UTBK PPU 2026). Modul relasi makna Chaer yang lebih rinci tidak terbuka untuk umum, jadi definisi istilah diringkas dari kaidah semantik yang umum dipakai.',
+   aturan:[
+   ['Sinonim: kata yang maknanya sama atau mirip. Sinonim jarang sama persis karena komponen maknanya bisa berbeda, sehingga tidak selalu dapat saling menggantikan.','kesulitan – kesusahan · mengusik – mengganggu · rumah, hotel, istana (sama-sama bangunan tempat tinggal)','Chaer membedakan sinonim dengan analisis komponen makna: rumah [+ tempat tinggal tetap], hotel [– tempat tinggal tetap], istana [+ kepala negara]. Bapak dapat dipakai menyapa orang yang dihormati, sedangkan ayah tidak.','Kami mohon kesediaan Ayah Lurah … → Kami mohon kesediaan Bapak Lurah …','Chaer M1 KB2'],
+   ['Antonim: kata yang maknanya berlawanan, antara lain mutlak (hidup – mati), bertingkat (panas – dingin, ada tingkat di antaranya), dan relasional (membeli – menjual, guru – murid).','kompleks – sederhana · besar – kecil · hidup – mati','Cari lawan makna sesuai konteks: kompleks dalam "wadah yang besar dan kompleks" berarti rumit, jadi lawannya sederhana, bukan kuno.','','UTBK PPU 2026'],
+   ['Hiponim dan hipernim: hiponim bermakna lebih sempit dan tercakup dalam hipernim yang bermakna lebih luas. Sesama hiponim disebut kohiponim.','komputer → teknologi · sekolah → lembaga · mawar → bunga · mawar dan melati (kohiponim)','Soal "makna lebih luas" mencari hipernim; soal "makna lebih sempit" mencari hiponim. Pengecohnya kata yang hanya berkaitan (sekolah – siswa), bukan yang mencakup.','','UTBK PPU 2026'],
+   ['Polisemi: satu kata dengan beberapa makna yang masih berhubungan.','kepala (bagian tubuh; pemimpin: kepala sekolah) · memetik (bunga; manfaat)','Soal sinonim kontekstual sering memakai kata polisemi; pengecohnya sinonim dari makna lain kata itu.','','Chaer M1 KB3'],
+   ['Homonim: bentuk sama, makna tidak berhubungan. Homofon: bunyi sama, tulisan berbeda. Homograf: tulisan sama, lafal berbeda.','bisa ‘racun’ – bisa ‘dapat’ · bank – bang · apel ‘buah’ – apel ‘upacara’','TBBI juga memakai istilah homonimi untuk imbuhan yang bentuknya sama tetapi fungsinya berbeda, misalnya per- pembentuk verba dan per- pembentuk nomina.','','TBBI 4.2.2.4'],
+   ['Variasi kata: kata atau frasa lain yang dapat menggantikan kata di teks tanpa mengubah maknanya dalam konteks itu.','mengusik → mengganggu · dipatahkan (pendapat) → dibantah','Variasi kata harus dapat langsung menggantikan di kalimat itu; terjemahan harfiah atau kata yang hanya berkaitan bukan jawabannya.','','UTBK PBM/PPU 2026'],
+   ['Asosiasi: kata yang sering dikaitkan dengan kata lain karena hubungan di luar bahasa, seperti lambang, sifat, atau kebiasaan.','melati – kesucian · merah – keberanian · kerbau – kebodohan','','','Chaer M1 KB3'],
+   ['Ambiguitas: frasa atau kalimat yang dapat ditafsirkan lebih dari satu.','anak dosen yang nakal (anaknya atau dosennya?) · buku sejarah baru','Dalam tulisan, ambiguitas dapat dihindari dengan tanda hubung (buku-sejarah baru) atau dengan mengubah susunan.','','EYD V II.B.3b']
+   ],
+   jebakan:['Sinonim kontekstual: pengecoh utamanya sinonim kata itu dalam makna lain.','Hipernim harus mencakup, bukan sekadar berkaitan: sekolah termasuk lembaga, tetapi siswa bukan jenis sekolah.','Antonim dicari dari makna kata di kalimat itu.']},
+ {sub:'Jenis dan perubahan makna', ref:'Semantik', src:'',
+   def:'Ragam makna dibedakan menurut sudut pandangnya: leksikal x gramatikal, denotatif x konotatif, konseptual x asosiatif, kata x istilah, dan lugas x kias (Chaer & Muliastuti). Perubahan makna adalah bergesernya makna kata dari waktu ke waktu.',
+   guna:'Untuk soal PPU "makna sebenarnya" atau "makna lain dari yang tertulis", gunakan pasangan lugas x kias: apakah kata itu dipakai menurut makna asalnya, atau diumpamakan.',
+   ruj:'Chaer & Muliastuti, Semantik Bahasa Indonesia, Modul 1 Kegiatan Belajar 3 "Ragam Makna" (Universitas Terbuka). Bagian perubahan makna diringkas dari kaidah semantik yang umum dipakai karena modul lanjutannya tidak terbuka untuk umum.',
+   aturan:[
+   ['Makna leksikal: makna kata sesuai referennya, jelas tanpa konteks. Makna gramatikal: makna yang muncul dari proses afiksasi, reduplikasi, atau komposisi.','kepala ‘bagian tubuh’ (leksikal) · terangkat ‘dapat diangkat’ atau ‘tidak sengaja’ (gramatikal) · lebar-lebar ‘selebar mungkin’ (gramatikal) · sate kambing ‘bahannya’ vs sate Madura ‘asalnya’','Chaer mengingatkan bahwa menyebut makna leksikal sebagai "makna kamus" tidak sepenuhnya tepat, karena kamus juga memuat makna lain.','','Chaer M1 KB3'],
+   ['Makna denotatif adalah makna sebenarnya. Makna konotatif adalah nilai rasa (positif, negatif, atau netral) yang menyertai kata.','kurus (netral) · langsing (positif) · kerempeng (negatif) · rombongan (netral) vs gerombolan (negatif)','Chaer menegaskan bahwa menyamakan konotasi dengan makna kias adalah kekeliruan. Konotasi dapat berbeda menurut daerah, waktu, dan kelompok sosial.','','Chaer M1 KB3'],
+   ['Makna lugas adalah makna sebenarnya; makna kias adalah makna yang diumpamakan dengan hal lain.','berenang di sungai (lugas) · berenang dalam kekayaan (kias) · memetik mawar (lugas) · memetik manfaat (kias)','Soal PPU "kata yang bermakna sebenarnya": pilih kata yang dipakai menurut makna asalnya (memberikan dukungan, belajar), bukan yang diumpamakan (menguras waktu, memicu minat).','','Chaer M1 KB3'],
+   ['Makna konseptual sama dengan makna denotatif. Makna asosiatif adalah makna yang muncul karena hubungan kata dengan hal di luar bahasa, termasuk makna kolokatif.','melati ‘kesucian’ · kerbau ‘kebodohan’ · cantik (untuk perempuan), tampan (untuk laki-laki), indah (untuk pemandangan)','','','Chaer M1 KB3'],
+   ['Makna kata bersifat umum dan bergantung pada konteks; makna istilah pasti dan khusus di bidangnya.','tangan dan lengan bersinonim dalam bahasa umum, tetapi berbeda dalam kedokteran · istilah umum: imunisasi, deposito · istilah khusus: morfem, klorofil','Istilah juga menjelaskan mengapa gabungan seperti benda asing (istilah medis) termasuk pasangan tetap.','','Chaer M1 KB3'],
+   ['Perubahan makna: meluas (cakupannya bertambah) dan menyempit (cakupannya berkurang).','saudara, bapak (meluas: kini juga untuk orang yang bukan kerabat) · sarjana, pendeta (menyempit)','','',''],
+   ['Perubahan nilai rasa: ameliorasi (menjadi lebih halus atau positif) dan peyorasi (menjadi lebih kasar atau negatif). Pertukaran tanggapan indra disebut sinestesia.','kata-katanya pedas · suaranya manis (sinestesia)','Chaer mencatat contoh pergeseran konotasi dari waktu ke waktu: ceramah dulu berkonotasi negatif, sekarang positif.','','Chaer M1 KB3']
+   ],
+   jebakan:['Konotasi adalah nilai rasa, bukan makna kias (Chaer).','"Makna lain dari yang tertulis" berarti makna kias: manisan lahir pada 1950-an berarti mulai muncul.','Kata kerja yang biasanya untuk manusia lalu dipakai untuk benda atau hal (lahir, menguras, memicu) biasanya bermakna kias.']},
+ {sub:'Hubungan kata (analogi)', ref:'Semantik', src:'',
+   def:'Soal hubungan kata (analogi) meminta pasangan kata yang hubungan maknanya sama dengan pasangan di soal. Yang dibandingkan adalah jenis dan arah hubungannya, bukan topiknya.',
+   guna:'Langkah: (1) rumuskan hubungan pasangan soal dalam satu kalimat yang spesifik; (2) uji kalimat itu ke setiap opsi; (3) jika lebih dari satu opsi cocok, buat kalimatnya lebih spesifik.',
+   ruj:'Contoh soal PPU 2026 (KatKiel Project; Tambahan UTBK PPU 2026). Strateginya dirangkum dari pola soal karena topik ini tidak dibahas sebagai bab tersendiri dalam TBBI.',
+   aturan:[
+   ['Rumuskan hubungan dalam kalimat yang spesifik, lalu uji ke setiap opsi.','pembelajaran : teknologi = penerangan : lampu ("proses X memanfaatkan alat Y")','Kalimat yang terlalu umum ("X berhubungan dengan Y") membuat semua opsi tampak benar.','','UTBK PPU 2026'],
+   ['Jenis hubungan yang sering muncul: sebab–akibat, proses–alat, bagian–keseluruhan, jenis–golongan, bahan–hasil, pelaku–alat, pelaku–hasil, tempat, fungsi, sinonim, dan antonim.','dehidrasi : stres (sebab–akibat) · jari : tangan (bagian–keseluruhan) · mawar : bunga (jenis–golongan) · benang : kain (bahan–hasil) · penjahit : jarum (pelaku–alat)','','',''],
+   ['Arah dan urutan hubungan harus sama.','kayu : meja = benang : kain (bahan → hasil)','Membalik urutan berarti membalik hubungannya.','kayu : meja = kain : benang → kayu : meja = benang : kain',''],
+   ['Muatan hubungan juga dibandingkan: positif atau negatif, pasti atau mungkin.','dehidrasi : stres (kondisi buruk memicu efek buruk) · tidur : segar (kondisi baik memicu efek baik)','Pembahas KatKiel menandai soal ini "ragu"; pastikan polanya konsisten di semua opsi sebelum memilih.','','UTBK PPU 2026'],
+   ['Kata yang hanya satu topik dengan pasangan soal bukan jawaban.','gunting : penjahit (alat kerja) ≠ kain : penjahit (bahan kerja)','','','']
+   ],
+   jebakan:['Pengecoh paling umum: opsi yang topiknya mirip, tetapi jenis hubungannya berbeda.','Perhatikan arah: sebab → akibat tidak sama dengan akibat → sebab.']},
+ {sub:'Ungkapan, idiom, dan pasangan tetap', ref:'Semantik', src:'',
+   def:'Idiom adalah satuan bahasa (kata, frasa, atau kalimat) yang maknanya tidak dapat ditebak dari makna unsur-unsurnya. Pasangan tetap adalah gabungan kata yang lazim muncul bersama atau membentuk istilah, sehingga unsurnya tidak dapat diganti sembarangan.',
+   guna:'Uji pasangan tetap: ganti salah satu unsurnya dengan sinonim. Jika gabungannya menjadi janggal atau maknanya berubah (benda asing → benda aneh), itu pasangan tetap.',
+   ruj:'TBBI edisi IV (4.1.2.6 preposisi tetap, 9.3.2.4 gabungan padu); Chaer & Muliastuti, Semantik Bahasa Indonesia Modul 1 (makna kolokatif, makna istilah); contoh soal PPU 2026 (KatKiel Project; Tambahan UTBK PPU 2026).',
+   aturan:[
+   ['Idiom: maknanya tidak dapat ditebak dari unsur-unsurnya.','membanting tulang ‘bekerja keras’ · buah bibir ‘bahan pembicaraan’ · panjang tangan ‘suka mencuri’ · besar kepala ‘sombong’ · akar rumput ‘rakyat kecil’','','',''],
+   ['Gabungan verba atau adjektiva dengan nomina yang sudah padu berfungsi sebagai satu kesatuan.','naik haji · turun tangan · lupa daratan · keras kepala · meninggal dunia','','','TBBI 9.3.2.4'],
+   ['Pasangan tetap di soal PPU: gabungan kata yang membentuk istilah atau konsep khusus, sehingga unsurnya tidak dapat diganti sinonim.','ramah anak · benda asing (istilah medis) · rumah sakit · meja hijau ‘pengadilan’','Bandingkan dengan frasa bebas yang unsurnya dapat diganti: kesempatan bermain → peluang bermain; aspek kehidupan → segi kehidupan.','','UTBK PPU 2026'],
+   ['Preposisi tetap: verba atau adjektiva tertentu selalu berpasangan dengan preposisi tertentu.','sesuai dengan · bergantung pada · berbeda dengan · sehubungan dengan · disebabkan oleh','','sesuai untuk aturan → sesuai dengan aturan · tergantung dari cuaca → bergantung pada cuaca','TBBI 4.1.2.6'],
+   ['Peribahasa: kelompok kata atau kalimat yang susunannya tetap dan berisi perbandingan, nasihat, atau prinsip hidup.','bagai air di daun talas ‘tidak berpendirian’ · lain lubuk lain ikannya ‘lain tempat lain adatnya’','','',''],
+   ['Makna kolokatif: kata tertentu lazim muncul bersama kata tertentu.','gadis cantik · pemuda tampan · pemandangan indah · arus deras · lalu lintas lancar','','pemuda yang cantik → pemuda yang tampan','Chaer M1 KB3']
+   ],
+   jebakan:['Uji ganti sinonim: jika gabungannya rusak, itu pasangan tetap.','Frasa dengan adjektiva biasa (harus relevan) atau keterangan (secara sadar) bukan pasangan tetap.']},
+ {sub:'Majas', ref:'Stilistika', src:'',
+   def:'Majas (gaya bahasa) adalah cara khas mengungkapkan pikiran melalui bahasa. Gorys Keraf membagi gaya bahasa berdasarkan langsung tidaknya makna menjadi gaya bahasa retoris (penyimpangan dari konstruksi biasa untuk efek tertentu) dan gaya bahasa kiasan (penyimpangan yang lebih jauh, terutama pada makna).',
+   guna:'Di PPU, majas muncul sebagai soal "perumpamaan", "makna kias", atau "makna lain dari yang tertulis". Cari kata yang dipakai di luar makna lugasnya, atau kata pembanding seperti seperti, bagai, dan laksana.',
+   ruj:'Gorys Keraf, Diksi dan Gaya Bahasa (pembagiannya dikutip dari penelitian-penelitian yang merujuk Keraf, karena buku aslinya tidak terbuka untuk umum); contoh soal PPU 2026 (KatKiel Project; Tambahan UTBK PPU 2026).',
+   aturan:[
+   ['Simile (persamaan): membandingkan dua hal yang berbeda jenis secara eksplisit dengan kata pembanding seperti, bagai, laksana, bak, atau ibarat.','Tubuh manusia seperti wadah penampung air yang besar dan kompleks. · Wajahnya bagai bulan purnama.','Soal "perumpamaan" di PPU 2026 mencari pola X seperti Y yang membandingkan dua hal berbeda jenis.','','Keraf (kiasan)'],
+   ['Metafora: perbandingan langsung tanpa kata pembanding.','Buku adalah jendela dunia. · Dia menjadi kambing hitam dalam masalah itu.','','','Keraf (kiasan)'],
+   ['Personifikasi: benda mati atau hal abstrak digambarkan seolah-olah bersifat atau berbuat seperti manusia.','Angin berbisik di telingaku. · Manisan Cianjur lahir pada 1950-an.','','','Keraf (kiasan)'],
+   ['Metonimia: menyebut sesuatu dengan nama yang erat kaitannya, misalnya merek atau tempat. Sinekdoke: sebagian untuk keseluruhan (pars pro toto) atau keseluruhan untuk sebagian (totum pro parte).','Ia gemar membaca Chairil Anwar. (metonimia: nama penyair untuk karyanya) · Sudah lama tak tampak batang hidungnya. (pars pro toto) · Indonesia menang 2-1. (totum pro parte)','','','Keraf (kiasan)'],
+   ['Ironi, sinisme, dan sarkasme: sindiran dari yang paling halus sampai yang paling kasar.','Rapi sekali kamarmu, seperti kapal pecah. (ironi)','','','Keraf (kiasan)'],
+   ['Hiperbola, litotes, eufemisme, dan pertanyaan retoris (erotesis) termasuk gaya bahasa retoris menurut Keraf.','Tangisnya membanjiri halaman. (hiperbola) · Mampirlah ke gubuk kami. (litotes) · tunawisma, berpulang (eufemisme) · Siapa yang tidak ingin bahagia? (retoris)','','','Keraf (retoris)'],
+   ['Gaya bahasa berdasarkan struktur kalimat: klimaks, antiklimaks, paralelisme, antitesis, dan repetisi.','Anak-anak, remaja, hingga orang tua hadir. (klimaks) · Ia kaya, tetapi kikir. (antitesis)','','','Keraf (struktur kalimat)'],
+   ['Dalam teks nonfiksi, ungkapan kias sehari-hari juga dihitung sebagai kiasan di soal PPU.','menguras waktu · memicu minat · banjir informasi · lahir ‘mulai muncul’','','','UTBK PPU 2026']
+   ],
+   jebakan:['Seperti untuk memberi contoh (negara seperti Jerman dan Jepang) bukan perumpamaan; fungsinya memberikan rincian.','Perumpamaan membandingkan dua hal yang berbeda jenis (tubuh seperti wadah).','Kata dengan makna lugas (memberikan dukungan, belajar) bukan kiasan.']},
+ {sub:'Paragraf dan ungkapan kembali', ref:'Wacana', src:'',
+   def:'Paragraf adalah satuan tulisan yang mengembangkan satu gagasan utama. Ungkapan kembali (parafrase) adalah penulisan ulang gagasan dengan kata-kata lain tanpa mengubah isinya.',
+   guna:'Untuk ungkapan kembali, periksa tiga hal: isi pernyataannya, peran pelaku dan sasaran, serta kadar kepastiannya (dapat, akan, pasti, biasanya). TBBI menjelaskan bahwa kata seperti saja dan tetapi menambah makna tersirat, jadi opsi yang menambahkannya mengubah makna.',
+   ruj:'TBBI edisi IV (2.3.1.2 perikutan, 2.3.2.2 implikatur konvensional, 8.2.2.4 konjungsi antarkalimat); kerangka acuan UTBK 2026; contoh soal PPU dan PBM 2026 (KatKiel Project; Tambahan UTBK PPU 2026).',
+   aturan:[
+   ['Gagasan utama terdapat dalam kalimat utama, biasanya di awal (deduktif), di akhir (induktif), atau di keduanya.','Kalimat utama memuat topik dan pendapat penulis tentang topik itu.','','',''],
+   ['Kepaduan paragraf dibangun oleh kata rujukan (itu, tersebut, -nya), konjungsi antarkalimat, dan pengulangan kata kunci.','Hal tersebut … · Akibatnya, … · Selain itu, …','','','TBBI 8.2.2.4'],
+   ['Pembagian paragraf: kelompokkan kalimat menurut topiknya; paragraf baru dimulai ketika fokusnya berpindah.','Kalimat (1)–(5) tentang ikan lampam; kalimat (6)–(9) tentang lubuk larangan.','','','UTBK PPU 2026'],
+   ['Pengurutan kalimat: kalimat pembuka tidak diawali kata rujukan atau konjungsi antarkalimat; kalimat yang memuat rujukan (itu, tersebut, juga) mengikuti kalimat yang dirujuknya.','Kalimat yang diawali Hal tersebut, Selain itu, atau Begitu pula bukan kalimat pertama.','Trik dari pembahasan PBM 2026: lihat angka pertama di semua opsi, lalu cari pasangan kalimat yang dihubungkan oleh rujukan.','','UTBK PBM 2026'],
+   ['Penghubung antarparagraf dipilih dari hubungan isi kedua paragraf.','Berkaitan dengan hal tersebut, … (melanjutkan topik ke dampaknya) · Sementara itu, … (beralih ke sisi lain)','','','UTBK PPU 2026'],
+   ['Ungkapan kembali: isi, pelaku dan sasaran, serta kadar kepastiannya harus sama.','Kondisi tersebut bisa membuat sulit bernapas. = Tersedak berpotensi menyebabkan kesulitan bernapas.','Bisa dan dapat menyatakan kemungkinan; maknanya tidak sama dengan akan, selalu, dipastikan, atau seharusnya.','Tersedak dipastikan menyebabkan kesulitan bernapas. → Tersedak berpotensi menyebabkan kesulitan bernapas.','UTBK PPU 2026; TBBI 2.3.1.2'],
+   ['Perikutan: kalimat A memperikutkan kalimat B jika B pasti benar ketika A benar. Parafrase yang baik memperikutkan isi kalimat asal dan tidak menambah makna baru.','Pak Raden membeli mobil baru → Pak Raden mempunyai kendaraan baru.','Implikatur konvensional: Andi menganggap soal itu sulit berbeda dari Andi saja menganggap soal itu sulit, karena saja menambah makna tersirat.','','TBBI 2.3.1.2; 2.3.2.2'],
+   ['Pandangan penulis: tentukan sikap penulis dari pilihan katanya (mengancam, sayangnya, berhasil), bukan dari topiknya.','Kegiatan tersebut dapat mengancam keberadaan tempe sebagai bahan pangan milik umum. → penulis cemas.','','','UTBK PPU 2026'],
+   ['Kata yang menyimpulkan situasi: pilih sifat yang tergambar dari keseluruhan tindakan di teks, bukan dari satu kalimat saja.','Orang Tionghoa mengolah buah yang berjatuhan menjadi manisan → kreatif.','','','UTBK PPU 2026'],
+   ['Judul mencakup isi seluruh teks, tidak hanya satu paragraf, dan tidak terlalu umum.','Ironi Tempe: Hak Paten yang Hilang (mencakup tempe dan masalah paten)','','','UTBK PBM 2026'],
+   ['Rumpang dua kata: kedua kata harus cocok sekaligus. Uji kata pertama dan kedua secara terpisah, lalu bersama-sama.','… mencoba [mengawetkan] buah-buahan yang sudah [masak] …','Pengecoh khasnya: kata pertama benar tetapi kata kedua salah, atau sebaliknya.','','UTBK PPU 2026']
+   ],
+   jebakan:['Ungkapan kembali yang mengganti dapat dengan pasti, selalu, atau seharusnya mengubah makna.','Opsi yang menukar pelaku dan sasaran tampak mirip, tetapi maknanya berbeda.','Kalimat yang diawali kata rujukan atau konjungsi antarkalimat tidak dapat menjadi kalimat pertama.']},
+ {sub:'Bahasa buatan', ref:'Penalaran bahasa', src:'',
+   def:'Soal bahasa buatan, yang juga sering disebut "bahasa panda", memberikan beberapa kalimat dalam bahasa rekaan beserta artinya, lalu meminta terjemahan kalimat baru. Yang diuji adalah kemampuan menemukan pola: arti setiap kata dan aturan urutannya.',
+   guna:'Bandingkan kalimat contoh untuk menemukan kata yang sama dengan arti yang sama. Setelah semua kata terpetakan, susun jawaban dengan urutan yang mengikuti contoh, bukan urutan bahasa Indonesia.',
+   ruj:'Contoh soal PPU 2026 nomor 43–44 (KatKiel Project) dan nomor 20 (Tambahan UTBK PPU 2026).',
+   aturan:[
+   ['Cari kata yang muncul di dua kalimat contoh atau lebih untuk menemukan artinya.','Kami belajar soal PBM = Wo pashi berde ka te · Apakah kami berdiskusi soal PBM? = Wo ka pashi saar re? → wo = kami, pashi = soal PBM','','','UTBK PPU 2026'],
+   ['Kata yang hanya muncul sekali dapat diturunkan setelah kata lain terpetakan.','Mereka berdiskusi soal PPU = Le haride saar ka re → le = mereka, haride = soal PPU, saar = berdiskusi; maka berde = belajar','','','UTBK PPU 2026'],
+   ['Perhatikan posisi partikel pada kalimat tanya; urutannya bisa berbeda dari kalimat berita. Partikel di akhir kalimat dapat mengikuti verbanya.','Berita: Wo pashi berde ka te · Tanya: Wo ka pashi saar re? → ka pindah ke depan objek; berde (belajar) selalu diikuti te, saar (berdiskusi) selalu diikuti re','Maka "Apakah mereka belajar soal PPU?" = Le ka haride berde te?','','UTBK PPU 2026'],
+   ['Perhatikan pengulangan dan perubahan urutan antara kalimat berita dan kalimat tanya.','Dia mendengar musik = Mbele kupapa haua-haua (objek–verba–subjek diulang) · Apa dia memutar lagu? = Haua njema haua tundu ne? (subjek–objek–subjek–verba + ne)','Maka "Apa mereka mendengar musik?" = Tupa mbele tupa kupapa ne?','','UTBK PPU 2026'],
+   ['Uji jawaban kata demi kata terhadap semua contoh; satu kata yang tidak cocok berarti opsi itu salah.','Le ka haride berde te? → le (mereka) ✓ · ka (penanda tanya) ✓ · haride (soal PPU) ✓ · berde … te (belajar) ✓','','','UTBK PPU 2026']
+   ],
+   jebakan:['Opsi pengecoh biasanya benar di semua kata kecuali satu, misalnya pashi dipakai untuk PPU atau partikel akhirnya salah.','Jangan mengikuti urutan bahasa Indonesia; ikuti urutan pada contoh.']}
 ]});
 Object.keys(SUB_KAT).forEach(k=>delete SUB_KAT[k]);
 MATERI.forEach(b=>b.topik.forEach(t=>{ SUB_KAT[t.sub]=b.kat; }));
@@ -2197,7 +2493,8 @@ const KONSEP_U=[], KONSEP2_U=[];
   const w1=[[K[0],2],[K[1],2],[K[2],1],[K[3],1],[K[4],2],
     [{n:'Tanda petik dan tanda kurung',subs:['Tanda petik','Tanda kurung'],fokus:'petik ganda vs tunggal; judul puisi atau artikel memakai petik; kurung vs kurung siku'},1],
     [{n:'Garis miring, elipsis, tanya, seru, apostrof',subs:['Tanda garis miring','Tanda elipsis','Tanda tanya dan seru','Tanda apostrof'],fokus:'garis miring pengganti dan/atau/setiap; elipsis di akhir kalimat; tanda tanya dalam kurung; apostrof'},1],
-    [K[6],2],[K[7],2],[K[8],1],[K[9],2],[K[10],2],[K[11],2],[K[12],1],[K[13],1]];
+    [K[6],2],[K[7],2],[K[8],1],[K[9],2],[K[10],2],[K[11],2],[K[12],1],[K[13],1],
+    [{n:'Unsur serapan',subs:['Unsur serapan'],fokus:'c/cc/ch/ck/ct menjadi k, s, atau ks; ph, th, q, x; vokal ganda menurut lafal (tim, teater); konsonan ganda menjadi tunggal kecuali massa dan teller; bentuk lazim (napas, paham, pikir, telepon)'},1]];
   const W2={'Hubungan kata (analogi)':3,'Relasi makna':3,'Ungkapan, idiom, dan pasangan tetap':2,'Kalimat efektif: kesepadanan':2,'Konjungsi':2,'Makna imbuhan: akhiran dan konfiks':2};
   const w2=KONSEP2.map(k=>[k,W2[k.n]||1]);
   const swrr=list=>{ const cur=list.map(()=>0), total=list.reduce((a,x)=>a+x[1],0), seq=[]; for(let s=0;s<total;s++){ let bi=0; list.forEach((x,i)=>{ cur[i]+=x[1]; if(cur[i]>cur[bi]) bi=i; }); cur[bi]-=total; seq.push(list[bi][0]); } return seq; };
@@ -2252,11 +2549,11 @@ SAMPLE.drill = SAMPLE.drill.concat(SAMPLE_KEB);
 
 /* ---------- Konstanta ---------- */
 const KAT = {'tanda-baca':'Tanda baca','ejaan':'EYD V','kebahasaan':'Kebahasaan','baku':'Kata baku','game':'Mini game'};
-const POLA_IDS = ['PBM-ejaan-kapital','PBM-ejaan-tanda-baca','PBM-ejaan-penulisan-kata','PBM-ejaan-nama-ilmiah','PBM-diksi-seharusnya','PBM-diksi-pengganti','PBM-diksi-dihilangkan','PBM-rumpang-kata','PBM-rumpang-konjungsi','PBM-rumpang-pernyataan','PBM-efektif-sempurnakan','PBM-efektif-perbaikan','PBM-efektif-penggabungan','PBM-efektif-kalimat-inti','PBM-efektif-variasi-kalimat','PBM-efektif-paling-ringkas','PBM-makna-ungkap-kembali','PBM-makna-informasi-utama','PBM-kepaduan-judul','PBM-kepaduan-sisipan','PBM-kepaduan-urutan','PBM-kepaduan-kalimat-sumbang',
-'PPU-makna-sinonim','PPU-makna-antonim','PPU-makna-luas-sempit','PPU-makna-asosiasi','PPU-makna-simpulan-situasi','PPU-makna-ungkap-kembali','PPU-frasa-makna','PPU-frasa-pasangan-tetap','PPU-frasa-pola-makna','PPU-frasa-variasi-kata','PPU-imbuhan-makna','PPU-majas-kiasan','PPU-majas-perumpamaan','PPU-majas-makna-sebenarnya','PPU-hubungan-kata','PPU-konjungsi-fungsi','PPU-konjungsi-antarparagraf','PPU-struktur-pola-kalimat','PPU-struktur-tidak-logis','PPU-struktur-melengkapi','PPU-struktur-pembagian-paragraf','PPU-pandangan-penulis','PPU-bahasa-buatan'];
+const POLA_IDS = ['PBM-ejaan-kapital','PBM-ejaan-tanda-baca','PBM-ejaan-penulisan-kata','PBM-ejaan-nama-ilmiah','PBM-ejaan-serapan','PBM-diksi-seharusnya','PBM-diksi-pengganti','PBM-diksi-dihilangkan','PBM-rumpang-kata','PBM-rumpang-konjungsi','PBM-rumpang-pernyataan','PBM-efektif-sempurnakan','PBM-efektif-perbaikan','PBM-efektif-penggabungan','PBM-efektif-kalimat-inti','PBM-efektif-variasi-kalimat','PBM-efektif-paling-ringkas','PBM-makna-ungkap-kembali','PBM-makna-informasi-utama','PBM-kepaduan-judul','PBM-kepaduan-sisipan','PBM-kepaduan-urutan','PBM-kepaduan-kalimat-sumbang',
+'PPU-makna-sinonim','PPU-makna-antonim','PPU-makna-luas-sempit','PPU-makna-asosiasi','PPU-makna-simpulan-situasi','PPU-makna-ungkap-kembali','PPU-frasa-makna','PPU-frasa-pasangan-tetap','PPU-frasa-pola-makna','PPU-frasa-variasi-kata','PPU-imbuhan-makna','PPU-majas-kiasan','PPU-majas-perumpamaan','PPU-majas-makna-sebenarnya','PPU-hubungan-kata','PPU-konjungsi-fungsi','PPU-konjungsi-antarparagraf','PPU-struktur-pola-kalimat','PPU-struktur-tidak-logis','PPU-struktur-melengkapi','PPU-struktur-pembagian-paragraf','PPU-efektif-perbaikan','PPU-pandangan-penulis','PPU-bahasa-buatan'];
 /* Kunci Pola Soal (brief Nov 2026): pola_id -> [kemampuan, bentuk lama terdekat] */
 const POLA_BRIEF = {
-'PBM-ejaan-kapital':['PBM-C','PBM-8'],'PBM-ejaan-tanda-baca':['PBM-C','PBM-8'],'PBM-ejaan-penulisan-kata':['PBM-C','PBM-9'],'PBM-ejaan-nama-ilmiah':['PBM-C','tambahan 2026'],
+'PBM-ejaan-kapital':['PBM-C','PBM-8'],'PBM-ejaan-tanda-baca':['PBM-B','PBM-8'],'PBM-ejaan-penulisan-kata':['PBM-C','PBM-9'],'PBM-ejaan-nama-ilmiah':['PBM-C','tambahan 2026'],'PBM-ejaan-serapan':['PBM-C','PBM-9'],
 'PBM-diksi-seharusnya':['PBM-C','PBM-14'],'PBM-diksi-pengganti':['PBM-A','PBM-2'],'PBM-diksi-dihilangkan':['PBM-C','PBM-12'],
 'PBM-rumpang-kata':['PBM-A','PBM-3'],'PBM-rumpang-konjungsi':['PBM-C','PBM-10'],'PBM-rumpang-pernyataan':['PBM-A','PBM-3'],
 'PBM-efektif-sempurnakan':['PBM-C','PBM-11'],'PBM-efektif-perbaikan':['PBM-C','PBM-13'],'PBM-efektif-penggabungan':['PBM-B','PBM-6'],'PBM-efektif-kalimat-inti':['PBM-B','PBM-5'],
@@ -2269,7 +2566,7 @@ const POLA_BRIEF = {
 'PPU-imbuhan-makna':['PPU-B','PPU-5'],
 'PPU-majas-kiasan':['PPU-A','PPU-8'],'PPU-majas-perumpamaan':['PPU-A','tambahan 2026'],'PPU-majas-makna-sebenarnya':['PPU-A','PPU-8'],
 'PPU-hubungan-kata':['PPU-A','PPU-3'],'PPU-konjungsi-fungsi':['PPU-C','PPU-11'],'PPU-konjungsi-antarparagraf':['PPU-D','PPU-11'],
-'PPU-struktur-pola-kalimat':['PPU-C','PPU-9'],'PPU-struktur-tidak-logis':['PPU-D','PPU-10'],'PPU-struktur-melengkapi':['PPU-D','PPU-12'],'PPU-struktur-pembagian-paragraf':['PPU-D','PPU-14'],
+'PPU-struktur-pola-kalimat':['PPU-C','PPU-9'],'PPU-struktur-tidak-logis':['PPU-D','PPU-10'],'PPU-struktur-melengkapi':['PPU-D','PPU-12'],'PPU-struktur-pembagian-paragraf':['PPU-D','PPU-14'],'PPU-efektif-perbaikan':['PPU-D','tambahan 2026'],
 'PPU-pandangan-penulis':['PPU-D','tambahan 2026'],'PPU-bahasa-buatan':['PPU-E','PPU-16']};
 const MODE_LBL = {dasar:'Mode Dasar', geser:'Satu hal diubah', '2027':'Mode 2027'};
 /* Tahap per kelompok kemampuan: 1 = bentuk lama, 2 = boleh satu hal diubah, 3 = boleh bentuk baru.
@@ -2353,35 +2650,37 @@ function mergeImport(st,data,isSample){
 const $=s=>document.querySelector(s);
 function esc(s){ return String(s==null?'':s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c])); }
 const GRUP={
- 'Huruf kapital':[['Awal kalimat & petikan',[1]],['Nama orang & gelar',[2,3,4,5]],['Bangsa, suku, bahasa',[6]],['Waktu & peristiwa',[7]],['Geografi',[8]],['Lembaga, dokumen, judul',[9]],['Kekerabatan & Anda',[10]]],
- 'Huruf miring dan tebal':[['Huruf miring',[1,2,3]],['Bukan huruf miring',[4,5]],['Huruf tebal',[6]]],
- 'Kata berimbuhan dan bentuk terikat':[['Ditulis serangkai',[1,2]],['Pakai tanda hubung',[3,4]],['Ditulis terpisah',[5]]],
- 'Bentuk ulang dan gabungan kata':[['Bentuk ulang',[1,2]],['Gabungan kata terpisah',[3,5]],['Gabungan kata serangkai',[4,6]]],
- 'Pemenggalan kata':[['Vokal & konsonan',[1,2]],['Kata berimbuhan',[3]],['Batasan',[4]]],
- 'Partikel':[['-lah, -kah, -tah',[1]],['pun',[2,3]],['per',[4]]],
- 'Singkatan dan akronim':[['Singkatan bertitik',[1,3,4]],['Singkatan tanpa titik',[2,5]],['Akronim',[6]]],
- 'Angka dan bilangan':[['Huruf atau angka',[1,2,3]],['Bilangan tingkat & -an',[4,5]],['Pecahan',[6]]],
- 'Kata ganti dan kata sandang':[['Kata ganti',[1,2]],['Si dan sang',[3]]],
- 'Tanda titik':[['Dipakai',[1,3,4]],['Tidak dipakai',[2,5]]],
- 'Tanda koma':[['Perincian & pertentangan',[1,2]],['Anak kalimat & penghubung',[3,4,10]],['Seru, sapaan, petikan',[5,6]],['Gelar, desimal, aposisi',[7,8,9]],['Tidak dipakai',[11]]],
- 'Tanda titik dua':[['Dipakai',[1,3,4]],['Tidak dipakai',[2]]],
- 'Tanda hubung':[['Bentuk ulang & pemenggalan',[1]],['Tanggal, ejaan, skor',[2]],['Huruf kapital & angka',[3,4]],['Unsur asing & kesatuan',[5,6]]],
- 'Tanda petik':[['Petik ganda',[1,2,3]],['Petik tunggal',[4]]],
- 'Tanda kurung':[['Kurung biasa',[1,2,3]],['Kurung siku',[4]]],
- 'Makna imbuhan: awalan':[['ber- dan pe-',[1,6]],['meN-, di-, ter-',[2,3,4]],['peN-',[5]],['se- dan memper-',[7,8]]],
- 'Makna imbuhan: akhiran dan konfiks':[['Akhiran -an, -kan, -i',[1,2,3]],['Konfiks',[4,5,6,7]],['Jebakan UTBK',[8]]],
- 'Kelas kata dan frasa':[['Kelas kata',[1]],['Frasa',[2,3,4]],['Kata majemuk',[5]]],
- 'Pola dan jenis kalimat':[['Fungsi & pola',[1,2,3]],['Jenis kalimat',[4]],['Inti & pasif',[5,6]]],
- 'Kalimat efektif: kesepadanan':[['Subjek & predikat',[1,2,3]],['Anak kalimat',[4]],['Ketegasan',[5]]],
- 'Kalimat efektif: kehematan dan kecermatan':[['Kehematan',[1,2,3]],['Kata depan & pasangan',[4,5]],['Kecermatan',[6]]],
- 'Kalimat efektif: keparalelan dan kelogisan':[['Keparalelan',[1]],['Kelogisan',[2,3,4]]],
- 'Konjungsi':[['Intrakalimat',[1,2,3,5]],['Antarkalimat & antarparagraf',[4,6]],['Strategi',[7]]],
- 'Relasi makna':[['Sinonim & antonim',[1,2]],['Hiponim',[3]],['Homonim & polisemi',[4,5]],['Ambiguitas',[6]]],
- 'Jenis dan perubahan makna':[['Jenis makna',[1,2]],['Perubahan makna',[3,4,5]]],
- 'Hubungan kata (analogi)':[['Strategi',[1,3,4]],['Jenis hubungan',[2]]],
- 'Ungkapan, idiom, dan pasangan tetap':[['Idiom & peribahasa',[1,3]],['Pasangan tetap',[2,4]]],
- 'Majas':[['Perbandingan',[1]],['Pertentangan',[2]],['Sindiran',[3]],['Penegasan',[4]],['Di soal PPU',[5]]],
- 'Paragraf dan ungkapan kembali':[['Gagasan utama & judul',[1,6]],['Kepaduan',[2,3,4]],['Ungkapan kembali',[5]]]
+ 'Bahasa buatan':[['Memetakan kata',[1,2]],['Pola urutan & partikel',[3,4]],['Cek jawaban',[5]]],
+ 'Huruf kapital':[['Awal kalimat & petikan',[1,2]],['Nama orang',[3,4,5,6]],['Agama & Tuhan',[7]],['Gelar, jabatan, pangkat',[8,9,10,11]],['Bangsa, suku, bahasa',[12,13]],['Waktu & peristiwa',[14,15,16]],['Geografi',[17,18,19,20]],['Lembaga, dokumen, judul',[21,22]],['Kekerabatan & Anda',[23,24,25,26]]],
+ 'Huruf miring dan tebal':[['Huruf miring',[1,2,3,4]],['Bukan huruf miring',[5,6]],['Huruf tebal',[7,8]]],
+ 'Kata berimbuhan dan bentuk terikat':[['Kata dasar & imbuhan',[1,2]],['Bentuk terikat serangkai',[3]],['Pakai tanda hubung',[4,5]],['Maha- untuk Tuhan',[6]]],
+ 'Bentuk ulang dan gabungan kata':[['Bentuk ulang',[1,2]],['Gabungan kata terpisah',[3,4,5]],['Gabungan kata serangkai',[6,7]]],
+ 'Pemenggalan kata':[['Kata dasar: vokal',[1,2]],['Kata dasar: konsonan',[3,4,5,6]],['Kata berimbuhan',[7,8]],['Unsur kata, nama & batasan',[9,10]]],
+ 'Partikel':[['-lah, -kah, -tah',[1]],['pun',[2,3,4]],['per',[5]]],
+ 'Singkatan dan akronim':[['Nama, gelar & inisial',[1,2]],['Huruf awal kata',[3]],['Surat & alamat',[4,5,6]],['Satuan & mata uang',[7]],['Akronim',[8,9]]],
+ 'Angka dan bilangan':[['Huruf atau angka',[1,2,3,4]],['Alamat, dokumen & pecahan',[5,6]],['Bilangan tingkat & -an',[7,8]],['Nama geografi',[9]]],
+ 'Kata ganti dan kata sandang':[['Kata ganti',[1,2,3]],['Si dan sang',[4,5]]],
+ 'Tanda titik':[['Akhir kalimat & daftar',[1,2,3]],['Waktu & ribuan',[4,5]],['Tidak dipakai',[6,7,8,9]]],
+ 'Tanda koma':[['Perincian & pertentangan',[1,2]],['Anak kalimat & penghubung',[3,4,5,6]],['Seru, sapaan, petikan',[7,8,9]],['Surat, alamat, gelar',[10,11,12]],['Desimal & aposisi',[13,14]]],
+ 'Tanda titik dua':[['Perincian',[1,2]],['Pemerian & drama',[3,4]],['Rujukan, waktu & rasio',[5,6]]],
+ 'Tanda hubung':[['Pemenggalan & bentuk ulang',[1,2]],['Tanggal, ejaan, skor',[3]],['Huruf kapital & angka',[4,5]],['Memperjelas & objek bahasan',[6,7]],['Unsur asing & kesatuan',[8,9]]],
+ 'Tanda petik':[['Petik ganda',[1,2,3]],['Petik tunggal',[4,5]]],
+ 'Tanda kurung':[['Kurung biasa',[1,2,3,4]],['Kurung siku',[5,6]]],
+ 'Unsur serapan':[['Belum diserap',[1]],['Huruf c, cc, ch, ck, ct',[2,3,4,5]],['Vokal ganda',[6]],['ph, th, q, sc, t, x, y',[7,8,9,10,11]],['Konsonan ganda & kata Arab',[12,13]],['Bentuk yang sudah lazim',[14]]],
+ 'Makna imbuhan: awalan':[['meN- dan di-',[1,2,3]],['ter-',[4,5]],['ber-',[6,7,8]],['per- dan memper-',[9]],['peN- dan pe-',[10,11]],['se-',[12]]],
+ 'Makna imbuhan: akhiran dan konfiks':[['-kan dan -i',[1,2,3]],['-an',[4]],['peN-an dan per-an',[5,6]],['ke-an',[7,8]],['ber-an dan -wan',[9,10]]],
+ 'Kelas kata dan frasa':[['Kelas kata',[1,2,3,4,5,6]],['Jenis frasa',[7,8]],['Susunan & makna frasa',[9,10]],['Gabungan padu',[11]]],
+ 'Pola dan jenis kalimat':[['Fungsi kalimat',[1,2,3,4,5]],['Pola dasar & kalimat inti',[6,7]],['Jenis kalimat',[8,9,10]],['Kalimat pasif',[11]]],
+ 'Kalimat efektif: kesepadanan':[['Unsur wajib',[1,2]],['Subjek',[3,4,5]],['Predikat',[6]],['Ketegasan',[7]]],
+ 'Kalimat efektif: kehematan dan kecermatan':[['Kata berulang & pleonasme',[1,2,3]],['Preposisi',[4,5]],['Kalimat ringkas',[6]],['Kecermatan',[7,8]]],
+ 'Kalimat efektif: keparalelan dan kelogisan':[['Keparalelan',[1,2]],['Keserasian makna & bentuk',[3,4]],['Kelogisan',[5,6,7]]],
+ 'Konjungsi':[['Koordinatif',[1,2,3]],['Korelatif',[4]],['Subordinatif',[5,6,7,8]],['Antarkalimat & antarparagraf',[9,10]]],
+ 'Relasi makna':[['Sinonim & variasi kata',[1,6]],['Antonim',[2]],['Luas dan sempit',[3]],['Polisemi & homonim',[4,5]],['Asosiasi & ambiguitas',[7,8]]],
+ 'Jenis dan perubahan makna':[['Leksikal & gramatikal',[1]],['Denotatif, konotatif, asosiatif',[2,4]],['Lugas & kias',[3]],['Kata & istilah',[5]],['Perubahan makna',[6,7]]],
+ 'Hubungan kata (analogi)':[['Strategi',[1,3,5]],['Jenis hubungan',[2,4]]],
+ 'Ungkapan, idiom, dan pasangan tetap':[['Idiom & peribahasa',[1,5]],['Gabungan padu & pasangan tetap',[2,3]],['Preposisi tetap & kolokasi',[4,6]]],
+ 'Majas':[['Perbandingan',[1,2,3]],['Pertautan',[4]],['Sindiran',[5]],['Retoris & struktur',[6,7]],['Di soal PPU',[8]]],
+ 'Paragraf dan ungkapan kembali':[['Gagasan & kepaduan',[1,2]],['Pembagian & urutan',[3,4,5]],['Ungkapan kembali',[6,7]],['Sikap, simpulan & judul',[8,9,10]],['Rumpang',[11]]]
 };
 function grupOf(sub,i){ const g=GRUP[sub]; if(!g) return null; const x=g.find(([,ix])=>ix.includes(i+1)); return x?x[0]:null; }
 /* Kode EYD V, mis. (I.F.23) → (EYD V · Huruf kapital, butir 23) */
@@ -2415,7 +2714,7 @@ function ruleBlock(t,rules,focus){
   return peta+shown.map(x=>'<div class="kgrp"><div class="kgh">'+esc(x.lbl)+'</div><ol class="rules">'+x.rs.map(li).join('')+'</ol></div>').join('')+
     (sel!=null&&groups.length>1?'<div class="kmore">Hanya kategori ini yang ditampilkan. <button type="button" class="link" data-action="kgrp" data-sub="'+sv+'" data-v="all">Lihat semua kategori</button></div>':'');
 }
-function rich(s){ return esc(humanCodes(s)).replace(/\*\*\*([^*]+)\*\*\*/g,'<b><i>$1</i></b>').replace(/\*([^*]+)\*/g,'<i>$1</i>'); }
+function rich(s){ return esc(humanCodes(s)).replace(/\*\*\*([^*]+)\*\*\*/g,'<b><i>$1</i></b>').replace(/\*\*([^*]+)\*\*/g,'<b>$1</b>').replace(/\*([^*]+)\*/g,'<i>$1</i>'); }
 function slug(s){ return String(s).toLowerCase().normalize('NFD').replace(/[̀-ͯ]/g,'').replace(/[^a-z0-9]+/g,'-').replace(/^-|-$/g,''); }
 function toast(msg){ const t=$('#toast'); t.textContent=msg; t.hidden=false; clearTimeout(toast._t); toast._t=setTimeout(()=>{t.hidden=true},2400); }
 function pct(a,b){ return b?Math.round(a*100/b):0; }
@@ -2612,7 +2911,7 @@ P3. Pengecoh per tipe soal:
    - Ungkapan kembali/makna sama: satu opsi per modalitas (pasti, biasanya, seharusnya, sepertinya); tukar pelaku dan sasaran; pindahkan induk klausa "yang"; kunci mempertahankan isi DAN kadar kepastian.
    - Imbuhan: pengecoh memakai imbuhan yang sama tetapi makna berbeda (pe-an 'proses' vs 'hal' vs 'tempat'); kunci tidak boleh bisa dipilih hanya dari bentuk katanya.
    - Konjungsi/penggabungan: pengecoh adalah konjungsi yang relasinya mirip (sehingga vs karena vs maka; tetapi vs padahal vs meskipun).
-   - Perbaikan/kalimat efektif: pengecoh memperbaiki separuh masalah, atau memperbaiki kesalahan tetapi menimbulkan kesalahan baru.
+   - Perbaikan/kalimat efektif: pengecoh memperbaiki separuh masalah, atau memperbaiki kesalahan tetapi menimbulkan kesalahan baru. Pada perincian sejajar, pengecoh hanya menyeragamkan sebagian unsur (misalnya dua unsur meng- dan satu unsur peng-…-an).
    - Kalimat inti/informasi utama: pengecoh membuang unsur wajib atau ikut membawa keterangan.
    - Rumpang dua kata: pengecoh = kata pertama benar & kedua salah, dan sebaliknya.
    - Judul/gagasan: pengecoh hanya mencakup satu paragraf atau terlalu umum.
@@ -2644,7 +2943,7 @@ Aturan untuk keduanya:
    d. Untuk bahasa buatan: contoh pola ditulis di "kalimat" (misal "lo mesa kuti = saya makan nasi"), lalu PG 5 opsi.
 2. Kalimat yang dimaksudkan benar harus benar di SEMUA aspek (ejaan, tanda baca, kalimat efektif). Kalimat yang salah hanya memuat SATU kesalahan, dan kesalahan itu pada konsep yang diuji.
 3. Pengecoh harus kesalahan yang memang sering terjadi, bukan salah ketik. Untuk makna imbuhan, analogi, dan relasi makna, setiap pengecoh mewakili makna atau hubungan lain yang berbeda jelas, sehingga hanya satu jawaban yang sah.
-4. "kaidah": satu kalimat aturan; untuk EYD sertakan rujukan bab, misalnya "(III.B.3)".
+4. "kaidah": satu kalimat aturan dengan rujukannya: untuk EYD sertakan bab, misalnya "(III.B.3)"; untuk kebahasaan, jika ada, bagian TBBI, misalnya "(TBBI 9.3.2.4)".
 5. Variasikan konteks (sekolah, kesehatan, lingkungan, ekonomi, budaya). Nama orang dan lembaga fiktif. Huruf miring ditulis dengan *...*. Jangan mengulang kalimat yang sama antarbutir.
 6. Jika Kelemahan menyebut subkategori hari ini, minimal separuh butir subkategori itu menyasarnya dengan contoh baru.
 7. Uji anti-tebak: tiap butir tidak boleh bisa dijawab tanpa menguasai kaidahnya. Opsi sejajar panjang dan gayanya (selisih jumlah kata terpanjang dan terpendek paling banyak 30%; kunci menjadi opsi terpanjang paling banyak 2 dari 10 butir PG), kunci tidak menonjol, dan minimal 2 opsi tampak benar sekilas. Untuk butir "yang tepat", pengecoh mengandung kesalahan halus yang sering terjadi; untuk butir "yang salah", sisipkan kalimat benar yang tampak janggal.`;
@@ -2708,11 +3007,15 @@ Contoh soal "pgk" (hanya mode "2027"): {"nomor": 3, "subtes": "${sub}", "pola_id
 - Kelemahan dari Progres:
 ${o.weak}
 
+## Kerangka acuan UTBK 2026 (resmi)
+${!isD&&sub==='PPU'||isD?'PPU (Pengetahuan dan Pemahaman Umum, 20 soal, 15 menit): mengukur pengetahuan leksikal, informasi, dan pengetahuan umum yang penting dalam lingkup sosial budaya Indonesia, serta perkembangan bahasa. Soal menekankan keterkaitan permasalahan dengan bacaan untuk menganalisis, menghubungkan, dan menyimpulkan bentuk kata, frasa, dan kalimat sesuai konteks. Bentuk: pertanyaan singkat, bacaan pendek dengan satu pertanyaan, dan bacaan panjang dengan beberapa pertanyaan. Kode kemampuan pada pola_id: PPU-A = makna kata dan ungkapan dalam konteks (sinonim, antonim, luas-sempit, asosiasi, simpulan situasi, pasangan tetap, kiasan, hubungan kata); PPU-B = bentuk kata (makna imbuhan, variasi kata); PPU-C = frasa dan struktur (pola makna frasa, pola kalimat, fungsi kata hubung); PPU-D = kalimat dan wacana (ungkapan kembali, kalimat tidak logis, melengkapi kalimat, penyempurnaan kalimat dan perincian sejajar, pembagian paragraf, penghubung antarparagraf, pandangan penulis); PPU-E = bahasa buatan.\n':''}${!isD&&sub==='PBM'||isD?'PBM (Pemahaman Bacaan dan Menulis, 20 soal, 25 menit): kemampuan menulis berdasarkan pemahaman bacaan. Kode kemampuan pada pola_id: PBM-A = pemilihan gagasan (judul bacaan, diksi tepat, gagasan pelengkap kalimat, pelengkapan gagasan paragraf); PBM-B = penataan gagasan (kalimat inti, penggabungan kalimat, gagasan bertanda baca tepat, pengurutan kalimat dalam paragraf, penempatan kalimat, pemvariasian kalimat); PBM-C = perbaikan gagasan (penulisan kata serapan, penulisan huruf, penulisan kata gabung, perbaikan kata, perbaikan kata sambung, cara memperbaiki kalimat, kata mubazir, kalimat ringkas, perbaikan kalimat, perbaikan diksi).\n':''}Soal harus tetap berada dalam cakupan ini.
+
 ## Kaidah acuan EYD (EYD Edisi V, SK Kepala Badan Bahasa 2022)
 Jadikan kaidah ini dasar kunci jawaban untuk butir EYD. Jangan memakai kaidah yang tidak tercantum atau yang kamu ragukan.
 ${o.rules}
 
-## Kaidah acuan kebahasaan (tata bahasa baku)
+## Kaidah acuan kebahasaan (TBBI edisi IV; Semantik Bahasa Indonesia, Chaer & Muliastuti; gaya bahasa Keraf)
+Jadikan kaidah ini dasar kunci jawaban untuk butir kebahasaan dan pakai istilah yang sama (misalnya kalimat kompleks = majemuk bertingkat; konotasi = nilai rasa, bukan makna kias).
 ${o.rules2}
 
 ${isD?'## Drill (20 butir)\n'+drillRules:'## '+(isSim?'Simulasi':'Teks bernomor ala UTBK')+' ('+nT+' teks × 5 soal = '+(nT*5)+' soal '+sub+')\n'+teksRules}
@@ -3190,12 +3493,40 @@ Object.assign(ICONS,{
  buatan:['indigo','<circle cx="12" cy="12" r="9"/><path d="M3 12h18M12 3c3 3.5 3 14.5 0 18M12 3c-3 3.5-3 14.5 0 18"/>']
 });
 function boxes(){ const out=[]; MATERI.forEach((b,bi)=>{
-  if(b.kat!=='kebahasaan') out.push({id:'b'+bi,n:['Pemakaian huruf','Penulisan kata','Tanda baca'][bi]||b.bab,ic:['huruf','tulis','tb'][bi]||'eyd',kat:'EYD V · '+b.bab.split(' · ')[0],sec:'EYD V',topics:b.topik.slice()});
+  if(b.kat!=='kebahasaan') out.push({id:'b'+bi,n:['Penggunaan huruf','Penulisan kata','Tanda baca','Unsur serapan'][bi]||b.bab,ic:['huruf','tulis','tb','baku'][bi]||'eyd',kat:'EYD V · '+b.bab.split(' · ')[0],sec:'EYD V',topics:b.topik.slice()});
   else b.topik.forEach(t=>{ const r=KREF[t.ref]||['makna',t.ref]; let x=out.find(o=>o.id==='k-'+r[0]); if(!x){ x={id:'k-'+r[0],n:r[1],ic:r[0],kat:'Kebahasaan · '+t.ref,sec:'Kebahasaan',topics:[]}; out.push(x); } x.topics.push(t); });
  }); return out; }
 function topicOf(sub){ let r=null; MATERI.forEach(b=>b.topik.forEach(t=>{ if(t.sub===sub) r=t; })); return r; }
 function refLabel(t){ let r=''; MATERI.forEach(b=>{ if(b.topik.includes(t)) r=b.kat==='kebahasaan'?'Kebahasaan · '+t.ref:'EYD V · '+b.bab.split(' · ')[0]; }); return esc(r); }
-function ruleList(t,rules,focus){ return '<ol class="rules">'+rules.map(a=>{ const i=t.aturan.indexOf(a), f=focus&&focus.sub===t.sub&&focus.i===i; return '<li'+(f?' class="rfocus" id="rfocus"':'')+'>'+(f?'<span class="rtag">'+(focus.tag||'Sesuai soalmu')+'</span>':'')+'<div>'+rich(a[0])+'</div><div class="ex">'+rich(a[1])+'</div></li>'; }).join('')+'</ol>'; }
+const exLines=s=>s.split(' · ').map(x=>'<div>'+rich(x).replace(/ ↵ /g,'<br>')+'</div>').join('');
+const badLines=s=>s.split(' · ').map(x=>{ const [w,r]=x.split(' → '); return '<div>'+(r!=null?'<span class="wr">'+rich(w).replace(/ ↵ /g,'<br>')+'</span> <span class="ar">→</span> <span class="rt">'+rich(r).replace(/ ↵ /g,'<br>')+'</span>':rich(x))+'</div>'; }).join('');
+function ruleList(t,rules,focus){ return '<ol class="rules">'+rules.map(a=>{ const i=t.aturan.indexOf(a), f=focus&&focus.sub===t.sub&&focus.i===i; return '<li value="'+(i+1)+'"'+(f?' class="rfocus" id="rfocus"':'')+'>'+(f?'<span class="rtag">'+(focus.tag||'Sesuai soalmu')+'</span>':'')+
+  '<div class="rk">'+rich(a[0])+(a[4]?' <span class="rpasal">'+(t.src==null?'EYD ':t.src?t.src+' ':'')+esc(a[4])+'</span>':'')+'</div>'+(a[2]?'<div class="rexp">'+rich(a[2])+'</div>':'')+
+  (a[1]?'<div class="ex">'+(a[3]?'<span class="exl ok">✓ Contoh benar</span>':'')+exLines(a[1])+'</div>':'')+(a[3]?'<div class="ex bad"><span class="exl">✗ Salah → ✓ Benar</span>'+badLines(a[3])+'</div>':'')+'</li>'; }).join('')+'</ol>'; }
+/* posisi tiap topik dalam kerangka acuan UTBK 2026 (PBM: pemilihan, penataan, perbaikan gagasan; PPU: leksikal dan bentuk bahasa dalam konteks) */
+const PG='PBM · Perbaikan gagasan: ', PT='PBM · Penataan gagasan: ', PL='PBM · Pemilihan gagasan: ', PU='PPU · ';
+const UJI={
+ 'Huruf kapital':[PG+'penulisan huruf'],'Huruf miring dan tebal':[PG+'penulisan huruf'],'Singkatan dan akronim':[PG+'penulisan huruf'],
+ 'Kata berimbuhan dan bentuk terikat':[PG+'penulisan kata gabung, perbaikan kata'],'Bentuk ulang dan gabungan kata':[PG+'penulisan kata gabung'],
+ 'Pemenggalan kata':[PG+'perbaikan kata'],'Kata depan':[PG+'perbaikan kata'],'Partikel':[PG+'penulisan kata gabung, perbaikan kata'],
+ 'Angka dan bilangan':[PG+'perbaikan kata'],'Kata ganti dan kata sandang':[PG+'perbaikan kata'],'Unsur serapan':[PG+'penulisan kata serapan'],
+ 'Makna imbuhan: awalan':[PU+'bentuk kata dalam konteks (makna imbuhan)'],'Makna imbuhan: akhiran dan konfiks':[PU+'bentuk kata dalam konteks (makna imbuhan)'],
+ 'Kelas kata dan frasa':[PU+'bentuk kata dan frasa dalam konteks'],
+ 'Pola dan jenis kalimat':[PT+'kalimat inti, pemvariasian kalimat',PU+'struktur kalimat'],
+ 'Kalimat efektif: kesepadanan':[PG+'cara memperbaiki kalimat, perbaikan kalimat'],
+ 'Kalimat efektif: kehematan dan kecermatan':[PG+'kata mubazir, kalimat ringkas, perbaikan diksi'],
+ 'Kalimat efektif: keparalelan dan kelogisan':[PG+'perbaikan kalimat',PU+'kalimat yang tidak logis'],
+ 'Konjungsi':[PT+'penggabungan kalimat',PG+'perbaikan kata sambung',PU+'hubungan antarkalimat dan antarparagraf'],
+ 'Relasi makna':[PU+'pengetahuan leksikal (sinonim, antonim, makna luas dan sempit)',PL+'diksi yang tepat'],
+ 'Jenis dan perubahan makna':[PU+'pengetahuan leksikal'],'Hubungan kata (analogi)':[PU+'pengetahuan leksikal (hubungan antarkata)'],
+ 'Ungkapan, idiom, dan pasangan tetap':[PU+'makna frasa dalam konteks',PL+'diksi yang tepat'],
+ 'Majas':[PU+'makna kiasan dalam konteks'],
+ 'Paragraf dan ungkapan kembali':[PL+'judul, pelengkapan gagasan paragraf',PT+'pengurutan dan penempatan kalimat',PU+'simpulan dan ungkapan kembali'],
+ 'Bahasa buatan':[PU+'bahasa buatan (pola soal lama; tidak disebut eksplisit di kerangka acuan 2026)']};
+MATERI.forEach(b=>{ if(b.kat==='tanda-baca') b.topik.forEach(t=>{ UJI[t.sub]=UJI[t.sub]||[PT+'penentuan gagasan bertanda baca tepat']; }); });
+function defCard(t){ const u=UJI[t.sub]; if(!t.def&&!u&&!t.ruj) return '';
+  return '<section class="card mdef">'+(t.def?'<h2>Pengertian</h2><p>'+rich(t.def)+'</p>'+(t.guna?'<p class="mguna">'+rich(t.guna)+'</p>':''):'')+(u?'<div class="muji"><b>Diuji di (kerangka acuan 2026)</b>'+u.map(x=>'<div>'+esc(x)+'</div>').join('')+'</div>':'')+(t.ruj?'<div class="muji"><b>Rujukan</b><div>'+esc(t.ruj)+'</div></div>':'')+'</section>'; }
+function trapCard(t){ return t.jebakan&&t.jebakan.length?'<section class="card mtrap"><h2>Jebakan di soal</h2><ul>'+t.jebakan.map(x=>'<li>'+rich(x)+'</li>').join('')+'</ul></section>':''; }
 function navUp(n){ if(n.sub&&n.g!=null&&GRUP[n.sub]) return Object.assign({},n,{g:null});
   if(n.sub){ if(n.box==='pilih') return {box:'pilih',subs:n.subs}; const bx=boxes().find(x=>x.topics.some(t=>t.sub===n.sub)); return bx&&bx.topics.length>1?{box:bx.id}:{}; }
   return {}; }
@@ -3205,7 +3536,7 @@ function viewKaidah(){
   const fromQ=K.from&&((K.from==='drill'&&V.drill)||(K.from==='soal'&&V.run));
   const fab=fromQ?'<div class="qbackfab"><button type="button" class="fbtn" data-action="qback">← Kembali ke soal</button></div>':'';
   const weakOn=K.from==='lemah'&&K.focus&&nav.sub===K.focus.sub, wk=weakOn?weakSubs().find(x=>x.sub===nav.sub):null;
-  const weakNote=weakOn?'<div class="card" style="border-color:var(--warn)!important"><b>Titik lemah'+(wk?': salah '+wk.bad+'× dari '+wk.n+' butir':'')+'</b><div class="sub" style="margin-top:4px">Pelajari kaidah di bawah dulu'+(K.focus.i!=null?' (yang ditandai paling sering muncul di soal yang salah)':'')+', lalu lanjut latihan soal.</div></div>':'';
+  const weakNote=weakOn?'<div class="card" style="border-color:var(--warn)!important"><b>Titik lemah'+(wk?': salah '+wk.bad+'× dari '+wk.n+' butir':'')+'</b><div class="sub" style="margin-top:4px">'+(GRUP[nav.sub]&&nav.g==null?'Pilih subkategori di bawah dulu'+(K.focus.i!=null?'; yang bertanda ⚠ paling sering muncul di soal yang salah':'')+'. Setelah paham, lanjut latihan soal.':'Pelajari kaidah di bawah dulu'+(K.focus.i!=null?' (yang ditandai paling sering muncul di soal yang salah)':'')+', lalu lanjut latihan soal.')+'</div></div>':'';
   const back='<button type="button" class="mback" data-action="mup">'+BACK+esc(upLabel(nav))+'</button>';
   const drillBtn=t=>{ const n=S.drill.filter(d=>d.subkategori===t.sub).length; return n?(weakOn?'<button class="btn block" type="button" data-action="drill" data-v="sub:'+esc(t.sub)+'">Sudah paham? Lanjut latihan · '+n+' butir →</button>':'<button class="btn ghost block" type="button" data-action="drill" data-v="sub:'+esc(t.sub)+'">Drill topik ini · '+n+' butir</button>'):''; };
   const cell=(act,v,t1,t2,val)=>'<button type="button" class="cell" data-action="'+act+'" data-v="'+esc(v)+'"><span class="txt"><span class="t1">'+esc(t1)+'</span>'+(t2?'<span class="t2">'+esc(t2)+'</span>':'')+'</span><span class="val">'+val+'</span>'+CHEV+'</button>';
@@ -3214,8 +3545,8 @@ function viewKaidah(){
     const g=GRUP[t.sub], focus=fromQ||weakOn?K.focus:null;
     if(g&&nav.g!=null&&g[nav.g]){ const [lbl,ix]=g[nav.g], rules=ix.map(i=>t.aturan[i-1]).filter(Boolean);
       return fab+back+'<h1 class="mh">'+esc(lbl)+'</h1><div class="lt-sub">'+esc(t.sub)+' · '+rules.length+' kaidah</div>'+weakNote+'<section class="card mrules">'+ruleList(t,rules,focus)+'</section>'+drillBtn(t); }
-    if(!g) return fab+back+'<h1 class="mh">'+esc(t.sub)+'</h1><div class="lt-sub">'+refLabel(t)+' · '+t.aturan.length+' kaidah</div>'+weakNote+'<section class="card mrules">'+ruleList(t,t.aturan,focus)+'</section>'+drillBtn(t);
-    return fab+back+'<h1 class="mh">'+esc(t.sub)+'</h1><div class="lt-sub">'+refLabel(t)+'</div>'+weakNote+'<div class="sh">Subkategori</div><div class="group">'+g.map(([lbl,ix],gi)=>cell('mgrp',String(gi),lbl,'',ix.length+' kaidah')).join('')+'</div>'+drillBtn(t);
+    if(!g) return fab+back+'<h1 class="mh">'+esc(t.sub)+'</h1><div class="lt-sub">'+refLabel(t)+' · '+t.aturan.length+' kaidah</div>'+weakNote+defCard(t)+'<div class="sh">Kaidah</div><section class="card mrules">'+ruleList(t,t.aturan,focus)+'</section>'+trapCard(t)+drillBtn(t);
+    return fab+back+'<h1 class="mh">'+esc(t.sub)+'</h1><div class="lt-sub">'+refLabel(t)+' · '+t.aturan.length+' kaidah</div>'+weakNote+defCard(t)+'<div class="sh">Subkategori</div><div class="group">'+g.map(([lbl,ix],gi)=>{ const hot=focus&&focus.i!=null&&ix.includes(focus.i+1); return cell('mgrp',String(gi),lbl,hot?'⚠ Sering salah · mulai dari sini':'',ix.length+' kaidah'); }).join('')+'</div>'+trapCard(t)+drillBtn(t);
   }
   if(nav.box){
     const bx=nav.box==='pilih'?{n:'Konsep pilihan',kat:'Dari Kalender',topics:(nav.subs||[]).map(topicOf).filter(Boolean)}:boxes().find(x=>x.id===nav.box);
@@ -3224,7 +3555,7 @@ function viewKaidah(){
   }
   let h='<h1>Materi</h1><label class="search" for="kq"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true" style="color:var(--muted)"><circle cx="11" cy="11" r="7"/><path d="M20 20l-4-4"/></svg><input id="kq" type="search" placeholder="Cari materi: koma, pe-an, analogi…" value="'+esc(K.q||'')+'" data-action="kq"></label>';
   if(q){
-    const res=[]; MATERI.forEach(b=>b.topik.forEach(t=>{ const rs=t.aturan.filter(a=>(t.sub+' '+a[0]+' '+a[1]).toLowerCase().includes(q)); if(rs.length) res.push({t,rs}); }));
+    const res=[]; MATERI.forEach(b=>b.topik.forEach(t=>{ const rs=t.aturan.filter(a=>(t.sub+' '+a[0]+' '+a[1]+' '+(a[2]||'')).toLowerCase().includes(q)); if(rs.length) res.push({t,rs}); }));
     if(!res.length) return h+'<div class="card empty">Tidak ada materi yang cocok.</div>';
     return h+'<div class="sub">'+res.reduce((n,x)=>n+x.rs.length,0)+' kaidah cocok</div>'+res.map(({t,rs})=>'<section class="card mrules"><button type="button" class="mres" data-action="mtopic" data-v="'+esc(t.sub)+'">'+esc(t.sub)+' '+CHEV+'</button>'+ruleList(t,rs,null)+'</section>').join('');
   }
@@ -4145,7 +4476,7 @@ document.addEventListener('click',e=>{
   else if(a==='calmateri'){ const subs=b.dataset.v.split('|'); V.kaidah={q:'',nav:subs.length===1?{sub:subs[0]}:{box:'pilih',subs}}; go('kaidah'); }
   else if(a==='mbox'){ const bx=boxes().find(x=>x.id===b.dataset.v); if(!bx) return; V.kaidah.q=''; V.kaidah.nav=bx.topics.length===1?{box:bx.id,sub:bx.topics[0].sub}:{box:bx.id}; render(); window.scrollTo(0,0); }
   else if(a==='mtopic'){ const n=V.kaidah.nav||{}; V.kaidah.q=''; V.kaidah.nav={box:n.box,subs:n.subs,sub:b.dataset.v,g:null}; render(); window.scrollTo(0,0); }
-  else if(a==='mgrp'){ V.kaidah.nav=Object.assign({},V.kaidah.nav,{g:+b.dataset.v}); render(); window.scrollTo(0,0); }
+  else if(a==='mgrp'){ V.kaidah.nav=Object.assign({},V.kaidah.nav,{g:+b.dataset.v}); render(); window.scrollTo(0,0); const el=$('#rfocus'); if(el) setTimeout(()=>el.scrollIntoView({block:'center'}),60); }
   else if(a==='mup'){ V.kaidah.nav=navUp(V.kaidah.nav||{}); render(); window.scrollTo(0,0); }
   else if(a==='swipe'){ startSwipe(null); }
   else if(a==='game'){ startGame(b.dataset.v); }
@@ -4176,8 +4507,8 @@ document.addEventListener('click',e=>{
   else if(a==='qlayout'){ S.layout=S.layout==='split'?'stack':'split'; save(); render(); toast(S.layout==='split'?'Bacaan di kiri, soal di kanan (layar lebar)':'Bacaan di atas, soal di bawah'); }
   else if(a==='qend'){ const C=sessCtx(); if(!C) return; const c=countOf(C); if((c.k||c.f)&&!V.confirmEnd){ V.confirmEnd=true; render(); const el=$('.cbt-confirm'); if(el) el.scrollIntoView({block:'center',behavior:'smooth'}); return; } finishSess(C); }
   else if(a==='qendyes'){ finishSess(sessCtx()); }
-  else if(a==='weakmateri'){ const sub=b.dataset.v, r=b.dataset.r, i=r!=null&&r!==''?+r:null, gg=GRUP[sub], gi=i!=null&&gg?gg.findIndex(x=>x[1].includes(i+1)):-1;
-    V.kaidah={q:'',from:'lemah',focus:{sub,i,tag:'Sering salah'},nav:{sub,g:gi>=0?gi:null}}; go('kaidah'); setTimeout(()=>{ const el=$('#rfocus'); if(el) el.scrollIntoView({block:'center'}); },120); }
+  else if(a==='weakmateri'){ const sub=b.dataset.v, r=b.dataset.r, i=r!=null&&r!==''?+r:null;
+    V.kaidah={q:'',from:'lemah',focus:{sub,i,tag:'Sering salah'},nav:{sub,g:null}}; go('kaidah'); if(!GRUP[sub]) setTimeout(()=>{ const el=$('#rfocus'); if(el) el.scrollIntoView({block:'center'}); },120); }
   else if(a==='qmateri'){ const from=route(), r=b.dataset.r; const subs=b.dataset.v.split('|'), focus=r?{sub:r.split('#')[0],i:+r.split('#')[1]}:null, fs=focus?focus.sub:subs[0], gg=GRUP[fs], gi=focus&&gg?gg.findIndex(x=>x[1].includes(focus.i+1)):-1; V.kaidah={q:'',from,focus,nav:{sub:fs,g:gi>=0?gi:null}}; go('kaidah'); setTimeout(()=>{ const el=$('#rfocus'); if(el) el.scrollIntoView({block:'center'}); },120); }
   else if(a==='kgrp'){ const sub=b.dataset.sub, K=V.kaidah; K.gsel=K.gsel||{}; K.gsel[sub]=b.dataset.v==='all'?null:+b.dataset.v; K.openSet=K.openSet||[]; if(!K.openSet.includes(sub)) K.openSet.push(sub); render(); const d=[...document.querySelectorAll('details.topic')].find(x=>x.dataset.sub===sub); if(d) d.scrollIntoView({block:'start'}); }
   else if(a==='kjump'){ const el=document.getElementById(b.dataset.v); if(el) el.scrollIntoView({block:'start',behavior:'smooth'}); }
