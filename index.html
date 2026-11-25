@@ -589,6 +589,18 @@ details.topic{scroll-margin-top:56px}
 h1.mh{margin-top:0}
 .mrules{padding:14px 14px 4px}
 .mrules ol.rules{margin:0 0 10px}
+ol.rules .rk{font-weight:600}
+.rpasal{display:inline-block;font-size:10.5px;font-weight:700;color:var(--muted);border:1px solid var(--line);border-radius:4px;padding:0 5px;margin-left:2px;vertical-align:1px;white-space:nowrap}
+ol.rules .rexp{font-size:13.5px;color:var(--muted);margin-top:4px;line-height:1.45}
+ol.rules .ex div+div{margin-top:3px}
+.exl{display:block;font-family:var(--f-ui);font-size:11px;font-weight:700;letter-spacing:.02em;margin-bottom:3px;color:var(--ok)}
+ol.rules .ex.bad{background:color-mix(in srgb,var(--bad) 8%,transparent)}
+ol.rules .ex.bad .exl{color:var(--bad)}
+.ex.bad .wr{text-decoration:line-through;text-decoration-color:var(--bad);color:var(--muted)}
+.ex.bad .ar{color:var(--muted)} .ex.bad .rt{font-weight:600}
+.mdef p{margin:0 0 8px;line-height:1.5} .mdef p:last-child{margin:0}
+.mdef .mguna{font-size:14px;color:var(--muted)}
+.mtrap ul{margin:0;padding-left:20px;display:flex;flex-direction:column;gap:6px;line-height:1.45;font-size:14px}
 .mres{display:flex;align-items:center;justify-content:space-between;width:100%;border:0;background:none;padding:0 0 4px;font-weight:700;font-size:15px;color:var(--ink);text-align:left}
 .mres .chev{color:var(--faint)}
 /* Menu bawah mengambang,selalu tampil */
@@ -1832,155 +1844,303 @@ body[data-r="game"] .gscore em{border:2px solid color-mix(in srgb,var(--orange) 
 <script>
 (function(){
 'use strict';
-/* ---------- Materi EYD V (ringkasan dari SK EYD Edisi V, 2022) ---------- */
+/* ---------- Materi EYD V (SK Kepala Badan Bahasa No. 0424/I/BS.00.01/2022) ----------
+   Topik: {sub, ref, def (pengertian), guna (cara memahami), aturan, jebakan}
+   Kaidah: [0 kaidah, 1 contoh benar, 2 penjelasan, 3 salah → benar, 4 nomor butir EYD V]
+   Contoh dipisah " · ", baris baru " ↵ ", pasangan salah/benar "salah → benar". */
 const MATERI = [
- {bab:'Bab I · Pemakaian Huruf', kat:'ejaan', topik:[
-  {sub:'Huruf kapital', ref:'I.F', aturan:[
-   ['Huruf pertama awal kalimat dan awal kalimat dalam petikan langsung.','Ibu berpesan, "Berhati-hatilah, Nak!"'],
-   ['Unsur nama orang dan julukan; tidak dipakai jika nama orang menjadi nama jenis atau satuan.','James Watt · 15 watt · mesin diesel · ikan mujair'],
-   ['Nama orang pada nama teori, hukum, dan rumus tetap kapital.','hukum Archimedes · teori Darwin'],
-   ['Bin, binti, boru, dan van tidak kapital, kecuali di awal nama.','Abdul Rahman bin Zaini'],
-   ['Gelar, jabatan, dan pangkat kapital jika diikuti nama orang atau dipakai sebagai sapaan.','Wakil Presiden Adam Malik · Selamat pagi, Dokter.'],
-   ['Nama bangsa, suku, bahasa, dan aksara kapital, kecuali sebagai bentuk dasar kata turunan.','bahasa Tolaki · suku Dani · keinggris-inggrisan'],
-   ['Nama tahun, bulan, hari, hari raya, dan peristiwa sejarah kapital; peristiwa yang tidak dipakai sebagai nama ditulis kecil.','hari Jumat · Perang Dunia II · memperingati proklamasi kemerdekaan'],
-   ['Nama geografi kapital; unsur geografi tanpa nama diri dan nama geografi yang menjadi nama jenis ditulis kecil; nama geografi asal daerah kapital.','Danau Toba · mandi di sungai · jeruk bali · soto Banjar'],
-   ['Setiap kata nama negara, lembaga, dokumen, judul buku, dan media massa kapital, kecuali kata tugas yang tidak di awal.','Perserikatan Bangsa-Bangsa · Dari Ave Maria ke Jalan Lain ke Roma'],
-   ['Kata kekerabatan sebagai sapaan atau pengacuan kapital; jika diikuti kata kepemilikan ditulis kecil. Kata Anda selalu kapital.','"Kapan Bapak berangkat?" · bapak dan ibu kita · Sudahkah Anda tahu?']
-  ]},
-  {sub:'Huruf miring dan tebal', ref:'I.G–H', aturan:[
-   ['Huruf miring untuk judul buku, film, album, acara televisi, siniar, lakon, dan nama media massa yang dikutip.','buku *Salah Asuhan* · surat kabar *Cakrawala*'],
-   ['Huruf miring untuk menegaskan huruf, bagian kata, kata, atau kelompok kata.','Huruf terakhir kata *abad* adalah *d*.'],
-   ['Huruf miring untuk kata bahasa daerah, bahasa asing, dan nama ilmiah.','*Garcinia mangostana* · *tut wuri handayani*'],
-   ['Nama diri asing (orang, lembaga, organisasi, merek) tidak ditulis miring.','Ia bekerja di Sinar Data Corporation.'],
-   ['Judul puisi, lagu, artikel, dan bab ditulis dengan tanda petik, bukan miring.','puisi "Pahlawanku"'],
-   ['Huruf tebal menegaskan bagian yang sudah miring dan menandai judul bab atau subbab.','Kata ***et*** dalam *ora et labora* berarti \'dan\'.']
-  ]}
+ {bab:'Bab I · Penggunaan Huruf', kat:'ejaan', topik:[
+  {sub:'Huruf kapital', ref:'I.F',
+   def:'Huruf kapital (huruf besar) dipakai sebagai huruf pertama kata tertentu untuk menandai awal kalimat dan nama diri, yaitu nama yang merujuk pada satu orang, tempat, lembaga, peristiwa, atau karya tertentu.',
+   guna:'Pertanyaan kunci: apakah kata itu nama diri (khusus, merujuk satu hal tertentu) atau hanya nama jenis/sebutan umum? Nama diri ditulis kapital; nama jenis dan sebutan umum ditulis kecil.',
+   aturan:[
+   ['Huruf pertama awal kalimat ditulis kapital.','Apa maksudnya? · Tolong ambilkan buku itu! · Kita harus bekerja keras.','Berlaku untuk semua jenis kalimat: pernyataan, tanya, dan perintah.','','I.F.1'],
+   ['Huruf pertama awal kalimat dalam petikan langsung ditulis kapital.','Ibu berpesan, "Berhati-hatilah, Nak!" · "Besok pagi," kata Rino, "mereka akan berangkat."','Jika petikan disela keterangan pengutip (kata Rino), lanjutan petikannya tidak diawali kapital karena masih satu kalimat.','"Besok pagi," kata Rino, "Mereka akan berangkat." → "Besok pagi," kata Rino, "mereka akan berangkat."','I.F.6'],
+   ['Huruf pertama setiap unsur nama orang, termasuk julukan, ditulis kapital.','Dewi Sartika · André-Marie Ampère · Bapak Koperasi · Jenderal Kancil','Julukan yang merujuk satu orang tertentu diperlakukan seperti nama diri.','dewi Sartika → Dewi Sartika','I.F.2'],
+   ['Nama orang yang dipakai sebagai nama jenis atau satuan ukuran ditulis kecil.','5 ampere · 15 watt · ikan mujair · mesin diesel','Di sini nama orang tidak lagi merujuk pada orangnya, tetapi pada jenis benda atau satuan.','15 Watt → 15 watt · mesin Diesel → mesin diesel','I.F.3'],
+   ['Nama orang dalam nama teori, hukum, dan rumus tetap kapital; kata teori, hukum, dan rumus ditulis kecil.','teori Darwin · hukum Archimedes · rumus Phytagoras','Berbeda dari kaidah sebelumnya: nama orang di sini masih merujuk pada penemunya.','Ia mempelajari Teori Darwin. → Ia mempelajari teori Darwin.','I.F.4'],
+   ['Kata yang bermakna ‘anak dari’ (bin, binti, boru, van) dan kata tugas dari di dalam nama ditulis kecil, kecuali menjadi awal nama.','Abdul Rahman bin Zaini · Indani boru Sitanggang · Ayam Jantan dari Timur · Van Basten','','Fatimah Binti Salim → Fatimah binti Salim','I.F.5'],
+   ['Nama agama, kitab suci, dan Tuhan ditulis kapital, termasuk sebutan, kata ganti, dan singkatan nama Tuhan.','Islam · Konghucu · Alkitab · Weda · Allah · jalan-Nya · Engkau · Tuhan YME · Allah Swt.','Kata ganti untuk Tuhan ditulis kapital; -Nya dirangkai dengan tanda hubung.','rahmat-nya (untuk Tuhan) → rahmat-Nya','I.F.7'],
+   ['Gelar kehormatan, kebangsawanan, keturunan, keagamaan, atau akademik yang diikuti nama orang ditulis kapital; begitu juga gelar akademik yang mengikuti nama orang.','Teuku Umar · Kiai Haji Hasjim Asjarie · Doktor Mohammad Hatta · Irwansyah, Magister Humaniora','Tanpa nama orang, gelar hanyalah kata biasa: Ia meraih gelar doktor.','Ia meraih gelar Doktor. → Ia meraih gelar doktor.','I.F.8'],
+   ['Gelar, profesi, jabatan, dan pangkat yang dipakai sebagai sapaan ditulis kapital.','Selamat datang, Yang Mulia. · Terima kasih, Kiai. · Selamat pagi, Dokter. · Siap, Jenderal.','Ciri sapaan: kata itu dipakai untuk memanggil lawan bicara.','Silakan masuk, dokter. → Silakan masuk, Dokter.','I.F.9'],
+   ['Jabatan dan pangkat ditulis kapital jika diikuti nama orang atau jika menggantikan nama orang, instansi, atau tempat tertentu.','Wakil Presiden Adam Malik · Profesor Anton M. Moeliono · Gubernur Papua Barat · Sekretaris Jenderal Kementerian Luar Negeri','Jika jabatan hanya disebut secara umum, tanpa nama orang, instansi, atau tempat tertentu, tulis kecil.','Ia bercita-cita menjadi Presiden. → Ia bercita-cita menjadi presiden.','I.F.10'],
+   ['Huruf pertama unsur singkatan gelar dan pangkat ditulis kapital.','S.E. · M.Si. · Hj. · Pdt. · Dt. · Kol.','Bedakan dr. (dokter) yang kecil dengan Dr. (doktor) yang kapital; artinya berbeda.','','I.F.22'],
+   ['Nama bangsa, suku, bahasa, dan aksara ditulis kapital; kata bangsa, suku, bahasa, dan aksara di depannya ditulis kecil.','bangsa Indonesia · suku Dani · bahasa Tolaki · aksara Kaganga','','Ia fasih berbahasa Jawa dan Bahasa Inggris. → … dan bahasa Inggris.','I.F.11'],
+   ['Nama bangsa, suku, bahasa, atau aksara yang menjadi bentuk dasar kata turunan ditulis kecil.','pengindonesiaan kata asing · keinggris-inggrisan · kesunda-sundaan','Begitu mendapat imbuhan (peng-an, ke-an), kata itu tidak lagi berfungsi sebagai nama diri.','pengIndonesiaan → pengindonesiaan · keinggris-Inggrisan → keinggris-inggrisan','I.F.12'],
+   ['Nama tahun, bulan, hari, dan hari besar atau hari raya ditulis kapital; kata tahun, bulan, dan hari di depannya ditulis kecil.','tahun Hijriah · tarikh Masehi · bulan Agustus · hari Jumat · hari Lebaran · hari Natal','','Rapat diadakan pada Hari Jumat. → … pada hari Jumat.','I.F.13'],
+   ['Unsur nama peristiwa sejarah ditulis kapital.','Konferensi Asia Afrika · Perang Dunia II · Proklamasi Kemerdekaan Indonesia · Hari Pendidikan Nasional','Kata Hari ikut kapital pada Hari Pendidikan Nasional karena menjadi bagian dari nama peringatan itu.','','I.F.14'],
+   ['Peristiwa sejarah yang tidak dipakai sebagai nama ditulis kecil.','Kami memperingati proklamasi kemerdekaan setiap tahun. · Perlombaan senjata membawa risiko pecahnya perang dunia.','Uji: apakah kata itu merujuk satu peristiwa bernama tertentu, atau hanya menyebut jenis peristiwanya?','… risiko pecahnya Perang Dunia. → … risiko pecahnya perang dunia.','I.F.15'],
+   ['Nama geografi ditulis kapital, termasuk unsur geografinya (gunung, sungai, jalan, kota, dan sebagainya) jika diikuti nama diri.','Gunung Semeru · Danau Toba · Selat Lombok · Kota Kupang · Jalan Polonia · Lantai II Gedung Tabrani','','mendaki gunung Semeru → mendaki Gunung Semeru','I.F.16'],
+   ['Unsur geografi yang tidak diikuti nama diri ditulis kecil.','berlayar ke teluk · mandi di sungai · menyeberangi selat · berenang di danau','','mandi di Sungai → mandi di sungai','I.F.17'],
+   ['Nama geografi yang dipakai sebagai nama jenis ditulis kecil.','jeruk bali · kacang bogor · petai cina · gula jawa · kunci inggris','Nama jenis biasanya dapat disejajarkan dengan jenis lain dalam kelompoknya: gula jawa, gula pasir, gula aren.','jeruk Bali → jeruk bali · petai Cina → petai cina','I.F.18'],
+   ['Nama geografi yang menyatakan asal daerah ditulis kapital.','batik Cirebon · bubur Manado · kopi Gayo · soto Banjar · tari Bali · film Indonesia','Bedakan dengan kaidah sebelumnya: di sini nama daerah menunjukkan asal sesuatu, bukan nama jenis.','soto banjar → soto Banjar','I.F.19'],
+   ['Semua kata dalam nama negara, lembaga, badan, organisasi, atau dokumen ditulis kapital, termasuk unsur bentuk ulang utuh, kecuali kata tugas.','Bosnia dan Herzegovina · Perserikatan Bangsa-Bangsa · Kitab Undang-Undang Hukum Pidana','Kata tugas antara lain dan, di, ke, dari, yang, untuk, dan tentang.','Perserikatan Bangsa-bangsa → Perserikatan Bangsa-Bangsa','I.F.20'],
+   ['Setiap kata dalam judul buku, karangan, artikel, makalah, dan nama media massa ditulis kapital, kecuali kata tugas yang tidak terletak di awal.','Dari Ave Maria ke Jalan Lain ke Roma · majalah Bahasa dan Sastra · makalah "Penerapan Asas-Asas Hukum Perdata"','Kata tugas di awal judul tetap kapital, seperti Dari pada judul pertama.','"Listrik Sahabat Petani Dan Nelayan" → "Listrik Sahabat Petani dan Nelayan"','I.F.21'],
+   ['Kata kekerabatan (bapak, ibu, kakak, adik) dan kata atau ungkapan lain yang dipakai sebagai sapaan ditulis kapital.','"Kapan Bapak berangkat?" tanya Hasan. · "Itu apa, Bu?" · Selamat belajar, Anak-Anak.','','"Silakan duduk, dik!" → "Silakan duduk, Dik!"','I.F.23'],
+   ['Kata Anda selalu ditulis dengan huruf awal kapital.','Sudahkah Anda tahu? · Hanya teman Anda yang mengerti masalah itu.','','Terima kasih atas kehadiran anda. → … kehadiran Anda.','I.F.23 cat. a'],
+   ['Kata kekerabatan yang dipakai untuk mengacu pada orang yang diajak bicara atau dibicarakan ditulis kapital.','"Bu, saya sudah melaporkan hal ini kepada Bapak." · "Besok Paman akan datang bersama kakakmu."','','','I.F.23 cat. b'],
+   ['Kata kekerabatan yang diikuti kata yang menunjukkan kepemilikan ditulis kecil.','bapak dan ibu kita · kakak dan adik saya · kakakmu','Ada kata pemilik (kita, saya, -mu), jadi kata itu hanya menyebut hubungan kekerabatan, bukan sapaan.','Kita harus menghormati Bapak dan Ibu kita. → … bapak dan ibu kita.','I.F.23 cat. c']
+   ],
+   jebakan:['Jabatan tanpa nama orang, instansi, atau tempat ditulis kecil: menjadi presiden, diangkat sebagai gubernur.','Pada hari Jumat dan bahasa Inggris, hanya nama dirinya yang kapital, sedangkan kata hari dan bahasa tetap kecil.','jeruk bali dan petai cina (nama jenis) ditulis kecil, tetapi soto Banjar dan batik Cirebon (asal daerah) kapital.','Kekerabatan + kata pemilik ditulis kecil: bapak saya, ibu kita.','Kata tugas di tengah judul atau nama lembaga ditulis kecil, tetapi kedua unsur bentuk ulang utuh kapital: Bangsa-Bangsa.']},
+  {sub:'Huruf miring dan tebal', ref:'I.G–H',
+   def:'Huruf miring adalah huruf yang dicetak condong ke kanan; huruf tebal adalah huruf yang dicetak lebih tebal. Keduanya dipakai untuk membedakan bagian tertentu dari teks di sekitarnya.',
+   guna:'Huruf miring dipakai untuk judul karya utuh (buku, film), penegasan, serta kata asing atau daerah. Huruf tebal hanya dipakai untuk menegaskan bagian yang sudah miring dan untuk judul bab atau subbab.',
+   aturan:[
+   ['Huruf miring dipakai untuk judul buku, film, album lagu, acara televisi, siniar, lakon, dan nama media massa yang dikutip dalam tulisan, termasuk dalam daftar pustaka.','buku *Salah Asuhan* · majalah *Poedjangga Baroe* · film *Habibie dan Ainun* · siniar *Celetuk Bahasa*','Patokannya: judul karya yang utuh dan berdiri sendiri.','buku "Salah Asuhan" → buku *Salah Asuhan*','I.G.1'],
+   ['Huruf miring dipakai untuk menegaskan atau mengkhususkan huruf, bagian kata, kata, atau kelompok kata dalam kalimat.','Huruf terakhir kata *abad* adalah *d*. · Imbuhan *ber-* pada kata *berjasa* bermakna ‘memiliki’. · Buatlah kalimat dengan ungkapan *lepas tangan*!','','','I.G.2'],
+   ['Huruf miring dipakai untuk kata atau ungkapan dalam bahasa daerah dan bahasa asing, termasuk nama ilmiah.','*malapeh awo* · *Garcinia mangostana* · *tut wuri handayani* · *men sana in corpore sano*','Kata serapan yang ejaannya sudah disesuaikan dengan bahasa Indonesia, misalnya televisi dan kualitas, tidak dimiringkan.','Nama ilmiah manggis adalah Garcinia mangostana. → … adalah *Garcinia mangostana*.','I.G.3'],
+   ['Dalam tulisan tangan atau mesin tik, bagian yang akan dicetak miring ditandai dengan garis bawah satu.','Salah Asuhan (digarisbawahi satu kali)','','','I.G.3 cat. b'],
+   ['Nama diri berbahasa asing atau daerah, seperti nama orang, lembaga, organisasi, atau merek dagang, tidak dimiringkan.','Ia bekerja di Sinar Data Corporation.','Nama diri sudah ditandai dengan huruf kapital, jadi tidak perlu dimiringkan.','Ia bekerja di *Sinar Data Corporation*. → Ia bekerja di Sinar Data Corporation.','I.G.3 cat. a'],
+   ['Judul puisi, lagu, artikel, naskah, bab buku, dan pidato di dalam kalimat diapit tanda petik, bukan dimiringkan.','puisi "Pahlawanku" · lagu "Maju Tak Gentar"','Ini kaidah tanda petik, tetapi sering menjadi pengecoh soal huruf miring. Bagian dari karya atau karya pendek (puisi, lagu, artikel, bab) memakai tanda petik; karya utuh (buku, album, film) dimiringkan.','lagu *Maju Tak Gentar* → lagu "Maju Tak Gentar"','III.J.2'],
+   ['Huruf tebal dipakai untuk menegaskan bagian tulisan yang sudah ditulis miring.','Kata ***et*** dalam ungkapan *ora* ***et*** *labora* berarti ‘dan’. · Huruf ***dh***, seperti pada kata *Ramadhan*, tidak terdapat dalam ejaan bahasa Indonesia.','Dalam tulisan tangan atau mesin tik, bagian yang akan dicetak tebal ditandai garis bawah dua.','','I.H.1'],
+   ['Huruf tebal dipakai untuk menegaskan bagian karangan, seperti judul bab atau subbab.','**BAB I** ↵ **PENDAHULUAN** · **1.1 Latar Belakang dan Masalah**','Untuk menegaskan kata di dalam kalimat biasa, pakai huruf miring, bukan huruf tebal.','','I.H.2']
+   ],
+   jebakan:['Judul buku, film, dan album dimiringkan; judul puisi, lagu, artikel, dan bab diapit tanda petik.','Nama merek, lembaga, atau orang asing tidak dimiringkan.','Penegasan kata dalam kalimat memakai huruf miring, bukan huruf tebal.','Kata asing yang belum diserap dimiringkan; kata serapan yang sudah diindonesiakan tidak.']}
  ]},
  {bab:'Bab II · Penulisan Kata', kat:'ejaan', topik:[
-  {sub:'Kata berimbuhan dan bentuk terikat', ref:'II.B.1', aturan:[
-   ['Imbuhan ditulis serangkai dengan kata dasarnya.','dijual · mempermudah · kemauan · seniman'],
-   ['Bentuk terikat ditulis serangkai.','antargolongan · pascasarjana · nonkolaborasi · subbagian · swadaya · ekstrakurikuler'],
-   ['Bentuk terikat + kata berhuruf awal kapital dirangkai dengan tanda hubung.','non-ASEAN · pro-Barat · pasca-Orba'],
-   ['Bentuk terikat + kata yang ditulis miring dirangkai dengan tanda hubung.','pasca-*reshuffle* · anti-*mainstream*'],
-   ['Maha- untuk nama atau sifat Tuhan ditulis terpisah dengan huruf awal kapital.','Tuhan Yang Maha Esa']
-  ]},
-  {sub:'Bentuk ulang dan gabungan kata', ref:'II.B.2–3', aturan:[
-   ['Bentuk ulang memakai tanda hubung.','anak-anak · sayur-mayur · berjalan-jalan'],
-   ['Bentuk ulang gabungan kata hanya mengulang unsur pertama.','surat-surat kabar · rak-rak buku'],
-   ['Unsur gabungan kata ditulis terpisah.','ibu kota · orang tua · rumah sakit · wali kota'],
-   ['Gabungan kata yang mendapat awalan dan akhiran sekaligus ditulis serangkai.','menyebarluaskan · pertanggungjawaban · dilipatgandakan'],
-   ['Gabungan kata yang hanya mendapat awalan atau akhiran tetap terpisah.','bertanggung jawab · bertepuk tangan · garis bawahi'],
-   ['Gabungan kata yang sudah padu ditulis serangkai.','kacamata · olahraga · matahari · sukacita · beasiswa · kosakata · saputangan']
-  ]},
-  {sub:'Pemenggalan kata', ref:'II.C', aturan:[
-   ['Dua vokal berurutan dipenggal di antaranya; diftong ai, au, ei, oi tidak dipenggal.','bu-ah · sau-da-ra'],
-   ['Satu konsonan di antara dua vokal dipenggal sebelum konsonan itu; gabungan konsonan satu bunyi tidak dipenggal.','ba-pak · ba-nyak · makh-luk'],
-   ['Kata berimbuhan dipenggal di antara bentuk dasar dan imbuhannya.','ber-jalan · makan-an'],
-   ['Singkatan tidak dipenggal, dan pemenggalan tidak boleh menyisakan satu huruf.','BKKBN (utuh)']
-  ]},
-  {sub:'Kata depan', ref:'II.D', aturan:[
-   ['Kata depan di, ke, dan dari ditulis terpisah dari kata yang mengikutinya.','di dalam lemari · ke luar kota · dari Pulau Penyengat'],
-   ['Bedakan dengan awalan di- dan ke- yang ditulis serangkai.','disimpan · keluar (pergi dari rumah)']
-  ]},
-  {sub:'Partikel', ref:'II.E', aturan:[
-   ['Partikel -lah, -kah, dan -tah ditulis serangkai.','Bacalah · Apakah · Apatah'],
-   ['Partikel pun ditulis terpisah.','Apa pun masalahnya · tengah malam pun'],
-   ['Pun yang menjadi bagian kata penghubung ditulis serangkai.','adapun · meskipun · walaupun · maupun · bagaimanapun · sekalipun'],
-   ['Partikel per yang berarti demi, tiap, mulai, atau melalui ditulis terpisah.','satu per satu · Rp50.000,00 per meter · per 1 Januari']
-  ]},
-  {sub:'Singkatan dan akronim', ref:'II.F', aturan:[
-   ['Singkatan nama orang, gelar, sapaan, dan pangkat diberi titik di setiap unsur.','A.H. Nasution · S.E. · M.Hum. · Sdr. Lukman'],
-   ['Singkatan dari huruf awal setiap kata: kapital tanpa titik.','KTP · PBB · SD · SIM'],
-   ['Singkatan surat-menyurat tiga huruf atau lebih diberi satu titik; dua huruf diberi titik di setiap huruf.','dll. · dsb. · hlm. · yth. · a.n. · s.d.'],
-   ['Singkatan alamat diakhiri titik.','Jl. Rawamangun · Gg. Kelinci · No. 9'],
-   ['Singkatan satuan, lambang kimia, dan mata uang tanpa titik.','km · kg · Cu · Rp'],
-   ['Akronim nama diri berhuruf awal kapital; akronim bukan nama diri ditulis kecil.','Bappenas · Kalteng · pemilu · puskesmas']
-  ]},
-  {sub:'Angka dan bilangan', ref:'II.G', aturan:[
-   ['Bilangan yang dapat ditulis dengan satu atau dua kata ditulis dengan huruf, kecuali dalam perincian.','tiga kali · lebih dari seribu buku'],
-   ['Angka dipakai untuk ukuran dan nilai.','5 kilogram · 4 hektare · Rp5.000,00 · 5%'],
-   ['Bilangan di awal kalimat didahului sebanyak, sejumlah, atau sebesar, atau kalimatnya disusun ulang.','Sebanyak 2.500 orang peserta diundang panitia.'],
-   ['Bilangan tingkat: angka Romawi, ke- + angka Arab dengan tanda hubung, atau huruf.','abad VII · abad ke-7 · abad ketujuh'],
-   ['Angka + akhiran -an dirangkai dengan tanda hubung.','tahun 2000-an · uang 5000-an'],
-   ['Pecahan dengan huruf: per- dilekatkan pada penyebut.','tiga perempat · dua persepuluh']
-  ]},
-  {sub:'Kata ganti dan kata sandang', ref:'II.H–I', aturan:[
-   ['Ku- dan kau- serangkai dengan kata sesudahnya; -ku, -mu, -nya serangkai dengan kata sebelumnya.','kujual · kaubaca · bukumu · rumahnya'],
-   ['Kau yang bukan bentuk terikat ditulis terpisah.','Kau masih muda.'],
-   ['Si dan sang ditulis terpisah; Sang kapital jika unsur nama Tuhan.','si pengirim · sang kakak · Sang Pencipta']
-  ]}
+  {sub:'Kata berimbuhan dan bentuk terikat', ref:'II.A–B.1',
+   def:'Imbuhan (afiks) adalah bentuk yang dilekatkan pada kata dasar, yaitu awalan (ber-, di-), sisipan (-el-, -em-, -er-, -in-), akhiran (-an, -kan, -wan, -wi), dan gabungan awalan-akhiran (ke-an, per-an). Bentuk terikat adalah unsur yang tidak dapat berdiri sendiri sebagai kata, seperti antar-, pasca-, non-, sub-, swa-, dan pra-.',
+   guna:'Prinsipnya: imbuhan dan bentuk terikat selalu ditulis serangkai. Tanda hubung baru dipakai jika kata yang dilekati berhuruf awal kapital atau ditulis miring.',
+   aturan:[
+   ['Kata dasar ditulis mandiri.','kantor · pergi · ramai · sangat','','','II.A'],
+   ['Imbuhan (awalan, sisipan, akhiran, serta gabungan awalan dan akhiran) ditulis serangkai dengan kata dasarnya.','berjalan · dijual · mempermudah · gelembung · kinerja · gerejawi · seniman · sukuisme · kemauan · perbaikan','Sisipan juga termasuk imbuhan: gelembung (g-el-embung) dan kinerja (k-in-erja).','di jual → dijual · ke mauan → kemauan','II.B.1a'],
+   ['Bentuk terikat ditulis serangkai dengan kata yang mengikutinya.','antargolongan · pascasarjana · nonkolaborasi · subbagian · swadaya · ekstrakurikuler · multilateral · antikekerasan · prajabatan · tunakarya','Contoh bentuk terikat lain: adi-, bio-, dwi-, eka-, infra-, mikro-, nir-, purna-, semi-, super-, tele-, trans-, tri-, ultra-.','non kolaborasi → nonkolaborasi · pasca sarjana → pascasarjana · anti kekerasan → antikekerasan','II.B.1b'],
+   ['Bentuk terikat yang dilekatkan pada kata berhuruf awal kapital dirangkai dengan tanda hubung.','non-Indonesia · pan-Afrika · pro-Barat · non-ASEAN · anti-PKI · pasca-Orba','','nonASEAN → non-ASEAN · non Indonesia → non-Indonesia','II.B.1c'],
+   ['Bentuk terikat yang dilekatkan pada kata bercetak miring (asing atau daerah) dirangkai dengan tanda hubung.','anti-*mainstream* · pasca-*reshuffle* · super-*jegeg*','','pascareshuffle → pasca-*reshuffle*','II.B.1d'],
+   ['Maha- yang diikuti kata dasar atau kata berimbuhan yang mengacu pada nama atau sifat Tuhan ditulis terpisah dengan huruf awal kapital.','Yang Maha Esa · Tuhan Yang Maha Kuasa · Yang Maha Pengasih · Tuhan Yang Maha Pemberi Rezeki','Di luar nama atau sifat Tuhan, maha- tetap serangkai: mahasiswa, mahakarya.','Tuhan Yang Mahakuasa → Tuhan Yang Maha Kuasa','II.B.1e']
+   ],
+   jebakan:['Bentuk terikat sering sengaja dipisah dalam soal: non aktif, pasca panen, antar kota → nonaktif, pascapanen, antarkota.','Tanda hubung hanya dipakai jika kata yang dilekati berhuruf kapital (non-Indonesia) atau bercetak miring (anti-*mainstream*).','Maha- ditulis terpisah hanya untuk nama atau sifat Tuhan; mahasiswa dan mahaguru tetap serangkai.']},
+  {sub:'Bentuk ulang dan gabungan kata', ref:'II.B.2–3',
+   def:'Bentuk ulang (reduplikasi) adalah kata yang dibentuk dengan mengulang bentuk dasar, seluruhnya atau sebagian, dengan atau tanpa perubahan bunyi. Gabungan kata (kata majemuk) adalah dua kata atau lebih yang bersama-sama membentuk satu makna, misalnya rumah sakit dan orang tua.',
+   guna:'Bentuk ulang selalu memakai tanda hubung. Gabungan kata pada dasarnya ditulis terpisah, dan baru ditulis serangkai jika mendapat awalan dan akhiran sekaligus atau sudah dianggap padu.',
+   aturan:[
+   ['Bentuk ulang ditulis dengan tanda hubung di antara unsurnya, termasuk ulang berubah bunyi dan ulang berimbuhan.','anak-anak · berjalan-jalan · sayur-mayur · mondar-mandir · terus-menerus · kupu-kupu · cas-cis-cus','Kata yang memang berbentuk ulang sejak asalnya, seperti kupu-kupu dan biri-biri, juga memakai tanda hubung.','anak anak → anak-anak · anak2 → anak-anak','II.B.2a'],
+   ['Bentuk ulang gabungan kata hanya mengulang unsur pertamanya.','kapal-kapal barang · rak-rak buku · surat-surat kabar · kereta-kereta api cepat','','surat kabar-surat kabar → surat-surat kabar','II.B.2b'],
+   ['Unsur gabungan kata, termasuk istilah khusus, ditulis terpisah.','ibu kota · orang tua · rumah sakit · wali kota · duta besar · kambing hitam · cendera mata · segi empat','','ibukota → ibu kota · walikota → wali kota · orangtua → orang tua','II.B.3a'],
+   ['Gabungan kata yang dapat menimbulkan salah pengertian ditulis dengan tanda hubung di antara unsurnya.','buku-sejarah baru ‘buku sejarah yang baru’ · buku sejarah-baru ‘buku tentang sejarah baru’ · ibu-bapak kami ‘ibu dan bapak kami’ · ibu bapak-kami ‘nenek’','Tanda hubung menunjukkan unsur mana yang lebih dulu bersatu.','','II.B.3b'],
+   ['Gabungan kata yang hanya mendapat awalan atau hanya mendapat akhiran tetap ditulis terpisah.','bertepuk tangan · menganak sungai · garis bawahi · sebar luaskan · bertanggung jawab','','bertanggungjawab → bertanggung jawab · garisbawahi → garis bawahi','II.B.3d'],
+   ['Gabungan kata yang mendapat awalan dan akhiran sekaligus ditulis serangkai.','dilipatgandakan · menggarisbawahi · menyebarluaskan · penghancurleburan · pertanggungjawaban','Cirinya: ada awalan dan akhiran yang mengapit gabungan kata itu.','menggaris bawahi → menggarisbawahi · pertanggung jawaban → pertanggungjawaban','II.B.3c'],
+   ['Gabungan kata tertentu yang sudah padu ditulis serangkai.','acapkali · apalagi · barangkali · beasiswa · belasungkawa · daripada · kacamata · kosakata · matahari · olahraga · padahal · peribahasa · saputangan · segitiga · sukacita · sukarela','Daftar ini perlu dihafal karena tidak dapat ditebak dari kaidah. Contohnya, segitiga ditulis serangkai, tetapi segi empat terpisah.','olah raga → olahraga · kaca mata → kacamata · kosa kata → kosakata','II.B.3e']
+   ],
+   jebakan:['bertanggung jawab (hanya awalan, terpisah) berbeda dari pertanggungjawaban (awalan dan akhiran, serangkai).','segitiga ditulis serangkai, tetapi segi empat dan segi lima terpisah.','Pada bentuk ulang gabungan kata, yang diulang hanya unsur pertama: rumah-rumah sakit.','Jangan memakai angka 2 untuk bentuk ulang dalam tulisan resmi.']},
+  {sub:'Pemenggalan kata', ref:'II.C',
+   def:'Pemenggalan kata adalah pemisahan kata menjadi bagian-bagian ketika kata itu terpotong di akhir baris. Bagian yang terpotong ditandai dengan tanda hubung.',
+   guna:'Kata dasar dipenggal menurut suku katanya. Kata berimbuhan dipenggal di antara imbuhan dan bentuk dasarnya, kecuali jika bentuk dasarnya berubah (luluh).',
+   aturan:[
+   ['Dua vokal berurutan di tengah kata dasar dipenggal di antara kedua vokal itu.','bu-ah · ma-in · ni-at · sa-at','','','II.C.1a'],
+   ['Monoftong eu dan diftong ai, au, ei, serta oi tidak dipenggal.','seu-da-ti · pan-dai · sau-da-ra · sur-vei · am-boi','Diftong diucapkan sebagai satu bunyi, sehingga tidak dipisah.','sa-u-da-ra → sau-da-ra · pan-da-i → pan-dai','II.C.1b–c'],
+   ['Satu konsonan (termasuk gabungan konsonan) di antara dua vokal dipenggal sebelum konsonan itu.','ba-pak · de-ngan · ke-nyang · la-wan · mu-ta-khir · mu-sya-wa-rah','','bap-ak → ba-pak · deng-an → de-ngan','II.C.1d'],
+   ['Dua konsonan berurutan di tengah kata dasar dipenggal di antara kedua konsonan itu.','Ap-ril · ban-tu · man-di · som-bong · swas-ta','','ma-ndi → man-di','II.C.1e'],
+   ['Tiga konsonan atau lebih yang masing-masing melambangkan satu bunyi dipenggal di antara konsonan pertama dan kedua.','am-bruk · ben-trok · in-fra · ul-tra · in-stru-men','','amb-ruk → am-bruk','II.C.1f'],
+   ['Gabungan huruf konsonan yang melambangkan satu bunyi (kh, ng, ny, sy) tidak dipenggal.','ba-nyak · kong-res · makh-luk · masy-hur','','ban-yak → ba-nyak · mak-hluk → makh-luk','II.C.1g'],
+   ['Kata berimbuhan dipenggal di antara bentuk dasar dan unsur pembentuknya, termasuk bentuk terikat dan partikel.','ber-jalan · mem-bantu · makan-an · ke-kuat-an · per-tanggung-jawab-kan · non-aktif · swa-foto · apa-kah · pergi-lah','','be-rjalan → ber-jalan','II.C.2a'],
+   ['Kata berimbuhan yang bentuk dasarnya berubah, serta kata bersisipan, dipenggal seperti kata dasar.','me-ma-kai · me-nu-tup · pe-nga-rang · pe-nye-but · ge-lem-bung · te-lun-juk','Memakai berasal dari meN- + pakai. Huruf p luluh, sehingga batas imbuhannya tidak lagi tampak.','mem-akai → me-ma-kai · men-utup → me-nu-tup','II.C.2b–c'],
+   ['Kata yang terdiri atas dua unsur atau lebih yang salah satunya dapat bergabung dengan unsur lain dipenggal di antara unsur-unsur itu.','bio-grafi · bio-data · foto-kopi · kilo-meter · pasca-panen · intro-speksi','','','II.C.3'],
+   ['Nama orang dua kata atau lebih dipenggal di antara katanya. Singkatan tidak dipenggal. Pemenggalan yang menyisakan satu huruf di awal atau akhir baris tidak dilakukan.','Mohammad ↵ Tabrani · BKKBN (utuh) · R.Ng. (utuh)','Contoh pemenggalan yang dilarang: i-tu dan a-kan, karena menyisakan satu huruf.','i- ↵ tu → seluruh kata itu dipindah ke baris berikutnya','II.C.2d, 4, 5']
+   ],
+   jebakan:['ng, ny, kh, dan sy adalah satu bunyi: de-ngan, bukan deng-an.','Kata berimbuhan yang luluh (memakai, menulis) dipenggal seperti kata dasar: me-nu-lis, bukan men-ulis.','Diftong ai, au, dan oi tidak dipisah: pan-dai, sau-da-ra.']},
+  {sub:'Kata depan', ref:'II.D',
+   def:'Kata depan (preposisi) adalah kata tugas yang diletakkan di depan kata atau frasa untuk menunjukkan hubungan seperti tempat, arah, dan asal. Kata depan yang diatur penulisannya dalam EYD V adalah di, ke, dan dari.',
+   guna:'Kata depan ditulis terpisah, sedangkan awalan di- dan ke- ditulis serangkai. Cara cepat membedakannya ada di kaidah kedua.',
+   aturan:[
+   ['Kata depan di, ke, dan dari ditulis terpisah dari kata yang mengikutinya.','di mana · di mana-mana · di dalam lemari · ke tengah kancah · ke luar kota · dari Pulau Penyengat','','dimana → di mana · kesana → ke sana · didalam → di dalam','II.D'],
+   ['Awalan di- (pembentuk kata kerja pasif) dan ke- (pembentuk kata bilangan atau kata benda) ditulis serangkai.','disimpan · dijual · kedua · kehendak · ketua','Uji cepat: jika kata sesudahnya menunjukkan tempat atau arah (bisa ditanya dengan di mana? atau ke mana?), itu kata depan dan ditulis terpisah. Jika kata itu kata kerja yang bisa diubah ke bentuk me- (disimpan ↔ menyimpan), itu awalan dan ditulis serangkai.','di simpan → disimpan · di jual → dijual','II.B.1a'],
+   ['Keluar dan ke luar berbeda. Keluar (kata kerja, lawan dari masuk) ditulis serangkai; ke luar (arah, lawan dari ke dalam) ditulis terpisah.','Ia keluar dari rumah. · Saya pergi ke luar kota.','','Ia ke luar dari rumah. → Ia keluar dari rumah. · Saya pergi keluar kota. → Saya pergi ke luar kota.','II.D']
+   ],
+   jebakan:['daripada dan kepada adalah satu kata, sehingga ditulis serangkai.','di sana, di sini, ke sana, dan ke mana-mana selalu terpisah.','dikantor dan disekolah salah: kantor dan sekolah adalah tempat, jadi ditulis di kantor dan di sekolah.']},
+  {sub:'Partikel', ref:'II.E',
+   def:'Partikel adalah kata tugas pendek yang menegaskan atau memberi nuansa tertentu pada kata atau kalimat. Partikel yang diatur penulisannya dalam EYD V adalah -lah, -kah, -tah, pun, dan per.',
+   guna:'-lah, -kah, dan -tah selalu menempel. Pun umumnya terpisah, kecuali dalam 14 kata penghubung yang sudah padu.',
+   aturan:[
+   ['Partikel -lah, -kah, dan -tah ditulis serangkai dengan kata yang mendahuluinya.','Bacalah buku itu baik-baik! · Bertepuk tanganlah! · Apakah yang tersirat … · Siapakah gerangan dia? · Apatah gunanya bersedih hati?','','Baca lah buku itu! → Bacalah buku itu! · Apa kah … → Apakah …','II.E.1'],
+   ['Partikel pun ditulis terpisah dari kata yang mendahuluinya.','Apa pun permasalahannya … · Jika kita pulang tengah malam pun, … · Jangankan dua kali, sekali pun engkau belum pernah …','Pun di sini bermakna ‘juga’ atau menegaskan kata di depannya.','apapun masalahnya → apa pun masalahnya · siapapun → siapa pun','II.E.2'],
+   ['Pun yang menjadi bagian kata penghubung ditulis serangkai: adapun, andaipun, ataupun, bagaimanapun, biarpun, jikapun, kalaupun, kendatipun, maupun, meskipun, sekalipun, sementangpun, sungguhpun, dan walaupun.','Meskipun sibuk, dia dapat menyelesaikan tugasnya. · Adapun penyebab kemacetan itu belum diketahui. · Bagaimanapun pekerjaan itu harus selesai.','Uji: jika kata itu menghubungkan dua bagian kalimat dan dapat diganti walaupun, meskipun, atau dan, tulis serangkai.','walau pun → walaupun · meski pun → meskipun · baik … mau pun → baik … maupun','II.E.3'],
+   ['Sekalipun yang bermakna ‘walaupun’ ditulis serangkai, sedangkan sekali pun yang bermakna ‘satu kali pun’ ditulis terpisah.','Sekalipun teman dekat, dia belum pernah sekali pun datang ke rumahku.','Contoh ini tercantum langsung dalam EYD V dan sering dijadikan soal.','','II.E.2–3'],
+   ['Partikel per yang bermakna ‘demi’, ‘tiap’, ‘mulai’, atau ‘melalui’ ditulis terpisah dari kata yang mengikutinya.','satu per satu · Rp50.000,00 per meter · per 1 Januari · per telepon','Bedakan dengan per- pada bilangan pecahan, seperti seperempat dan tiga perempat, yang ditulis serangkai.','satu persatu → satu per satu · permeter → per meter','II.E.4']
+   ],
+   jebakan:['apa pun, siapa pun, di mana pun, dan kapan pun ditulis terpisah karena bukan kata penghubung.','bagaimanapun ditulis serangkai karena termasuk daftar kata penghubung, sedangkan apa pun terpisah.','satu per satu ditulis terpisah, tetapi tiga perempat serangkai.']},
+  {sub:'Singkatan dan akronim', ref:'II.F',
+   def:'Singkatan adalah bentuk pendek dari kata atau gabungan kata, yang dieja huruf demi huruf (KTP: ka-te-pe) atau dibaca seperti kata lengkapnya (dll.: dan lain-lain). Akronim adalah singkatan dari huruf awal, suku kata, atau gabungan keduanya yang dilafalkan seperti kata (pemilu, Bappenas).',
+   guna:'Ada tiga pertanyaan kunci: perlu titik atau tidak? Kapital atau kecil? Nama diri atau bukan?',
+   aturan:[
+   ['Singkatan nama orang, gelar, sapaan, dan pangkat diberi titik pada setiap unsurnya.','A.H. Nasution · H. Hamid · Suman Hs. · S.E. · M.Hum. · Ph.D. · Sdr. Lukman · Kol. Inf. Hendri','','SE → S.E. · M.Hum → M.Hum.','II.F.1'],
+   ['Singkatan nama orang dalam bentuk inisial ditulis tanpa titik.','LS (Lilis Suryaningsih) · SDD (Sapardi Djoko Damono) · STA (Sutan Takdir Alisjahbana)','Bandingkan A.H. Nasution (sebagian nama disingkat, bertitik) dengan SDD (seluruh nama menjadi inisial, tanpa titik).','S.D.D. → SDD','II.F.2'],
+   ['Singkatan dan akronim yang terdiri atas huruf awal setiap kata ditulis kapital tanpa titik.','KTP · KUHP · NKRI · PBB · SD · UI · WHO · BIN · PAUD · SIM','','K.T.P. → KTP · S.D. (sekolah dasar) → SD','II.F.3'],
+   ['Singkatan surat-menyurat yang terdiri atas lebih dari dua huruf diakhiri dengan satu titik.','dkk. · dll. · dsb. · dst. · hlm. · sda. · ttd. · ybs. · yth.','','d.l.l. → dll. · dll → dll.','II.F.4a'],
+   ['Singkatan surat-menyurat yang terdiri atas dua huruf diberi titik pada setiap hurufnya.','a.n. · d.a. · s.d. · u.b. · u.p.','','an. → a.n. · sd. → s.d.','II.F.4b'],
+   ['Singkatan dalam alamat ditulis dua huruf atau lebih dan diakhiri titik.','Gd. Tabrani · Jl. Rawamangun · Gg. Kelinci · Kav. 5 · Km. 57 · Lt. 2 · No. 9','','Jl Rawamangun → Jl. Rawamangun','II.F.4c'],
+   ['Singkatan satuan ukuran, takaran, timbangan, lambang kimia, dan mata uang tidak diberi titik.','km · kg · l · kVA · Cu · Rp','','Rp. 5.000,00 → Rp5.000,00 · 10 kg. → 10 kg','II.F.5'],
+   ['Akronim nama diri yang berupa gabungan huruf dan suku kata atau gabungan suku kata ditulis dengan huruf awal kapital saja.','Bappenas · Bulog · Kalteng · Kowani · Suramadu · Wita','','BAPPENAS → Bappenas · BULOG → Bulog','II.F.6'],
+   ['Akronim bukan nama diri yang berupa gabungan huruf dan suku kata atau gabungan suku kata ditulis dengan huruf kecil.','iptek · pemilu · puskesmas · rapim · rudal · tilang','','IPTEK → iptek · Pemilu (di tengah kalimat) → pemilu','II.F.7']
+   ],
+   jebakan:['Rp ditulis tanpa titik dan tanpa spasi: Rp5.000,00.','Km. 57 dalam alamat bertitik dan kapital, tetapi 57 km sebagai satuan ditulis kecil tanpa titik.','dr. (dokter) berbeda dari Dr. (doktor).','Akronim nama diri seperti Bappenas hanya kapital di huruf awal, sedangkan singkatan dari huruf awal setiap kata seperti BIN kapital semua.']},
+  {sub:'Angka dan bilangan', ref:'II.G',
+   def:'Bilangan adalah satuan jumlah. Bilangan dapat ditulis dengan huruf (tiga), angka Arab (3), atau angka Romawi (III). EYD V mengatur kapan bilangan ditulis dengan huruf dan kapan dengan angka.',
+   guna:'Patokan umum: dalam teks, bilangan yang dapat ditulis dengan satu kata memakai huruf. Ukuran, nilai, alamat, nomor, dan perincian berurutan memakai angka.',
+   aturan:[
+   ['Bilangan dalam teks yang dapat dinyatakan dengan satu kata ditulis dengan huruf, kecuali jika dipakai secara berurutan seperti dalam perincian.','Mereka menonton drama itu sampai tiga kali. · Koleksi saya lebih dari seribu buku. · … 52 orang setuju, 15 orang tidak setuju, dan 5 orang abstain.','EYD V memakai patokan satu kata (PUEBI sebelumnya: satu atau dua kata). Bilangan yang memerlukan lebih dari satu kata, misalnya 72, lazim ditulis dengan angka.','Ia menonton drama itu sampai 3 kali. → … sampai tiga kali.','II.G.2'],
+   ['Angka dipakai untuk menyatakan ukuran (panjang, berat, luas, isi, waktu) dan nilai (uang, persentase).','0,5 sentimeter · 5 kilogram · 4 hektare · 1 jam 20 menit · Rp5.000,00 · US$3,50 · 5% · 7 persen','','Rp 5.000 → Rp5.000,00','II.G.3'],
+   ['Bilangan di awal kalimat yang terdiri atas lebih dari satu kata tidak ditulis dengan angka. Tambahkan sebanyak, sejumlah, atau sebesar, atau ubah susunan kalimatnya.','Sebanyak 2.500 orang peserta diundang panitia. · Panitia mengundang 2.500 orang peserta. · Sejumlah 25 naskah kuno tersimpan di lemari itu.','Bilangan satu kata di awal kalimat cukup ditulis dengan huruf: Tiga orang datang terlambat.','2.500 orang peserta diundang panitia. → Sebanyak 2.500 orang peserta diundang panitia.','II.G.4'],
+   ['Angka untuk bilangan besar boleh ditulis sebagian dengan huruf agar mudah dibaca.','500 ribu dosis vaksin · 90 juta rupiah · 55 miliar rupiah · 7 triliun rupiah','','','II.G.5'],
+   ['Angka dipakai dalam alamat serta untuk menomori bagian karangan atau bagian kitab suci.','Jalan Kartika I No. 15 · Hotel Mahameru, Kamar 169 · Bab II, Pasal 3, halaman 13 · Surah Al-‘Alaq [96]: 1','','','II.G.6–7'],
+   ['Dalam peraturan, akta, dan kuitansi, bilangan utuh ditulis mandiri dan pecahan ditulis dengan per- yang dilekatkan pada penyebutnya. Bilangan juga boleh ditulis dengan angka lalu diikuti huruf dalam kurung.','dua belas · tiga puluh lima · tiga perempat · seperenam belas · satu persen · 1 (satu) tahun · Rp200.000.000,00 (dua ratus juta rupiah)','','tiga per empat → tiga perempat · dua per sepuluh → dua persepuluh','II.G.8, 11'],
+   ['Bilangan tingkat ditulis dengan angka Romawi, gabungan ke- dan angka Arab (dengan tanda hubung), atau huruf.','abad VII · abad ke-7 · abad ketujuh · Perang Dunia II · Perang Dunia Ke-2 · Perang Dunia Kedua','Jangan mencampur ke- dengan angka Romawi.','abad ke-VII → abad VII atau abad ke-7 · abad ke 7 → abad ke-7','II.G.9'],
+   ['Angka yang diikuti akhiran -an dirangkai dengan tanda hubung.','tahun 2000-an · uang 5000-an · seharga 5.000-an','','tahun 2000an → tahun 2000-an','II.G.10'],
+   ['Bilangan yang menjadi unsur nama geografi ditulis dengan huruf secara serangkai.','Kelapadua · Limapuluhkoto · Rajaampat · Simpanglima · Tigaraksa','','Kelapa Dua → Kelapadua','II.G.12']
+   ],
+   jebakan:['Angka tidak boleh mengawali kalimat.','ke- + angka Arab memakai tanda hubung (ke-7); ke- tidak digabung dengan angka Romawi.','Pecahan dengan per- ditulis serangkai (tiga perempat), sedangkan partikel per yang bermakna ‘tiap’ terpisah (per meter).','Rupiah ditulis Rp5.000,00: tanpa titik sesudah Rp dan tanpa spasi.']},
+  {sub:'Kata ganti dan kata sandang', ref:'II.H–I',
+   def:'Kata ganti (pronomina) menggantikan orang atau benda. Ku-, kau-, -ku, -mu, dan -nya adalah bentuk terikat kata ganti yang menempel pada kata lain. Kata sandang si dan sang adalah kata tugas yang mendahului nama atau sebutan orang dan benda.',
+   guna:'Bentuk terikat kata ganti selalu ditulis serangkai. Kau yang berdiri sendiri sebagai subjek serta kata sandang si dan sang ditulis terpisah.',
+   aturan:[
+   ['Ku- dan kau- ditulis serangkai dengan kata yang mengikutinya.','Rumah itu telah kujual. · Majalah ini boleh kaubaca. · apa yang kaukatakan','','ku jual → kujual · kau baca → kaubaca','II.H.1'],
+   ['-ku, -mu, dan -nya ditulis serangkai dengan kata yang mendahuluinya.','bukuku · bukumu · bukunya · rumahnya','Jika kata yang dilekati berhuruf awal kapital atau merujuk Tuhan, pakai tanda hubung: KTP-mu, rahmat-Nya.','KTPmu → KTP-mu','II.H.1; III.E.5'],
+   ['Kau yang bukan bentuk terikat ditulis terpisah.','Kau masih muda, Bung. · Aku ingin kau bersungguh-sungguh. · Sebaiknya kau mengurus adikmu saja.','Uji: kau yang menjadi subjek sebelum kata kerja aktif (kau mengurus) ditulis terpisah; kau sebagai pelaku dalam bentuk pasif (kaubaca, artinya ‘dibaca olehmu’) ditulis serangkai.','','II.H.2'],
+   ['Kata sandang si dan sang ditulis terpisah dari kata yang mengikutinya.','si pengirim · si Pitung · sang suami · sang Kancil','','sipengirim → si pengirim · sangkakak → sang kakak','II.I.1'],
+   ['Sang ditulis dengan huruf awal kapital jika menjadi unsur nama Tuhan.','Sang Pencipta · Sang Hyang Widhi Wasa','','sang Pencipta → Sang Pencipta','II.I.2']
+   ],
+   jebakan:['kaubaca (pasif) ditulis serangkai, sedangkan kau membaca (aktif) terpisah.','-nya untuk Tuhan ditulis -Nya dengan tanda hubung.']}
  ]},
  {bab:'Bab III · Penggunaan Tanda Baca', kat:'tanda-baca', topik:[
-  {sub:'Tanda titik', ref:'III.A', aturan:[
-   ['Di akhir kalimat pernyataan dan di belakang angka atau huruf dalam daftar.','Mereka duduk di sana.'],
-   ['Tidak dipakai di belakang angka terakhir judul tabel, bagan, atau gambar, dan tidak di akhir judul.','Tabel 1 Kondisi Kebahasaan di Indonesia'],
-   ['Memisahkan jam, menit, dan detik.','pukul 01.35.20'],
-   ['Memisahkan ribuan yang menunjukkan jumlah; tidak dipakai untuk tahun, halaman, atau nomor.','13.000 pulau · tahun 1998 · halaman 1553'],
-   ['Tidak dipakai di belakang alamat penerima dan tanggal surat.','12 Oktober 2021']
-  ]},
-  {sub:'Tanda koma', ref:'III.B', aturan:[
-   ['Di antara unsur perincian, termasuk sebelum dan/atau pada unsur terakhir.','Buku, majalah, dan jurnal termasuk sumber kepustakaan.'],
-   ['Sebelum tetapi, melainkan, dan sedangkan dalam kalimat majemuk pertentangan.','Saya ingin membeli kamera, tetapi uang saya belum cukup.'],
-   ['Memisahkan anak kalimat yang mendahului induk kalimat; tidak dipakai jika induk kalimat di depan.','Kalau diundang, saya akan datang. · Saya akan datang kalau diundang.'],
-   ['Di belakang ungkapan penghubung antarkalimat.','Oleh karena itu, · Jadi, · Meskipun demikian,'],
-   ['Sebelum atau sesudah kata seru dan sapaan.','Wah, bukan main! · Siapa namamu, Dik?'],
-   ['Memisahkan petikan langsung; tidak dipakai jika petikan diakhiri tanda tanya atau seru.','Kata nenek, "Kita harus berbagi." · "Di mana Saudara tinggal?" tanya Pak Lurah.'],
-   ['Di antara nama dan gelar akademis yang mengikutinya.','Siti Aminah, S.H., M.H.'],
-   ['Sebelum angka desimal dan di antara rupiah dan sen.','12,5 m · Rp500,50'],
-   ['Mengapit keterangan tambahan atau aposisi; keterangan pewatas tidak diapit koma.','Soekarno, Presiden I Republik Indonesia, … · Siswa yang lulus dengan nilai tinggi …'],
-   ['Di belakang keterangan awal kalimat untuk menghindari salah pengertian.','Dalam pengembangan bahasa Indonesia, kita …'],
-   ['Tidak dipakai sebelum bahwa dan tidak di antara subjek dan predikat.','Guru mengatakan bahwa ujian diundur.']
-  ]},
-  {sub:'Tanda titik koma', ref:'III.C', aturan:[
-   ['Pengganti kata penghubung di antara kalimat setara.','Hari sudah malam; anak-anak masih membaca buku.'],
-   ['Pada perincian berupa frasa verbal dan untuk memisahkan perincian yang sudah memakai koma.','Ibu membeli buku, pensil, dan tinta; baju dan kaus; serta pisang.'],
-   ['Memisahkan sumber-sumber kutipan.','(Keraf, 1997; Putra, 2011)']
-  ]},
-  {sub:'Tanda titik dua', ref:'III.D', aturan:[
-   ['Di akhir pernyataan lengkap yang langsung diikuti perincian atau penjelasan.','Mereka memerlukan perabot rumah tangga: kursi, meja, dan lemari.'],
-   ['Tidak dipakai jika perincian merupakan bagian dari kalimat.','Kita memerlukan kursi, meja, dan lemari.'],
-   ['Sesudah kata yang memerlukan pemerian dan dalam naskah drama.','Ketua: Ahmad Wijaya · Ibu: "Bawa koper ini, Nak!"'],
-   ['Di antara jilid dan halaman, surah dan ayat, judul dan anak judul; juga untuk rasio.','Surah Ibrahim: 2–5 · skala 1:10.000']
-  ]},
-  {sub:'Tanda hubung', ref:'III.E', aturan:[
-   ['Menyambung unsur bentuk ulang dan bagian kata yang terpenggal pergantian baris.','anak-anak · kemerah-merahan'],
-   ['Menyambung tanggal berangka, huruf yang dieja, dan skor.','11-11-2022 · p-a-n-i-t-i-a · 2-1'],
-   ['Di antara huruf kapital dan nonkapital, serta di antara huruf dan angka.','se-Indonesia · ke-2 · 2000-an · ber-KTP · S-1 · hari-H'],
-   ['Tidak dipakai jika angka melambangkan jumlah huruf.','P3K · BP2MI'],
-   ['Merangkai unsur bahasa Indonesia dengan unsur daerah, asing, atau slang.','mem-*back up* · di-*slepet*'],
-   ['Menandai dua unsur yang merupakan satu kesatuan.','suami-istri · Konferensi Asia-Afrika']
-  ]},
-  {sub:'Tanda pisah', ref:'III.F', aturan:[
-   ['Mengapit keterangan yang bukan bagian utama kalimat.','Kemerdekaan bangsa itu—saya yakin akan tercapai—diperjuangkan …'],
-   ['Di antara dua bilangan, tanggal, atau tempat yang berarti sampai dengan atau sampai ke.','2019—2022 · Senin—Jumat · Jakarta—Bandung']
-  ]},
-  {sub:'Tanda tanya dan seru', ref:'III.G–H', aturan:[
-   ['Tanda tanya di akhir kalimat tanya, dan dalam kurung untuk bagian yang diragukan.','Di Indonesia terdapat 740 (?) bahasa daerah.'],
-   ['Tanda seru untuk kekaguman, kesungguhan, emosi kuat, seruan, atau perintah.','Bayarlah pajak tepat waktu!']
-  ]},
-  {sub:'Tanda elipsis', ref:'III.I', aturan:[
-   ['Menandai bagian yang dihilangkan, ujaran yang tidak selesai, atau jeda.','Penyebab kemerosotan … akan diteliti.'],
-   ['Elipsis di akhir kalimat diikuti tanda akhir kalimat.','… bahasa negara ialah ….']
-  ]},
-  {sub:'Tanda petik', ref:'III.J–K', aturan:[
-   ['Tanda petik mengapit petikan langsung.','"Merdeka atau mati!" seru Bung Tomo.'],
-   ['Tanda petik mengapit judul puisi, lagu, artikel, bab, pidato, dan tema dalam kalimat.','lagu "Maju Tak Gentar"'],
-   ['Tanda petik mengapit istilah kurang dikenal atau kata berarti khusus.','Dilarang memberikan "amplop" kepada petugas!'],
-   ['Petik tunggal mengapit petikan di dalam petikan serta makna atau padanan kata.','noken \'tas khas Papua\'']
-  ]},
-  {sub:'Tanda kurung', ref:'III.L–M', aturan:[
-   ['Mengapit keterangan tambahan seperti singkatan atau padanan asing.','Uji Kemahiran Berbahasa Indonesia (UKBI) · pemengaruh (*influencer*)'],
-   ['Mengapit keterangan yang bukan bagian utama kalimat, atau kata yang boleh dihilangkan.','(lihat Tabel 10) · (bus) Transjakarta'],
-   ['Mengapit huruf atau angka penanda perincian dalam kalimat.','(a) bahan baku, (b) biaya, dan (c) tenaga kerja'],
-   ['Kurung siku untuk koreksi naskah asli orang lain dan keterangan di dalam tanda kurung.','men[d]engar']
-  ]},
-  {sub:'Tanda garis miring', ref:'III.N', aturan:[
-   ['Dalam nomor surat, nomor alamat, dan masa satu tahun yang terbagi dua tahun takwim.','Nomor: 7/PK/II/2022 · Jalan Kramat III/10'],
-   ['Pengganti kata dan, atau, serta setiap.','AD/ART · 150 km/jam']
-  ]},
-  {sub:'Tanda apostrof', ref:'III.O', aturan:[
-   ['Menunjukkan penghilangan bagian kata atau angka tahun; lazim dalam ragam nonstandar.','\'kan (akan) · 5-2-\'21']
-  ]}
+  {sub:'Tanda titik', ref:'III.A',
+   def:'Tanda titik (.) terutama menandai akhir kalimat pernyataan. Titik juga dipakai dalam daftar dan perincian, penulisan waktu, serta pemisah bilangan ribuan.',
+   guna:'Perhatikan juga kapan titik tidak dipakai: di akhir judul, di belakang alamat dan tanggal surat, pada tahun dan nomor, dan pada angka yang sudah bertanda kurung.',
+   aturan:[
+   ['Tanda titik dipakai di akhir kalimat pernyataan.','Mereka duduk di sana. · Dia akan datang pada pertemuan itu.','Kalimat tanya tidak langsung juga termasuk pernyataan, jadi diakhiri titik: Ia bertanya kapan saya datang.','','III.A.1'],
+   ['Tanda titik dipakai untuk mengakhiri pernyataan lengkap yang diikuti perincian berupa kalimat baru, paragraf baru, atau subjudul baru.','… seperti tampak pada paparan berikut. ↵ 1. Latar Belakang ↵ Masyarakat Indonesia yang heterogen …','Jika perincian langsung menyambung di dalam kalimat yang sama, pakai titik dua.','','III.A.2'],
+   ['Tanda titik dipakai di belakang angka atau huruf dalam daftar, perincian, tabel, atau bagan.','I. Kondisi Kebahasaan di Indonesia ↵ A. Bahasa Indonesia ↵ 1. Kedudukan','','','III.A.3'],
+   ['Tanda titik dipakai untuk memisahkan angka jam, menit, dan detik.','pukul 01.35.20 · 01.35.20 jam (1 jam, 35 menit, 20 detik)','Untuk waktu, titik dua juga boleh dipakai: 01:35:20.','','III.A.7'],
+   ['Tanda titik dipakai untuk memisahkan bilangan ribuan atau kelipatannya yang menunjukkan jumlah.','lebih dari 13.000 pulau · 7.000.000 orang · Rp225.000.000.000,00','','13,000 pulau → 13.000 pulau','III.A.8'],
+   ['Tanda titik tidak dipakai di belakang angka terakhir deret nomor bertingkat dan pada angka atau huruf yang sudah bertanda kurung.','2.1 Bahasa · 2.1.1 Fonologi · II.A.1 Fonologi · 1) bahasa nasional · a) lambang kebanggaan nasional','','2.1.1. Fonologi → 2.1.1 Fonologi · 1). → 1)','III.A.4–5'],
+   ['Tanda titik tidak dipakai di belakang angka terakhir judul tabel, bagan, grafik, atau gambar, dan tidak dipakai di akhir judul atau subjudul.','Tabel 1.1 Kondisi Bahasa Daerah di Indonesia · Gambar 3 Alat Ucap Manusia · Bentuk dan Kedaulatan (Bab I, UUD 1945)','','Tabel 1. Kondisi … → Tabel 1 Kondisi … · Gambar 3 Alat Ucap Manusia. → Gambar 3 Alat Ucap Manusia','III.A.6, 10'],
+   ['Tanda titik tidak dipakai untuk memisahkan bilangan yang tidak menunjukkan jumlah, seperti tahun, halaman, nomor rekening, dan NIP.','tahun 1998 · halaman 1553 · rekening 0015645678 · NIP 199701112015041002','','tahun 1.998 → tahun 1998 · halaman 1.553 → halaman 1553','III.A.9'],
+   ['Tanda titik tidak dipakai di belakang alamat penerima surat dan tanggal surat.','Yth. Rahmat Hidayat, S.T. ↵ Jalan Sumbawa I/18 ↵ Bandung · Jakarta, 12 Oktober 2021','','Jakarta, 12 Oktober 2021. → Jakarta, 12 Oktober 2021','III.A.11']
+   ],
+   jebakan:['Tahun, halaman, dan nomor tidak memakai titik ribuan.','Judul dan subjudul tidak diakhiri titik.','Angka terakhir pada nomor bertingkat dan judul tabel tidak diberi titik.']},
+  {sub:'Tanda koma', ref:'III.B',
+   def:'Tanda koma (,) menandai jeda di dalam kalimat. Koma memisahkan unsur perincian, klausa, keterangan, dan bagian kalimat lain agar maksud kalimat jelas.',
+   guna:'Koma adalah tanda baca yang paling sering diuji. Fokuskan pada perincian, kata penghubung pertentangan, letak anak kalimat, penghubung antarkalimat, dan aposisi.',
+   aturan:[
+   ['Tanda koma dipakai di antara unsur perincian berupa kata, frasa, atau bilangan, termasuk sebelum dan atau atau pada unsur terakhir.','Buku, majalah, dan jurnal termasuk sumber kepustakaan. · Telepon seluler, komputer, atau internet bukan barang mewah lagi.','Koma sebelum dan atau atau pada unsur terakhir dipakai jika perinciannya tiga unsur atau lebih. Dua unsur cukup dihubungkan tanpa koma: buku dan majalah.','Buku, majalah dan jurnal … → Buku, majalah, dan jurnal …','III.B.1'],
+   ['Tanda koma dipakai sebelum kata penghubung pertentangan tetapi, melainkan, dan sedangkan dalam kalimat majemuk.','Saya ingin membeli kamera, tetapi uang saya belum cukup. · Ini bukan milik saya, melainkan milik ayah saya. · Dia membaca cerita pendek, sedangkan adiknya melukis panorama.','Koma diletakkan sebelum kata penghubung, bukan sesudahnya.','Dia membaca cerita pendek sedangkan, adiknya melukis. → Dia membaca cerita pendek, sedangkan adiknya melukis.','III.B.2'],
+   ['Tanda koma dipakai untuk memisahkan anak kalimat yang mendahului induk kalimat.','Kalau diundang, saya akan datang. · Karena baik hati, dia mempunyai banyak teman. · Agar memiliki wawasan yang luas, kita harus banyak membaca buku.','Anak kalimat diawali kata penghubung seperti kalau, jika, karena, agar, supaya, meskipun, walaupun, ketika, dan setelah.','Kalau diundang saya akan datang. → Kalau diundang, saya akan datang.','III.B.3'],
+   ['Tanda koma tidak dipakai jika induk kalimat mendahului anak kalimat.','Saya akan datang kalau diundang. · Dia mempunyai banyak teman karena baik hati.','','Saya akan datang, kalau diundang. → Saya akan datang kalau diundang.','III.B.4'],
+   ['Tanda koma dipakai di belakang kata atau ungkapan penghubung antarkalimat.','… Oleh karena itu, dia memperoleh beasiswa. · … Jadi, dia berhasil menjadi penulis. · … Meskipun demikian, anak-anaknya berhasil menjadi sarjana.','Penghubung antarkalimat terletak di awal kalimat baru dan merujuk pada kalimat sebelumnya. Contoh lain: dengan demikian, sehubungan dengan itu.','Oleh karena itu dia memperoleh beasiswa. → Oleh karena itu, dia memperoleh beasiswa.','III.B.5'],
+   ['Tanda koma boleh dipakai di belakang keterangan di awal kalimat untuk menghindari salah pengertian.','Dalam pengembangan bahasa Indonesia, kita dapat memanfaatkan bahasa daerah. · Atas perhatian Saudara, kami ucapkan terima kasih.','Tanpa koma, Atas perhatian Saudara kami dapat terbaca sebagai ‘Saudara kami’.','','III.B.14'],
+   ['Tanda koma dipakai sebelum dan/atau sesudah kata seru (o, ya, wah, aduh, hai) dan kata sapaan (Bu, Dik, Nak).','O, begitu? · Wah, bukan main! · Hati-hati, ya, jalannya licin! · Nak, kapan kuliahmu selesai? · Siapa namamu, Dik?','','Wah bukan main! → Wah, bukan main! · Siapa namamu Dik? → Siapa namamu, Dik?','III.B.6'],
+   ['Tanda koma dipakai untuk memisahkan petikan langsung dari bagian lain dalam kalimat.','Kata nenek saya, "Kita harus berbagi dalam hidup ini." · "Kita harus berbagi dalam hidup ini," kata nenek saya, "karena manusia adalah makhluk sosial."','','','III.B.7'],
+   ['Tanda koma tidak dipakai untuk memisahkan petikan langsung yang diakhiri tanda tanya atau tanda seru dari bagian kalimat sesudahnya.','"Di mana Saudara tinggal?" tanya Pak Lurah. · "Masuk ke dalam kelas sekarang!" perintahnya.','','"Di mana Saudara tinggal?", tanya Pak Lurah. → "Di mana Saudara tinggal?" tanya Pak Lurah.','III.B.8'],
+   ['Tanda koma dipakai di antara nama dan alamat, bagian-bagian alamat, tempat dan tanggal, serta nama tempat dan wilayah yang ditulis berurutan.','Sdr. Rahmat Hidayat, Jalan Sumbawa I/18, Kelurahan Merdeka, Bandung · Surabaya, 10 Mei 1960 · Sofifi, Maluku Utara','','Surabaya 10 Mei 1960 → Surabaya, 10 Mei 1960','III.B.9'],
+   ['Tanda koma dipakai sesudah salam pembuka, salam penutup, dan nama jabatan penanda tangan surat.','Dengan hormat, · Salam sejahtera, · Hormat kami, · Kepala Badan,','','','III.B.10'],
+   ['Tanda koma dipakai di antara nama orang dan singkatan gelar akademis yang mengikutinya.','B. Ratulangi, S.E. · Siti Aminah, S.H., M.H. · Prof. Dr. Muh. Muhlis, S.E., M.A., Ph.D.','Koma membedakan gelar dari singkatan nama: Siti Khadijah, M.A. (Master of Arts) tidak sama dengan Siti Khadijah M.A. (Mas Agung). Gelar di depan nama, seperti Prof. dan Dr., tidak diberi koma.','Siti Aminah S.H. → Siti Aminah, S.H.','III.B.11'],
+   ['Tanda koma dipakai sebelum angka desimal dan di antara rupiah dan sen yang dinyatakan dengan angka.','12,5 m · 27,3 kg · Rp500,50 · Rp750,00','','12.5 m → 12,5 m','III.B.12'],
+   ['Tanda koma dipakai untuk mengapit keterangan tambahan atau aposisi. Keterangan pewatas tidak diapit koma.','Soekarno, Presiden I Republik Indonesia, merupakan salah seorang pendiri Gerakan Nonblok. · Di daerah kami, misalnya, masih banyak bahan tambang yang belum diolah. · Siswa yang lulus dengan nilai tinggi akan diterima tanpa tes. (pewatas, tanpa koma)','Aposisi dapat dihapus tanpa mengubah siapa yang dimaksud. Pewatas membatasi maknanya (hanya siswa yang lulus dengan nilai tinggi), jadi tidak diapit koma.','Soekarno Presiden I Republik Indonesia merupakan … → Soekarno, Presiden I Republik Indonesia, merupakan …','III.B.13']
+   ],
+   jebakan:['Koma diletakkan sebelum tetapi, melainkan, dan sedangkan, bukan sesudahnya.','Anak kalimat di depan diberi koma; anak kalimat di belakang tidak.','Penghubung antarkalimat (oleh karena itu, jadi) diikuti koma.','Pewatas seperti siswa yang lulus … tidak diapit koma, sedangkan aposisi seperti Soekarno, Presiden I …, diapit koma.','Koma tidak memisahkan subjek dan predikat: Mahasiswa yang rajin itu, mendapat beasiswa salah. Ini turunan dari struktur kalimat, bukan butir tersendiri dalam EYD V.']},
+  {sub:'Tanda titik koma', ref:'III.C',
+   def:'Tanda titik koma (;) menandai jeda yang lebih kuat daripada koma tetapi lebih lemah daripada titik. Titik koma memisahkan bagian-bagian yang setara.',
+   guna:'Gunakan titik koma jika bagian-bagian yang dipisahkan setara dan masing-masing sudah lengkap, atau jika koma saja akan membingungkan karena sudah dipakai di dalam bagian itu.',
+   aturan:[
+   ['Tanda titik koma boleh dipakai sebagai pengganti kata penghubung untuk memisahkan kalimat setara di dalam kalimat majemuk.','Hari sudah malam; anak-anak masih membaca buku. · Kerbau melenguh; kambing mengembik; kuda meringkik.','Setiap bagian di kiri dan kanan titik koma adalah klausa lengkap.','','III.C.1'],
+   ['Tanda titik koma dipakai pada bagian perincian yang berupa frasa verbal, dan sebelum unsur terakhir diberi dan.','Syarat … adalah ↵ (1) berkewarganegaraan Indonesia; ↵ (2) berijazah sarjana S-1; ↵ (3) berbadan sehat; dan ↵ (4) bersedia ditempatkan di seluruh wilayah NKRI.','Bandingkan: perincian yang berupa kata benda atau frasa nomina memakai koma.','','III.C.2'],
+   ['Tanda titik koma dipakai untuk memisahkan bagian perincian yang di dalamnya sudah memakai koma.','Ibu membeli buku, pensil, dan tinta; baju, celana, dan kaus; serta pisang, apel, dan jeruk.','','','III.C.3'],
+   ['Tanda titik koma dipakai untuk memisahkan sumber-sumber kutipan.','(Fishman, 1974; Moeliono, 1985; Samuel, 2008)','','(Keraf, 1997, Putra, 2011) → (Keraf, 1997; Putra, 2011)','III.C.4']
+   ],
+   jebakan:['Titik koma memisahkan klausa setara yang masing-masing dapat berdiri sendiri, bukan memisahkan anak kalimat dari induknya.','Perincian berupa frasa verbal dipisah titik koma; perincian berupa kata benda dipisah koma.']},
+  {sub:'Tanda titik dua', ref:'III.D',
+   def:'Tanda titik dua (:) mengantarkan perincian atau penjelasan. Titik dua juga dipakai dalam beberapa penulisan teknis, seperti pemerian, naskah drama, rujukan, waktu, dan rasio.',
+   guna:'Kunci utamanya: titik dua untuk perincian hanya dipakai jika bagian sebelum titik dua sudah menjadi kalimat lengkap.',
+   aturan:[
+   ['Tanda titik dua dipakai di akhir pernyataan lengkap yang langsung diikuti perincian atau penjelasan.','Mereka memerlukan perabot rumah tangga: kursi, meja, dan lemari. · Saya akan membeli alat tulis kantor: kertas, tinta, spidol, dan pensil.','Uji: tutup bagian sesudah titik dua. Jika bagian depannya sudah menjadi kalimat utuh, titik dua tepat.','','III.D.1'],
+   ['Tanda titik dua tidak dipakai jika perincian atau penjelasan itu merupakan bagian dari kalimat lengkap.','Kita memerlukan kursi, meja, dan lemari. · Tahap penelitian meliputi ↵ a. persiapan, ↵ b. pengumpulan data, ↵ c. pengolahan data, dan ↵ d. pelaporan.','Sesudah kata kerja seperti memerlukan, meliputi, dan terdiri atas, perincian itu berfungsi sebagai objek atau pelengkap, jadi tanpa titik dua.','Kita memerlukan: kursi, meja, dan lemari. → Kita memerlukan kursi, meja, dan lemari. · Tahap penelitian meliputi: → Tahap penelitian meliputi','III.D.2'],
+   ['Tanda titik dua dipakai sesudah kata atau frasa yang memerlukan pemerian.','Ketua: Ahmad Wijaya · Sekretaris: Siti Aryani · Narasumber: Prof. Dr. Saputra Effendi','','','III.D.3'],
+   ['Tanda titik dua dipakai dalam naskah drama sesudah kata yang menunjukkan pelaku percakapan.','Ibu: "Bawa koper ini, Nak!" · Amir: "Baik, Bu."','','','III.D.4'],
+   ['Tanda titik dua dipakai di antara jilid atau nomor dan halaman, surah dan ayat dalam kitab suci, serta judul dan anak judul karangan.','Ultimart 5 (2): 98–105 · Surah Ibrahim: 2–5 · Matius 2: 1–3 · Dari Pemburu ke Terapeutik: Antologi Cerpen Mastera','','','III.D.5'],
+   ['Tanda titik dua boleh dipakai untuk memisahkan jam, menit, dan detik, dan dipakai untuk menuliskan rasio atau perbandingan angka.','pukul 01:35:20 · Skala peta ini 1:10.000. · Perbandingan siswa laki-laki dan perempuan 2:3.','','','III.D.6–7']
+   ],
+   jebakan:['Titik dua sesudah memerlukan atau meliputi salah, karena perinciannya masih bagian dari kalimat.','Bagian sebelum titik dua harus berupa pernyataan lengkap.']},
+  {sub:'Tanda hubung', ref:'III.E',
+   def:'Tanda hubung (-) adalah garis pendek tanpa spasi yang menyambung unsur kata atau ungkapan. Jangan tertukar dengan tanda pisah (—) yang lebih panjang.',
+   guna:'Ingat tiga fungsi besarnya: menyambung (bentuk ulang, pemenggalan, tanggal), memperjelas hubungan antarunsur, dan merangkai unsur yang berbeda jenis (kapital dengan nonkapital, huruf dengan angka, bahasa Indonesia dengan unsur asing).',
+   aturan:[
+   ['Tanda hubung dipakai untuk menandai bagian kata yang terpenggal oleh pergantian baris.','Di samping cara lama, diterapkan juga cara ba- ↵ ru.','','','III.E.1'],
+   ['Tanda hubung dipakai untuk menyambung unsur bentuk ulang.','anak-anak · berulang-ulang · kemerah-merahan · mengorek-ngorek','','','III.E.2'],
+   ['Tanda hubung dipakai untuk menyambung tanggal, bulan, dan tahun yang ditulis dengan angka, huruf dalam kata yang dieja satu per satu, dan skor pertandingan.','11-11-2022 · p-a-n-i-t-i-a · 2-1','','','III.E.3'],
+   ['Tanda hubung dipakai untuk merangkaikan huruf kapital dengan huruf nonkapital, serta huruf dengan angka.','se-Indonesia · peringkat ke-2 · tahun 2000-an · hari-H · ber-KTP · di-SK-kan · ciptaan-Nya · D-3 · S-1 · KTP-mu','','seIndonesia → se-Indonesia · ke 2 → ke-2 · S1 → S-1','III.E.5'],
+   ['Tanda hubung tidak dipakai di antara huruf dan angka jika angka itu melambangkan jumlah huruf.','P3K · BP2MI · P4TK','Dalam P3K, angka 3 menggantikan tiga huruf P (pertolongan pertama pada).','P-3K → P3K','III.E.6'],
+   ['Tanda hubung dipakai untuk memperjelas hubungan bagian kata atau ungkapan.','ber-evolusi · meng-urus ‘mengatur’ dan me-ngurus ‘menjadi kurus’ · dua-puluh-lima ribuan (25 × 1.000) dan dua-puluh lima-ribuan (20 × 5.000)','Dipakai jika tanpa tanda hubung kata itu dapat dibaca dengan dua cara.','','III.E.4'],
+   ['Tanda hubung dipakai untuk menandai imbuhan atau bentuk terikat yang menjadi objek bahasan.','Imbuhan *pe-* pada *pekerja* bermakna ‘pelaku’. · Bentuk terikat *pasca-* berasal dari bahasa Sanskerta.','','','III.E.8'],
+   ['Tanda hubung dipakai untuk merangkai unsur bahasa Indonesia dengan unsur bahasa daerah, bahasa asing, atau slang.','di-*slepet* · ber-*pariban* · mem-*back up* · di-*bokisin*','','mem*back up* → mem-*back up*','III.E.7'],
+   ['Tanda hubung dipakai untuk menandai dua unsur yang merupakan satu kesatuan.','suami-istri · Soekarno-Hatta · Konferensi Asia-Afrika','','','III.E.9']
+   ],
+   jebakan:['ke-2 (dengan angka) memakai tanda hubung, sedangkan kedua (dengan huruf) ditulis serangkai.','Bentuk terikat + kata biasa tetap serangkai (nonaktif); tanda hubung hanya untuk kata berhuruf kapital (non-ASEAN).','Tanggal berangka memakai tanda hubung (11-11-2022), sedangkan rentang ‘sampai dengan’ memakai tanda pisah (2019—2022).']},
+  {sub:'Tanda pisah', ref:'III.F',
+   def:'Tanda pisah (—) adalah garis panjang, lebih panjang daripada tanda hubung, yang ditulis tanpa spasi. Fungsinya mengapit keterangan sisipan dan menyatakan rentang ‘sampai dengan’ atau ‘sampai ke’.',
+   guna:'',
+   aturan:[
+   ['Tanda pisah boleh dipakai untuk mengapit keterangan atau penjelasan yang bukan bagian utama kalimat.','Kemerdekaan bangsa itu—saya yakin akan tercapai—diperjuangkan oleh bangsa itu sendiri.','Keterangan yang diapit dapat dihapus tanpa merusak kalimat.','','III.F.1'],
+   ['Tanda pisah boleh dipakai untuk mengapit keterangan yang merupakan bagian utama kalimat dan dapat saling menggantikan dengan bagian yang dijelaskannya.','Soekarno-Hatta—Proklamator Kemerdekaan RI—diabadikan menjadi nama jalan. · Rangkaian temuan ini—evolusi, teori kenisbian, dan pembelahan atom—telah mengubah konsepsi kita tentang alam semesta.','Fungsinya mirip aposisi yang diapit koma, tetapi lebih menonjol.','','III.F.2'],
+   ['Tanda pisah dipakai di antara dua bilangan, tanggal, atau tempat yang berarti ‘sampai dengan’ atau ‘sampai ke’.','Tahun 2019—2022 · Tanggal 5—10 April 2022 · Senin—Jumat · Jakarta—Bandung','','2019-2022 (tanda hubung) → 2019—2022','III.F.3']
+   ],
+   jebakan:['Rentang ‘sampai dengan’ memakai tanda pisah (—), bukan tanda hubung (-).','Tanda pisah ditulis tanpa spasi sebelum dan sesudahnya.']},
+  {sub:'Tanda tanya dan seru', ref:'III.G–H',
+   def:'Tanda tanya (?) menandai kalimat tanya dan bagian yang diragukan. Tanda seru (!) menandai ungkapan bernada kuat: kekaguman, kesungguhan, emosi, seruan, atau perintah.',
+   guna:'',
+   aturan:[
+   ['Tanda tanya dipakai di akhir kalimat tanya.','Kapan Hari Pendidikan Nasional diperingati? · Siapa pencipta lagu "Indonesia Raya"?','Pertanyaan tidak langsung adalah kalimat pernyataan, sehingga diakhiri titik: Ia bertanya kapan saya datang.','Ia bertanya kapan saya datang? → Ia bertanya kapan saya datang.','III.G.1'],
+   ['Tanda tanya di dalam tanda kurung dipakai untuk menyatakan bagian kalimat yang diragukan atau kurang dapat dibuktikan kebenarannya.','Monumen Nasional mulai dibangun pada tahun 1961 (?). · Di Indonesia terdapat 740 (?) bahasa daerah.','','','III.G.2'],
+   ['Tanda seru dipakai untuk mengakhiri ungkapan yang menggambarkan kekaguman, kesungguhan, emosi yang kuat, seruan, atau perintah.','Alangkah indahnya Taman Laut Bunaken! · Saya tidak melakukannya! · Merdeka! · Bayarlah pajak tepat waktu!','','Alangkah indahnya Taman Laut Bunaken. → Alangkah indahnya Taman Laut Bunaken!','III.H']
+   ],
+   jebakan:['Kalimat yang diawali alangkah atau betapa adalah seruan, jadi diakhiri tanda seru.','Pertanyaan tidak langsung diakhiri titik, bukan tanda tanya.']},
+  {sub:'Tanda elipsis', ref:'III.I',
+   def:'Tanda elipsis (…) berupa tiga titik berderet yang menandai bagian yang dihilangkan, ujaran yang terputus, atau jeda dalam tuturan.',
+   guna:'',
+   aturan:[
+   ['Tanda elipsis dipakai untuk menunjukkan bagian kalimat atau kutipan yang dihilangkan atau tidak disebutkan.','Penyebab kemerosotan … akan diteliti lebih lanjut. · …, lain lubuk lain ikannya.','','','III.I.1'],
+   ['Tanda elipsis dipakai untuk menuliskan ujaran yang tidak selesai dalam dialog.','"Menurut saya, …, seperti …. Bagaimana, Bu?"','','','III.I.2'],
+   ['Tanda elipsis dipakai untuk menandai jeda dalam tuturan yang dituliskan.','Maju … jalan! · Kamera … siap! · Satu, dua, … tiga!','','','III.I.3'],
+   ['Tanda elipsis di akhir kalimat diikuti tanda baca akhir kalimat (titik, tanda tanya, atau tanda seru). Pada kalimat pernyataan, hasilnya tampak sebagai empat titik.','… bahwa bahasa negara ialah …. · "Jadi, mengapa selama ini dia bekerja sebagai …?" · "Pergi dari sini jika kamu …!"','','… bahasa negara ialah … → … bahasa negara ialah ….','III.I.4']
+   ],
+   jebakan:['Di akhir kalimat pernyataan, elipsis tetap diikuti titik, sehingga tampak empat titik.']},
+  {sub:'Tanda petik', ref:'III.J–K',
+   def:'Tanda petik ("…") mengapit petikan langsung, judul karya yang menjadi bagian dari karya lain, dan kata yang berarti khusus. Tanda petik tunggal (‘…’) mengapit petikan di dalam petikan serta makna atau padanan kata.',
+   guna:'',
+   aturan:[
+   ['Tanda petik dipakai untuk mengapit petikan langsung dari pembicaraan, naskah, atau bahan tertulis lain.','"Merdeka atau mati!" seru Bung Tomo dalam pidatonya. · Menurut Pasal 31 ayat (1) UUD 1945, "Setiap warga negara berhak mendapat pendidikan."','Tanda baca akhir petikan langsung (titik, tanda tanya, tanda seru) diletakkan di dalam tanda petik.','… "Setiap warga negara berhak mendapat pendidikan". → … "Setiap warga negara berhak mendapat pendidikan."','III.J.1'],
+   ['Tanda petik dipakai untuk mengapit judul puisi, lagu, artikel, naskah, bab buku, pidato atau khotbah, dan tema atau subtema di dalam kalimat.','Puisi "Pahlawanku" terdapat pada halaman 125. · lagu "Maju Tak Gentar" · Kongres Bahasa Indonesia XI bertema "Menjayakan Bahasa dan Sastra Indonesia".','Judul buku, film, album, dan media massa tidak dipetik, tetapi dimiringkan. Jika judul berpetik berada di akhir kalimat, titik diletakkan di luar tanda petik.','buku "Salah Asuhan" → buku *Salah Asuhan*','III.J.2'],
+   ['Tanda petik dipakai untuk mengapit istilah ilmiah yang kurang dikenal atau kata yang mempunyai arti khusus.','"Peladen" komputer ini sudah tidak berfungsi. · Dilarang memberikan "amplop" kepada petugas!','Di sini amplop bermakna ‘uang suap’, bukan sampul surat.','','III.J.3'],
+   ['Tanda petik tunggal dipakai untuk mengapit petikan yang terdapat di dalam petikan lain.','Tanya dia, "Kaudengar bunyi ‘kring-kring’ tadi?" · "Kita bangga karena lagu ‘Indonesia Raya’ berkumandang di arena Asian Games," kata Ketua KONI.','','"… lagu "Indonesia Raya" berkumandang …" → "… lagu ‘Indonesia Raya’ berkumandang …"','III.K.1'],
+   ['Tanda petik tunggal dipakai untuk mengapit makna, padanan, atau penjelasan kata atau ungkapan.','tergugat ‘yang digugat’ · noken ‘tas khas Papua’ · *lockdown* ‘karantina wilayah’','','noken "tas khas Papua" → noken ‘tas khas Papua’','III.K.2']
+   ],
+   jebakan:['Bagian dari karya atau karya pendek (puisi, lagu, artikel, bab) diapit tanda petik; karya utuh (buku, film, album) dimiringkan.','Petikan di dalam petikan memakai tanda petik tunggal.','Makna kata diapit tanda petik tunggal, bukan tanda petik ganda.']},
+  {sub:'Tanda kurung', ref:'III.L–M',
+   def:'Tanda kurung ((…)) mengapit keterangan tambahan yang bukan bagian utama kalimat. Tanda kurung siku ([…]) mengapit koreksi atau tambahan pada naskah asli tulisan orang lain, serta keterangan di dalam tanda kurung.',
+   guna:'',
+   aturan:[
+   ['Tanda kurung dipakai untuk mengapit keterangan tambahan, seperti singkatan atau padanan kata asing.','Uji Kemahiran Berbahasa Indonesia (UKBI) · Banyak pemengaruh (*influencer*) yang mendapat apresiasi.','','','III.L.1'],
+   ['Tanda kurung dipakai untuk mengapit keterangan atau penjelasan yang bukan bagian utama kalimat.','Puisi Tranggono yang berjudul "Ubud" (nama tempat yang terkenal di Bali) ditulis pada tahun 1962. · Keterangan itu (lihat Tabel 10) menunjukkan …','','','III.L.2'],
+   ['Tanda kurung dipakai untuk mengapit kata yang keberadaannya di dalam teks dapat dimunculkan atau dihilangkan.','Dia berangkat ke kantor dengan (bus) Transjakarta. · Pesepak bola itu berasal dari (Kota) Padang.','','','III.L.3'],
+   ['Tanda kurung dipakai untuk mengapit huruf atau angka penanda perincian di dalam kalimat.','Faktor produksi menyangkut (a) bahan baku, (b) biaya produksi, dan (c) tenaga kerja.','Huruf atau angka yang sudah dikurung tidak diberi titik.','(a). bahan baku → (a) bahan baku','III.L.4'],
+   ['Tanda kurung siku dipakai untuk mengapit huruf, kata, atau kelompok kata sebagai koreksi atau tambahan atas kesalahan atau kekurangan di dalam naskah asli tulisan orang lain.','Sang Sapurba men[d]engar bunyi gemerisik. · Penggunaan bahasa dalam karya ilmiah harus sesuai [dengan] kaidah bahasa Indonesia.','Pengutip tidak boleh mengubah naskah asli diam-diam; tambahan atau koreksinya ditandai dengan kurung siku.','','III.M.1'],
+   ['Tanda kurung siku dipakai untuk mengapit keterangan dalam kalimat penjelas yang sudah bertanda kurung.','Persamaan kedua proses itu (perbedaannya dibicarakan di dalam Bab II [lihat halaman 35—38]) perlu dibentangkan di sini.','','(… Bab II (lihat halaman 35—38)) → (… Bab II [lihat halaman 35—38])','III.M.2']
+   ],
+   jebakan:['Kurung di dalam kurung ditulis dengan kurung siku.','Tambahan atau koreksi pada kutipan memakai kurung siku, bukan kurung biasa.']},
+  {sub:'Tanda garis miring', ref:'III.N',
+   def:'Tanda garis miring (/) dipakai dalam penomoran tertentu, sebagai pengganti kata dan, atau, serta setiap, dan untuk menandai koreksi pada naskah asli tulisan orang lain.',
+   guna:'',
+   aturan:[
+   ['Tanda garis miring dipakai dalam nomor surat, nomor pada alamat, dan penandaan masa satu tahun yang terbagi dalam dua tahun takwim.','Nomor: 7/PK/II/2022 · Jalan Kramat III/10 · tahun ajaran 2022/2023','','','III.N.1'],
+   ['Tanda garis miring dipakai sebagai pengganti kata dan, atau, serta setiap.','AD/ART ‘dan’ · ketua/anggota ‘dan’ · darat/laut ‘atau’ · orang tua/wali ‘atau’ · Rp75.000,00/meter ‘setiap’ · 150 km/jam · dan/atau','Dan/atau bermakna ‘keduanya atau salah satunya’.','','III.N.2'],
+   ['Tanda garis miring boleh dipakai untuk mengapit huruf, kata, atau kelompok kata sebagai koreksi atau pengurangan atas kesalahan atau kelebihan di dalam naskah asli tulisan orang lain.','Asmara/n/dana merupakan salah satu tembang macapat. · Dia sedang menyelesaikan /h/utangnya di bank.','Bandingkan dengan kurung siku: kurung siku untuk menambahkan yang kurang, garis miring untuk menandai yang salah atau berlebih.','','III.N.3']
+   ],
+   jebakan:['Kurung siku menambahkan yang kurang; garis miring menandai yang salah atau berlebih.']},
+  {sub:'Tanda apostrof', ref:'III.O',
+   def:'Tanda apostrof (’) menunjukkan penghilangan bagian kata atau bagian angka tahun.',
+   guna:'',
+   aturan:[
+   ['Tanda apostrof boleh dipakai untuk menunjukkan penghilangan bagian kata atau bagian angka tahun dalam konteks tertentu.','Dia ’kan kusurati. (’kan = akan) · Malam ’lah tiba. (’lah = telah) · Diriku s’lalu dimanja. (s’lalu = selalu) · 5-2-’21 (’21 = 2021)','Pemakaian ini lazim dalam ragam nonstandar, seperti puisi, lirik lagu, atau percakapan. Dalam tulisan resmi, tulis katanya secara utuh.','','III.O']
+   ],
+   jebakan:['Apostrof tidak dipakai untuk menyatakan kepemilikan seperti dalam bahasa Inggris (Budi’s book).']}
  ]}
 ];
 const SUB_KAT = {}; MATERI.forEach(b=>b.topik.forEach(t=>{ SUB_KAT[t.sub]=b.bab.indexOf('Tanda Baca')>=0?'tanda-baca':'ejaan'; }));
@@ -2353,21 +2513,21 @@ function mergeImport(st,data,isSample){
 const $=s=>document.querySelector(s);
 function esc(s){ return String(s==null?'':s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c])); }
 const GRUP={
- 'Huruf kapital':[['Awal kalimat & petikan',[1]],['Nama orang & gelar',[2,3,4,5]],['Bangsa, suku, bahasa',[6]],['Waktu & peristiwa',[7]],['Geografi',[8]],['Lembaga, dokumen, judul',[9]],['Kekerabatan & Anda',[10]]],
- 'Huruf miring dan tebal':[['Huruf miring',[1,2,3]],['Bukan huruf miring',[4,5]],['Huruf tebal',[6]]],
- 'Kata berimbuhan dan bentuk terikat':[['Ditulis serangkai',[1,2]],['Pakai tanda hubung',[3,4]],['Ditulis terpisah',[5]]],
- 'Bentuk ulang dan gabungan kata':[['Bentuk ulang',[1,2]],['Gabungan kata terpisah',[3,5]],['Gabungan kata serangkai',[4,6]]],
- 'Pemenggalan kata':[['Vokal & konsonan',[1,2]],['Kata berimbuhan',[3]],['Batasan',[4]]],
- 'Partikel':[['-lah, -kah, -tah',[1]],['pun',[2,3]],['per',[4]]],
- 'Singkatan dan akronim':[['Singkatan bertitik',[1,3,4]],['Singkatan tanpa titik',[2,5]],['Akronim',[6]]],
- 'Angka dan bilangan':[['Huruf atau angka',[1,2,3]],['Bilangan tingkat & -an',[4,5]],['Pecahan',[6]]],
- 'Kata ganti dan kata sandang':[['Kata ganti',[1,2]],['Si dan sang',[3]]],
- 'Tanda titik':[['Dipakai',[1,3,4]],['Tidak dipakai',[2,5]]],
- 'Tanda koma':[['Perincian & pertentangan',[1,2]],['Anak kalimat & penghubung',[3,4,10]],['Seru, sapaan, petikan',[5,6]],['Gelar, desimal, aposisi',[7,8,9]],['Tidak dipakai',[11]]],
- 'Tanda titik dua':[['Dipakai',[1,3,4]],['Tidak dipakai',[2]]],
- 'Tanda hubung':[['Bentuk ulang & pemenggalan',[1]],['Tanggal, ejaan, skor',[2]],['Huruf kapital & angka',[3,4]],['Unsur asing & kesatuan',[5,6]]],
- 'Tanda petik':[['Petik ganda',[1,2,3]],['Petik tunggal',[4]]],
- 'Tanda kurung':[['Kurung biasa',[1,2,3]],['Kurung siku',[4]]],
+ 'Huruf kapital':[['Awal kalimat & petikan',[1,2]],['Nama orang',[3,4,5,6]],['Agama & Tuhan',[7]],['Gelar, jabatan, pangkat',[8,9,10,11]],['Bangsa, suku, bahasa',[12,13]],['Waktu & peristiwa',[14,15,16]],['Geografi',[17,18,19,20]],['Lembaga, dokumen, judul',[21,22]],['Kekerabatan & Anda',[23,24,25,26]]],
+ 'Huruf miring dan tebal':[['Huruf miring',[1,2,3,4]],['Bukan huruf miring',[5,6]],['Huruf tebal',[7,8]]],
+ 'Kata berimbuhan dan bentuk terikat':[['Kata dasar & imbuhan',[1,2]],['Bentuk terikat serangkai',[3]],['Pakai tanda hubung',[4,5]],['Maha- untuk Tuhan',[6]]],
+ 'Bentuk ulang dan gabungan kata':[['Bentuk ulang',[1,2]],['Gabungan kata terpisah',[3,4,5]],['Gabungan kata serangkai',[6,7]]],
+ 'Pemenggalan kata':[['Kata dasar: vokal',[1,2]],['Kata dasar: konsonan',[3,4,5,6]],['Kata berimbuhan',[7,8]],['Unsur kata, nama & batasan',[9,10]]],
+ 'Partikel':[['-lah, -kah, -tah',[1]],['pun',[2,3,4]],['per',[5]]],
+ 'Singkatan dan akronim':[['Nama, gelar & inisial',[1,2]],['Huruf awal kata',[3]],['Surat & alamat',[4,5,6]],['Satuan & mata uang',[7]],['Akronim',[8,9]]],
+ 'Angka dan bilangan':[['Huruf atau angka',[1,2,3,4]],['Alamat, dokumen & pecahan',[5,6]],['Bilangan tingkat & -an',[7,8]],['Nama geografi',[9]]],
+ 'Kata ganti dan kata sandang':[['Kata ganti',[1,2,3]],['Si dan sang',[4,5]]],
+ 'Tanda titik':[['Akhir kalimat & daftar',[1,2,3]],['Waktu & ribuan',[4,5]],['Tidak dipakai',[6,7,8,9]]],
+ 'Tanda koma':[['Perincian & pertentangan',[1,2]],['Anak kalimat & penghubung',[3,4,5,6]],['Seru, sapaan, petikan',[7,8,9]],['Surat, alamat, gelar',[10,11,12]],['Desimal & aposisi',[13,14]]],
+ 'Tanda titik dua':[['Perincian',[1,2]],['Pemerian & drama',[3,4]],['Rujukan, waktu & rasio',[5,6]]],
+ 'Tanda hubung':[['Pemenggalan & bentuk ulang',[1,2]],['Tanggal, ejaan, skor',[3]],['Huruf kapital & angka',[4,5]],['Memperjelas & objek bahasan',[6,7]],['Unsur asing & kesatuan',[8,9]]],
+ 'Tanda petik':[['Petik ganda',[1,2,3]],['Petik tunggal',[4,5]]],
+ 'Tanda kurung':[['Kurung biasa',[1,2,3,4]],['Kurung siku',[5,6]]],
  'Makna imbuhan: awalan':[['ber- dan pe-',[1,6]],['meN-, di-, ter-',[2,3,4]],['peN-',[5]],['se- dan memper-',[7,8]]],
  'Makna imbuhan: akhiran dan konfiks':[['Akhiran -an, -kan, -i',[1,2,3]],['Konfiks',[4,5,6,7]],['Jebakan UTBK',[8]]],
  'Kelas kata dan frasa':[['Kelas kata',[1]],['Frasa',[2,3,4]],['Kata majemuk',[5]]],
@@ -2415,7 +2575,7 @@ function ruleBlock(t,rules,focus){
   return peta+shown.map(x=>'<div class="kgrp"><div class="kgh">'+esc(x.lbl)+'</div><ol class="rules">'+x.rs.map(li).join('')+'</ol></div>').join('')+
     (sel!=null&&groups.length>1?'<div class="kmore">Hanya kategori ini yang ditampilkan. <button type="button" class="link" data-action="kgrp" data-sub="'+sv+'" data-v="all">Lihat semua kategori</button></div>':'');
 }
-function rich(s){ return esc(humanCodes(s)).replace(/\*\*\*([^*]+)\*\*\*/g,'<b><i>$1</i></b>').replace(/\*([^*]+)\*/g,'<i>$1</i>'); }
+function rich(s){ return esc(humanCodes(s)).replace(/\*\*\*([^*]+)\*\*\*/g,'<b><i>$1</i></b>').replace(/\*\*([^*]+)\*\*/g,'<b>$1</b>').replace(/\*([^*]+)\*/g,'<i>$1</i>'); }
 function slug(s){ return String(s).toLowerCase().normalize('NFD').replace(/[̀-ͯ]/g,'').replace(/[^a-z0-9]+/g,'-').replace(/^-|-$/g,''); }
 function toast(msg){ const t=$('#toast'); t.textContent=msg; t.hidden=false; clearTimeout(toast._t); toast._t=setTimeout(()=>{t.hidden=true},2400); }
 function pct(a,b){ return b?Math.round(a*100/b):0; }
@@ -3195,7 +3355,13 @@ function boxes(){ const out=[]; MATERI.forEach((b,bi)=>{
  }); return out; }
 function topicOf(sub){ let r=null; MATERI.forEach(b=>b.topik.forEach(t=>{ if(t.sub===sub) r=t; })); return r; }
 function refLabel(t){ let r=''; MATERI.forEach(b=>{ if(b.topik.includes(t)) r=b.kat==='kebahasaan'?'Kebahasaan · '+t.ref:'EYD V · '+b.bab.split(' · ')[0]; }); return esc(r); }
-function ruleList(t,rules,focus){ return '<ol class="rules">'+rules.map(a=>{ const i=t.aturan.indexOf(a), f=focus&&focus.sub===t.sub&&focus.i===i; return '<li'+(f?' class="rfocus" id="rfocus"':'')+'>'+(f?'<span class="rtag">'+(focus.tag||'Sesuai soalmu')+'</span>':'')+'<div>'+rich(a[0])+'</div><div class="ex">'+rich(a[1])+'</div></li>'; }).join('')+'</ol>'; }
+const exLines=s=>s.split(' · ').map(x=>'<div>'+rich(x).replace(/ ↵ /g,'<br>')+'</div>').join('');
+const badLines=s=>s.split(' · ').map(x=>{ const [w,r]=x.split(' → '); return '<div>'+(r!=null?'<span class="wr">'+rich(w).replace(/ ↵ /g,'<br>')+'</span> <span class="ar">→</span> <span class="rt">'+rich(r).replace(/ ↵ /g,'<br>')+'</span>':rich(x))+'</div>'; }).join('');
+function ruleList(t,rules,focus){ return '<ol class="rules">'+rules.map(a=>{ const i=t.aturan.indexOf(a), f=focus&&focus.sub===t.sub&&focus.i===i; return '<li value="'+(i+1)+'"'+(f?' class="rfocus" id="rfocus"':'')+'>'+(f?'<span class="rtag">'+(focus.tag||'Sesuai soalmu')+'</span>':'')+
+  '<div class="rk">'+rich(a[0])+(a[4]?' <span class="rpasal">EYD '+esc(a[4])+'</span>':'')+'</div>'+(a[2]?'<div class="rexp">'+rich(a[2])+'</div>':'')+
+  (a[1]?'<div class="ex">'+(a[3]?'<span class="exl ok">✓ Contoh benar</span>':'')+exLines(a[1])+'</div>':'')+(a[3]?'<div class="ex bad"><span class="exl">✗ Salah → ✓ Benar</span>'+badLines(a[3])+'</div>':'')+'</li>'; }).join('')+'</ol>'; }
+function defCard(t){ return t.def?'<section class="card mdef"><h2>Pengertian</h2><p>'+rich(t.def)+'</p>'+(t.guna?'<p class="mguna">'+rich(t.guna)+'</p>':'')+'</section>':''; }
+function trapCard(t){ return t.jebakan&&t.jebakan.length?'<section class="card mtrap"><h2>Jebakan di soal</h2><ul>'+t.jebakan.map(x=>'<li>'+rich(x)+'</li>').join('')+'</ul></section>':''; }
 function navUp(n){ if(n.sub&&n.g!=null&&GRUP[n.sub]) return Object.assign({},n,{g:null});
   if(n.sub){ if(n.box==='pilih') return {box:'pilih',subs:n.subs}; const bx=boxes().find(x=>x.topics.some(t=>t.sub===n.sub)); return bx&&bx.topics.length>1?{box:bx.id}:{}; }
   return {}; }
@@ -3214,8 +3380,8 @@ function viewKaidah(){
     const g=GRUP[t.sub], focus=fromQ||weakOn?K.focus:null;
     if(g&&nav.g!=null&&g[nav.g]){ const [lbl,ix]=g[nav.g], rules=ix.map(i=>t.aturan[i-1]).filter(Boolean);
       return fab+back+'<h1 class="mh">'+esc(lbl)+'</h1><div class="lt-sub">'+esc(t.sub)+' · '+rules.length+' kaidah</div>'+weakNote+'<section class="card mrules">'+ruleList(t,rules,focus)+'</section>'+drillBtn(t); }
-    if(!g) return fab+back+'<h1 class="mh">'+esc(t.sub)+'</h1><div class="lt-sub">'+refLabel(t)+' · '+t.aturan.length+' kaidah</div>'+weakNote+'<section class="card mrules">'+ruleList(t,t.aturan,focus)+'</section>'+drillBtn(t);
-    return fab+back+'<h1 class="mh">'+esc(t.sub)+'</h1><div class="lt-sub">'+refLabel(t)+'</div>'+weakNote+'<div class="sh">Subkategori</div><div class="group">'+g.map(([lbl,ix],gi)=>{ const hot=focus&&focus.i!=null&&ix.includes(focus.i+1); return cell('mgrp',String(gi),lbl,hot?'⚠ Sering salah · mulai dari sini':'',ix.length+' kaidah'); }).join('')+'</div>'+drillBtn(t);
+    if(!g) return fab+back+'<h1 class="mh">'+esc(t.sub)+'</h1><div class="lt-sub">'+refLabel(t)+' · '+t.aturan.length+' kaidah</div>'+weakNote+defCard(t)+'<div class="sh">Kaidah</div><section class="card mrules">'+ruleList(t,t.aturan,focus)+'</section>'+trapCard(t)+drillBtn(t);
+    return fab+back+'<h1 class="mh">'+esc(t.sub)+'</h1><div class="lt-sub">'+refLabel(t)+' · '+t.aturan.length+' kaidah</div>'+weakNote+defCard(t)+'<div class="sh">Subkategori</div><div class="group">'+g.map(([lbl,ix],gi)=>{ const hot=focus&&focus.i!=null&&ix.includes(focus.i+1); return cell('mgrp',String(gi),lbl,hot?'⚠ Sering salah · mulai dari sini':'',ix.length+' kaidah'); }).join('')+'</div>'+trapCard(t)+drillBtn(t);
   }
   if(nav.box){
     const bx=nav.box==='pilih'?{n:'Konsep pilihan',kat:'Dari Kalender',topics:(nav.subs||[]).map(topicOf).filter(Boolean)}:boxes().find(x=>x.id===nav.box);
@@ -3224,7 +3390,7 @@ function viewKaidah(){
   }
   let h='<h1>Materi</h1><label class="search" for="kq"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true" style="color:var(--muted)"><circle cx="11" cy="11" r="7"/><path d="M20 20l-4-4"/></svg><input id="kq" type="search" placeholder="Cari materi: koma, pe-an, analogi…" value="'+esc(K.q||'')+'" data-action="kq"></label>';
   if(q){
-    const res=[]; MATERI.forEach(b=>b.topik.forEach(t=>{ const rs=t.aturan.filter(a=>(t.sub+' '+a[0]+' '+a[1]).toLowerCase().includes(q)); if(rs.length) res.push({t,rs}); }));
+    const res=[]; MATERI.forEach(b=>b.topik.forEach(t=>{ const rs=t.aturan.filter(a=>(t.sub+' '+a[0]+' '+a[1]+' '+(a[2]||'')).toLowerCase().includes(q)); if(rs.length) res.push({t,rs}); }));
     if(!res.length) return h+'<div class="card empty">Tidak ada materi yang cocok.</div>';
     return h+'<div class="sub">'+res.reduce((n,x)=>n+x.rs.length,0)+' kaidah cocok</div>'+res.map(({t,rs})=>'<section class="card mrules"><button type="button" class="mres" data-action="mtopic" data-v="'+esc(t.sub)+'">'+esc(t.sub)+' '+CHEV+'</button>'+ruleList(t,rs,null)+'</section>').join('');
   }
