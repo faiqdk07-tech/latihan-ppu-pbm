@@ -3205,7 +3205,7 @@ function viewKaidah(){
   const fromQ=K.from&&((K.from==='drill'&&V.drill)||(K.from==='soal'&&V.run));
   const fab=fromQ?'<div class="qbackfab"><button type="button" class="fbtn" data-action="qback">← Kembali ke soal</button></div>':'';
   const weakOn=K.from==='lemah'&&K.focus&&nav.sub===K.focus.sub, wk=weakOn?weakSubs().find(x=>x.sub===nav.sub):null;
-  const weakNote=weakOn?'<div class="card" style="border-color:var(--warn)!important"><b>Titik lemah'+(wk?': salah '+wk.bad+'× dari '+wk.n+' butir':'')+'</b><div class="sub" style="margin-top:4px">Pelajari kaidah di bawah dulu'+(K.focus.i!=null?' (yang ditandai paling sering muncul di soal yang salah)':'')+', lalu lanjut latihan soal.</div></div>':'';
+  const weakNote=weakOn?'<div class="card" style="border-color:var(--warn)!important"><b>Titik lemah'+(wk?': salah '+wk.bad+'× dari '+wk.n+' butir':'')+'</b><div class="sub" style="margin-top:4px">'+(GRUP[nav.sub]&&nav.g==null?'Pilih subkategori di bawah dulu'+(K.focus.i!=null?'; yang bertanda ⚠ paling sering muncul di soal yang salah':'')+'. Setelah paham, lanjut latihan soal.':'Pelajari kaidah di bawah dulu'+(K.focus.i!=null?' (yang ditandai paling sering muncul di soal yang salah)':'')+', lalu lanjut latihan soal.')+'</div></div>':'';
   const back='<button type="button" class="mback" data-action="mup">'+BACK+esc(upLabel(nav))+'</button>';
   const drillBtn=t=>{ const n=S.drill.filter(d=>d.subkategori===t.sub).length; return n?(weakOn?'<button class="btn block" type="button" data-action="drill" data-v="sub:'+esc(t.sub)+'">Sudah paham? Lanjut latihan · '+n+' butir →</button>':'<button class="btn ghost block" type="button" data-action="drill" data-v="sub:'+esc(t.sub)+'">Drill topik ini · '+n+' butir</button>'):''; };
   const cell=(act,v,t1,t2,val)=>'<button type="button" class="cell" data-action="'+act+'" data-v="'+esc(v)+'"><span class="txt"><span class="t1">'+esc(t1)+'</span>'+(t2?'<span class="t2">'+esc(t2)+'</span>':'')+'</span><span class="val">'+val+'</span>'+CHEV+'</button>';
@@ -3215,7 +3215,7 @@ function viewKaidah(){
     if(g&&nav.g!=null&&g[nav.g]){ const [lbl,ix]=g[nav.g], rules=ix.map(i=>t.aturan[i-1]).filter(Boolean);
       return fab+back+'<h1 class="mh">'+esc(lbl)+'</h1><div class="lt-sub">'+esc(t.sub)+' · '+rules.length+' kaidah</div>'+weakNote+'<section class="card mrules">'+ruleList(t,rules,focus)+'</section>'+drillBtn(t); }
     if(!g) return fab+back+'<h1 class="mh">'+esc(t.sub)+'</h1><div class="lt-sub">'+refLabel(t)+' · '+t.aturan.length+' kaidah</div>'+weakNote+'<section class="card mrules">'+ruleList(t,t.aturan,focus)+'</section>'+drillBtn(t);
-    return fab+back+'<h1 class="mh">'+esc(t.sub)+'</h1><div class="lt-sub">'+refLabel(t)+'</div>'+weakNote+'<div class="sh">Subkategori</div><div class="group">'+g.map(([lbl,ix],gi)=>cell('mgrp',String(gi),lbl,'',ix.length+' kaidah')).join('')+'</div>'+drillBtn(t);
+    return fab+back+'<h1 class="mh">'+esc(t.sub)+'</h1><div class="lt-sub">'+refLabel(t)+'</div>'+weakNote+'<div class="sh">Subkategori</div><div class="group">'+g.map(([lbl,ix],gi)=>{ const hot=focus&&focus.i!=null&&ix.includes(focus.i+1); return cell('mgrp',String(gi),lbl,hot?'⚠ Sering salah · mulai dari sini':'',ix.length+' kaidah'); }).join('')+'</div>'+drillBtn(t);
   }
   if(nav.box){
     const bx=nav.box==='pilih'?{n:'Konsep pilihan',kat:'Dari Kalender',topics:(nav.subs||[]).map(topicOf).filter(Boolean)}:boxes().find(x=>x.id===nav.box);
@@ -4145,7 +4145,7 @@ document.addEventListener('click',e=>{
   else if(a==='calmateri'){ const subs=b.dataset.v.split('|'); V.kaidah={q:'',nav:subs.length===1?{sub:subs[0]}:{box:'pilih',subs}}; go('kaidah'); }
   else if(a==='mbox'){ const bx=boxes().find(x=>x.id===b.dataset.v); if(!bx) return; V.kaidah.q=''; V.kaidah.nav=bx.topics.length===1?{box:bx.id,sub:bx.topics[0].sub}:{box:bx.id}; render(); window.scrollTo(0,0); }
   else if(a==='mtopic'){ const n=V.kaidah.nav||{}; V.kaidah.q=''; V.kaidah.nav={box:n.box,subs:n.subs,sub:b.dataset.v,g:null}; render(); window.scrollTo(0,0); }
-  else if(a==='mgrp'){ V.kaidah.nav=Object.assign({},V.kaidah.nav,{g:+b.dataset.v}); render(); window.scrollTo(0,0); }
+  else if(a==='mgrp'){ V.kaidah.nav=Object.assign({},V.kaidah.nav,{g:+b.dataset.v}); render(); window.scrollTo(0,0); const el=$('#rfocus'); if(el) setTimeout(()=>el.scrollIntoView({block:'center'}),60); }
   else if(a==='mup'){ V.kaidah.nav=navUp(V.kaidah.nav||{}); render(); window.scrollTo(0,0); }
   else if(a==='swipe'){ startSwipe(null); }
   else if(a==='game'){ startGame(b.dataset.v); }
@@ -4176,8 +4176,8 @@ document.addEventListener('click',e=>{
   else if(a==='qlayout'){ S.layout=S.layout==='split'?'stack':'split'; save(); render(); toast(S.layout==='split'?'Bacaan di kiri, soal di kanan (layar lebar)':'Bacaan di atas, soal di bawah'); }
   else if(a==='qend'){ const C=sessCtx(); if(!C) return; const c=countOf(C); if((c.k||c.f)&&!V.confirmEnd){ V.confirmEnd=true; render(); const el=$('.cbt-confirm'); if(el) el.scrollIntoView({block:'center',behavior:'smooth'}); return; } finishSess(C); }
   else if(a==='qendyes'){ finishSess(sessCtx()); }
-  else if(a==='weakmateri'){ const sub=b.dataset.v, r=b.dataset.r, i=r!=null&&r!==''?+r:null, gg=GRUP[sub], gi=i!=null&&gg?gg.findIndex(x=>x[1].includes(i+1)):-1;
-    V.kaidah={q:'',from:'lemah',focus:{sub,i,tag:'Sering salah'},nav:{sub,g:gi>=0?gi:null}}; go('kaidah'); setTimeout(()=>{ const el=$('#rfocus'); if(el) el.scrollIntoView({block:'center'}); },120); }
+  else if(a==='weakmateri'){ const sub=b.dataset.v, r=b.dataset.r, i=r!=null&&r!==''?+r:null;
+    V.kaidah={q:'',from:'lemah',focus:{sub,i,tag:'Sering salah'},nav:{sub,g:null}}; go('kaidah'); if(!GRUP[sub]) setTimeout(()=>{ const el=$('#rfocus'); if(el) el.scrollIntoView({block:'center'}); },120); }
   else if(a==='qmateri'){ const from=route(), r=b.dataset.r; const subs=b.dataset.v.split('|'), focus=r?{sub:r.split('#')[0],i:+r.split('#')[1]}:null, fs=focus?focus.sub:subs[0], gg=GRUP[fs], gi=focus&&gg?gg.findIndex(x=>x[1].includes(focus.i+1)):-1; V.kaidah={q:'',from,focus,nav:{sub:fs,g:gi>=0?gi:null}}; go('kaidah'); setTimeout(()=>{ const el=$('#rfocus'); if(el) el.scrollIntoView({block:'center'}); },120); }
   else if(a==='kgrp'){ const sub=b.dataset.sub, K=V.kaidah; K.gsel=K.gsel||{}; K.gsel[sub]=b.dataset.v==='all'?null:+b.dataset.v; K.openSet=K.openSet||[]; if(!K.openSet.includes(sub)) K.openSet.push(sub); render(); const d=[...document.querySelectorAll('details.topic')].find(x=>x.dataset.sub===sub); if(d) d.scrollIntoView({block:'start'}); }
   else if(a==='kjump'){ const el=document.getElementById(b.dataset.v); if(el) el.scrollIntoView({block:'start',behavior:'smooth'}); }
