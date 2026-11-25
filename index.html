@@ -600,6 +600,7 @@ ol.rules .ex.bad .exl{color:var(--bad)}
 .ex.bad .ar{color:var(--muted)} .ex.bad .rt{font-weight:600}
 .mdef p{margin:0 0 8px;line-height:1.5} .mdef p:last-child{margin:0}
 .mdef .mguna{font-size:14px;color:var(--muted)}
+.mdef .muji{font-size:13px;color:var(--muted);border-top:1px solid var(--line);margin-top:10px;padding-top:8px;line-height:1.45} .mdef .muji b{display:block;color:var(--ink);font-size:12px;margin-bottom:2px}
 .mtrap ul{margin:0;padding-left:20px;display:flex;flex-direction:column;gap:6px;line-height:1.45;font-size:14px}
 .mres{display:flex;align-items:center;justify-content:space-between;width:100%;border:0;background:none;padding:0 0 4px;font-weight:700;font-size:15px;color:var(--ink);text-align:left}
 .mres .chev{color:var(--faint)}
@@ -2142,6 +2143,28 @@ const MATERI = [
    ],
    jebakan:['Apostrof tidak dipakai untuk menyatakan kepemilikan seperti dalam bahasa Inggris (Budi’s book).']}
  ]}
+ ,{bab:'Bab IV · Penulisan Unsur Serapan', kat:'ejaan', topik:[
+  {sub:'Unsur serapan', ref:'IV',
+   def:'Unsur serapan adalah kata atau unsur dari bahasa daerah atau bahasa asing yang dipakai dalam bahasa Indonesia. Ada dua kelompok: unsur yang belum diserap (penulisan dan lafalnya masih mengikuti cara asing, misalnya *de facto*) dan unsur yang penulisan serta lafalnya sudah disesuaikan dengan kaidah bahasa Indonesia (misalnya konstruksi dari *construction*).',
+   guna:'EYD V memprioritaskan bentuk: ejaan diubah seperlunya sehingga bentuk Indonesianya masih dapat dibandingkan dengan bentuk asalnya. Pada contoh di bawah, kata serapan ditulis lebih dulu, lalu bentuk asalnya dalam kurung. Kaidah imbuhan serapan (misalnya -tion menjadi -si) diatur terpisah dalam Pedoman Umum Pembentukan Istilah (PUPI).',
+   aturan:[
+   ['Unsur asing yang belum diserap ditulis seperti aslinya dan dicetak miring.','*force majeure* · *de facto* · *de jure*','Unsur ini dipakai dalam konteks bahasa Indonesia, tetapi penulisan dan lafalnya masih mengikuti cara asing.','','IV'],
+   ['Huruf c di depan a, o, u, atau konsonan menjadi k; c di depan e, i, oe, atau y menjadi s.','katalis (*catalyst*) · konstruksi (*construction*) · kubik (*cubic*) · kristal (*crystal*) · sentral (*central*) · sirkulasi (*circulation*) · siber (*cyber*)','','','IV.A.11–12'],
+   ['Gabungan cc di depan o, u, atau konsonan menjadi k; cc di depan e atau i menjadi ks.','akomodasi (*accomodation*) · akulturasi (*acculturation*) · akreditasi (*accreditation*) · aksen (*accent*) · aksesori (*accessory*) · vaksin (*vaccine*)','','','IV.A.13–14'],
+   ['Gabungan ch di depan a, o, atau konsonan menjadi k; ch yang dilafalkan /s/ atau /sy/ menjadi s; ch yang dilafalkan /c/ menjadi c. Gabungan ck menjadi k.','karisma (*charisma*) · teknik (*technique*) · kromosom (*chromosome*) · brosur (*brochure*) · eselon (*echelon*) · carter (*charter*) · cek (*check*) · tiket (*ticket*)','','tehnik → teknik · kharisma → karisma','IV.A.16–19'],
+   ['Gabungan ct di akhir kata menjadi k.','abstrak (*abstract*) · kontak (*contact*) · kontrak (*contract*)','','','IV.A.21'],
+   ['Vokal ganda disesuaikan menurut lafalnya: ee menjadi e; ea yang dilafalkan /i/ menjadi i; oo dan ou yang dilafalkan /u/ menjadi u.','ide (*idee*) · apotek (*apotheek*) · tim (*team*) · krim (*cream*) · kartun (*cartoon*) · kupon (*coupon*) · suvenir (*souvenir*)','Patokannya lafal. Jika ea tidak dilafalkan /i/, tetap ea: teater, pankreas, alinea. Jika ou tidak dilafalkan /u/, tetap ou: voucer.','apotik → apotek · souvenir → suvenir','IV.A.26–28, 53–56'],
+   ['Gabungan ph menjadi f, th menjadi t, dan huruf q menjadi k.','mikrofon (*microphone*) · fase (*phase*) · metode (*methode*) · tesis (*thesis*) · akuarium (*aquarium*) · ekuator (*equator*) · frekuensi (*frequency*)','','frekwensi → frekuensi · methode → metode','IV.A.57, 62, 73'],
+   ['Gabungan sc di depan a, o, u, atau konsonan menjadi sk; sc di depan e, i, atau y menjadi s; sch di depan vokal menjadi sk.','skor (*score*) · skuba (*scuba*) · manuskrip (*manuscript*) · osilator (*oscilator*) · adolesens (*adolescence*) · skema (*schema*)','','','IV.A.67–69'],
+   ['Huruf t yang diikuti i dan dilafalkan /s/ menjadi s.','garansi (*garantie*) · pasien (*patient*) · polisi (*politie*)','','','IV.A.71'],
+   ['Huruf x di tengah kata atau di akhir suku kata menjadi ks; xc di depan e atau i menjadi ks; xc di depan a, o, u, atau konsonan menjadi ksk.','eksekutif (*executive*) · taksi (*taxi*) · kompleks (*complex*) · eksepsi (*exception*) · ekses (*excess*) · eksklusif (*exclusief*) · ekskavasi (*excavatie*)','','komplex → kompleks · taxi → taksi','IV.A.87–89'],
+   ['Huruf y yang dilafalkan /y/ tetap y; y yang dilafalkan /ai/ atau /i/ menjadi i.','yoga · yuan · siber (*cyber*) · dinamo (*dynamo*) · psikodrama (*psychodrama*)','','','IV.A.90–91'],
+   ['Konsonan ganda diserap menjadi konsonan tunggal, kecuali jika menimbulkan ketaksaan atau konotasi negatif.','komisi (*commission*) · efek (*effect*) · balet (*ballet*) · piza (*pizza*) · terakota (*terracotta*) · umat (*ummat*) · massa (bandingkan masa) · teller (bandingkan teler)','Massa dan teller tetap berkonsonan ganda agar tidak tertukar dengan masa dan teler.','ummat → umat · effek → efek','IV.B.3'],
+   ['Deret konsonan di akhir kata bahasa Arab disisipi vokal yang sama dengan vokal sebelumnya, atau ditambah vokal /u/.','akad (*‘aqd*) · fajar (*fajr*) · jilid (*jild*) · syukur (*syukr*) · umur (*‘umr*) · waktu (*waqt*) · fardu (*farḍ*) · salju (*ṡalj*)','','','IV.B.1–2'],
+   ['Unsur serapan yang sudah lazim dipakai tidak diubah walaupun tidak sesuai dengan kaidah umum penulisan unsur serapan.','alamat · sehat · kabar · makalah · napas · paham · pikir · khotbah · lafal · telepon · koperasi · populer · proyek · Senin · Selasa · Rabu · Kamis','Bentuk-bentuk ini perlu dihafal karena tidak dapat diturunkan dari kaidah.','nafas → napas · faham → paham · fikir → pikir · telefon → telepon · khutbah → khotbah','IV.B.4']
+   ],
+   jebakan:['Bentuk lazim harus dihafal: napas, paham, pikir, telepon, khotbah, kabar.','Patokan vokal ganda adalah lafal: *team* menjadi tim, tetapi *theater* menjadi teater.','Konsonan ganda dipertahankan pada massa dan teller agar tidak tertukar dengan masa dan teler.','Akhiran serapan diatur dalam PUPI, bukan EYD: aktivitas (bukan aktifitas), kualitas (bukan kwalitas).']}
+ ]}
 ];
 const SUB_KAT = {}; MATERI.forEach(b=>b.topik.forEach(t=>{ SUB_KAT[t.sub]=b.bab.indexOf('Tanda Baca')>=0?'tanda-baca':'ejaan'; }));
 
@@ -2412,11 +2435,11 @@ SAMPLE.drill = SAMPLE.drill.concat(SAMPLE_KEB);
 
 /* ---------- Konstanta ---------- */
 const KAT = {'tanda-baca':'Tanda baca','ejaan':'EYD V','kebahasaan':'Kebahasaan','baku':'Kata baku','game':'Mini game'};
-const POLA_IDS = ['PBM-ejaan-kapital','PBM-ejaan-tanda-baca','PBM-ejaan-penulisan-kata','PBM-ejaan-nama-ilmiah','PBM-diksi-seharusnya','PBM-diksi-pengganti','PBM-diksi-dihilangkan','PBM-rumpang-kata','PBM-rumpang-konjungsi','PBM-rumpang-pernyataan','PBM-efektif-sempurnakan','PBM-efektif-perbaikan','PBM-efektif-penggabungan','PBM-efektif-kalimat-inti','PBM-efektif-variasi-kalimat','PBM-efektif-paling-ringkas','PBM-makna-ungkap-kembali','PBM-makna-informasi-utama','PBM-kepaduan-judul','PBM-kepaduan-sisipan','PBM-kepaduan-urutan','PBM-kepaduan-kalimat-sumbang',
+const POLA_IDS = ['PBM-ejaan-kapital','PBM-ejaan-tanda-baca','PBM-ejaan-penulisan-kata','PBM-ejaan-nama-ilmiah','PBM-ejaan-serapan','PBM-diksi-seharusnya','PBM-diksi-pengganti','PBM-diksi-dihilangkan','PBM-rumpang-kata','PBM-rumpang-konjungsi','PBM-rumpang-pernyataan','PBM-efektif-sempurnakan','PBM-efektif-perbaikan','PBM-efektif-penggabungan','PBM-efektif-kalimat-inti','PBM-efektif-variasi-kalimat','PBM-efektif-paling-ringkas','PBM-makna-ungkap-kembali','PBM-makna-informasi-utama','PBM-kepaduan-judul','PBM-kepaduan-sisipan','PBM-kepaduan-urutan','PBM-kepaduan-kalimat-sumbang',
 'PPU-makna-sinonim','PPU-makna-antonim','PPU-makna-luas-sempit','PPU-makna-asosiasi','PPU-makna-simpulan-situasi','PPU-makna-ungkap-kembali','PPU-frasa-makna','PPU-frasa-pasangan-tetap','PPU-frasa-pola-makna','PPU-frasa-variasi-kata','PPU-imbuhan-makna','PPU-majas-kiasan','PPU-majas-perumpamaan','PPU-majas-makna-sebenarnya','PPU-hubungan-kata','PPU-konjungsi-fungsi','PPU-konjungsi-antarparagraf','PPU-struktur-pola-kalimat','PPU-struktur-tidak-logis','PPU-struktur-melengkapi','PPU-struktur-pembagian-paragraf','PPU-pandangan-penulis','PPU-bahasa-buatan'];
 /* Kunci Pola Soal (brief Nov 2026): pola_id -> [kemampuan, bentuk lama terdekat] */
 const POLA_BRIEF = {
-'PBM-ejaan-kapital':['PBM-C','PBM-8'],'PBM-ejaan-tanda-baca':['PBM-C','PBM-8'],'PBM-ejaan-penulisan-kata':['PBM-C','PBM-9'],'PBM-ejaan-nama-ilmiah':['PBM-C','tambahan 2026'],
+'PBM-ejaan-kapital':['PBM-C','PBM-8'],'PBM-ejaan-tanda-baca':['PBM-B','PBM-8'],'PBM-ejaan-penulisan-kata':['PBM-C','PBM-9'],'PBM-ejaan-nama-ilmiah':['PBM-C','tambahan 2026'],'PBM-ejaan-serapan':['PBM-C','PBM-9'],
 'PBM-diksi-seharusnya':['PBM-C','PBM-14'],'PBM-diksi-pengganti':['PBM-A','PBM-2'],'PBM-diksi-dihilangkan':['PBM-C','PBM-12'],
 'PBM-rumpang-kata':['PBM-A','PBM-3'],'PBM-rumpang-konjungsi':['PBM-C','PBM-10'],'PBM-rumpang-pernyataan':['PBM-A','PBM-3'],
 'PBM-efektif-sempurnakan':['PBM-C','PBM-11'],'PBM-efektif-perbaikan':['PBM-C','PBM-13'],'PBM-efektif-penggabungan':['PBM-B','PBM-6'],'PBM-efektif-kalimat-inti':['PBM-B','PBM-5'],
@@ -2528,6 +2551,7 @@ const GRUP={
  'Tanda hubung':[['Pemenggalan & bentuk ulang',[1,2]],['Tanggal, ejaan, skor',[3]],['Huruf kapital & angka',[4,5]],['Memperjelas & objek bahasan',[6,7]],['Unsur asing & kesatuan',[8,9]]],
  'Tanda petik':[['Petik ganda',[1,2,3]],['Petik tunggal',[4,5]]],
  'Tanda kurung':[['Kurung biasa',[1,2,3,4]],['Kurung siku',[5,6]]],
+ 'Unsur serapan':[['Belum diserap',[1]],['Huruf c, cc, ch, ck, ct',[2,3,4,5]],['Vokal ganda',[6]],['ph, th, q, sc, t, x, y',[7,8,9,10,11]],['Konsonan ganda & kata Arab',[12,13]],['Bentuk yang sudah lazim',[14]]],
  'Makna imbuhan: awalan':[['ber- dan pe-',[1,6]],['meN-, di-, ter-',[2,3,4]],['peN-',[5]],['se- dan memper-',[7,8]]],
  'Makna imbuhan: akhiran dan konfiks':[['Akhiran -an, -kan, -i',[1,2,3]],['Konfiks',[4,5,6,7]],['Jebakan UTBK',[8]]],
  'Kelas kata dan frasa':[['Kelas kata',[1]],['Frasa',[2,3,4]],['Kata majemuk',[5]]],
@@ -2867,6 +2891,9 @@ Contoh soal "pgk" (hanya mode "2027"): {"nomor": 3, "subtes": "${sub}", "pola_id
 - Fokus teks: ${isSim?o.simSub+' (simulasi)':o.teks}
 - Kelemahan dari Progres:
 ${o.weak}
+
+## Kerangka acuan UTBK 2026 (resmi)
+${!isD&&sub==='PPU'||isD?'PPU (Pengetahuan dan Pemahaman Umum, 20 soal, 15 menit): mengukur pengetahuan leksikal, informasi, dan pengetahuan umum yang penting dalam lingkup sosial budaya Indonesia, serta perkembangan bahasa. Soal menekankan keterkaitan permasalahan dengan bacaan untuk menganalisis, menghubungkan, dan menyimpulkan bentuk kata, frasa, dan kalimat sesuai konteks. Bentuk: pertanyaan singkat, bacaan pendek dengan satu pertanyaan, dan bacaan panjang dengan beberapa pertanyaan.\n':''}${!isD&&sub==='PBM'||isD?'PBM (Pemahaman Bacaan dan Menulis, 20 soal, 25 menit): kemampuan menulis berdasarkan pemahaman bacaan. Kode kemampuan pada pola_id: PBM-A = pemilihan gagasan (judul bacaan, diksi tepat, gagasan pelengkap kalimat, pelengkapan gagasan paragraf); PBM-B = penataan gagasan (kalimat inti, penggabungan kalimat, gagasan bertanda baca tepat, pengurutan kalimat dalam paragraf, penempatan kalimat, pemvariasian kalimat); PBM-C = perbaikan gagasan (penulisan kata serapan, penulisan huruf, penulisan kata gabung, perbaikan kata, perbaikan kata sambung, cara memperbaiki kalimat, kata mubazir, kalimat ringkas, perbaikan kalimat, perbaikan diksi).\n':''}Soal harus tetap berada dalam cakupan ini.
 
 ## Kaidah acuan EYD (EYD Edisi V, SK Kepala Badan Bahasa 2022)
 Jadikan kaidah ini dasar kunci jawaban untuk butir EYD. Jangan memakai kaidah yang tidak tercantum atau yang kamu ragukan.
@@ -3350,7 +3377,7 @@ Object.assign(ICONS,{
  buatan:['indigo','<circle cx="12" cy="12" r="9"/><path d="M3 12h18M12 3c3 3.5 3 14.5 0 18M12 3c-3 3.5-3 14.5 0 18"/>']
 });
 function boxes(){ const out=[]; MATERI.forEach((b,bi)=>{
-  if(b.kat!=='kebahasaan') out.push({id:'b'+bi,n:['Pemakaian huruf','Penulisan kata','Tanda baca'][bi]||b.bab,ic:['huruf','tulis','tb'][bi]||'eyd',kat:'EYD V · '+b.bab.split(' · ')[0],sec:'EYD V',topics:b.topik.slice()});
+  if(b.kat!=='kebahasaan') out.push({id:'b'+bi,n:['Penggunaan huruf','Penulisan kata','Tanda baca','Unsur serapan'][bi]||b.bab,ic:['huruf','tulis','tb','baku'][bi]||'eyd',kat:'EYD V · '+b.bab.split(' · ')[0],sec:'EYD V',topics:b.topik.slice()});
   else b.topik.forEach(t=>{ const r=KREF[t.ref]||['makna',t.ref]; let x=out.find(o=>o.id==='k-'+r[0]); if(!x){ x={id:'k-'+r[0],n:r[1],ic:r[0],kat:'Kebahasaan · '+t.ref,sec:'Kebahasaan',topics:[]}; out.push(x); } x.topics.push(t); });
  }); return out; }
 function topicOf(sub){ let r=null; MATERI.forEach(b=>b.topik.forEach(t=>{ if(t.sub===sub) r=t; })); return r; }
@@ -3360,7 +3387,29 @@ const badLines=s=>s.split(' · ').map(x=>{ const [w,r]=x.split(' → '); return 
 function ruleList(t,rules,focus){ return '<ol class="rules">'+rules.map(a=>{ const i=t.aturan.indexOf(a), f=focus&&focus.sub===t.sub&&focus.i===i; return '<li value="'+(i+1)+'"'+(f?' class="rfocus" id="rfocus"':'')+'>'+(f?'<span class="rtag">'+(focus.tag||'Sesuai soalmu')+'</span>':'')+
   '<div class="rk">'+rich(a[0])+(a[4]?' <span class="rpasal">EYD '+esc(a[4])+'</span>':'')+'</div>'+(a[2]?'<div class="rexp">'+rich(a[2])+'</div>':'')+
   (a[1]?'<div class="ex">'+(a[3]?'<span class="exl ok">✓ Contoh benar</span>':'')+exLines(a[1])+'</div>':'')+(a[3]?'<div class="ex bad"><span class="exl">✗ Salah → ✓ Benar</span>'+badLines(a[3])+'</div>':'')+'</li>'; }).join('')+'</ol>'; }
-function defCard(t){ return t.def?'<section class="card mdef"><h2>Pengertian</h2><p>'+rich(t.def)+'</p>'+(t.guna?'<p class="mguna">'+rich(t.guna)+'</p>':'')+'</section>':''; }
+/* posisi tiap topik dalam kerangka acuan UTBK 2026 (PBM: pemilihan, penataan, perbaikan gagasan; PPU: leksikal dan bentuk bahasa dalam konteks) */
+const PG='PBM · Perbaikan gagasan: ', PT='PBM · Penataan gagasan: ', PL='PBM · Pemilihan gagasan: ', PU='PPU · ';
+const UJI={
+ 'Huruf kapital':[PG+'penulisan huruf'],'Huruf miring dan tebal':[PG+'penulisan huruf'],'Singkatan dan akronim':[PG+'penulisan huruf'],
+ 'Kata berimbuhan dan bentuk terikat':[PG+'penulisan kata gabung, perbaikan kata'],'Bentuk ulang dan gabungan kata':[PG+'penulisan kata gabung'],
+ 'Pemenggalan kata':[PG+'perbaikan kata'],'Kata depan':[PG+'perbaikan kata'],'Partikel':[PG+'penulisan kata gabung, perbaikan kata'],
+ 'Angka dan bilangan':[PG+'perbaikan kata'],'Kata ganti dan kata sandang':[PG+'perbaikan kata'],'Unsur serapan':[PG+'penulisan kata serapan'],
+ 'Makna imbuhan: awalan':[PU+'bentuk kata dalam konteks (makna imbuhan)'],'Makna imbuhan: akhiran dan konfiks':[PU+'bentuk kata dalam konteks (makna imbuhan)'],
+ 'Kelas kata dan frasa':[PU+'bentuk kata dan frasa dalam konteks'],
+ 'Pola dan jenis kalimat':[PT+'kalimat inti, pemvariasian kalimat',PU+'struktur kalimat'],
+ 'Kalimat efektif: kesepadanan':[PG+'cara memperbaiki kalimat, perbaikan kalimat'],
+ 'Kalimat efektif: kehematan dan kecermatan':[PG+'kata mubazir, kalimat ringkas, perbaikan diksi'],
+ 'Kalimat efektif: keparalelan dan kelogisan':[PG+'perbaikan kalimat',PU+'kalimat yang tidak logis'],
+ 'Konjungsi':[PT+'penggabungan kalimat',PG+'perbaikan kata sambung',PU+'hubungan antarkalimat dan antarparagraf'],
+ 'Relasi makna':[PU+'pengetahuan leksikal (sinonim, antonim, makna luas dan sempit)',PL+'diksi yang tepat'],
+ 'Jenis dan perubahan makna':[PU+'pengetahuan leksikal'],'Hubungan kata (analogi)':[PU+'pengetahuan leksikal (hubungan antarkata)'],
+ 'Ungkapan, idiom, dan pasangan tetap':[PU+'makna frasa dalam konteks',PL+'diksi yang tepat'],
+ 'Majas':[PU+'makna kiasan dalam konteks'],
+ 'Paragraf dan ungkapan kembali':[PL+'judul, pelengkapan gagasan paragraf',PT+'pengurutan dan penempatan kalimat',PU+'simpulan dan ungkapan kembali'],
+ 'Bahasa buatan':[PU+'bahasa buatan (pola soal lama; tidak disebut eksplisit di kerangka acuan 2026)']};
+MATERI.forEach(b=>{ if(b.kat==='tanda-baca') b.topik.forEach(t=>{ UJI[t.sub]=UJI[t.sub]||[PT+'penentuan gagasan bertanda baca tepat']; }); });
+function defCard(t){ const u=UJI[t.sub]; if(!t.def&&!u) return '';
+  return '<section class="card mdef">'+(t.def?'<h2>Pengertian</h2><p>'+rich(t.def)+'</p>'+(t.guna?'<p class="mguna">'+rich(t.guna)+'</p>':''):'')+(u?'<div class="muji"><b>Diuji di (kerangka acuan 2026)</b>'+u.map(x=>'<div>'+esc(x)+'</div>').join('')+'</div>':'')+'</section>'; }
 function trapCard(t){ return t.jebakan&&t.jebakan.length?'<section class="card mtrap"><h2>Jebakan di soal</h2><ul>'+t.jebakan.map(x=>'<li>'+rich(x)+'</li>').join('')+'</ul></section>':''; }
 function navUp(n){ if(n.sub&&n.g!=null&&GRUP[n.sub]) return Object.assign({},n,{g:null});
   if(n.sub){ if(n.box==='pilih') return {box:'pilih',subs:n.subs}; const bx=boxes().find(x=>x.topics.some(t=>t.sub===n.sub)); return bx&&bx.topics.length>1?{box:bx.id}:{}; }
