@@ -2549,7 +2549,7 @@ SAMPLE.drill = SAMPLE.drill.concat(SAMPLE_KEB);
 /* ---------- Konstanta ---------- */
 const KAT = {'tanda-baca':'Tanda baca','ejaan':'EYD V','kebahasaan':'Kebahasaan','baku':'Kata baku','game':'Mini game'};
 const POLA_IDS = ['PBM-ejaan-kapital','PBM-ejaan-tanda-baca','PBM-ejaan-penulisan-kata','PBM-ejaan-nama-ilmiah','PBM-ejaan-serapan','PBM-diksi-seharusnya','PBM-diksi-pengganti','PBM-diksi-dihilangkan','PBM-rumpang-kata','PBM-rumpang-konjungsi','PBM-rumpang-pernyataan','PBM-efektif-sempurnakan','PBM-efektif-perbaikan','PBM-efektif-penggabungan','PBM-efektif-kalimat-inti','PBM-efektif-variasi-kalimat','PBM-efektif-paling-ringkas','PBM-makna-ungkap-kembali','PBM-makna-informasi-utama','PBM-kepaduan-judul','PBM-kepaduan-sisipan','PBM-kepaduan-urutan','PBM-kepaduan-kalimat-sumbang',
-'PPU-makna-sinonim','PPU-makna-antonim','PPU-makna-luas-sempit','PPU-makna-asosiasi','PPU-makna-simpulan-situasi','PPU-makna-ungkap-kembali','PPU-frasa-makna','PPU-frasa-pasangan-tetap','PPU-frasa-pola-makna','PPU-frasa-variasi-kata','PPU-imbuhan-makna','PPU-majas-kiasan','PPU-majas-perumpamaan','PPU-majas-makna-sebenarnya','PPU-hubungan-kata','PPU-konjungsi-fungsi','PPU-konjungsi-antarparagraf','PPU-struktur-pola-kalimat','PPU-struktur-tidak-logis','PPU-struktur-melengkapi','PPU-struktur-pembagian-paragraf','PPU-pandangan-penulis','PPU-bahasa-buatan'];
+'PPU-makna-sinonim','PPU-makna-antonim','PPU-makna-luas-sempit','PPU-makna-asosiasi','PPU-makna-simpulan-situasi','PPU-makna-ungkap-kembali','PPU-frasa-makna','PPU-frasa-pasangan-tetap','PPU-frasa-pola-makna','PPU-frasa-variasi-kata','PPU-imbuhan-makna','PPU-majas-kiasan','PPU-majas-perumpamaan','PPU-majas-makna-sebenarnya','PPU-hubungan-kata','PPU-konjungsi-fungsi','PPU-konjungsi-antarparagraf','PPU-struktur-pola-kalimat','PPU-struktur-tidak-logis','PPU-struktur-melengkapi','PPU-struktur-pembagian-paragraf','PPU-efektif-perbaikan','PPU-pandangan-penulis','PPU-bahasa-buatan'];
 /* Kunci Pola Soal (brief Nov 2026): pola_id -> [kemampuan, bentuk lama terdekat] */
 const POLA_BRIEF = {
 'PBM-ejaan-kapital':['PBM-C','PBM-8'],'PBM-ejaan-tanda-baca':['PBM-B','PBM-8'],'PBM-ejaan-penulisan-kata':['PBM-C','PBM-9'],'PBM-ejaan-nama-ilmiah':['PBM-C','tambahan 2026'],'PBM-ejaan-serapan':['PBM-C','PBM-9'],
@@ -2565,7 +2565,7 @@ const POLA_BRIEF = {
 'PPU-imbuhan-makna':['PPU-B','PPU-5'],
 'PPU-majas-kiasan':['PPU-A','PPU-8'],'PPU-majas-perumpamaan':['PPU-A','tambahan 2026'],'PPU-majas-makna-sebenarnya':['PPU-A','PPU-8'],
 'PPU-hubungan-kata':['PPU-A','PPU-3'],'PPU-konjungsi-fungsi':['PPU-C','PPU-11'],'PPU-konjungsi-antarparagraf':['PPU-D','PPU-11'],
-'PPU-struktur-pola-kalimat':['PPU-C','PPU-9'],'PPU-struktur-tidak-logis':['PPU-D','PPU-10'],'PPU-struktur-melengkapi':['PPU-D','PPU-12'],'PPU-struktur-pembagian-paragraf':['PPU-D','PPU-14'],
+'PPU-struktur-pola-kalimat':['PPU-C','PPU-9'],'PPU-struktur-tidak-logis':['PPU-D','PPU-10'],'PPU-struktur-melengkapi':['PPU-D','PPU-12'],'PPU-struktur-pembagian-paragraf':['PPU-D','PPU-14'],'PPU-efektif-perbaikan':['PPU-D','tambahan 2026'],
 'PPU-pandangan-penulis':['PPU-D','tambahan 2026'],'PPU-bahasa-buatan':['PPU-E','PPU-16']};
 const MODE_LBL = {dasar:'Mode Dasar', geser:'Satu hal diubah', '2027':'Mode 2027'};
 /* Tahap per kelompok kemampuan: 1 = bentuk lama, 2 = boleh satu hal diubah, 3 = boleh bentuk baru.
@@ -2910,7 +2910,7 @@ P3. Pengecoh per tipe soal:
    - Ungkapan kembali/makna sama: satu opsi per modalitas (pasti, biasanya, seharusnya, sepertinya); tukar pelaku dan sasaran; pindahkan induk klausa "yang"; kunci mempertahankan isi DAN kadar kepastian.
    - Imbuhan: pengecoh memakai imbuhan yang sama tetapi makna berbeda (pe-an 'proses' vs 'hal' vs 'tempat'); kunci tidak boleh bisa dipilih hanya dari bentuk katanya.
    - Konjungsi/penggabungan: pengecoh adalah konjungsi yang relasinya mirip (sehingga vs karena vs maka; tetapi vs padahal vs meskipun).
-   - Perbaikan/kalimat efektif: pengecoh memperbaiki separuh masalah, atau memperbaiki kesalahan tetapi menimbulkan kesalahan baru.
+   - Perbaikan/kalimat efektif: pengecoh memperbaiki separuh masalah, atau memperbaiki kesalahan tetapi menimbulkan kesalahan baru. Pada perincian sejajar, pengecoh hanya menyeragamkan sebagian unsur (misalnya dua unsur meng- dan satu unsur peng-…-an).
    - Kalimat inti/informasi utama: pengecoh membuang unsur wajib atau ikut membawa keterangan.
    - Rumpang dua kata: pengecoh = kata pertama benar & kedua salah, dan sebaliknya.
    - Judul/gagasan: pengecoh hanya mencakup satu paragraf atau terlalu umum.
@@ -2942,7 +2942,7 @@ Aturan untuk keduanya:
    d. Untuk bahasa buatan: contoh pola ditulis di "kalimat" (misal "lo mesa kuti = saya makan nasi"), lalu PG 5 opsi.
 2. Kalimat yang dimaksudkan benar harus benar di SEMUA aspek (ejaan, tanda baca, kalimat efektif). Kalimat yang salah hanya memuat SATU kesalahan, dan kesalahan itu pada konsep yang diuji.
 3. Pengecoh harus kesalahan yang memang sering terjadi, bukan salah ketik. Untuk makna imbuhan, analogi, dan relasi makna, setiap pengecoh mewakili makna atau hubungan lain yang berbeda jelas, sehingga hanya satu jawaban yang sah.
-4. "kaidah": satu kalimat aturan; untuk EYD sertakan rujukan bab, misalnya "(III.B.3)".
+4. "kaidah": satu kalimat aturan dengan rujukannya: untuk EYD sertakan bab, misalnya "(III.B.3)"; untuk kebahasaan, jika ada, bagian TBBI, misalnya "(TBBI 9.3.2.4)".
 5. Variasikan konteks (sekolah, kesehatan, lingkungan, ekonomi, budaya). Nama orang dan lembaga fiktif. Huruf miring ditulis dengan *...*. Jangan mengulang kalimat yang sama antarbutir.
 6. Jika Kelemahan menyebut subkategori hari ini, minimal separuh butir subkategori itu menyasarnya dengan contoh baru.
 7. Uji anti-tebak: tiap butir tidak boleh bisa dijawab tanpa menguasai kaidahnya. Opsi sejajar panjang dan gayanya (selisih jumlah kata terpanjang dan terpendek paling banyak 30%; kunci menjadi opsi terpanjang paling banyak 2 dari 10 butir PG), kunci tidak menonjol, dan minimal 2 opsi tampak benar sekilas. Untuk butir "yang tepat", pengecoh mengandung kesalahan halus yang sering terjadi; untuk butir "yang salah", sisipkan kalimat benar yang tampak janggal.`;
@@ -3007,13 +3007,14 @@ Contoh soal "pgk" (hanya mode "2027"): {"nomor": 3, "subtes": "${sub}", "pola_id
 ${o.weak}
 
 ## Kerangka acuan UTBK 2026 (resmi)
-${!isD&&sub==='PPU'||isD?'PPU (Pengetahuan dan Pemahaman Umum, 20 soal, 15 menit): mengukur pengetahuan leksikal, informasi, dan pengetahuan umum yang penting dalam lingkup sosial budaya Indonesia, serta perkembangan bahasa. Soal menekankan keterkaitan permasalahan dengan bacaan untuk menganalisis, menghubungkan, dan menyimpulkan bentuk kata, frasa, dan kalimat sesuai konteks. Bentuk: pertanyaan singkat, bacaan pendek dengan satu pertanyaan, dan bacaan panjang dengan beberapa pertanyaan.\n':''}${!isD&&sub==='PBM'||isD?'PBM (Pemahaman Bacaan dan Menulis, 20 soal, 25 menit): kemampuan menulis berdasarkan pemahaman bacaan. Kode kemampuan pada pola_id: PBM-A = pemilihan gagasan (judul bacaan, diksi tepat, gagasan pelengkap kalimat, pelengkapan gagasan paragraf); PBM-B = penataan gagasan (kalimat inti, penggabungan kalimat, gagasan bertanda baca tepat, pengurutan kalimat dalam paragraf, penempatan kalimat, pemvariasian kalimat); PBM-C = perbaikan gagasan (penulisan kata serapan, penulisan huruf, penulisan kata gabung, perbaikan kata, perbaikan kata sambung, cara memperbaiki kalimat, kata mubazir, kalimat ringkas, perbaikan kalimat, perbaikan diksi).\n':''}Soal harus tetap berada dalam cakupan ini.
+${!isD&&sub==='PPU'||isD?'PPU (Pengetahuan dan Pemahaman Umum, 20 soal, 15 menit): mengukur pengetahuan leksikal, informasi, dan pengetahuan umum yang penting dalam lingkup sosial budaya Indonesia, serta perkembangan bahasa. Soal menekankan keterkaitan permasalahan dengan bacaan untuk menganalisis, menghubungkan, dan menyimpulkan bentuk kata, frasa, dan kalimat sesuai konteks. Bentuk: pertanyaan singkat, bacaan pendek dengan satu pertanyaan, dan bacaan panjang dengan beberapa pertanyaan. Kode kemampuan pada pola_id: PPU-A = makna kata dan ungkapan dalam konteks (sinonim, antonim, luas-sempit, asosiasi, simpulan situasi, pasangan tetap, kiasan, hubungan kata); PPU-B = bentuk kata (makna imbuhan, variasi kata); PPU-C = frasa dan struktur (pola makna frasa, pola kalimat, fungsi kata hubung); PPU-D = kalimat dan wacana (ungkapan kembali, kalimat tidak logis, melengkapi kalimat, penyempurnaan kalimat dan perincian sejajar, pembagian paragraf, penghubung antarparagraf, pandangan penulis); PPU-E = bahasa buatan.\n':''}${!isD&&sub==='PBM'||isD?'PBM (Pemahaman Bacaan dan Menulis, 20 soal, 25 menit): kemampuan menulis berdasarkan pemahaman bacaan. Kode kemampuan pada pola_id: PBM-A = pemilihan gagasan (judul bacaan, diksi tepat, gagasan pelengkap kalimat, pelengkapan gagasan paragraf); PBM-B = penataan gagasan (kalimat inti, penggabungan kalimat, gagasan bertanda baca tepat, pengurutan kalimat dalam paragraf, penempatan kalimat, pemvariasian kalimat); PBM-C = perbaikan gagasan (penulisan kata serapan, penulisan huruf, penulisan kata gabung, perbaikan kata, perbaikan kata sambung, cara memperbaiki kalimat, kata mubazir, kalimat ringkas, perbaikan kalimat, perbaikan diksi).\n':''}Soal harus tetap berada dalam cakupan ini.
 
 ## Kaidah acuan EYD (EYD Edisi V, SK Kepala Badan Bahasa 2022)
 Jadikan kaidah ini dasar kunci jawaban untuk butir EYD. Jangan memakai kaidah yang tidak tercantum atau yang kamu ragukan.
 ${o.rules}
 
-## Kaidah acuan kebahasaan (tata bahasa baku)
+## Kaidah acuan kebahasaan (TBBI edisi IV; Semantik Bahasa Indonesia, Chaer & Muliastuti; gaya bahasa Keraf)
+Jadikan kaidah ini dasar kunci jawaban untuk butir kebahasaan dan pakai istilah yang sama (misalnya kalimat kompleks = majemuk bertingkat; konotasi = nilai rasa, bukan makna kias).
 ${o.rules2}
 
 ${isD?'## Drill (20 butir)\n'+drillRules:'## '+(isSim?'Simulasi':'Teks bernomor ala UTBK')+' ('+nT+' teks × 5 soal = '+(nT*5)+' soal '+sub+')\n'+teksRules}
