@@ -2942,9 +2942,15 @@ function weakCard(){
   const w=weakSubs().slice(0,3);
   const wb=S.baku.filter(p=>{ const s=srsOf('kb-'+slug(p.baku)); return s.n>s.ok; }).slice(0,4);
   if(!w.length&&!wb.length) return '';
-  return '<div class="sh">Titik lemah</div><div class="group">'+w.map(x=>'<button type="button" class="cell has-ic" data-action="drill" data-v="sub:'+esc(x.sub)+'">'+icon('weak')+'<span class="txt"><span class="t1">'+esc(x.sub)+'</span></span><span class="val">salah '+x.bad+'×</span>'+CHEV+'</button>').join('')+
+  return '<div class="sh">Titik lemah</div><div class="sub" style="margin:-2px 0 8px">Baca materinya dulu, baru latihan soal.</div><div class="group">'+w.map(x=>{ const m=topicOf(x.sub), f=m?weakRule(x.sub):null;
+      return m?'<button type="button" class="cell has-ic" data-action="weakmateri" data-v="'+esc(x.sub)+'"'+(f?' data-r="'+f.i+'"':'')+'>'+icon('weak')+'<span class="txt"><span class="t1">'+esc(x.sub)+'</span><span class="t2">Baca materi dulu, lalu drill</span></span><span class="val">salah '+x.bad+'×</span>'+CHEV+'</button>'
+        :'<button type="button" class="cell has-ic" data-action="drill" data-v="sub:'+esc(x.sub)+'">'+icon('weak')+'<span class="txt"><span class="t1">'+esc(x.sub)+'</span></span><span class="val">salah '+x.bad+'×</span>'+CHEV+'</button>'; }).join('')+
     (wb.length?'<button type="button" class="cell has-ic" data-action="swipe">'+icon('baku')+'<span class="txt"><span class="t1">Kata baku</span><span class="t2">'+wb.map(p=>esc(p.baku)).join(', ')+'</span></span>'+CHEV+'</button>':'')+'</div>';
 }
+/* kaidah yang paling sering cocok dengan soal drill yang salah di subkategori ini */
+function weakRule(sub){ const byId={}; S.drill.forEach(d=>{ byId[d.id]=d; }); const cnt={};
+  S.dhist.filter(x=>x.sub===sub&&!x.correct).forEach(x=>{ const it=byId[x.id]; if(!it) return; const f=bestRule([sub],itemText(it,true)); if(f) cnt[f.i]=(cnt[f.i]||0)+1; });
+  const top=Object.entries(cnt).sort((a,b)=>b[1]-a[1])[0]; return top?{sub,i:+top[0]}:null; }
 function weakSubs(){
   const m={}; S.dhist.filter(x=>x.kat!=='game'&&x.sub!=='Baku di Kalimat').forEach(x=>{ const k=x.sub; m[k]=m[k]||{kat:x.kat,sub:x.sub,n:0,bad:0}; m[k].n++; if(!x.correct) m[k].bad++; });
   return Object.values(m).filter(x=>x.bad).sort((a,b)=>b.bad-a.bad||a.n-b.n);
@@ -3189,7 +3195,7 @@ function boxes(){ const out=[]; MATERI.forEach((b,bi)=>{
  }); return out; }
 function topicOf(sub){ let r=null; MATERI.forEach(b=>b.topik.forEach(t=>{ if(t.sub===sub) r=t; })); return r; }
 function refLabel(t){ let r=''; MATERI.forEach(b=>{ if(b.topik.includes(t)) r=b.kat==='kebahasaan'?'Kebahasaan · '+t.ref:'EYD V · '+b.bab.split(' · ')[0]; }); return esc(r); }
-function ruleList(t,rules,focus){ return '<ol class="rules">'+rules.map(a=>{ const i=t.aturan.indexOf(a), f=focus&&focus.sub===t.sub&&focus.i===i; return '<li'+(f?' class="rfocus" id="rfocus"':'')+'>'+(f?'<span class="rtag">Sesuai soalmu</span>':'')+'<div>'+rich(a[0])+'</div><div class="ex">'+rich(a[1])+'</div></li>'; }).join('')+'</ol>'; }
+function ruleList(t,rules,focus){ return '<ol class="rules">'+rules.map(a=>{ const i=t.aturan.indexOf(a), f=focus&&focus.sub===t.sub&&focus.i===i; return '<li'+(f?' class="rfocus" id="rfocus"':'')+'>'+(f?'<span class="rtag">'+(focus.tag||'Sesuai soalmu')+'</span>':'')+'<div>'+rich(a[0])+'</div><div class="ex">'+rich(a[1])+'</div></li>'; }).join('')+'</ol>'; }
 function navUp(n){ if(n.sub&&n.g!=null&&GRUP[n.sub]) return Object.assign({},n,{g:null});
   if(n.sub){ if(n.box==='pilih') return {box:'pilih',subs:n.subs}; const bx=boxes().find(x=>x.topics.some(t=>t.sub===n.sub)); return bx&&bx.topics.length>1?{box:bx.id}:{}; }
   return {}; }
@@ -3198,16 +3204,18 @@ function viewKaidah(){
   const K=V.kaidah, q=(K.q||'').trim().toLowerCase(), nav=K.nav||{};
   const fromQ=K.from&&((K.from==='drill'&&V.drill)||(K.from==='soal'&&V.run));
   const fab=fromQ?'<div class="qbackfab"><button type="button" class="fbtn" data-action="qback">← Kembali ke soal</button></div>':'';
+  const weakOn=K.from==='lemah'&&K.focus&&nav.sub===K.focus.sub, wk=weakOn?weakSubs().find(x=>x.sub===nav.sub):null;
+  const weakNote=weakOn?'<div class="card" style="border-color:var(--warn)!important"><b>Titik lemah'+(wk?': salah '+wk.bad+'× dari '+wk.n+' butir':'')+'</b><div class="sub" style="margin-top:4px">Pelajari kaidah di bawah dulu'+(K.focus.i!=null?' (yang ditandai paling sering muncul di soal yang salah)':'')+', lalu lanjut latihan soal.</div></div>':'';
   const back='<button type="button" class="mback" data-action="mup">'+BACK+esc(upLabel(nav))+'</button>';
-  const drillBtn=t=>{ const n=S.drill.filter(d=>d.subkategori===t.sub).length; return n?'<button class="btn ghost block" type="button" data-action="drill" data-v="sub:'+esc(t.sub)+'">Drill topik ini · '+n+' butir</button>':''; };
+  const drillBtn=t=>{ const n=S.drill.filter(d=>d.subkategori===t.sub).length; return n?(weakOn?'<button class="btn block" type="button" data-action="drill" data-v="sub:'+esc(t.sub)+'">Sudah paham? Lanjut latihan · '+n+' butir →</button>':'<button class="btn ghost block" type="button" data-action="drill" data-v="sub:'+esc(t.sub)+'">Drill topik ini · '+n+' butir</button>'):''; };
   const cell=(act,v,t1,t2,val)=>'<button type="button" class="cell" data-action="'+act+'" data-v="'+esc(v)+'"><span class="txt"><span class="t1">'+esc(t1)+'</span>'+(t2?'<span class="t2">'+esc(t2)+'</span>':'')+'</span><span class="val">'+val+'</span>'+CHEV+'</button>';
   if(nav.sub){
     const t=topicOf(nav.sub); if(!t){ K.nav={}; return viewKaidah(); }
-    const g=GRUP[t.sub], focus=fromQ?K.focus:null;
+    const g=GRUP[t.sub], focus=fromQ||weakOn?K.focus:null;
     if(g&&nav.g!=null&&g[nav.g]){ const [lbl,ix]=g[nav.g], rules=ix.map(i=>t.aturan[i-1]).filter(Boolean);
-      return fab+back+'<h1 class="mh">'+esc(lbl)+'</h1><div class="lt-sub">'+esc(t.sub)+' · '+rules.length+' kaidah</div><section class="card mrules">'+ruleList(t,rules,focus)+'</section>'+drillBtn(t); }
-    if(!g) return fab+back+'<h1 class="mh">'+esc(t.sub)+'</h1><div class="lt-sub">'+refLabel(t)+' · '+t.aturan.length+' kaidah</div><section class="card mrules">'+ruleList(t,t.aturan,focus)+'</section>'+drillBtn(t);
-    return fab+back+'<h1 class="mh">'+esc(t.sub)+'</h1><div class="lt-sub">'+refLabel(t)+'</div><div class="sh">Subkategori</div><div class="group">'+g.map(([lbl,ix],gi)=>cell('mgrp',String(gi),lbl,'',ix.length+' kaidah')).join('')+'</div>'+drillBtn(t);
+      return fab+back+'<h1 class="mh">'+esc(lbl)+'</h1><div class="lt-sub">'+esc(t.sub)+' · '+rules.length+' kaidah</div>'+weakNote+'<section class="card mrules">'+ruleList(t,rules,focus)+'</section>'+drillBtn(t); }
+    if(!g) return fab+back+'<h1 class="mh">'+esc(t.sub)+'</h1><div class="lt-sub">'+refLabel(t)+' · '+t.aturan.length+' kaidah</div>'+weakNote+'<section class="card mrules">'+ruleList(t,t.aturan,focus)+'</section>'+drillBtn(t);
+    return fab+back+'<h1 class="mh">'+esc(t.sub)+'</h1><div class="lt-sub">'+refLabel(t)+'</div>'+weakNote+'<div class="sh">Subkategori</div><div class="group">'+g.map(([lbl,ix],gi)=>cell('mgrp',String(gi),lbl,'',ix.length+' kaidah')).join('')+'</div>'+drillBtn(t);
   }
   if(nav.box){
     const bx=nav.box==='pilih'?{n:'Konsep pilihan',kat:'Dari Kalender',topics:(nav.subs||[]).map(topicOf).filter(Boolean)}:boxes().find(x=>x.id===nav.box);
@@ -4168,6 +4176,8 @@ document.addEventListener('click',e=>{
   else if(a==='qlayout'){ S.layout=S.layout==='split'?'stack':'split'; save(); render(); toast(S.layout==='split'?'Bacaan di kiri, soal di kanan (layar lebar)':'Bacaan di atas, soal di bawah'); }
   else if(a==='qend'){ const C=sessCtx(); if(!C) return; const c=countOf(C); if((c.k||c.f)&&!V.confirmEnd){ V.confirmEnd=true; render(); const el=$('.cbt-confirm'); if(el) el.scrollIntoView({block:'center',behavior:'smooth'}); return; } finishSess(C); }
   else if(a==='qendyes'){ finishSess(sessCtx()); }
+  else if(a==='weakmateri'){ const sub=b.dataset.v, r=b.dataset.r, i=r!=null&&r!==''?+r:null, gg=GRUP[sub], gi=i!=null&&gg?gg.findIndex(x=>x[1].includes(i+1)):-1;
+    V.kaidah={q:'',from:'lemah',focus:{sub,i,tag:'Sering salah'},nav:{sub,g:gi>=0?gi:null}}; go('kaidah'); setTimeout(()=>{ const el=$('#rfocus'); if(el) el.scrollIntoView({block:'center'}); },120); }
   else if(a==='qmateri'){ const from=route(), r=b.dataset.r; const subs=b.dataset.v.split('|'), focus=r?{sub:r.split('#')[0],i:+r.split('#')[1]}:null, fs=focus?focus.sub:subs[0], gg=GRUP[fs], gi=focus&&gg?gg.findIndex(x=>x[1].includes(focus.i+1)):-1; V.kaidah={q:'',from,focus,nav:{sub:fs,g:gi>=0?gi:null}}; go('kaidah'); setTimeout(()=>{ const el=$('#rfocus'); if(el) el.scrollIntoView({block:'center'}); },120); }
   else if(a==='kgrp'){ const sub=b.dataset.sub, K=V.kaidah; K.gsel=K.gsel||{}; K.gsel[sub]=b.dataset.v==='all'?null:+b.dataset.v; K.openSet=K.openSet||[]; if(!K.openSet.includes(sub)) K.openSet.push(sub); render(); const d=[...document.querySelectorAll('details.topic')].find(x=>x.dataset.sub===sub); if(d) d.scrollIntoView({block:'start'}); }
   else if(a==='kjump'){ const el=document.getElementById(b.dataset.v); if(el) el.scrollIntoView({block:'start',behavior:'smooth'}); }
@@ -4415,7 +4425,7 @@ const sfx=SFX.play, sfxLater=SFX.later;
 
 /* suara sentuhan untuk aksi antarmuka (game ditangani gAct) */
 const SFX_GAME=new Set(['gquit','gnext','gagain','gstart','g4pisah','g4sambung','g5','g6','g1sel','g1put','g2sel','g2catch','g1prev','g1next','g1drop','g1hint','g2in','g2out','g2scan','g3word','g3all','g3fix','g7pick','g7tog','g7none','g7send','g7allok','g8judge','g9find','g9fix','swyes','swno','swnext','swipe','qcheck','swretry','swagain']);
-const SFX_ACT={lang:'tab',mtab:'tab',ltab:'tab',ptab:'tab',psim:'tab',calmove:'page',calday:'tap',calmateri:'book',mbox:'book',mtopic:'book',mgrp:'page',mup:'page',kgrp:'page',kjump:'page',qmateri:'book',qback:'page',
+const SFX_ACT={lang:'tab',mtab:'tab',ltab:'tab',ptab:'tab',psim:'tab',calmove:'page',calday:'tap',calmateri:'book',mbox:'book',mtopic:'book',mgrp:'page',mup:'page',kgrp:'page',kjump:'page',qmateri:'book',weakmateri:'book',qback:'page',
   go:'tap',game:'coin',drill:'start',paket:'start',teks:'start',teksid:'start',teks2:'start',sim:'start',paketteks:'start',
   qpick:'pencil',qpgk:'pencil',qflag:'flag',qgo:'page',qprev:'page',qnext:'page',qreport:'stamp',unbad:'pop',qcek:'toggleOn',qlayout:'tab',qendno:'tap',qreview:'book',qendreview:'page',
   swstop:'door',loadsample:'page',check:'pencil',savebank:'stamp',bakuadd:'stamp',bakureplace:'stamp',delteks:'trash',gerak:'TOG',anim:'tab',hari:'warn',hariNo:'tap',hariYes:'trash',reset:'warn',resetno:'tap',resetyes:'trash',copyprompt:'copy'};
