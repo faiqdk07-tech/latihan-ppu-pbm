@@ -379,6 +379,10 @@ body.sess nav.bottom{display:none}
 .pemb.bad .pemb-h{color:var(--bad-ink)}
 .pemb-b{line-height:1.65;font-size:15.5px}
 .pemb-n{font-size:13px;color:var(--muted)}
+.savest{margin:10px 0 4px;font-size:13px;line-height:1.45;border-radius:10px;padding:8px 12px}
+.savest.ok{align-self:center;color:var(--ok-ink);background:var(--ok-soft);font-weight:600;padding:4px 12px;border-radius:999px;width:max-content;margin-left:auto;margin-right:auto}
+.savest.bad{color:var(--bad-ink);background:var(--bad-soft)}
+.savest .link{color:inherit;text-decoration:underline;font-weight:600}
 .cbt-confirm{margin:18px 28px 0;border:1.5px solid var(--warn);background:color-mix(in srgb,var(--warn) 10%,transparent);border-radius:14px;padding:14px 18px;display:flex;flex-direction:column;gap:10px;animation:rise .3s both}
 .cbt-confirm .actions{justify-content:flex-end}
 .cbt-foot{display:flex;justify-content:space-between;gap:12px;padding:24px 28px 28px}
@@ -2658,12 +2662,64 @@ function fresh(){
   mergeImport(st,SAMPLE,true); st.baku=parseBaku(SAMPLE_BAKU).pairs; return st;
 }
 let S;
-try{ S=JSON.parse(localStorage.getItem(KEY)||'null'); }catch(e){ S=null; }
+/* SAVE.raw = isi penyimpanan yang terakhir dibaca atau ditulis tab ini; dipakai untuk mengenali tulisan tab lain */
+const SAVE={raw:null,ok:true,err:'',warned:false};
+try{ SAVE.raw=localStorage.getItem(KEY); S=JSON.parse(SAVE.raw||'null'); }catch(e){ S=null; }
 if(!S||!Array.isArray(S.bank)||!Array.isArray(S.drill)||!Array.isArray(S.baku)) S=fresh();
 const BAKU_VER='kbbi-650-v1';
 if(!S.bad||typeof S.bad!=='object') S.bad={};
-if(S.bakuVer!==BAKU_VER){ S.baku=parseBaku(SAMPLE_BAKU).pairs; S.bakuVer=BAKU_VER; try{localStorage.setItem(KEY,JSON.stringify(S));}catch(e){} }
-function save(){ try{ localStorage.setItem(KEY, JSON.stringify(S)); }catch(e){} ringkasPPU(); }
+if(S.bakuVer!==BAKU_VER){ S.baku=parseBaku(SAMPLE_BAKU).pairs; S.bakuVer=BAKU_VER; try{ const raw=JSON.stringify(S); localStorage.setItem(KEY,raw); SAVE.raw=raw; }catch(e){} }
+/* Gabungkan data yang ditulis tab lain ke S, supaya tab ini tidak menimpanya.
+   Riwayat digabung per catatan; butir yang hanya ada di sana ditambahkan; untuk butir yang sama dipilih yang lebih baru. */
+function mergeFrom(o){
+  if(!o||typeof o!=='object') return;
+  const logKey=x=>[x.ts,x.id||'',x.teksId||'',x.nomor||''].join('|');
+  ['history','dhist'].forEach(k=>{ if(!Array.isArray(o[k])) return; S[k]=S[k]||[]; const seen=new Set(S[k].map(logKey)); let add=false; o[k].forEach(x=>{ const key=logKey(x); if(!seen.has(key)){ S[k].push(x); seen.add(key); add=true; } }); if(add) S[k].sort((a,b)=>a.ts-b.ts); });
+  ['bank','drill'].forEach(k=>{ if(!Array.isArray(o[k])) return; const ids=new Set(S[k].map(x=>x.id)); o[k].forEach(x=>{ if(!ids.has(x.id)) S[k].push(x); }); });
+  const ebStamp=e=>Math.max(e&&e.t||0,...((e&&e.log)||[]).map(l=>l.ts||0));
+  ['srs','bad','eb','wk'].forEach(k=>{ const src=o[k]; if(!src||typeof src!=='object') return; S[k]=S[k]||{}; Object.keys(src).forEach(id=>{ const mine=S[k][id], theirs=src[id];
+    if(mine===undefined) S[k][id]=theirs;
+    else if(k==='srs'&&(theirs&&theirs.n||0)>(mine&&mine.n||0)) S[k][id]=theirs;
+    else if(k==='eb'&&ebStamp(theirs)>ebStamp(mine)) S[k][id]=theirs; }); });
+  if(Array.isArray(o.imp)) S.imp=[...new Set((S.imp||[]).concat(o.imp))].sort().slice(-90);
+}
+/* Simpan lalu baca ulang. Gagal (misalnya penyimpanan browser penuh) tidak lagi diam: ada peringatan dan tanda di layar skor. */
+function save(){
+  let ok=true, err='';
+  try{
+    const cur=localStorage.getItem(KEY);
+    if(cur!=null&&cur!==SAVE.raw){ try{ mergeFrom(JSON.parse(cur)); }catch(e){} }
+    const raw=JSON.stringify(S);
+    localStorage.setItem(KEY,raw);
+    if(localStorage.getItem(KEY)!==raw) throw new Error('hasil baca ulang berbeda');
+    SAVE.raw=raw;
+  }catch(e){ ok=false; err=(e&&(e.name==='QuotaExceededError'||/quota/i.test(String(e.message))))?'penuh':'gagal'; }
+  SAVE.ok=ok; SAVE.err=err;
+  if(!ok&&!SAVE.warned){ SAVE.warned=true; setTimeout(()=>toast('⚠ Jawaban belum tersimpan: '+(err==='penuh'?'penyimpanan browser penuh':'browser menolak menyimpan')+'. Jangan tutup halaman ini.'),60); }
+  if(ok) SAVE.warned=false;
+  ringkasPPU(); return ok;
+}
+/* Tab lain menulis: muat datanya (sudah memuat data tab ini, karena save() menggabung sebelum menulis).
+   Saat sesi sedang berjalan di tab ini, gabungkan saja supaya soal yang sedang dikerjakan tidak hilang. */
+window.addEventListener('storage',e=>{
+  if(e.key!==KEY||e.newValue==null||e.newValue===SAVE.raw) return;
+  let o=null; try{ o=JSON.parse(e.newValue); }catch(_){ return; }
+  if(!o||!Array.isArray(o.bank)||!Array.isArray(o.drill)||!Array.isArray(o.baku)) return;
+  const busy=(V.run&&!V.run.fin)||(V.drill&&!V.drill.fin)||(V.game&&V.game.phase!=='over')||!!V.sw;
+  if(busy) mergeFrom(o); else { S=o; if(!S.bad||typeof S.bad!=='object') S.bad={}; }
+  SAVE.raw=e.newValue;
+  if(!busy) render();
+});
+/* Tanda di layar skor: dicek ulang ke penyimpanan, bukan sekadar dianggap berhasil */
+function savedSince(t0){
+  try{ const o=JSON.parse(localStorage.getItem(KEY)||'null'); if(!o) return false;
+    const n=(arr)=>(arr||[]).filter(x=>x.ts>=t0).length;
+    return n(o.history)>=n(S.history)&&n(o.dhist)>=n(S.dhist); }catch(e){ return false; }
+}
+function saveBadge(t0){
+  if(SAVE.ok&&savedSince(t0||0)) return '<div class="savest ok" role="status">Tersimpan ✓</div>';
+  return '<div class="savest bad" role="alert"><b>⚠ Belum tersimpan.</b> '+(SAVE.err==='penuh'?'Penyimpanan browser penuh, jadi riwayat dan Error Book sesi ini belum masuk.':'Browser menolak menyimpan.')+' Jangan tutup halaman ini. <button type="button" class="link" data-action="retrysave">Coba simpan lagi</button></div>';
+}
 /* ringkasan harian untuk Progres Harian (domain yang sama) */
 function ringkasPPU(){ try{ const d=new Date(), t=tasksOn(d), k=dayKey(d.getTime()), h=S.dhist.concat(S.history).filter(x=>dayKey(x.ts)===k);
   localStorage.setItem('ppu.ringkas',JSON.stringify({app:'latihan-ppu-pbm',tanggal:ymd(d),tugas_selesai:t.filter(x=>x.done).length,tugas_total:t.length,soal:h.length,benar:h.filter(x=>x.correct).length,pola:ringkasPola(),diperbarui:Date.now()})); }catch(e){} }
@@ -3148,7 +3204,7 @@ function ebRunNote(C,it,a){ const e=S.eb[badId(C,it)], r=C.s.ebr&&C.s.ebr[badId(
     (e.aturan?'<div class="ebrule">'+esc(e.aturan)+'</div>':'')+(a.ok?'':'<span class="sub" style="font-size:13px">Aturan ini belum menolong. Setelah putaran ini, perbarui diagnosisnya.</span>')+'</div>'; }
 function ebDone(s){ const R=Object.values(s.ebr||{}), up=R.filter(r=>r.ok&&!r.lulus).length, lu=R.filter(r=>r.lulus).length, dn=R.filter(r=>!r.ok).length;
   return '<h1>Putaran selesai</h1>'+blokiSay(dn?'wave':'trophy',dn?'Salah lagi itu wajar. Perbarui diagnosisnya selagi ingat.':'Mantap! Butir yang naik kotak muncul lagi beberapa hari lagi.','sm')+
-    '<section class="card"><h2>Hasil putaran</h2><div class="ebsum c3">'+[['Naik kotak',up,'var(--blue)'],['Lulus',lu,'var(--green)'],['Mulai lagi',dn,'var(--red)']].map(x=>'<div style="--c:'+x[2]+'"><b>'+x[1]+'</b><span>'+x[0]+'</span></div>').join('')+'</div></section>'+
+    '<section class="card"><h2>Hasil putaran</h2><div class="ebsum c3">'+[['Naik kotak',up,'var(--blue)'],['Lulus',lu,'var(--green)'],['Mulai lagi',dn,'var(--red)']].map(x=>'<div style="--c:'+x[2]+'"><b>'+x[1]+'</b><span>'+x[0]+'</span></div>').join('')+'</div></section>'+saveBadge(s.t0)+
     '<button class="btn ghost block" type="button" data-action="qreview" data-v="'+(s===V.drill?'drill':'teks')+'">Lihat pembahasan per nomor</button><a class="btn primary block" href="#eb">Kembali ke Error Book</a>'; }
 function ebSoal(e,f){ const it=f.it, isD=f.isD, tx=v=>isD?rich(v):esc(v); let h='';
   if(!isD&&f.t.jenis!=='lepas'){ h+='<details class="ebmore"><summary>Bacaan '+(f.t.judul?esc(f.t.judul):'')+'</summary><div class="ebpas">'+f.t.kalimat.map((k,i)=>'<span class="'+((it.bukti||[]).includes(i+1)?'ebbukti':'')+'"><sup>'+(i+1)+'</sup> '+esc(k)+'</span>').join(' ')+'</div></details>'; }
@@ -3430,7 +3486,7 @@ function weakSubs(){
 /* ---------- Drill ---------- */
 /* ---------- Sesi soal gaya CBT ---------- */
 function spent(s,k){ return (s.T?s.T[k]||0:0)+(k===s.cur&&!s.fin?Date.now()-s.qStart:0); }
-function initSess(o,n){ o.A=Array.from({length:n},()=>({c:null,is:'',done:false,ok:false})); o.F=Array(n).fill(false); o.T=Array(n).fill(0); o.cur=0; o.fin=false; o.review=false; o.qStart=Date.now(); return o; }
+function initSess(o,n){ o.A=Array.from({length:n},()=>({c:null,is:'',done:false,ok:false})); o.F=Array(n).fill(false); o.T=Array(n).fill(0); o.cur=0; o.fin=false; o.review=false; o.qStart=Date.now(); o.t0=Date.now(); return o; }
 function initSessO(o){ o.items=o.items.map(d=>d.tipe==='PG'&&Array.isArray(d.opsi)?Object.assign({},d,{opsi:shuffle(d.opsi)}):d); return initSess(o,o.items.length); }
 function cekMode(){ const r=route(), s=r==='soal'?V.run:r==='drill'?V.drill:null; if(s&&s.cek) return s.cek; return S.cek==='akhir'?'akhir':'langsung'; }
 function sessCtx(){
@@ -3578,7 +3634,7 @@ function viewDrill(){
 function viewDrillDone(){
   const D=V.drill; if(D.eb) return ebDone(D); const ok=D.res.filter(r=>r.ok).length, wrong=D.res.filter(r=>!r.ok);
   const dp=D.res.length?ok/D.res.length:0;
-  let h='<h1>Drill selesai</h1>'+blokiSay(dp>=.8?'trophy':dp>=.5?'wave':'sad',dp>=.8?'Mantap! Menaramu makin tinggi.':dp>=.5?'Lumayan! Kaidah yang salah diulang besok.':'Tidak apa-apa. Baca lagi kaidahnya, ya.','sm')+ring(ok,D.res.length)+'<div class="sub">butir benar · '+esc(D.label)+'</div></section>';
+  let h='<h1>Drill selesai</h1>'+blokiSay(dp>=.8?'trophy':dp>=.5?'wave':'sad',dp>=.8?'Mantap! Menaramu makin tinggi.':dp>=.5?'Lumayan! Kaidah yang salah diulang besok.':'Tidak apa-apa. Baca lagi kaidahnya, ya.','sm')+ring(ok,D.res.length)+'<div class="sub">butir benar · '+esc(D.label)+'</div></section>'+saveBadge(D.t0);
   if(wrong.length) h+='<section class="card"><h2>Kaidah yang perlu diulang</h2>'+wrong.map(r=>'<div class="rule"><div class="row"><span class="chip plain">'+esc(r.it.subkategori)+'</span><span class="grow"></span>'+materiBtn([r.it.subkategori],itemText(r.it,true),true)+'</div><div style="font-size:14px">'+rich(r.it.kaidah)+'</div></div>').join('')+'</section>';
   if(V.paket){ const ts=dailyTexts(V.paket.sub), nq=ts.reduce((n,t)=>n+t.soal.filter(q=>q.subtes===V.paket.sub).length,0); h+= ts.length?'<button class="btn primary block" type="button" data-action="paketteks">Lanjut ke '+nq+' soal teks '+esc(V.paket.sub)+'</button>':'<div class="card empty">Belum ada teks di bank. <a href="#bank">Tempel paket harian.</a></div>'; }
   else h+='<div class="actions"><a class="btn ghost" href="#beranda">Pilihan latihan</a><button class="btn primary" type="button" data-action="drill" data-v="'+esc(D.mode)+'">Drill lagi</button></div>';
@@ -3643,7 +3699,7 @@ function viewSelesai(){
   if(V.paket&&V.paket.drillRes) h+='<section class="card"><div class="row"><span class="grow">Drill kaidah</span><b>'+V.paket.drillRes[0]+' / '+V.paket.drillRes[1]+'</b></div><div class="row"><span class="grow">'+esc(tl)+'</span><b>'+ok+' / '+R.res.length+'</b></div></section>'+
     '<section class="card"><h2>Untuk besok</h2><div class="sub">Besok konsepnya berganti ke '+esc(KONSEP[(today().i+1)%KONSEP.length].n)+'. Kelemahan hari ini otomatis ikut di prompt besok.</div><a class="btn ghost" href="#prompt">Lihat prompt</a></section>';
   else h+=ring(ok,R.res.length)+'<div class="sub">soal benar · '+esc(tl)+'</div></section>';
-  h+=paceCard(R);
+  h+=saveBadge(R.t0)+paceCard(R);
   h=h.replace('</h1>','</h1>'+blokiSay(rp>=.8?'trophy':rp>=.5?'wave':'sad',rp>=.8?'Hebat! Banyak balok berwarna hari ini.':rp>=.5?'Bagus! Cek pembahasan soal yang salah.':'Pelan-pelan saja. Pembahasan menunggumu.','sm'));
   return h+'<button class="btn ghost block" type="button" data-action="qreview" data-v="teks">Lihat pembahasan per nomor</button><a class="btn primary block" href="#beranda">Selesai</a>';
 }
@@ -4687,6 +4743,7 @@ document.addEventListener('click',e=>{
   else if(a==='qlayout'){ S.layout=S.layout==='split'?'stack':'split'; save(); render(); toast(S.layout==='split'?'Bacaan di kiri, soal di kanan (layar lebar)':'Bacaan di atas, soal di bawah'); }
   else if(a==='qend'){ const C=sessCtx(); if(!C) return; const c=countOf(C); if((c.k||c.f)&&!V.confirmEnd){ V.confirmEnd=true; render(); const el=$('.cbt-confirm'); if(el) el.scrollIntoView({block:'center',behavior:'smooth'}); return; } finishSess(C); }
   else if(a==='qendyes'){ finishSess(sessCtx()); }
+  else if(a==='retrysave'){ if(save()) toast('Tersimpan ✓'); render(); }
   else if(a==='weakmateri'){ const sub=b.dataset.v, r=b.dataset.r, i=r!=null&&r!==''?+r:null;
     V.kaidah={q:'',from:'lemah',focus:{sub,i,tag:'Sering salah'},nav:{sub,g:null}}; go('kaidah'); if(!GRUP[sub]) setTimeout(()=>{ const el=$('#rfocus'); if(el) el.scrollIntoView({block:'center'}); },120); }
   else if(a==='qmateri'){ const from=route(), r=b.dataset.r; const subs=b.dataset.v.split('|'), focus=r?{sub:r.split('#')[0],i:+r.split('#')[1]}:null, fs=focus?focus.sub:subs[0], gg=GRUP[fs], gi=focus&&gg?gg.findIndex(x=>x[1].includes(focus.i+1)):-1; V.kaidah={q:'',from,focus,nav:{sub:fs,g:gi>=0?gi:null}}; go('kaidah'); setTimeout(()=>{ const el=$('#rfocus'); if(el) el.scrollIntoView({block:'center'}); },120); }
