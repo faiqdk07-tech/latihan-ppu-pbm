@@ -207,6 +207,7 @@ textarea#paste{height:200px} textarea#bakuin{height:150px} textarea#promptbox{he
 .checks{display:flex;flex-direction:column;gap:6px;font-size:14px}
 .checks .e{background:var(--bad-soft);color:var(--bad-ink);border-radius:12px;padding:8px 12px}
 .checks .g{color:var(--ok-ink);font-weight:600}
+.checks .w{background:rgba(255,149,0,.14);color:var(--warn-ink,#8A5A00);border-radius:12px;padding:8px 12px}
 .wkline{margin:-4px 2px 14px}.wkcard.late{border:2px solid var(--bad)}.wkcard .btn{align-self:flex-start}
 .mini{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px}
 .mini div{background:var(--fill2);border-radius:14px;padding:12px;display:flex;flex-direction:column}
@@ -2956,6 +2957,14 @@ function buildPaket(){
   return initSessO({mode:'paket',label:'Paket harian',items,res:[],extra:false});
 }
 
+/* ---------- Opsi acak (B10) ----------
+   Opsi PG soal teks diacak saat sesi dimulai, kecuali: opsi berurutan (nomor kalimat, urutan, pengelompokan),
+   opsi yang ditandai "acak": false (opsi baku), dan soal yang pembahasannya masih menyebut huruf opsi. */
+function opsiUrut(t){ const x=String(t||'').toLowerCase().replace(/kalimat|nomor|paragraf|sampai|s\.d\.|\bdan\b/g,''); return /\d/.test(x)&&/^[\s()\d,.\-–—\/]+$/.test(x); }
+const HURUF_PB=/(^|[\s;,(.])[A-E](\s*:|\s*\)|\s+dan\s+[A-E]\b|\s*[–-]\s*[A-E]\b|,\s*[A-E]\b)/;
+function opsiAcakBoleh(q){ if(q.tipe!=='PG'||!Array.isArray(q.opsi)||q.opsi.length<2||q.acak===false) return false; if(['PPU-14','PBM-2026-urutan'].includes(kodeSoal(q))) return false; return !q.opsi.every(x=>opsiUrut(x&&x.teks)); }
+function opsiAcak(q){ return opsiAcakBoleh(q)&&!HURUF_PB.test(String(q.pembahasan||'')); }
+
 /* ---------- Validasi paket ---------- */
 function validate(raw){
   const errs=[]; let data;
@@ -2994,6 +3003,7 @@ function validate(raw){
     if(jenis!=='bernomor'&&Array.isArray(t.soal)&&t.soal.length!==1) errs.push(where+': soal '+jenis+' berisi tepat 1 soal (sekarang '+t.soal.length+').');
     if(!Array.isArray(t.kalimat)||(!t.kalimat.length&&jenis!=='lepas')){ errs.push(where+': "kalimat" harus berupa daftar kalimat (perbaikan soal tanpa "kalimat" hanya bisa untuk teks yang sudah ada di bank).'); return; }
     const nK=t.kalimat.length;
+    if(t.kalimat.some(k=>/^\s*\(\d{1,2}\)\s/.test(String(k)))) errs.push(where+(t.id?' ("'+t.id+'")':'')+': kalimat ditulis dengan nomor manual seperti "(1) ...". Hapus nomornya; aplikasi menomori kalimat sendiri.');
     (t.kata_uji||[]).forEach(k=>{ if(!(k.kalimat>=1&&k.kalimat<=nK)) errs.push(where+': kata uji "'+(k.kata||'?')+'" merujuk kalimat ('+k.kalimat+') yang tidak ada.'); });
     if(!Array.isArray(t.soal)||!t.soal.length){ errs.push(where+': tidak ada soal.'); return; }
     t.soal.forEach((q,qi)=>{
@@ -3012,7 +3022,9 @@ function validate(raw){
         const benar=o.filter(x=>x.benar===true).length;
         if(benar!==1) errs.push(w+': harus ada tepat 1 kunci (sekarang '+benar+').');
       } else if(q.tipe==='isian'){
-        if(q.kunci_isian==null||!/^\d+$/.test(String(q.kunci_isian).trim())) errs.push(w+': isian harus punya kunci_isian berupa angka.');
+        const ki=String(q.kunci_isian==null?'':q.kunci_isian).trim();
+        if(!/^\d+$/.test(ki)) errs.push(w+': isian harus punya kunci_isian berupa angka.');
+        else if(nK&&!(+ki>=1&&+ki<=nK)&&!(nK<10&&ki.length===nK&&ki.split('').sort().join('')===Array.from({length:nK},(_,i)=>i+1).join(''))) errs.push(w+': kunci_isian "'+ki+'" tidak ada di teks (kalimat 1–'+nK+').');
       } else if(q.tipe==='pgk'){
         const ps=q.pernyataan||[];
         if(ps.length<3||ps.length>4) errs.push(w+': pgk butuh 3–4 pernyataan (sekarang '+ps.length+').');
@@ -3022,20 +3034,42 @@ function validate(raw){
       } else errs.push(w+': tipe harus "PG", "isian", atau "pgk".');
     });
   });
-  /* cek kunci menonjol: hanya untuk opsi berupa frasa/kalimat (median >= 4 kata) */
+  /* ---------- Anti-tebak (aturan-opsi-setara.md) ----------
+     Berat → errs (paket tidak bisa disimpan). Ringan → warns (boleh disimpan, tetap dilaporkan). */
+  const warns=[];
   const wc=t=>String(t||'').trim().split(/\s+/).filter(Boolean).length;
-  let nPG=0,nLong=0; const tonjol=[];
-  const cekOpsi=(o,lbl)=>{ if(!Array.isArray(o)||o.length!==5) return; const w=o.map(x=>wc(x&&x.teks)), srt=w.slice().sort((a,b)=>a-b);
-    if(srt[2]<4) return; const ki=o.findIndex(x=>x&&x.benar===true); if(ki<0) return; nPG++;
-    const mx=srt[4], lain=w.filter((_,i)=>i!==ki);
-    if(w[ki]===mx&&w.filter(x=>x===mx).length===1){ nLong++; if(w[ki]>=1.4*Math.max(...lain)) tonjol.push(lbl); } };
-  D.forEach((d,i)=>{ if(d.tipe==='PG') cekOpsi(d.opsi,'Drill '+(i+1)); });
-  T.forEach((t,ti)=>(Array.isArray(t.soal)?t.soal:[]).forEach((q,qi)=>{ if(q.tipe==='PG') cekOpsi(q.opsi,'Teks '+(ti+1)+', soal '+(q.nomor||qi+1)); }));
-  if(tonjol.length) errs.push('Kunci terlalu menonjol (jauh lebih panjang dari opsi lain) di: '+tonjol.join('; ')+'. Minta Claude menyamakan panjang opsi soal itu.');
-  if(nPG>=5&&nLong/nPG>0.4) errs.push('Kunci menjadi opsi terpanjang di '+nLong+' dari '+nPG+' soal PG. Minta Claude menulis ulang opsi supaya kunci tidak bisa ditebak dari panjangnya.');
-  return {errs,data,nDrill:D.length,nTeks:T.length,nSoal};
+  const PINTAS=/^(semua(nya)?(\s+(jawaban|pilihan|opsi|pernyataan))?(\s+di\s+atas)?\s+(benar|salah|tepat)|tidak\s+ada(\s+(jawaban|pilihan|opsi|pernyataan))?(\s+yang)?(\s+(benar|tepat|salah))?(\s+di\s+antaranya)?)\s*[.!]?$/i;
+  const HATI=/\b(dapat|cenderung|sebagian|mungkin|umumnya|biasanya|sering|kerap|relatif|hampir)\b/i;
+  const STOPW2=new Set(['yang','dalam','dengan','untuk','pada','adalah','kalimat','tersebut','berikut','paling','tepat','bacaan','teks','dari','kata','sebagai','merupakan','manakah','terdapat','nomor']);
+  let nPG=0,nLong=0;
+  const cekPG=(q,lbl,acak,seq)=>{ const o=q.opsi; if(!Array.isArray(o)||o.length!==5) return; const ki=o.findIndex(x=>x&&x.benar===true); if(ki<0) return;
+    const T=o.map(x=>String(x&&x.teks||'').trim()), w=T.map(wc); seq.push([lbl,ki]);
+    const jp=T.find(t=>PINTAS.test(t)); if(jp) errs.push(lbl+': ada opsi jalan pintas "'+jp+'". Ganti dengan pengecoh yang hampir benar.');
+    if(!acak||kodeSoal(q)==='PBM-14'||q.pola_id==='PBM-diksi-seharusnya') return;
+    const mx=Math.max(...w), mn=Math.min(...w), mxLain=Math.max(...w.filter((_,i)=>i!==ki));
+    if(mx<4) return; nPG++;
+    if(w[ki]===mx&&w.filter(x=>x===mx).length===1){ nLong++; if(w[ki]>=1.3*mxLain&&w[ki]-mxLain>=2) errs.push(lbl+': kunci jauh lebih panjang ('+w[ki]+' kata; opsi lain paling panjang '+mxLain+' kata). Samakan panjang opsi.'); }
+    if((mx-mn)/mx>0.3) warns.push(lbl+': selisih panjang opsi '+mn+'–'+mx+' kata, lebih dari 30%.');
+    if(HATI.test(T[ki])&&!T.some((t,i)=>i!==ki&&HATI.test(t))) warns.push(lbl+': hanya kunci yang memakai kata hati-hati ("'+T[ki].match(HATI)[0]+'"). Sebarkan ke pengecoh juga.');
+    const stem=[...new Set((String(q.perintah||'').toLowerCase().match(/[a-z]{5,}/g)||[]).filter(x=>!STOPW2.has(x)))], has=t=>stem.filter(x=>t.toLowerCase().includes(x)), hk=has(T[ki]);
+    if(hk.length&&T.every((t,i)=>i===ki||!has(t).length)) warns.push(lbl+': hanya kunci yang mengulang kata "'+hk[0]+'" dari kalimat perintah.'); };
+  const tiga=(seq,nama)=>{ for(let k=2;k<seq.length;k++) if(seq[k][1]===seq[k-1][1]&&seq[k][1]===seq[k-2][1]){ errs.push(nama+': tiga kunci berturut-turut sama-sama '+('ABCDE'[seq[k][1]])+' ('+seq[k-2][0]+' sampai '+seq[k][0]+'). Sebar huruf kunci.'); break; } };
+  const sqD=[], sqT=[], huruf=[];
+  D.forEach((d,i)=>{ if(d.tipe==='PG') cekPG(d,'Drill '+(i+1)+(d.id?' ("'+d.id+'")':''),true,sqD); });
+  T.forEach((t,ti)=>(Array.isArray(t.soal)?t.soal:[]).forEach((q,qi)=>{ if(q.tipe!=='PG') return; const lbl='Teks '+(ti+1)+(t.id?' ("'+t.id+'")':'')+', soal '+(q.nomor||qi+1);
+    cekPG(q,lbl,opsiAcakBoleh(q),sqT);
+    if(opsiAcakBoleh(q)&&HURUF_PB.test(String(q.pembahasan||''))) huruf.push(lbl); }));
+  if(huruf.length) warns.push('Pembahasan menyebut huruf opsi di '+huruf.length+' soal ('+huruf.join('; ')+'), jadi urutan opsinya tidak diacak. Rujuk opsi dengan kutipan isinya, bukan huruf.');
+  tiga(sqD,'Drill'); tiga(sqT,'Soal teks');
+  if(nPG>=5&&nLong/nPG>0.4) errs.push('Kunci menjadi opsi terpanjang di '+nLong+' dari '+nPG+' soal PG (batas 1 dari 5). Tulis ulang opsinya supaya kunci tidak bisa ditebak dari panjangnya.');
+  else if(nPG>=5&&nLong/nPG>0.2) warns.push('Kunci menjadi opsi terpanjang di '+nLong+' dari '+nPG+' soal PG (batas 1 dari 5).');
+  return {errs,warns,data,nDrill:D.length,nTeks:T.length,nSoal};
 }
 
+/* prompt perbaikan: Claude memperbaiki bagian yang ditandai lalu mengirim ulang seluruh paket */
+function fixPrompt(c){ return 'Paket JSON yang kamu kirim belum lolos pemeriksaan aplikasi latihan (format dan aturan opsi setara). Perbaiki HANYA bagian berikut, jangan ubah soal lain, lalu kirim ulang SELURUH JSON paket yang sama dalam satu blok json tanpa teks lain.\n\n'+
+  c.errs.concat(c.warns||[]).map(x=>'- '+x).join('\n')+
+  '\n\nIngat: kunci tidak boleh menjadi opsi terpanjang atau satu-satunya opsi yang berhati-hati; setiap pengecoh hampir benar dan punya nama kesalahan; tidak ada opsi "semua benar", "semua salah", atau "tidak ada"; "pembahasan" merujuk opsi dengan kutipan isinya, bukan huruf.'; }
 /* ---------- Prompt harian ---------- */
 function weakText(){
   const lines=[], since=Date.now()-30*DAY;
@@ -3075,7 +3109,7 @@ function buildPrompt(o){
 5. "Catatan" di slot wajib dipenuhi. "Uji konsep … hari ini" berarti soal itu menguji konsep tersebut dengan kaidah acuan di atas. "Kelemahan" berarti soal baru untuk kode itu dengan stimulus dan arah tanya yang berbeda dari soal yang pernah salah.
 6. PG tepat 5 opsi (A–E) dan tepat satu kunci. Isian: opsi kosong, jawaban angka di "kunci_isian". Tipe "pgk" (PG kompleks): "opsi": [], "kunci_isian": null, dan "pernyataan" berisi 3–4 pernyataan {"teks", "benar": true/false} dengan campuran benar dan salah; hanya boleh pada soal "2027".
 7. Soal "seharusnya" tetap 5 opsi, tetapi pilih dari daftar tindakan: dihilangkan, dibiarkan saja, diganti X, diganti Y, didahului ..., diikuti ..., dipindah ke .... Boleh memakai "diganti" dua kali dengan kata berbeda dan tidak harus memakai "didahului". "Dibiarkan saja" muncul di sebagian soal saja, dan boleh menjadi kunci. Pengecoh "diganti …" memakai bentuk berimbuhan lain dari kata dasar yang sama (pengecoh khas PBM-14).
-8. "bukti" = nomor kalimat dasar jawaban. "pembahasan" ringkas: dibuka dengan kode bentuk soal (misalnya "PBM-9."), lalu langkah menuju kunci (1–2 kalimat), lalu satu frasa per pengecoh berisi nama kesalahan yang diwakilinya (lihat P0), misalnya "A: sinonim makna lain; C: imbuhan sama, makna beda". "drill_terkait" = subkategori (EYD atau kebahasaan) yang berkaitan, boleh kosong.
+8. "bukti" = nomor kalimat dasar jawaban. "pembahasan" ringkas: dibuka dengan kode bentuk soal (misalnya "PBM-9."), lalu langkah menuju kunci (1–2 kalimat), lalu satu frasa per pengecoh berisi nama kesalahan yang diwakilinya (lihat P0), misalnya "'memuat': sinonim makna lain; 'pemuatan': imbuhan sama, makna beda". Jangan menyebut huruf opsi. "drill_terkait" = subkategori (EYD atau kebahasaan) yang berkaitan, boleh kosong.
 9. Kata uji paling banyak 5 per teks di "kata_uji", tanpa angka superskrip di dalam kalimat. Rumpang ditulis [...].
 10. "nomor" soal dimulai dari 1 di setiap teks; soal pendek dan lepas bernomor 1. Teks yang memuat soal menentukan judul tetap boleh diberi "judul" (aplikasi menyembunyikannya saat soal dikerjakan), tetapi judul itu tidak boleh sama persis dengan salah satu opsi. Soal bahasa buatan pada jenis "lepas" atau "pendek": tulis setiap contoh di "kalimat" dengan format "kode = arti" (misal "rema tiko salu = ayah membeli sepeda"), dan "perintah" hanya berisi pertanyaannya.
 11. Tingkat kesulitan mengikuti mode: "dasar" mudah sampai sedang, "geser" sedang, "2027" sulit. Soal sulit menuntut membaca dua kalimat atau lebih, atau membedakan dua opsi yang sama-sama terdengar benar.
@@ -3088,8 +3122,8 @@ function buildPrompt(o){
 
 ## Pengecoh gaya UTBK (WAJIB, ini yang membuat soal tidak mudah ditebak)
 P0. Setiap pengecoh mewakili SATU kesalahan bernama: pengecoh khas slotnya, atau salah satu dari: benar menurut teks tetapi tidak menjawab pertanyaan; cakupan terlalu luas atau terlalu sempit; modalitas atau kepastian bergeser; sebab-akibat terbalik; detail dari bagian atau teks lain; satu kata kunci diganti; masuk akal secara umum tetapi tidak ada di teks.
-P1. Setiap opsi salah harus "hampir benar": terdengar masuk akal sekilas dan salah karena SATU alasan yang hanya terlihat jika teks dibaca teliti. Minimal 2 opsi per soal harus tampak benar bagi pembaca yang terburu-buru.
-P2. Opsi sejajar: panjang, struktur, dan tingkat formalitas mirip. Selisih jumlah kata opsi terpanjang dan terpendek paling banyak 30%. Dalam satu paket, kunci menjadi opsi terpanjang paling banyak 1 dari 5 soal; kunci boleh menjadi salah satu opsi terpendek. Kunci tidak boleh menjadi opsi yang paling lengkap atau paling formal. Kata mutlak (selalu, pasti, semua, satu-satunya) boleh muncul di kunci jika teks memang mendukung, dan opsi salah boleh memakai kata yang terdengar hati-hati.
+P1. Setiap opsi salah harus "hampir benar": terdengar masuk akal sekilas dan salah karena SATU alasan yang hanya terlihat jika teks dibaca teliti. Minimal 2 opsi per soal harus tampak benar bagi pembaca yang terburu-buru. Paling banyak satu pengecoh lemah per soal; tidak boleh ada opsi konyol, keluar topik, atau jelas bertentangan dengan teks.
+P2. Opsi sejajar: panjang, struktur, dan tingkat formalitas mirip. Selisih jumlah kata opsi terpanjang dan terpendek paling banyak 30%. Dalam satu paket, kunci menjadi opsi terpanjang paling banyak 1 dari 5 soal; kunci boleh menjadi salah satu opsi terpendek. Kunci tidak boleh menjadi opsi yang paling lengkap atau paling formal. Kalau satu opsi memuat alasan ("karena …"), semua opsi memuat alasan. Kata hati-hati (dapat, cenderung, sebagian, mungkin) dan kata mutlak (pasti, selalu, semua, satu-satunya) tersebar di kunci DAN pengecoh; kunci tidak boleh menjadi satu-satunya opsi yang berhati-hati.
 P3. Pengecoh per tipe soal:
    - Makna kata/sinonim/antonim kontekstual: pakai kata yang bermakna polisemi; pengecoh utama = sinonim kata itu dalam MAKNA LAIN (makna kamus yang tidak cocok dengan konteks kalimat).
    - Ungkapan kembali/makna sama: satu opsi per modalitas (pasti, biasanya, seharusnya, sepertinya); tukar pelaku dan sasaran; pindahkan induk klausa "yang"; kunci mempertahankan isi DAN kadar kepastian.
@@ -3103,6 +3137,8 @@ P3. Pengecoh per tipe soal:
    - Ejaan/tanda baca (isian nomor kalimat): selain satu kalimat yang memang salah, tanam 1–2 "kalimat umpan" yang tampak salah tetapi sebenarnya benar menurut EYD V (misalnya koma setelah keterangan awal yang panjang, kata baku yang jarang dipakai, huruf kapital nama jenis yang benar ditulis kecil).
 P4. Uji anti-tebak sebelum mengirim. Untuk tiap soal tanyakan: (a) apakah bisa dijawab tanpa membaca teks? (b) apakah ada opsi yang bisa dicoret dalam 2 detik karena topiknya lain, tata bahasanya rusak, atau jelas absurd? (c) apakah kunci menonjol karena panjang atau gayanya? Jika salah satu jawabannya "ya", ganti opsi atau soalnya.
 P5. Sebar kunci A–E merata dan jangan lebih dari 2 kunci sama berturut-turut.
+P6. Kunci berupa parafrase, bukan salinan kalimat teks; pengecoh boleh memakai kata persis dari teks. Hindari petunjuk dari luar isi: kunci yang menjadi satu-satunya opsi yang mengulang kata dari kalimat perintah, dua opsi yang saling berlawanan sehingga kunci pasti salah satunya, dan opsi "semua benar", "semua salah", "tidak ada yang benar", atau "tidak ada".
+P7. Aplikasi mengacak urutan opsi PG, jadi "pembahasan" TIDAK BOLEH menyebut huruf opsi; rujuk opsi dengan kutipan singkat isinya. Opsi yang urutannya bermakna (nomor kalimat, urutan kalimat, pengelompokan kalimat) ditulis berurutan naik dan tidak diacak; opsi baku disalin persis dan soalnya diberi "acak": false.
 
 ## Mode pola (WAJIB)
 Latihan ini membangun fondasi setiap hari. Bentuk baru diperkenalkan bertahap, hanya pada pola yang bentuk lamanya sudah dikuasai; jangan memaksakan bentuk baru pada pola yang masih lemah.
@@ -3130,7 +3166,7 @@ Aturan untuk keduanya:
 4. "kaidah": satu kalimat aturan dengan rujukannya: untuk EYD sertakan bab, misalnya "(III.B.3)"; untuk kebahasaan, jika ada, bagian TBBI, misalnya "(TBBI 9.3.2.4)".
 5. Variasikan konteks (sekolah, kesehatan, lingkungan, ekonomi, budaya). Nama orang dan lembaga fiktif. Huruf miring ditulis dengan *...*. Jangan mengulang kalimat yang sama antarbutir.
 6. Jika Kelemahan menyebut subkategori hari ini, minimal separuh butir subkategori itu menyasarnya dengan contoh baru.
-7. Uji anti-tebak: tiap butir tidak boleh bisa dijawab tanpa menguasai kaidahnya. Opsi sejajar panjang dan gayanya (selisih jumlah kata terpanjang dan terpendek paling banyak 30%; kunci menjadi opsi terpanjang paling banyak 2 dari 10 butir PG), kunci tidak menonjol, dan minimal 2 opsi tampak benar sekilas. Untuk butir "yang tepat", pengecoh mengandung kesalahan halus yang sering terjadi; untuk butir "yang salah", sisipkan kalimat benar yang tampak janggal.`;
+7. Uji anti-tebak: tiap butir tidak boleh bisa dijawab tanpa menguasai kaidahnya. Opsi sejajar panjang dan gayanya (selisih jumlah kata terpanjang dan terpendek paling banyak 30%; kunci menjadi opsi terpanjang paling banyak 2 dari 10 butir PG), kunci tidak menonjol, dan minimal 2 opsi tampak benar sekilas. Untuk butir "yang tepat", pengecoh mengandung kesalahan halus yang sering terjadi; untuk butir "yang salah", sisipkan kalimat benar yang tampak janggal. Tidak boleh ada opsi "semua benar", "semua salah", "tidak ada yang benar", atau "tidak ada"; paling banyak satu pengecoh lemah per butir; kunci tidak boleh menjadi satu-satunya opsi yang berhati-hati.`;
   const idb=o.idbase+(isSim?'-sim':'');
   const fmtDrill=`{
   "versi": 3,
@@ -3177,7 +3213,8 @@ Contoh soal "pgk" (hanya mode "2027"): {"nomor": 3, "subtes": "${fs}", "kode": "
     : `- Bacaan, id, jumlah soal, urutan, "kode", dan format persis seperti Rancangan soal (${Object.entries(plan).map(([x,gs])=>x+' '+nOf(gs)+' soal').join(', ')}); "subtes" sesuai bagiannya.
 - PG 5 opsi dan 1 kunci; isian punya kunci angka berupa nomor kalimat yang ada di bacaan; "pgk" hanya pada mode "2027" dengan 3–4 pernyataan; nomor di "bukti" dan "kata_uji" ada di teks.
 - "drill_terkait" persis dari daftar yang sah; "pola_id" dari pilihan slotnya; setiap soal punya "mode" ("dasar", "geser", atau "2027") sesuai batas M1.
-- Setiap bacaan 7–12 kalimat; setiap id teks berbeda; setiap "pembahasan" dibuka dengan kode bentuknya.`;
+- Setiap bacaan 7–12 kalimat; setiap id teks berbeda; setiap "pembahasan" dibuka dengan kode bentuknya dan tidak menyebut huruf opsi.
+- Tidak ada opsi "semua benar", "semua salah", atau "tidak ada"; tidak ada tiga kunci sama berturut-turut; kunci tidak menjadi opsi terpanjang di lebih dari 1 dari 5 soal; nomor isian ada di bacaannya.`;
   return `${intro} Hasilmu akan kutempel langsung ke aplikasi, jadi keluarkan HANYA satu blok kode json yang valid, tanpa teks lain.
 
 ## Hari ini
@@ -3583,7 +3620,8 @@ function sessCtx(){
   const r=route();
   if(r==='drill'&&V.drill){ const D=V.drill; return {kind:'drill',s:D,items:D.items,title:esc(D.label)+(V.paket?' · 1/'+V.paket.total:'')}; }
   if(r==='soal'&&V.run&&V.run.eb){ const R=V.run; return {kind:'teks',s:R,t:R.items[0]._t,items:R.items,title:esc(R.label)}; }
-  if(r==='soal'&&V.run){ const R=V.run, t=S.bank.find(x=>x.id===R.teksId); if(!t) return null; const items=R.qs.map(q=>{ const [tid,i]=Array.isArray(q)?q:[R.teksId,q], tt=S.bank.find(x=>x.id===tid); return tt&&tt.soal[i]?Object.assign({},tt.soal[i],{_t:tt}):null; }).filter(Boolean); if(!items.length) return null; return {kind:'teks',s:R,t,items,title:R.label?esc(R.label):(R.sub&&R.sub!=='campur'?'Teks '+esc(R.sub):'Teks')+(V.paket?' · 2/2':'')}; }
+  if(r==='soal'&&V.run){ const R=V.run, t=S.bank.find(x=>x.id===R.teksId); if(!t) return null; const items=R.qs.map((q,ix)=>{ const [tid,i]=Array.isArray(q)?q:[R.teksId,q], tt=S.bank.find(x=>x.id===tid); if(!tt||!tt.soal[i]) return null; const it=Object.assign({},tt.soal[i],{_t:tt}), pm=R.perm&&R.perm[ix];
+    if(pm&&Array.isArray(it.opsi)&&pm.length===it.opsi.length) it.opsi=pm.map((j,pos)=>Object.assign({},tt.soal[i].opsi[j],{huruf:'ABCDE'[pos]})); return it; }).filter(Boolean); if(!items.length) return null; return {kind:'teks',s:R,t,items,title:R.label?esc(R.label):(R.sub&&R.sub!=='campur'?'Teks '+esc(R.sub):'Teks')+(V.paket?' · 2/2':'')}; }
   return null;
 }
 function isAns(it,a){ if(it.tipe==='pgk') return Array.isArray(a.c)&&it.pernyataan.every((_,i)=>a.c[i]!=null); return it.tipe==='isian'?String(a.is).trim()!=='':a.c!=null; }
@@ -3742,7 +3780,8 @@ function startTeksMulti(texts,opt){
   opt=opt||{}; const sub=opt.sub, qs=[];
   texts.forEach(t=>t.soal.forEach((q,i)=>{ if(S.bad[t.id+'#'+q.nomor]) return; if(!sub||sub==='campur'||q.subtes===sub) qs.push([t.id,i]); }));
   const lim=opt.max?qs.slice(0,opt.max):qs; if(!lim.length){ location.hash='#bank'; return; }
-  V.run=initSess({teksId:texts[0].id,teksIds:texts.map(t=>t.id),sub,qs:lim,label:opt.label||null,cek:opt.cek||null,started:Date.now(),limit:opt.timed?Math.round(lim.length*(PACE[sub]||60)*1000):0,res:[]},lim.length); V.confirmEnd=false;
+  const perm=lim.map(([tid,i])=>{ const tt=texts.find(t=>t.id===tid), q=tt&&tt.soal[i]; return q&&opsiAcak(q)?shuffle(q.opsi.map((_,j)=>j)):null; });
+  V.run=initSess({teksId:texts[0].id,teksIds:texts.map(t=>t.id),sub,qs:lim,perm,label:opt.label||null,cek:opt.cek||null,started:Date.now(),limit:opt.timed?Math.round(lim.length*(PACE[sub]||60)*1000):0,res:[]},lim.length); V.confirmEnd=false;
   if(location.hash==='#soal') render(); else location.hash='#soal';
 }
 function startTeks(sub, teksId){
@@ -3905,7 +3944,8 @@ function viewBank(){
    '<div class="actions"><button class="btn ghost" type="button" data-action="loadsample">Isi contoh</button><button class="btn ghost" type="button" data-action="check">Periksa</button></div>';
   if(c){ h+='<div class="mini"><div><b>'+(c.nDrill||0)+'</b><span>butir drill</span></div><div><b>'+(c.nTeks||0)+'</b><span>teks</span></div><div><b>'+(c.nSoal||0)+'</b><span>soal teks</span></div></div><div class="checks">'+
       (c.errs.length?c.errs.slice(0,12).map(e=>'<div class="e">'+esc(e)+'</div>').join('')+(c.errs.length>12?'<div class="sub">dan '+(c.errs.length-12)+' masalah lain</div>':'')
-        :'<div class="g">✓ Format lolos: kategori dan subkategori dikenali, setiap PG punya 1 kunci, setiap isian punya nomor kunci yang ada.</div>')+'</div>'; }
+        :'<div class="g">✓ Format lolos: kategori dan subkategori dikenali, setiap PG punya 1 kunci, setiap isian punya nomor kunci yang ada.</div>')+((c.warns||[]).length?(c.warns.slice(0,8).map(e=>'<div class="w">'+esc(e)+'</div>').join('')+(c.warns.length>8?'<div class="sub">dan '+(c.warns.length-8)+' catatan lain</div>':'')):'')+'</div>'; }
+  if(c&&(c.errs.length||(c.warns||[]).length)) h+='<div class="sub" style="margin-top:4px">'+(c.errs.length?'Merah: paket belum bisa disimpan.':'Oranye: paket boleh disimpan, tetapi soal itu mudah ditebak.')+' Tempel prompt perbaikan ke chat Claude yang sama.</div><button class="btn ghost block" type="button" data-action="copyfix">Salin prompt perbaikan</button>';
   h+='<button class="btn primary block" type="button" data-action="savebank"'+(c&&!c.errs.length?'':' disabled')+'>Simpan ke bank</button></section>';
   const bad=Object.keys(S.bad||{});
   if(bad.length) h+='<section class="card"><div class="row"><h2 class="grow">Soal dilaporkan ('+bad.length+')</h2><button class="link" type="button" data-action="unbad" data-id="*">Pulihkan semua</button></div><div class="sub">Tidak muncul di latihan. Otomatis kembali saat perbaikannya ditempel di atas.</div>'+
@@ -4877,6 +4917,7 @@ document.addEventListener('click',e=>{
   else if(a==='resetno'){ V.bank.confirmReset=false; render(); }
   else if(a==='resetyes'){ const _a=S.anim,_t=S.theme,_x=[S.sfx,S.bgm,S.sfxOff]; S=fresh(); if(_a) S.anim=_a; if(_t) S.theme=_t; [S.sfx,S.bgm,S.sfxOff]=_x; save(); V.bank.confirmReset=false; V.run=null; V.drill=null; V.paket=null; render(); toast('Data diatur ulang'); }
   else if(a==='copyprompt'){ const ta=$('#promptbox'); copyText(ta.value,ta); }
+  else if(a==='copyfix'){ if(V.bank.check) copyText(fixPrompt(V.bank.check)); }
 });
 document.addEventListener('toggle',e=>{ const d=e.target; if(!d||!d.matches||!d.matches('details.topic[data-sub]')) return; const K=V.kaidah, st=K.openSet=K.openSet||[], k=d.dataset.sub, i=st.indexOf(k); if(d.open&&i<0) st.push(k); if(!d.open&&i>=0) st.splice(i,1); },true);
 document.addEventListener('input',e=>{
