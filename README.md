@@ -13,3 +13,9 @@
   2. *Ulang berjarak tanpa kunci*: mulai besok, lalu 3, 7, dan 14 hari (paling banyak 10 per putaran, drill dan teks terpisah). Aturanmu baru ditampilkan setelah menjawab. Ulangan ini tidak masuk riwayat Progres dan tugas harian.
   3. *Lulus* setelah benar 4 kali berjarak; salah lagi berarti mulai dari awal dan diagnosis diperbarui.
 - *Pola 30 hari*: penyebab dan kaidah/pola soal yang paling sering salah, fokus minggu ini, dan prompt analisis pola untuk Claude. Kartu pengingat muncul di Hari ini. Saat pertama dibuka, soal yang jawaban terakhirnya salah dalam 14 hari terakhir ikut dimasukkan.
+
+## Soal teks harian
+- Setiap hari: 8 soal PPU + 6 soal PBM (±14 menit dengan waktu resmi 45/75 detik per soal), lewat satu prompt "2 · Teks PPU + PBM".
+- App menentukan kode bentuk Brief untuk setiap soal (PPU-1–16, PBM-1–14, dan tambahan 2026), lengkap dengan kerangka pertanyaan dan pengecoh khasnya. Rotasinya berbobot menurut Peta Pola: makin sering pola muncul 2019–2026, makin sering dilatih; pola baru 2024–2026 diberi tambahan.
+- Konsep EYD hari ini selalu mendapat satu slot PBM, konsep kebahasaan hari ini satu slot di subtes yang sesuai, dan kode yang lemah dalam 30 hari menggantikan slot rotasi.
+- Kode bentuk setiap soal ikut tersimpan di riwayat (`kode`). JSON lama tanpa `kode` tetap diterima.
