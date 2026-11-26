@@ -19,3 +19,8 @@
 - App menentukan kode bentuk Brief untuk setiap soal (PPU-1–16, PBM-1–14, dan tambahan 2026), lengkap dengan kerangka pertanyaan dan pengecoh khasnya. Rotasinya berbobot menurut Peta Pola: makin sering pola muncul 2019–2026, makin sering dilatih; pola baru 2024–2026 diberi tambahan.
 - Konsep EYD hari ini selalu mendapat satu slot PBM, konsep kebahasaan hari ini satu slot di subtes yang sesuai, dan kode yang lemah dalam 30 hari menggantikan slot rotasi.
 - Kode bentuk setiap soal ikut tersimpan di riwayat (`kode`). JSON lama tanpa `kode` tetap diterima.
+
+## Opsi acak dan pemeriksaan anti-tebak
+- Opsi pilihan ganda soal teks diacak setiap sesi (urutannya tetap selama sesi). Tidak diacak: opsi berurutan (nomor kalimat, urutan, pengelompokan kalimat), soal bertanda `"acak": false` (opsi baku), dan soal yang pembahasannya masih menyebut huruf opsi.
+- Bank soal memisahkan dua jenis temuan. **Merah** = paket belum bisa disimpan: kunci jauh lebih panjang, tiga kunci sama berturut-turut, opsi "semua benar/semua salah/tidak ada", nomor isian tidak ada di bacaan, nomor kalimat ditulis manual, kunci terpanjang di lebih dari 40% soal. **Oranye** = boleh disimpan tetapi mudah ditebak: selisih panjang opsi lebih dari 30%, hanya kunci yang berhati-hati, hanya kunci yang mengulang kata dari perintah, kunci terpanjang di lebih dari 1 dari 5 soal, pembahasan menyebut huruf.
+- Tombol **Salin prompt perbaikan** membuat prompt untuk chat Claude yang sama: perbaiki hanya soal yang ditandai, lalu kirim ulang seluruh paket.
