@@ -7,9 +7,9 @@
 - Status ditulis ke kunci `paketMingguan:latihan-ppu-pbm` untuk pengingat di Progres Harian.
 
 ## Error Book
-- Menu **Error Book** (`#eb`) di navigasi bawah. Soal drill dan soal teks yang salah masuk otomatis, lengkap dengan jawabanmu, kunci, dan waktu. Salinan soal dan bacaannya ikut disimpan, karena teks yang sudah selesai dihapus dari Bank soal.
-- Tiga langkah supaya tidak sekadar daftar:
-  1. *Diagnosis*: pilih penyebab utama (kaidah belum kuasai, salah tangkap teks, salah baca perintah, ragu di dua opsi, pakai pendapat sendiri, terburu-buru, menebak), lalu tulis satu aturan "Kalau …, aku …" dengan kata sendiri. Aturan yang terlalu umum ("lebih teliti") diberi peringatan. Ada tombol ke materi kaidahnya.
-  2. *Ulang berjarak tanpa kunci*: mulai besok, lalu 3, 7, dan 14 hari (paling banyak 10 per putaran, drill dan teks terpisah). Aturanmu baru ditampilkan setelah menjawab. Ulangan ini tidak masuk riwayat Progres dan tugas harian.
-  3. *Lulus* setelah benar 4 kali berjarak; salah lagi berarti mulai dari awal dan diagnosis diperbarui.
+- Menu **Error Book** (`#eb`) di navigasi bawah. Soal drill dan soal teks yang salah masuk otomatis ke antrean *Kerjakan*. Salinan soal dan bacaannya ikut disimpan, karena teks yang sudah selesai dihapus dari Bank soal.
+- Halamannya berupa daftar ringkas dengan tab Kerjakan · Terjadwal · Lulus, satu baris per soal.
+  1. *Coba lagi tanpa kunci*: soal dikerjakan ulang di tampilan CBT yang sama (drill dan teks terpisah, yang baru salah didahulukan, paling banyak 10 per putaran). Pembahasan baru tampil setelah menjawab.
+  2. *Diagnosis tepat sesudah pembahasan*: pilih penyebab utama (kaidah belum kuasai, salah tangkap teks, salah baca perintah, ragu di dua opsi, pakai pendapat sendiri, terburu-buru, menebak) dan tulis aturan "Kalau …, aku …". Tombol "Simpan & lanjut" menggantikan "Selanjutnya" sampai diagnosis diisi.
+  3. *Ulang berjarak*: soal muncul lagi 1, 3, 7, dan 14 hari kemudian. *Lulus* setelah benar 4 kali berjarak; salah lagi berarti mulai dari awal dan diagnosis diperbarui. Ulangan ini tidak masuk riwayat Progres dan tugas harian.
 - *Pola 30 hari*: penyebab dan kaidah/pola soal yang paling sering salah, fokus minggu ini, dan prompt analisis pola untuk Claude. Kartu pengingat muncul di Hari ini. Saat pertama dibuka, soal yang jawaban terakhirnya salah dalam 14 hari terakhir ikut dimasukkan.
