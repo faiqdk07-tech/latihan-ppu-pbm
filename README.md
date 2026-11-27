@@ -36,3 +36,9 @@
 - PBM selalu berupa bacaan bernomor; soal PBM dalam jenis "pendek" atau "lepas" ditolak validator. Kalimat sumbang (bentuk 2019–2022) tidak lagi dibuat.
 - Isian nomor kalimat di PBM dijaga 2–4 per 10 soal (6 soal → 1–2).
 - Tambahan 2026 aktif: **urutkan 5 kalimat** (`"jenis": "urutan"`, tepat 5 kalimat, format J7 = PG berisi urutan, opsi tidak diacak) dan **kata bercetak tebal bernomor** (`"tebal_bernomor": true`; nomor kecil tampil di samping kata tebal; jawaban = nomor kata).
+
+## Tema bacaan berputar
+- 96 topik dalam 12 bidang: sains populer (pangan, kesehatan, energi), lingkungan, kebijakan publik dan layanan kota, sejarah dan budaya daerah, ekonomi rumah tangga dan UMKM, teknologi digital, bahasa dan media, sekolah, pertanian dan perikanan, pariwisata dan transportasi.
+- Setiap bacaan di Rancangan mendapat satu topik dan satu jenis teks (berita, laporan penelitian, opini, profil, penjelasan proses). Dalam satu hari bidangnya berbeda-beda; topik yang dipakai dalam 14 hari terakhir (riwayat dan bank) dilewati.
+- Tema motivasi atau nasihat umum dan penutup berpesan moral dilarang di prompt. Konteks drill juga ikut bergiliran per bidang.
+- Objek teks memuat `"tema"`; riwayat menyimpan `tema` per soal. Tema yang tidak dikenal hanya diberi catatan oranye.

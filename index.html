@@ -2768,15 +2768,49 @@ function groupSlots(slots,sub){
   lep.forEach(x=>out.push({jenis:'lepas',slots:[x]}));
   return out;
 }
+/* ---------- Tema bacaan (B12) ----------
+   12 bidang × 8 topik. Diperbanyak: sains populer (pangan, kesehatan, energi), kebijakan publik dan layanan kota,
+   sejarah dan budaya daerah, ekonomi rumah tangga dan UMKM, teknologi digital, bahasa dan media; ditambah konteks Brief
+   (sekolah, lingkungan, pertanian, pariwisata). Urutan diselang per bidang, titik mulai maju 5 per hari (5 dan 12 tidak sefaktor, jadi semua bidang kebagian) → putaran ±19 hari;
+   topik yang dipakai 14 hari terakhir (riwayat dan bank) dilewati. Jenis teks bergiliran. */
+const TEMA_BIDANG=[
+ ['pangan','Sains populer: pangan',['fermentasi tempe dan protein nabati','garam beryodium dan gondok','sagu sebagai pangan pokok di timur Indonesia','membaca label gizi pada kemasan','penyimpanan beras dan hama kutu','susu UHT dibandingkan susu pasteurisasi','gula aren dan indeks glikemik','capsaicin pada sambal dan rasa pedas']],
+ ['sehat','Sains populer: kesehatan',['jam tidur remaja dan layar gawai','demam berdarah dan nyamuk Aedes','resistansi antibiotik','posyandu dan cakupan imunisasi','air minum isi ulang dan uji bakteri','polusi udara kota dan masker','cedera pada pelari pemula','jamu yang diuji klinis menjadi fitofarmaka']],
+ ['energi','Sains populer: energi',['panel surya atap rumah','biogas dari kotoran sapi','pembangkit mikrohidro desa','baterai kendaraan listrik','kompor induksi di dapur rumah tangga','lampu LED dan tagihan listrik','tarif listrik pada jam sibuk','bioetanol dari singkong']],
+ ['alam','Lingkungan dan alam',['nitrogen dan pupuk berlebih di sungai','sampah plastik sachet','pemutihan terumbu karang','banjir rob di pesisir utara','kebakaran lahan gambut','burung migran di lahan basah','limbah pewarna tekstil','sumur resapan di perumahan']],
+ ['kota','Kebijakan publik dan layanan kota',['transportasi umum terintegrasi','layanan KTP dan akta secara daring','trotoar dan hak pejalan kaki','pajak kendaraan bermotor','perpustakaan keliling','taman kota dan suhu udara','zonasi penerimaan sekolah','tarif parkir dan kemacetan']],
+ ['budaya','Sejarah dan budaya daerah',['pelabuhan rempah abad ke-17','aksara daerah di sekolah','tenun ikat dan pewarna alami','rumah adat tahan gempa','wayang dan penonton muda','sistem irigasi subak','digitalisasi naskah kuno','kuliner peninggalan masa kolonial']],
+ ['umkm','Ekonomi rumah tangga dan UMKM',['anggaran belanja bulanan keluarga','pinjaman daring dan bunganya','warung kelontong di tengah minimarket','harga cabai musiman','arisan dan kebiasaan menabung','ekspor kerajinan rotan','inflasi harga pangan','pendapatan pengemudi ojek daring']],
+ ['digital','Teknologi digital sehari-hari',['kata sandi dan keamanan akun','pembayaran dengan kode QR','hoaks di grup pesan keluarga','aplikasi peta dan kemacetan','gim daring dan waktu layar','penerjemah berbasis kecerdasan buatan','sinyal internet di desa','belanja daring dan pengembalian barang']],
+ ['bahasa','Bahasa dan media',['kata serapan baru di KBBI','bahasa daerah yang terancam punah','judul berita umpan klik','siniar (podcast) lokal','radio komunitas','bahasa asing di papan nama ruang publik','takarir (subtitle) film','kosakata gaul remaja']],
+ ['sekolah','Pendidikan dan sekolah',['sekolah ramah anak','kantin sekolah sehat','kebiasaan membaca siswa','ujian berbasis komputer','guru di daerah terpencil','ekstrakurikuler robotik','beasiswa pemerintah daerah','perpustakaan sekolah']],
+ ['tani','Pertanian dan perikanan',['irigasi tetes di lahan kering','padi tahan genangan','budi daya lele sistem bioflok','madu lebah hutan','rumput laut di perairan dangkal','pupuk organik cair','petani muda dan kopi','nelayan dan cuaca ekstrem']],
+ ['wisata','Pariwisata dan transportasi',['desa wisata','kapal penyeberangan antarpulau','kereta antarkota','sepeda sewa di kota','pendakian gunung dan sampah','rumah inap (homestay) warga','bandara perintis','arus mudik']]];
+const TEMA=[]; TEMA_BIDANG.forEach(([b,nama,list])=>list.forEach((t,i)=>TEMA.push({id:b+'-'+(i+1),b,bidang:nama,topik:t})));
+const TEMA_URUT=[]; for(let i=1;i<=8;i++) TEMA_BIDANG.forEach(([b])=>TEMA_URUT.push(b+'-'+i));
+const JENIS_TEKS=['berita','laporan penelitian','opini dengan sikap penulis yang tegas dan didukung data','profil lembaga atau tokoh fiktif','penjelasan proses'];
+function temaInfo(id){ return TEMA.find(x=>x.id===id)||null; }
+/* topik yang sudah dipakai dalam 14 hari sebelum hari ini (hari ini tidak dihitung, supaya prompt hari ini tetap sama) */
+function temaTerpakai(day){ const set=new Set(), lo=day-14;
+  S.history.forEach(x=>{ if(x.tema){ const d=dayNo(x.ts); if(d>=lo&&d<day) set.add(x.tema); } });
+  S.bank.forEach(t=>{ if(t.tema&&t._imp){ const d=dayNo(t._imp); if(d>=lo&&d<day) set.add(t.tema); } });
+  return set; }
+function aturTema(plan,day,salt){ const used=temaTerpakai(day), pakai=new Set(), bid=new Set(), L=TEMA_URUT.length; let ptr=(((day*5+(salt||0))%L)+L)%L, n=0;
+  Object.values(plan).forEach(groups=>groups.forEach(g=>{ if(g.jenis==='lepas') return; let pick=null;
+    for(let pass=0;pass<3&&!pick;pass++) for(let k=0;k<L;k++){ const T=temaInfo(TEMA_URUT[(ptr+k)%L]); if(pakai.has(T.id)) continue; if(pass<2&&used.has(T.id)) continue; if(pass<1&&bid.has(T.b)) continue; pick=T; ptr=(ptr+k+1)%L; break; }
+    if(pick){ pakai.add(pick.id); bid.add(pick.b); g.tema=pick.id; g.jtx=JENIS_TEKS[(day+n++)%JENIS_TEKS.length]; } }));
+  return plan; }
+function bidangDrill(day){ const L=TEMA_BIDANG.length; return [0,1,2,3,4].map(i=>TEMA_BIDANG[(day+i*2)%L][1].replace(/^Sains populer: /,'')).join(', '); }
 function planHari(T,day){ const mPBM=day%2===0;
-  return {PPU:groupSlots(aturJenis('PPU',planSlots('PPU',SOAL_HARI.PPU,day,T),day,mPBM?0:1),'PPU'),PBM:groupSlots(aturJenis('PBM',planSlots('PBM',SOAL_HARI.PBM,day,T),day,mPBM?1:0),'PBM')}; }
-function planSim(sub,day){ return {[sub]:groupSlots(aturJenis(sub,planSlots(sub,20,day,null,97),day,2),sub)}; }
+  return aturTema({PPU:groupSlots(aturJenis('PPU',planSlots('PPU',SOAL_HARI.PPU,day,T),day,mPBM?0:1),'PPU'),PBM:groupSlots(aturJenis('PBM',planSlots('PBM',SOAL_HARI.PBM,day,T),day,mPBM?1:0),'PBM')},day,0); }
+function planSim(sub,day){ return aturTema({[sub]:groupSlots(aturJenis(sub,planSlots(sub,20,day,null,97),day,2),sub)},day,48); }
 /* Rancangan dalam bahasa prompt: per bacaan, per soal: kode, kemampuan, pola_id, format, kerangka, pengecoh khas, catatan */
 function planText(plan,idb){
   return Object.entries(plan).map(([sub,groups])=>{ const n=groups.reduce((a,g)=>a+g.slots.length,0); let b=0, l=0, pp=0, uu=0;
     return '### '+sub+' · '+n+' soal\n'+groups.map(g=>{ const id=g.jenis==='lepas'?idb+'-'+sub.toLowerCase()+'-l'+(++l):g.jenis==='pendek'?idb+'-'+sub.toLowerCase()+'-p'+(++pp):g.jenis==='urutan'?idb+'-'+sub.toLowerCase()+'-u'+(++uu):idb+'-'+sub.toLowerCase()+(++b);
       const head=g.jenis==='lepas'?'Soal lepas (id "'+id+'", "jenis": "lepas", tepat 1 soal; contoh pola ditulis di "kalimat" dengan format "kode = arti"):':g.jenis==='pendek'?'Bacaan pendek (id "'+id+'", "jenis": "pendek", 2–4 kalimat bernomor, tepat 1 soal):':g.jenis==='urutan'?'Lima kalimat lepas (id "'+id+'", "jenis": "urutan", TEPAT 5 kalimat dalam urutan acak, "paragraf_mulai": [1, 2, 3, 4, 5], tepat 1 soal; urutan yang benar membentuk satu paragraf padu dengan rujukan "itu"/"tersebut" yang jelas; opsi berupa urutan nomor seperti "(3)-(1)-(5)-(2)-(4)"):':'Bacaan '+sub+' '+b+' (id "'+id+'", "jenis": "bernomor", 7–12 kalimat bernomor dalam 2–3 paragraf, tepat '+g.slots.length+' soal'+(g.slots.some(x=>kodeInfo(x.k).tebal)?'; bacaan ini memakai kata bercetak tebal bernomor: isi "tebal_bernomor": true dan "kata_uji" bernomor 1–5 (4–5 kata), tanpa menulis angka di dalam kalimat':'')+'):';
-      return head+'\n'+g.slots.map((x,i)=>{ const K=kodeInfo(x.k);
+      const TT=g.tema&&temaInfo(g.tema);
+      return head+(TT?'\n  Topik: '+TT.bidang+' — '+TT.topik+' · jenis teks: '+g.jtx+' · isi "tema": "'+TT.id+'"':'')+'\n'+g.slots.map((x,i)=>{ const K=kodeInfo(x.k);
         const j=x.j||'L', f=x.f||(K.fmt==='isian'?'J3':'J1');
         const cara=j==='L'?'pakai kerangka bentuk lama di bawah persis':j==='G'?'ubah SATU hal: '+(x.tuas||'arah tanya dibalik')+'; kerangka di bawah tidak dipakai apa adanya':j==='B'?'bentuk baru: ubah sedikitnya DUA dari jenis stimulus (cerita, dialog, pengumuman, tabel kecil, aturan, percakapan pesan), arah tanya, dan format jawaban; jangan meniru kerangka di bawah':'migrasi: '+(x.mig||'tabel benar/salah');
         return '  Soal '+(i+1)+' · kode '+K.k+' (kemampuan '+K.kem+') · jenis '+j+' ('+JENIS_NAMA[j]+') · format '+f+' · pola_id: '+K.pola.join(' atau ')+
@@ -3022,7 +3056,7 @@ function opsiAcak(q){ return opsiAcakBoleh(q)&&!HURUF_PB.test(String(q.pembahasa
 
 /* ---------- Validasi paket ---------- */
 function validate(raw){
-  const errs=[]; let data;
+  const errs=[], warns=[]; let data;
   const txt=raw.trim().replace(/^```(?:json)?\s*/i,'').replace(/```\s*$/,'');
   if(!txt) return {errs:['Kolom masih kosong. Tempel keluaran prompt harian.'],data:null};
   try{ data=JSON.parse(txt); }catch(e){ return {errs:['JSON tidak valid: '+e.message+'. Cek koma berlebih atau tanda kutip yang tidak tertutup.'],data:null}; }
@@ -3060,6 +3094,7 @@ function validate(raw){
     if(jenis!=='bernomor'&&Array.isArray(t.soal)&&t.soal.length!==1) errs.push(where+': soal '+jenis+' berisi tepat 1 soal (sekarang '+t.soal.length+').');
     if(!Array.isArray(t.kalimat)||(!t.kalimat.length&&jenis!=='lepas')){ errs.push(where+': "kalimat" harus berupa daftar kalimat (perbaikan soal tanpa "kalimat" hanya bisa untuk teks yang sudah ada di bank).'); return; }
     const nK=t.kalimat.length;
+    if(t.tema!=null&&t.tema!==''&&!temaInfo(t.tema)) warns.push(where+(t.id?' ("'+t.id+'")':'')+': "tema" "'+t.tema+'" tidak ada di daftar topik.');
     if(t.kalimat.some(k=>/^\s*\(\d{1,2}\)\s/.test(String(k)))) errs.push(where+(t.id?' ("'+t.id+'")':'')+': kalimat ditulis dengan nomor manual seperti "(1) ...". Hapus nomornya; aplikasi menomori kalimat sendiri.');
     (t.kata_uji||[]).forEach(k=>{ if(!(k.kalimat>=1&&k.kalimat<=nK)) errs.push(where+': kata uji "'+(k.kata||'?')+'" merujuk kalimat ('+k.kalimat+') yang tidak ada.'); });
     if(!Array.isArray(t.soal)||!t.soal.length){ errs.push(where+': tidak ada soal.'); return; }
@@ -3096,7 +3131,7 @@ function validate(raw){
   });
   /* ---------- Anti-tebak (aturan-opsi-setara.md) ----------
      Berat → errs (paket tidak bisa disimpan). Ringan → warns (boleh disimpan, tetap dilaporkan). */
-  const warns=[];
+
   const wc=t=>String(t||'').trim().split(/\s+/).filter(Boolean).length;
   const PINTAS=/^(semua(nya)?(\s+(jawaban|pilihan|opsi|pernyataan))?(\s+di\s+atas)?\s+(benar|salah|tepat)|tidak\s+ada(\s+(jawaban|pilihan|opsi|pernyataan))?(\s+yang)?(\s+(benar|tepat|salah))?(\s+di\s+antaranya)?)\s*[.!]?$/i;
   const HATI=/\b(dapat|cenderung|sebagian|mungkin|umumnya|biasanya|sering|kerap|relatif|hampir)\b/i;
@@ -3160,7 +3195,7 @@ function buildPrompt(o){
   const subs=isSim?[o.simSub]:['PPU','PBM'], plan=o.plan||{};
   const nOf=gs=>(gs||[]).reduce((a,g)=>a+g.slots.length,0), nAll=Object.values(plan).reduce((a,gs)=>a+nOf(gs),0);
   const teksRules=`1. Ikuti "Rancangan soal" persis: jumlah bacaan, id, jumlah soal per bacaan, urutan soal, kode, dan format. Isi "kode" setiap soal dengan kode slotnya dan pilih "pola_id" dari pilihan slot itu. ${subs.length>1?'Soal di bagian PPU ber-"subtes": "PPU"; soal di bagian PBM ber-"subtes": "PBM".':'Semua soal ber-"subtes": "'+subs[0]+'".'}
-2. Setiap bacaan berbeda topik (sains populer, sosial, ekonomi, budaya, lingkungan, kesehatan), 7–12 kalimat bernomor dalam 2–3 paragraf, gaya artikel berita atau ilmiah populer, dengan sumber fiktif ("Diadaptasi dari ..."). Kata yang ditanya pada kode PBM-9 dicantumkan di "kata_uji" supaya tampil tebal.
+2. Topik dan jenis teks setiap bacaan sudah ditentukan di Rancangan (baris "Topik"); salin id-nya ke "tema" pada objek teks. Kembangkan topik itu menjadi teks baru yang spesifik sesuai jenis teksnya, dengan sumber fiktif ("Diadaptasi dari ..."). Jangan menulis tema motivasi atau nasihat umum (misalnya "pentingnya membaca", "manfaat olahraga") dan jangan menutup teks dengan pesan moral. Kata yang ditanya pada kode PBM-9 dicantumkan di "kata_uji" supaya tampil tebal.
 3. Ikuti "jenis" dan "format" setiap slot. Soal L memakai kerangka bentuk lama slotnya persis (tanda … diisi dari teks). Soal G, B, dan M tetap menguji kemampuan slot itu, tetapi tidak memakai kerangka itu apa adanya. Pengecoh khas slot wajib menjadi salah satu pengecoh.
 4. Rancang dari target: tentukan dulu soalnya, baru tulis teks yang menanam target itu.${subs.includes('PBM')?' Setiap kesalahan PBM hanya ada di SATU kalimat.':''}
 5. "Catatan" di slot wajib dipenuhi. "Uji konsep … hari ini" berarti soal itu menguji konsep tersebut dengan kaidah acuan di atas. "Kelemahan" berarti soal baru untuk kode itu dengan stimulus dan arah tanya yang berbeda dari soal yang pernah salah.
@@ -3174,7 +3209,7 @@ function buildPrompt(o){
    - Isi spesifik: angka, tahun, nama lembaga atau lokasi fiktif yang masuk akal, istilah bidang, hasil penelitian, atau kutipan narasumber fiktif.
    - Panjang kalimat bervariasi; kalimat pendek boleh berdampingan dengan kalimat majemuk yang padat.
    - Kalimat pertama langsung ke fakta, temuan, atau kejadian. Kalimat terakhir berupa fakta, data, atau pendapat narasumber, bukan nasihat.
-   - Hindari: "Di era modern ini", "Dalam kehidupan sehari-hari", "Seiring perkembangan zaman", "memainkan peran penting", "tidak dapat dimungkiri", "hal ini menunjukkan bahwa", kalimat yang terus dibuka "Selain itu"/"Oleh karena itu"/"Dengan demikian", deretan tiga kata sifat, pertanyaan retoris, dan penutup "kita semua harus …".
+   - Hindari: "Di era modern ini", "Dalam kehidupan sehari-hari", "Seiring perkembangan zaman", "memainkan peran penting", "tidak dapat dimungkiri", "hal ini menunjukkan bahwa", kalimat yang terus dibuka "Selain itu"/"Oleh karena itu"/"Dengan demikian", "penting untuk dicatat", deretan tiga kata sifat, pertanyaan retoris, tanda pisah panjang (—) yang berlebihan, setiap paragraf berpola sama (kalimat topik, dua penjelas, penutup), teks yang membuat semua pihak seimbang tanpa data atau pendapat tegas, dan penutup "kita semua harus …".
    - Kesalahan PBM yang ditanam harus wajar seperti kesalahan penulis sungguhan.
 
 ## Pengecoh gaya UTBK (WAJIB, ini yang membuat soal tidak mudah ditebak)
@@ -3218,7 +3253,7 @@ Aturan untuk keduanya:
 2. Kalimat yang dimaksudkan benar harus benar di SEMUA aspek (ejaan, tanda baca, kalimat efektif). Kalimat yang salah hanya memuat SATU kesalahan, dan kesalahan itu pada konsep yang diuji.
 3. Pengecoh harus kesalahan yang memang sering terjadi, bukan salah ketik. Untuk makna imbuhan, analogi, dan relasi makna, setiap pengecoh mewakili makna atau hubungan lain yang berbeda jelas, sehingga hanya satu jawaban yang sah.
 4. "kaidah": satu kalimat aturan dengan rujukannya: untuk EYD sertakan bab, misalnya "(III.B.3)"; untuk kebahasaan, jika ada, bagian TBBI, misalnya "(TBBI 9.3.2.4)".
-5. Variasikan konteks (sekolah, kesehatan, lingkungan, ekonomi, budaya). Nama orang dan lembaga fiktif. Huruf miring ditulis dengan *...*. Jangan mengulang kalimat yang sama antarbutir.
+5. Variasikan konteks butir secara bergiliran dari bidang: ${o.drillBidang||'sekolah, kesehatan, lingkungan, ekonomi, budaya'}. Jangan memakai konteks motivasi atau nasihat umum. Nama orang dan lembaga fiktif. Huruf miring ditulis dengan *...*. Jangan mengulang kalimat yang sama antarbutir.
 6. Jika Kelemahan menyebut subkategori hari ini, minimal separuh butir subkategori itu menyasarnya dengan contoh baru.
 7. Uji anti-tebak: tiap butir tidak boleh bisa dijawab tanpa menguasai kaidahnya. Opsi sejajar panjang dan gayanya (selisih jumlah kata terpanjang dan terpendek paling banyak 30%; kunci menjadi opsi terpanjang paling banyak 2 dari 10 butir PG), kunci tidak menonjol, dan minimal 2 opsi tampak benar sekilas. Untuk butir "yang tepat", pengecoh mengandung kesalahan halus yang sering terjadi; untuk butir "yang salah", sisipkan kalimat benar yang tampak janggal. Tidak boleh ada opsi "semua benar", "semua salah", "tidak ada yang benar", atau "tidak ada"; paling banyak satu pengecoh lemah per butir; kunci tidak boleh menjadi satu-satunya opsi yang berhati-hati.`;
   const idb=o.idbase+(isSim?'-sim':'');
@@ -3243,7 +3278,7 @@ Aturan untuk keduanya:
   const fmtTeks=`{
   "versi": 3,
   "teks": [
-    {"id": "${idb}-${fs.toLowerCase()}1", "jenis": "bernomor",${isSim?' "paket": "simulasi",':''} "judul": "...",
+    {"id": "${idb}-${fs.toLowerCase()}1", "jenis": "bernomor",${isSim?' "paket": "simulasi",':''} "judul": "...", "tema": "id topik dari Rancangan",
      "kalimat": ["Kalimat pertama.", "Kalimat kedua.", "..."], "paragraf_mulai": [1, 5],
      "kata_uji": [{"nomor": 1, "kata": "...", "kalimat": 2}],
      "sumber_fiktif": "Diadaptasi dari ...",
@@ -3267,7 +3302,7 @@ Contoh soal format J2 (jenis M): {"nomor": 3, "subtes": "${fs}", "kode": "...", 
     : `- Bacaan, id, jumlah soal, urutan, "kode", dan format persis seperti Rancangan soal (${Object.entries(plan).map(([x,gs])=>x+' '+nOf(gs)+' soal').join(', ')}); "subtes" sesuai bagiannya.
 - PG 5 opsi dan 1 kunci; isian punya kunci angka berupa nomor kalimat yang ada di bacaan; "pgk" hanya untuk format J2, J5, J6 dengan 3–4 pernyataan; nomor di "bukti" dan "kata_uji" ada di teks.
 - "drill_terkait" persis dari daftar yang sah; "pola_id" dari pilihan slotnya; setiap soal punya "jenis_soal" dan "format" persis seperti slotnya, dan "tipe" sesuai format.
-- Setiap bacaan 7–12 kalimat; setiap id teks berbeda; setiap "pembahasan" dibuka dengan kode bentuknya dan tidak menyebut huruf opsi.
+- Setiap bacaan 7–12 kalimat, membahas topik dan jenis teks dari Rancangan, dengan "tema" terisi; setiap id teks berbeda; setiap "pembahasan" dibuka dengan kode bentuknya dan tidak menyebut huruf opsi.
 - Tidak ada opsi "semua benar", "semua salah", atau "tidak ada"; tidak ada tiga kunci sama berturut-turut; kunci tidak menjadi opsi terpanjang di lebih dari 1 dari 5 soal; nomor isian ada di bacaannya.`;
   return `${intro} Hasilmu akan kutempel langsung ke aplikasi, jadi keluarkan HANYA satu blok kode json yang valid, tanpa teks lain.
 
@@ -3313,7 +3348,7 @@ function todayPrompt(part,simSub){
   const subsOf=kat=>Object.keys(SUB_KAT).filter(s=>kat.includes(SUB_KAT[s])).join(', ');
   const P=part||'drill', day=dayNo();
   return buildPrompt({part:P,simSub:simSub||T.fokus,plan:P==='teks'?planHari(T,day):P==='sim'?planSim(simSub||T.fokus,day):null,date,konsep:T.k.n,fokus:T.k.fokus,subs:T.k.subs.join(', '),konsep2:T.k2.n,subs2:T.k2.subs.join(', '),weak:weakText(),
-    rules:fmt(rulesFor(T.k.subs)),rules2:fmt(rulesFor(T.k2.subs)),allEyd:subsOf(['tanda-baca','ejaan']),allKeb:subsOf(['kebahasaan']),idbase:'h'+date.replace(/-/g,'')});
+    rules:fmt(rulesFor(T.k.subs)),rules2:fmt(rulesFor(T.k2.subs)),allEyd:subsOf(['tanda-baca','ejaan']),allKeb:subsOf(['kebahasaan']),drillBidang:bidangDrill(day),idbase:'h'+date.replace(/-/g,'')});
 }
 
 /* ---------- State tampilan ---------- */
@@ -3690,7 +3725,7 @@ function recordAt(C,k){
     S.dhist.push({id:it.id,kat:it.kategori,sub:it.subkategori,correct:ok,ts:Date.now()});
     s.res.push({id:it.id,ok,it});
   } else {
-    S.history.push({teksId:(it._t||C.t).id,nomor:it.nomor,subtes:it.subtes,pola_id:it.pola_id,kode:kodeSoal(it),mode:it.mode,jenis_soal:jenisDari(it),format:it.format||'',correct:ok,ms:Math.min(spent(s,k),600000),ts:Date.now()});
+    S.history.push({teksId:(it._t||C.t).id,nomor:it.nomor,subtes:it.subtes,pola_id:it.pola_id,kode:kodeSoal(it),mode:it.mode,jenis_soal:jenisDari(it),format:it.format||'',tema:(it._t||C.t).tema||'',correct:ok,ms:Math.min(spent(s,k),600000),ts:Date.now()});
     if(!ok) (it.drill_terkait||[]).forEach(sub=>S.drill.filter(d=>d.subkategori===sub).forEach(d=>{ S.srs[d.id]=Object.assign({},srsOf(d.id),{due:0}); }));
     s.res.push(ok);
   }
