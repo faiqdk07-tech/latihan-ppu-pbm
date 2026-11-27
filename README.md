@@ -31,3 +31,8 @@
 - Kemampuan resmi (PPU-A–E, PBM-A–C) yang akurasi soal L-nya di bawah 70% (dari sekitar 20 soal terakhir, minimal 5 soal L) kembali memakai L saja.
 - PPU boleh punya satu bacaan pendek satu soal untuk soal B; PBM selalu berupa bacaan bernomor.
 - JSON memakai `"jenis_soal"` dan `"format"`; `"mode"` lama diisi otomatis (L→dasar, G→geser, B/M→2027). Riwayat menyimpan `jenis_soal` dan `format`.
+
+## PBM: bacaan, isian, urutkan kalimat, kata tebal bernomor
+- PBM selalu berupa bacaan bernomor; soal PBM dalam jenis "pendek" atau "lepas" ditolak validator. Kalimat sumbang (bentuk 2019–2022) tidak lagi dibuat.
+- Isian nomor kalimat di PBM dijaga 2–4 per 10 soal (6 soal → 1–2).
+- Tambahan 2026 aktif: **urutkan 5 kalimat** (`"jenis": "urutan"`, tepat 5 kalimat, format J7 = PG berisi urutan, opsi tidak diacak) dan **kata bercetak tebal bernomor** (`"tebal_bernomor": true`; nomor kecil tampil di samping kata tebal; jawaban = nomor kata).
