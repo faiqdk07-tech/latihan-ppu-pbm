@@ -380,6 +380,7 @@ body.sess nav.bottom{display:none}
 .pemb.bad .pemb-h{color:var(--bad-ink)}
 .pemb-b{line-height:1.65;font-size:15.5px}
 .pemb-n{font-size:13px;color:var(--muted)}
+sup.kn{font-size:.62em;font-weight:700;margin-left:1px;color:var(--muted)}
 .savest{margin:10px 0 4px;font-size:13px;line-height:1.45;border-radius:10px;padding:8px 12px}
 .savest.ok{align-self:center;color:var(--ok-ink);background:var(--ok-soft);font-weight:600;padding:4px 12px;border-radius:999px;width:max-content;margin-left:auto;margin-right:auto}
 .savest.bad{color:var(--bad-ink);background:var(--bad-soft)}
@@ -2598,7 +2599,7 @@ const POLA_BRIEF = {
 'PBM-efektif-sempurnakan':['PBM-C','PBM-11'],'PBM-efektif-perbaikan':['PBM-C','PBM-13'],'PBM-efektif-penggabungan':['PBM-B','PBM-6'],'PBM-efektif-kalimat-inti':['PBM-B','PBM-5'],
 'PBM-efektif-variasi-kalimat':['PBM-B','belum pernah keluar'],'PBM-efektif-paling-ringkas':['PBM-C','belum pernah keluar'],
 'PBM-makna-ungkap-kembali':['PBM-B','PBM-7'],'PBM-makna-informasi-utama':['PBM-B','PBM-5'],
-'PBM-kepaduan-judul':['PBM-A','PBM-1'],'PBM-kepaduan-sisipan':['PBM-B','PBM-4'],'PBM-kepaduan-urutan':['PBM-B','tambahan 2026'],'PBM-kepaduan-kalimat-sumbang':['PBM-B','PBM-4'],
+'PBM-kepaduan-judul':['PBM-A','PBM-1'],'PBM-kepaduan-sisipan':['PBM-B','PBM-4'],'PBM-kepaduan-urutan':['PBM-B','tambahan 2026'],'PBM-kepaduan-kalimat-sumbang':['PBM-B','bentuk 2019–2022, tidak terlihat sejak 2024'],
 'PPU-makna-sinonim':['PPU-A','PPU-1'],'PPU-makna-antonim':['PPU-A','PPU-1'],'PPU-makna-luas-sempit':['PPU-A','PPU-2'],'PPU-makna-asosiasi':['PPU-A','PPU-4'],
 'PPU-makna-simpulan-situasi':['PPU-A','PPU-15'],'PPU-makna-ungkap-kembali':['PPU-D','PPU-13'],
 'PPU-frasa-makna':['PPU-C','PPU-6'],'PPU-frasa-pasangan-tetap':['PPU-A','PPU-7'],'PPU-frasa-pola-makna':['PPU-C','PPU-6'],'PPU-frasa-variasi-kata':['PPU-B','tambahan 2026'],
@@ -2648,7 +2649,8 @@ const KODE=[
  {k:'PBM-13',kem:'PBM-C',th:5,st:'"Manakah yang merupakan kalimat efektif dari kalimat (n)?"',pk:'Kalimat lebih pendek tetapi maknanya berubah',pola:['PBM-efektif-perbaikan']},
  {k:'PBM-14',kem:'PBM-C',th:3,baru:1,st:'"Kata … dalam kalimat (n) seharusnya …"',pk:'Bentuk berimbuhan lain dari kata dasar yang sama',pola:['PBM-diksi-seharusnya']},
  {k:'PBM-2026-nama-ilmiah',kem:'PBM-C',th:1,baru:1,st:'"Penulisan yang tepat sebagai nama ilmiah dan ungkapan dalam kalimat (n) …"',pk:'',pola:['PBM-ejaan-nama-ilmiah']},
- {k:'PBM-2026-urutan',kem:'PBM-B',th:1,baru:1,off:1,st:'Lima kalimat lepas yang harus diurutkan menjadi paragraf',pk:'',pola:['PBM-kepaduan-urutan']}
+ {k:'PBM-2026-tebal',kem:'PBM-C',th:1,baru:1,fmt:'isian',tebal:1,st:'Kata bercetak tebal yang diberi nomor; ditanya nomor kata yang penulisannya salah (tambahan 2026)',pk:'Kata serapan dan kata gabung yang sering salah kaprah',pola:['PBM-ejaan-penulisan-kata','PBM-ejaan-serapan']},
+ {k:'PBM-2026-urutan',kem:'PBM-B',th:1,baru:1,fmt:'urutan',st:'Lima kalimat lepas yang harus diurutkan menjadi paragraf (tambahan 2026); ditanya urutan yang tepat',pk:'',pola:['PBM-kepaduan-urutan']}
 ];
 const KODE_OF={}; KODE.forEach(x=>x.pola.forEach(p=>{ if(!KODE_OF[p]) KODE_OF[p]=x.k; }));
 function kodeInfo(k){ return KODE.find(x=>x.k===k)||null; }
@@ -2725,14 +2727,14 @@ function kemDasar(kem){ const st=kemStat(kem); return st.nL>=5&&st.pL<70; }
 const hashK=k=>[...k].reduce((a,c)=>(a*31+c.charCodeAt(0))%9973,7);
 function aturJenis(sub,slots,day,nM){
   const N=slots.length, mau={L:Math.round(N*0.3),M:nM,B:Math.max(1,Math.round(N*0.2))}; mau.G=Math.max(0,N-mau.L-mau.M-mau.B);
-  const fmtL=x=>kodeInfo(x.k).fmt==='isian'?'J3':'J1';
+  const fmtL=x=>{ const f=kodeInfo(x.k).fmt; return f==='isian'?'J3':f==='urutan'?'J7':'J1'; };
   slots.forEach(x=>{ const K=kodeInfo(x.k); if(kemDasar(K.kem)){ x.j='L'; x.f=fmtL(x); x.why=(x.why?x.why+'; ':'')+'akurasi bentuk lama kemampuan '+K.kem+' di bawah 70%, jadi tetap bentuk lama'; } });
   const sisa=()=>slots.filter(x=>!x.j).sort((a,b)=>((hashK(a.k)+day*7)%101)-((hashK(b.k)+day*7)%101));
   const pakai=j=>slots.filter(x=>x.j===j).length;
   /* L: utamakan slot konsep hari ini */
   sisa().sort((a,b)=>(/konsep/.test(b.why)?1:0)-(/konsep/.test(a.why)?1:0)).slice(0,Math.max(0,mau.L-pakai('L'))).forEach(x=>{ x.j='L'; x.f=fmtL(x); });
   /* M: tabel benar/salah (J2, sesekali J5/J6) atau definisi dua syarat untuk makna kata PPU */
-  sisa().filter(x=>!kodeInfo(x.k).lepas).slice(0,mau.M).forEach((x,i)=>{ const K=kodeInfo(x.k); x.j='M';
+  sisa().filter(x=>!kodeInfo(x.k).lepas&&!kodeInfo(x.k).fmt).slice(0,mau.M).forEach((x,i)=>{ const K=kodeInfo(x.k); x.j='M';
     if(sub==='PPU'&&K.kem==='PPU-A'&&day%2){ x.f='J1'; x.mig='definisi dengan dua syarat (pindahan PU induktif, PU-I8/PU-I9): stimulus menyajikan definisi istilah dengan dua syarat dari bacaan; ditanya kata atau contoh yang memenuhi keduanya; pengecoh memenuhi satu syarat saja'; }
     else { x.f=['J2','J2','J5','J2','J6'][(day+i)%5]; x.mig='tabel benar/salah (pindahan dari Literasi, PK, dan PM sejak 2024): 3–4 pernyataan tentang hal yang diuji kode ini, dinilai benar atau salah berdasarkan bacaan'; } });
   /* B: bentuk baru, ubah sedikitnya dua unsur */
@@ -2743,6 +2745,10 @@ function aturJenis(sub,slots,day,nM){
   /* minimal 2 soal di luar J1 per subtes */
   const nonJ1=()=>slots.filter(x=>x.f!=='J1').length;
   slots.filter(x=>(x.j==='G'||x.j==='B')&&x.f==='J1'&&ISIAN_OK.has(x.k)).forEach(x=>{ if(nonJ1()<2){ x.f='J3'; if(x.j==='G') x.tuas='format jawaban'; } });
+  /* B8: isian nomor kalimat di PBM 2–4 per 10 soal (6 soal → 1–3) */
+  if(sub==='PBM'){ const nIs=()=>slots.filter(x=>x.f==='J3').length, maxIs=Math.max(1,Math.round(N*0.4)), minIs=Math.max(1,Math.round(N*0.2));
+    slots.filter(x=>(x.j==='G'||x.j==='B')&&x.f==='J3').reverse().forEach(x=>{ if(nIs()>maxIs){ x.f='J1'; if(x.j==='G') x.tuas='format jawaban (isian menjadi pilihan ganda bernomor kalimat)'; } });
+    slots.filter(x=>(x.j==='G'||x.j==='B')&&x.f==='J1'&&(ISIAN_OK.has(x.k)||kodeInfo(x.k).fmt==='isian')).forEach(x=>{ if(nIs()<minIs){ x.f='J3'; if(x.j==='G') x.tuas='format jawaban'; } }); }
   /* cadangan 1: soal M memakai tabel benar/salah (J2) */
   slots.filter(x=>x.j==='M'&&x.f==='J1').forEach(x=>{ if(nonJ1()<2){ x.f='J2'; x.mig='tabel benar/salah (pindahan dari Literasi, PK, dan PM sejak 2024): 3–4 pernyataan tentang hal yang diuji kode ini, dinilai benar atau salah berdasarkan bacaan'; } });
   /* cadangan 2: tukar jenis slot L yang cocok untuk isian dengan slot G yang tidak cocok (kecuali L karena kemampuan lemah) */
@@ -2752,11 +2758,13 @@ function aturJenis(sub,slots,day,nM){
 }
 /* Kelompokkan slot menjadi bacaan 3–5 soal. PPU-16 berdiri sendiri; untuk PPU, satu soal B boleh berupa bacaan pendek satu soal (B5) */
 function groupSlots(slots,sub){
-  const lep=slots.filter(x=>kodeInfo(x.k).lepas), pd=sub==='PPU'?slots.filter(x=>x.j==='B'&&!kodeInfo(x.k).lepas).slice(0,1):[];
-  let rest=slots.filter(x=>!kodeInfo(x.k).lepas&&!pd.includes(x)); if(rest.length<3){ rest=slots.filter(x=>!kodeInfo(x.k).lepas); pd.length=0; }
+  const sendiri=x=>kodeInfo(x.k).lepas||kodeInfo(x.k).fmt==='urutan';
+  const lep=slots.filter(x=>kodeInfo(x.k).lepas), urt=slots.filter(x=>kodeInfo(x.k).fmt==='urutan'), pd=sub==='PPU'?slots.filter(x=>x.j==='B'&&!sendiri(x)).slice(0,1):[];
+  let rest=slots.filter(x=>!sendiri(x)&&!pd.includes(x)); if(rest.length<3){ rest=slots.filter(x=>!sendiri(x)); pd.length=0; }
   const g=Math.ceil(rest.length/5), out=[]; let i=0;
   for(let b=0;b<g;b++){ const size=Math.floor(rest.length/g)+(b<rest.length%g?1:0); out.push({jenis:'bernomor',slots:rest.slice(i,i+size)}); i+=size; }
   pd.forEach(x=>out.push({jenis:'pendek',slots:[x]}));
+  urt.forEach(x=>out.push({jenis:'urutan',slots:[x]}));
   lep.forEach(x=>out.push({jenis:'lepas',slots:[x]}));
   return out;
 }
@@ -2765,9 +2773,9 @@ function planHari(T,day){ const mPBM=day%2===0;
 function planSim(sub,day){ return {[sub]:groupSlots(aturJenis(sub,planSlots(sub,20,day,null,97),day,2),sub)}; }
 /* Rancangan dalam bahasa prompt: per bacaan, per soal: kode, kemampuan, pola_id, format, kerangka, pengecoh khas, catatan */
 function planText(plan,idb){
-  return Object.entries(plan).map(([sub,groups])=>{ const n=groups.reduce((a,g)=>a+g.slots.length,0); let b=0, l=0, pp=0;
-    return '### '+sub+' · '+n+' soal\n'+groups.map(g=>{ const id=g.jenis==='lepas'?idb+'-'+sub.toLowerCase()+'-l'+(++l):g.jenis==='pendek'?idb+'-'+sub.toLowerCase()+'-p'+(++pp):idb+'-'+sub.toLowerCase()+(++b);
-      const head=g.jenis==='lepas'?'Soal lepas (id "'+id+'", "jenis": "lepas", tepat 1 soal; contoh pola ditulis di "kalimat" dengan format "kode = arti"):':g.jenis==='pendek'?'Bacaan pendek (id "'+id+'", "jenis": "pendek", 2–4 kalimat bernomor, tepat 1 soal):':'Bacaan '+sub+' '+b+' (id "'+id+'", "jenis": "bernomor", 7–12 kalimat bernomor dalam 2–3 paragraf, tepat '+g.slots.length+' soal):';
+  return Object.entries(plan).map(([sub,groups])=>{ const n=groups.reduce((a,g)=>a+g.slots.length,0); let b=0, l=0, pp=0, uu=0;
+    return '### '+sub+' · '+n+' soal\n'+groups.map(g=>{ const id=g.jenis==='lepas'?idb+'-'+sub.toLowerCase()+'-l'+(++l):g.jenis==='pendek'?idb+'-'+sub.toLowerCase()+'-p'+(++pp):g.jenis==='urutan'?idb+'-'+sub.toLowerCase()+'-u'+(++uu):idb+'-'+sub.toLowerCase()+(++b);
+      const head=g.jenis==='lepas'?'Soal lepas (id "'+id+'", "jenis": "lepas", tepat 1 soal; contoh pola ditulis di "kalimat" dengan format "kode = arti"):':g.jenis==='pendek'?'Bacaan pendek (id "'+id+'", "jenis": "pendek", 2–4 kalimat bernomor, tepat 1 soal):':g.jenis==='urutan'?'Lima kalimat lepas (id "'+id+'", "jenis": "urutan", TEPAT 5 kalimat dalam urutan acak, "paragraf_mulai": [1, 2, 3, 4, 5], tepat 1 soal; urutan yang benar membentuk satu paragraf padu dengan rujukan "itu"/"tersebut" yang jelas; opsi berupa urutan nomor seperti "(3)-(1)-(5)-(2)-(4)"):':'Bacaan '+sub+' '+b+' (id "'+id+'", "jenis": "bernomor", 7–12 kalimat bernomor dalam 2–3 paragraf, tepat '+g.slots.length+' soal'+(g.slots.some(x=>kodeInfo(x.k).tebal)?'; bacaan ini memakai kata bercetak tebal bernomor: isi "tebal_bernomor": true dan "kata_uji" bernomor 1–5 (4–5 kata), tanpa menulis angka di dalam kalimat':'')+'):';
       return head+'\n'+g.slots.map((x,i)=>{ const K=kodeInfo(x.k);
         const j=x.j||'L', f=x.f||(K.fmt==='isian'?'J3':'J1');
         const cara=j==='L'?'pakai kerangka bentuk lama di bawah persis':j==='G'?'ubah SATU hal: '+(x.tuas||'arah tanya dibalik')+'; kerangka di bawah tidak dipakai apa adanya':j==='B'?'bentuk baru: ubah sedikitnya DUA dari jenis stimulus (cerita, dialog, pengumuman, tabel kecil, aturan, percakapan pesan), arah tanya, dan format jawaban; jangan meniru kerangka di bawah':'migrasi: '+(x.mig||'tabel benar/salah');
@@ -3044,7 +3052,9 @@ function validate(raw){
     const old=S.bank.find(b=>b.id===t.id);
     if(!Array.isArray(t.kalimat)&&old){ t=Object.assign({},t,{kalimat:old.kalimat,jenis:t.jenis||old.jenis}); }
     const jenis=t.jenis||'bernomor';
-    if(!['bernomor','pendek','lepas'].includes(jenis)) errs.push(where+': jenis harus "bernomor", "pendek", atau "lepas".');
+    if(!['bernomor','pendek','lepas','urutan'].includes(jenis)) errs.push(where+': jenis harus "bernomor", "pendek", "lepas", atau "urutan".');
+    if(jenis==='urutan'&&Array.isArray(t.kalimat)&&t.kalimat.length!==5) errs.push(where+': soal urutan butuh tepat 5 kalimat (sekarang '+t.kalimat.length+').');
+    if((jenis==='pendek'||jenis==='lepas')&&Array.isArray(t.soal)&&t.soal.some(q=>q&&q.subtes==='PBM')) errs.push(where+': soal PBM selalu berupa bacaan bernomor (bukan "'+jenis+'").');
     if(jenis==='lepas'&&!Array.isArray(t.kalimat)) t=Object.assign({},t,{kalimat:[]});
     if(jenis==='pendek'&&Array.isArray(t.kalimat)&&(t.kalimat.length<2||t.kalimat.length>4)) errs.push(where+': soal pendek butuh 2–4 kalimat.');
     if(jenis!=='bernomor'&&Array.isArray(t.soal)&&t.soal.length!==1) errs.push(where+': soal '+jenis+' berisi tepat 1 soal (sekarang '+t.soal.length+').');
@@ -3073,6 +3083,7 @@ function validate(raw){
       } else if(q.tipe==='isian'){
         const ki=String(q.kunci_isian==null?'':q.kunci_isian).trim();
         if(!/^\d+$/.test(ki)) errs.push(w+': isian harus punya kunci_isian berupa angka.');
+        else if(kodeSoal(q)==='PBM-2026-tebal'){ const nU=(t.kata_uji||[]).length; if(!t.tebal_bernomor||nU<3) errs.push(w+': soal kata bercetak tebal bernomor butuh "tebal_bernomor": true dan minimal 3 "kata_uji".'); else if(!(+ki>=1&&+ki<=nU)) errs.push(w+': kunci_isian "'+ki+'" bukan nomor kata tebal (1–'+nU+').'); }
         else if(nK&&!(+ki>=1&&+ki<=nK)&&!(nK<10&&ki.length===nK&&ki.split('').sort().join('')===Array.from({length:nK},(_,i)=>i+1).join(''))) errs.push(w+': kunci_isian "'+ki+'" tidak ada di teks (kalimat 1–'+nK+').');
       } else if(q.tipe==='pgk'){
         const ps=q.pernyataan||[];
@@ -3846,7 +3857,7 @@ function startSim(sub){
 }
 function renderSentence(t,i,focus,proof){
   let s=esc(t.kalimat[i]);
-  (t.kata_uji||[]).filter(k=>k.kalimat===i+1).forEach(k=>{ const w=esc(k.kata); const idx=s.indexOf(w); if(idx>=0) s=s.slice(0,idx)+'<b>'+w+'</b>'+s.slice(idx+w.length); });
+  (t.kata_uji||[]).filter(k=>k.kalimat===i+1).forEach(k=>{ const w=esc(k.kata); const idx=s.indexOf(w); if(idx>=0) s=s.slice(0,idx)+'<b>'+w+(t.tebal_bernomor&&k.nomor?'<sup class="kn">'+esc(String(k.nomor))+'</sup>':'')+'</b>'+s.slice(idx+w.length); });
   s=s.replace(/\[\.\.\.\]/g,'<span class="blank">[...]</span>').replace(/\*([^*]+)\*/g,'<i>$1</i>');
   return '<span class="s'+(proof.includes(i+1)?' proof':focus.includes(i+1)?' focus':'')+'"><span class="n">('+(i+1)+')</span> '+s+'</span> ';
 }
@@ -3969,7 +3980,7 @@ function viewKaidah(){
   return h;
 }
 /* ---------- Daftar teks ---------- */
-function tName(t){ return t.judul||((t.jenis==='lepas'?'Soal lepas':t.jenis==='pendek'?'Bacaan pendek':'Teks')+' · '+t.id); }
+function tName(t){ return t.judul||((t.jenis==='lepas'?'Soal lepas':t.jenis==='pendek'?'Bacaan pendek':t.jenis==='urutan'?'Urutkan kalimat':'Teks')+' · '+t.id); }
 function viewTeks(){
   if(!S.bank.length) return '<h1>Daftar teks</h1><div class="card empty">Belum ada teks. <a href="#bank">Tempel paket di Bank soal.</a></div>';
   return '<h1>Daftar teks</h1>'+S.bank.map(t=>{
