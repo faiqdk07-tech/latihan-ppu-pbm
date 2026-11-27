@@ -42,3 +42,11 @@
 - Setiap bacaan di Rancangan mendapat satu topik dan satu jenis teks (berita, laporan penelitian, opini, profil, penjelasan proses). Dalam satu hari bidangnya berbeda-beda; topik yang dipakai dalam 14 hari terakhir (riwayat dan bank) dilewati.
 - Tema motivasi atau nasihat umum dan penutup berpesan moral dilarang di prompt. Konteks drill juga ikut bergiliran per bidang.
 - Objek teks memuat `"tema"`; riwayat menyimpan `tema` per soal. Tema yang tidak dikenal hanya diberi catatan oranye.
+
+## Rekap kesiapan, label kode, dan varian soal salah
+- Layar skor soal teks menampilkan **Rekap per jenis soal**: benar/total, persen, dan waktu rata-rata untuk L/G/B/M, ditambah Indeks Kesiapan (akurasi B+M ÷ akurasi L, target ≥ 0,90) dan waktu bentuk baru ÷ waktu resmi (target ≤ 1,25).
+- Progres menampilkan **Kesiapan 2027 per kemampuan** (PPU-A–E, PBM-A–C) dari sekitar 20 soal terakhir: akurasi L, akurasi B+M, Indeks, dan statusnya ("kembali ke L", "B dinaikkan", "siap", "belum cukup data"). Kemampuan dengan Indeks di bawah 0,75 mendapat tambahan satu soal B di Rancangan berikutnya.
+- Pembahasan setiap soal teks menampilkan label: Kode · Kemampuan · Jenis · Format · Yang diubah.
+- Riwayat menyimpan jawaban yang dipilih (`pil`: huruf opsi pada urutan asli di bank, angka isian, atau pola B/S).
+- Error Book punya kartu **Latihan varian**: salin prompt untuk tiga varian per soal teks yang salah (konteks diganti, arah tanya dibalik, satu langkah ditambah), tempel JSON-nya di Bank soal, lalu kerjakan dari Error Book. Varian (`"paket": "varian"`) tidak masuk tugas harian atau simulasi.
+- Ringkasan untuk tracker tidak berubah.
