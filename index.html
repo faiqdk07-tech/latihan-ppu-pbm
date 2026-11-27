@@ -2877,6 +2877,9 @@ if(S.bakuVer!==BAKU_VER){ S.baku=parseBaku(SAMPLE_BAKU).pairs; S.bakuVer=BAKU_VE
 /* Mulai hari ini teks PPU dan PBM dikerjakan setiap hari; tugas hari-hari sebelumnya tetap dinilai dengan aturan lama */
 if(!S.duaSub){ const d=new Date(); S.duaSub=d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0')+'-'+String(d.getDate()).padStart(2,'0'); }
 function duaOn(date){ return !S.duaSub||ymd(date)>=S.duaSub; }
+/* Mulai hari ini: satu prompt, drill 10 butir campuran, mini game opsional; hari sebelumnya tetap dinilai dengan aturan lama */
+if(!S.ringanSub){ const d=new Date(); S.ringanSub=d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0')+'-'+String(d.getDate()).padStart(2,'0'); }
+function ringanOn(date){ return !S.ringanSub||ymd(date)>=S.ringanSub; }
 /* Gabungkan data yang ditulis tab lain ke S, supaya tab ini tidak menimpanya.
    Riwayat digabung per catatan; butir yang hanya ada di sana ditambahkan; untuk butir yang sama dipilih yang lebih baru. */
 function mergeFrom(o){
@@ -3064,14 +3067,23 @@ function buildDrill(mode,label){
   if(!pool.length){ pool=shuffle(poolFor(mode)); extra=true; }
   return initSessO({mode,label,items:pool.slice(0,DRILL_SIZE),res:[],extra});
 }
+/* Drill harian 10 butir campuran (B13): 3 EYD hari ini, 3 kebahasaan hari ini, 2 + 2 dari subkategori lemah (30 hari)
+   atau, bila belum ada, konsep kemarin. Butir diselang-seling, tidak per blok. */
+function drillPlan(T){ const pakai=new Set(), out=[], add=(sub,n,why)=>{ if(sub&&SUB_KAT[sub]&&!pakai.has(sub)){ pakai.add(sub); out.push({sub,n,why}); return true; } return false; };
+  const day=dayNo(), pick=a=>a[((day%a.length)+a.length)%a.length];
+  add(pick(T.k.subs),3,'konsep EYD hari ini'); add(pick(T.k2.subs),3,'konsep kebahasaan hari ini');
+  const since=Date.now()-30*DAY, m={}; S.dhist.filter(x=>x.ts>=since&&x.kat!=='game'&&x.kat!=='baku'&&SUB_KAT[x.sub]).forEach(x=>{ const r=m[x.sub]=m[x.sub]||{n:0,ok:0}; r.n++; if(x.correct) r.ok++; });
+  Object.entries(m).filter(([,r])=>r.n>=3&&pct(r.ok,r.n)<WEAK_PCT).sort((a,b)=>pct(a[1].ok,a[1].n)-pct(b[1].ok,b[1].n)).forEach(([sub,r])=>{ if(out.length<4) add(sub,2,'lemah: '+pct(r.ok,r.n)+'% dari '+r.n+' butir'); });
+  const kem=[KONSEP[(T.i-1+KONSEP.length)%KONSEP.length],KONSEP2[(T.j-1+KONSEP2.length)%KONSEP2.length],KONSEP[(T.i-3+KONSEP.length)%KONSEP.length],KONSEP2[(T.j-3+KONSEP2.length)%KONSEP2.length]];
+  kem.forEach(k=>{ if(out.length<4) add(k.subs[0],2,'ulang berjarak: konsep beberapa hari lalu'); });
+  return out; }
 function buildPaket(){
-  const T=today(), m1='sub:'+T.k.subs.join('|'), m2='sub:'+T.k2.subs.join('|');
+  const subs=drillPlan(today()).map(x=>x.sub), m='sub:'+subs.join('|');
   const ids=new Set(); const items=[];
   const take=(arr,n)=>{ for(const d of arr){ if(items.length>=n) break; if(!ids.has(d.id)){ ids.add(d.id); items.push(d); } } };
-  take(rankDue(poolFor(m1)),10); take(shuffle(poolFor(m1)),10);
-  take(rankDue(poolFor(m2)),20); take(shuffle(poolFor(m2)),20);
-  take(rankDue(S.drill.filter(d=>!S.bad[d.id])),20); take(shuffle(poolFor('campur')),20);
-  return initSessO({mode:'paket',label:'Paket harian',items,res:[],extra:false});
+  take(rankDue(poolFor(m)),10); take(shuffle(poolFor(m)),10);
+  take(rankDue(S.drill.filter(d=>!S.bad[d.id])),10); take(shuffle(poolFor('campur')),10);
+  return initSessO({mode:'paket',label:'Paket harian',items:shuffle(items),res:[],extra:false});
 }
 
 /* ---------- Opsi acak (B10) ----------
@@ -3085,7 +3097,9 @@ function opsiAcak(q){ return opsiAcakBoleh(q)&&!HURUF_PB.test(String(q.pembahasa
 /* ---------- Validasi paket ---------- */
 function validate(raw){
   const errs=[], warns=[]; let data;
-  const txt=raw.trim().replace(/^```(?:json)?\s*/i,'').replace(/```\s*$/,'');
+  /* hanya isi di dalam blok kode yang dipakai; beberapa blok (jawaban terpotong lalu "lanjutkan") disambung tanpa baris baru tambahan */
+  const parts=String(raw||'').split(/```(?:json)?/i);
+  const txt=parts.length>1?parts.filter((_,i)=>i%2===1).map(x=>x.replace(/^[ \t]*\r?\n/,'').replace(/\r?\n[ \t]*$/,'')).join('').trim():String(raw||'').trim();
   if(!txt) return {errs:['Kolom masih kosong. Tempel keluaran prompt harian.'],data:null};
   try{ data=JSON.parse(txt); }catch(e){ return {errs:['JSON tidak valid: '+e.message+'. Cek koma berlebih atau tanda kutip yang tidak tertutup.'],data:null}; }
   const T=Array.isArray(data.teks)?data.teks:[], D=Array.isArray(data.drill)?data.drill:[];
@@ -3214,11 +3228,13 @@ function weakText(){
 function polaStat(since){ const m={}; S.history.filter(x=>x.ts>=(since||0)&&x.pola_id).forEach(x=>{ const r=m[x.pola_id]=m[x.pola_id]||{id:x.pola_id,n:0,ok:0}; r.n++; if(x.correct) r.ok++; }); return Object.values(m).map(r=>({...r,p:pct(r.ok,r.n)})).sort((a,b)=>a.p-b.p||b.n-a.n); }
 function modeStat(since){ const o={dasar:{n:0,ok:0},geser:{n:0,ok:0},'2027':{n:0,ok:0}}; S.history.filter(x=>x.ts>=(since||0)).forEach(x=>{ const r=o[x.mode||'dasar']; if(!r) return; r.n++; if(x.correct) r.ok++; }); Object.values(o).forEach(r=>r.p=pct(r.ok,r.n)); return o; }
 function buildPrompt(o){
-  const part=o.part, isD=part==='drill', isSim=part==='sim';
+  const part=o.part, isD=part==='drill', isSim=part==='sim', isH=part==='harian';
   const intro=isD
     ? 'Kamu adalah pembuat DRILL harian UTBK-SNBT untuk subtes PBM (Pemahaman Bacaan dan Menulis) dan PPU (Pengetahuan dan Pemahaman Umum). Drill ini Mode Dasar: melatih kaidah dengan bentuk dan kalimat perintah yang sudah dikenal.'
     : isSim
       ? 'Kamu adalah pembuat SIMULASI UTBK-SNBT subtes '+o.simSub+' ('+(o.simSub==='PBM'?'Pemahaman Bacaan dan Menulis':'Pengetahuan dan Pemahaman Umum')+'): 20 soal berbasis teks yang setara dengan satu subtes asli. Kode bentuk setiap soal sudah ditentukan di bagian "Rancangan soal".'
+      : isH
+      ? 'Kamu adalah pembuat PAKET HARIAN UTBK-SNBT untuk subtes PPU (Pengetahuan dan Pemahaman Umum) dan PBM (Pemahaman Bacaan dan Menulis): 10 butir drill kaidah campuran, '+SOAL_HARI.PPU+' soal teks PPU, dan '+SOAL_HARI.PBM+' soal teks PBM, semuanya dalam SATU JSON. Kode bentuk setiap soal teks sudah ditentukan di bagian "Rancangan soal". Bila jawabanmu terpotong dan aku menulis "lanjutkan", teruskan tepat dari karakter terakhir dalam blok kode baru, tanpa mengulang dan tanpa kalimat pembuka.'
       : 'Kamu adalah pembuat SOAL TEKS harian UTBK-SNBT untuk subtes PPU (Pengetahuan dan Pemahaman Umum) dan PBM (Pemahaman Bacaan dan Menulis): '+SOAL_HARI.PPU+' soal PPU dan '+SOAL_HARI.PBM+' soal PBM. Kode bentuk setiap soal sudah ditentukan di bagian "Rancangan soal"; mode setiap soal mengikuti bagian "Mode pola".';
   const subs=isSim?[o.simSub]:['PPU','PBM'], plan=o.plan||{};
   const nOf=gs=>(gs||[]).reduce((a,g)=>a+g.slots.length,0), nAll=Object.values(plan).reduce((a,gs)=>a+nOf(gs),0);
@@ -3270,6 +3286,7 @@ S5. Lima tuas pemutar: ganti bungkus cerita; sembunyikan struktur dalam narasi; 
 S6. Uji ketergantungan: bila soal G, B, atau M bisa dijawab cukup dengan mengenali templat tanpa bernalar, rancang ulang. Soal harus bisa dijawab hanya dari teks.
 S7. Dalam satu paket, pola_id yang sama tidak boleh muncul dua kali dengan bentuk yang sama.
 S8. Arah geser: ${subs.map(x=>x+': '+(x==='PBM'?'butir yang jarang keluar (kata gabung, kata serapan, tanda hubung, titik dua, variasi kalimat, kalimat paling ringkas); kata bercetak tebal bernomor; lima kalimat lepas yang diurutkan menjadi paragraf.':'kata, imbuhan, dan kata tugas yang belum pernah ditanya (selain pe-an, ke-an, per-an, ber-an); pandangan penulis; variasi kata; perumpamaan; bahasa buatan dengan kalimat tanya atau ingkar; arah tanya dibalik (yang TIDAK sama, yang BUKAN).')).join(' ')}`;
+  const drillH=(o.drillPlan||[]).map(x=>x.n+' butir "'+x.sub+'" ("kategori": "'+SUB_KAT[x.sub]+'"; '+x.why+')').join('; ');
   const drillRules=`A. 10 butir konsep EYD hari ini: "kategori" = "tanda-baca" (Bab III) atau "ejaan" (Bab I–II), "subkategori" persis seperti di atas.
 B. 10 butir konsep kebahasaan hari ini: "kategori" = "kebahasaan", "subkategori" persis seperti di atas.
 Aturan untuk keduanya:
@@ -3279,6 +3296,14 @@ Aturan untuk keduanya:
    c. Perbaiki: "tipe": "PG", "bentuk": "perbaiki", satu kalimat salah di "kalimat" (daftar berisi 1 kalimat), perintah seperti "Perbaikan yang tepat untuk kalimat tersebut adalah ....", lalu 5 opsi perbaikan. Pengecoh memperbaiki separuh masalah atau menimbulkan kesalahan baru.
    d. Untuk bahasa buatan: contoh pola ditulis di "kalimat" (misal "lo mesa kuti = saya makan nasi"), lalu PG 5 opsi.
 2. Kalimat yang dimaksudkan benar harus benar di SEMUA aspek (ejaan, tanda baca, kalimat efektif). Kalimat yang salah hanya memuat SATU kesalahan, dan kesalahan itu pada konsep yang diuji.
+3. Pengecoh harus kesalahan yang memang sering terjadi, bukan salah ketik. Untuk makna imbuhan, analogi, dan relasi makna, setiap pengecoh mewakili makna atau hubungan lain yang berbeda jelas, sehingga hanya satu jawaban yang sah.
+4. "kaidah": satu kalimat aturan dengan rujukannya: untuk EYD sertakan bab, misalnya "(III.B.3)"; untuk kebahasaan, jika ada, bagian TBBI, misalnya "(TBBI 9.3.2.4)".
+5. Variasikan konteks butir secara bergiliran dari bidang: ${o.drillBidang||'sekolah, kesehatan, lingkungan, ekonomi, budaya'}. Jangan memakai konteks motivasi atau nasihat umum. Nama orang dan lembaga fiktif. Huruf miring ditulis dengan *...*. Jangan mengulang kalimat yang sama antarbutir.
+6. Jika Kelemahan menyebut subkategori hari ini, minimal separuh butir subkategori itu menyasarnya dengan contoh baru.
+7. Uji anti-tebak: tiap butir tidak boleh bisa dijawab tanpa menguasai kaidahnya. Opsi sejajar panjang dan gayanya (selisih jumlah kata terpanjang dan terpendek paling banyak 30%; kunci menjadi opsi terpanjang paling banyak 2 dari 10 butir PG), kunci tidak menonjol, dan minimal 2 opsi tampak benar sekilas. Untuk butir "yang tepat", pengecoh mengandung kesalahan halus yang sering terjadi; untuk butir "yang salah", sisipkan kalimat benar yang tampak janggal. Tidak boleh ada opsi "semua benar", "semua salah", "tidak ada yang benar", atau "tidak ada"; paling banyak satu pengecoh lemah per butir; kunci tidak boleh menjadi satu-satunya opsi yang berhati-hati.`;
+  const drillRules10=`1. TEPAT 10 butir di array "drill", dicampur dan diselang-seling antarsubkategori (bukan per blok): ${drillH}. "subkategori" persis seperti tertulis.
+   Bentuk: 6 PG 5 opsi (tepat satu "benar": true), 2 isian (lima kalimat bernomor di "kalimat", kunci nomor kalimat di "kunci_isian"), dan 2 perbaiki ("tipe": "PG", "bentuk": "perbaiki", satu kalimat salah di "kalimat", lima opsi perbaikan), tersebar di subkategori yang berbeda. Contoh perintah: "Penggunaan tanda koma yang tepat terdapat pada kalimat ....", "Kalimat yang tidak efektif terdapat pada kalimat nomor ....", "Perbaikan yang tepat untuk kalimat tersebut adalah ....".
+` + `2. Kalimat yang dimaksudkan benar harus benar di SEMUA aspek (ejaan, tanda baca, kalimat efektif). Kalimat yang salah hanya memuat SATU kesalahan, dan kesalahan itu pada konsep yang diuji.
 3. Pengecoh harus kesalahan yang memang sering terjadi, bukan salah ketik. Untuk makna imbuhan, analogi, dan relasi makna, setiap pengecoh mewakili makna atau hubungan lain yang berbeda jelas, sehingga hanya satu jawaban yang sah.
 4. "kaidah": satu kalimat aturan dengan rujukannya: untuk EYD sertakan bab, misalnya "(III.B.3)"; untuk kebahasaan, jika ada, bagian TBBI, misalnya "(TBBI 9.3.2.4)".
 5. Variasikan konteks butir secara bergiliran dari bidang: ${o.drillBidang||'sekolah, kesehatan, lingkungan, ekonomi, budaya'}. Jangan memakai konteks motivasi atau nasihat umum. Nama orang dan lembaga fiktif. Huruf miring ditulis dengan *...*. Jangan mengulang kalimat yang sama antarbutir.
@@ -3331,7 +3356,7 @@ Contoh soal format J2 (jenis M): {"nomor": 3, "subtes": "${fs}", "kode": "...", 
 - PG 5 opsi dan 1 kunci; isian punya kunci angka berupa nomor kalimat yang ada di bacaan; "pgk" hanya untuk format J2, J5, J6 dengan 3–4 pernyataan; nomor di "bukti" dan "kata_uji" ada di teks.
 - "drill_terkait" persis dari daftar yang sah; "pola_id" dari pilihan slotnya; setiap soal punya "jenis_soal" dan "format" persis seperti slotnya, dan "tipe" sesuai format.
 - Setiap bacaan 7–12 kalimat, membahas topik dan jenis teks dari Rancangan, dengan "tema" terisi; setiap id teks berbeda; setiap "pembahasan" dibuka dengan kode bentuknya dan tidak menyebut huruf opsi.
-- Tidak ada opsi "semua benar", "semua salah", atau "tidak ada"; tidak ada tiga kunci sama berturut-turut; kunci tidak menjadi opsi terpanjang di lebih dari 1 dari 5 soal; nomor isian ada di bacaannya.`;
+- Tidak ada opsi "semua benar", "semua salah", atau "tidak ada"; tidak ada tiga kunci sama berturut-turut; kunci tidak menjadi opsi terpanjang di lebih dari 1 dari 5 soal; nomor isian ada di bacaannya.${isH?'\n- Drill: tepat 10 butir campuran sesuai sebaran di atas (6 PG, 2 isian, 2 perbaiki); "kategori" dan "subkategori" persis dari daftar yang sah; setiap kalimat benar bebas dari kesalahan lain.':''}`;
   return `${intro} Hasilmu akan kutempel langsung ke aplikasi, jadi keluarkan HANYA satu blok kode json yang valid, tanpa teks lain.
 
 ## Hari ini
@@ -3356,13 +3381,13 @@ ${o.rules}
 Jadikan kaidah ini dasar kunci jawaban untuk butir kebahasaan dan pakai istilah yang sama (misalnya kalimat kompleks = majemuk bertingkat; konotasi = nilai rasa, bukan makna kias).
 ${o.rules2}
 
-${isD?'## Drill (20 butir)\n'+drillRules:'## Rancangan soal (WAJIB diikuti)\n'+planText(plan,idb)+'\n\n## Aturan '+(isSim?'simulasi':'soal teks')+' ('+nAll+' soal)\n'+teksRules}
+${isD?'## Drill (20 butir)\n'+drillRules:'## Rancangan soal (WAJIB diikuti)\n'+planText(plan,idb)+'\n\n## Aturan '+(isSim?'simulasi':'soal teks')+' ('+nAll+' soal)\n'+teksRules+(isH?'\n\n## Drill kaidah (10 butir campuran, di array "drill")\n'+drillRules10:'')}
 
 ## Daftar subkategori yang sah
 EYD: ${o.allEyd}
 Kebahasaan: ${o.allKeb}
 ## Format keluaran
-${isD?fmtDrill:fmtTeks}
+${isD?fmtDrill:isH?fmtTeks.replace('"versi": 3,\n  "teks": [','"versi": 3,\n  "drill": [\n    {"id": "'+o.idbase+'-d1", "kategori": "tanda-baca", "subkategori": "Tanda koma", "tipe": "PG", "perintah": "...", "opsi": [{"teks": "..."}, {"teks": "...", "benar": true}, {"teks": "..."}, {"teks": "..."}, {"teks": "..."}], "kaidah": "... (III.B.3)"},\n    {"id": "'+o.idbase+'-d2", "kategori": "kebahasaan", "subkategori": "...", "tipe": "isian", "perintah": "... kalimat nomor ....", "kalimat": ["...", "...", "...", "...", "..."], "kunci_isian": "3", "kaidah": "..."},\n    {"id": "'+o.idbase+'-d3", "...": "total 10 butir"}\n  ],\n  "teks": ['):fmtTeks}
 
 ## Cek sebelum mengirim
 - JSON valid, tanpa komentar dan tanpa koma berlebih.
@@ -3374,9 +3399,10 @@ function todayPrompt(part,simSub){
   const date=d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0')+'-'+String(d.getDate()).padStart(2,'0');
   const fmt=list=>list.map(t=>'['+t.sub+' · '+t.ref+']\n'+t.aturan.map(a=>'- '+a[0]+' Contoh: '+a[1]).join('\n')).join('\n\n');
   const subsOf=kat=>Object.keys(SUB_KAT).filter(s=>kat.includes(SUB_KAT[s])).join(', ');
-  const P=part||'drill', day=dayNo();
-  return buildPrompt({part:P,simSub:simSub||T.fokus,plan:P==='teks'?planHari(T,day):P==='sim'?planSim(simSub||T.fokus,day):null,date,konsep:T.k.n,fokus:T.k.fokus,subs:T.k.subs.join(', '),konsep2:T.k2.n,subs2:T.k2.subs.join(', '),weak:weakText(),
-    rules:fmt(rulesFor(T.k.subs)),rules2:fmt(rulesFor(T.k2.subs)),allEyd:subsOf(['tanda-baca','ejaan']),allKeb:subsOf(['kebahasaan']),drillBidang:bidangDrill(day),idbase:'h'+date.replace(/-/g,'')});
+  const P=part||'harian', day=dayNo(), dp=drillPlan(T);
+  const eydS=P==='harian'?[...new Set(T.k.subs.concat(dp.map(x=>x.sub).filter(x=>SUB_KAT[x]!=='kebahasaan')))]:T.k.subs, kebS=P==='harian'?[...new Set(T.k2.subs.concat(dp.map(x=>x.sub).filter(x=>SUB_KAT[x]==='kebahasaan')))]:T.k2.subs;
+  return buildPrompt({part:P,simSub:simSub||T.fokus,plan:P==='teks'||P==='harian'?planHari(T,day):P==='sim'?planSim(simSub||T.fokus,day):null,drillPlan:dp,date,konsep:T.k.n,fokus:T.k.fokus,subs:T.k.subs.join(', '),konsep2:T.k2.n,subs2:T.k2.subs.join(', '),weak:weakText(),
+    rules:fmt(rulesFor(eydS)),rules2:fmt(rulesFor(kebS)),allEyd:subsOf(['tanda-baca','ejaan']),allKeb:subsOf(['kebahasaan']),drillBidang:bidangDrill(day),idbase:'h'+date.replace(/-/g,'')});
 }
 
 /* ---------- State tampilan ---------- */
@@ -3564,6 +3590,10 @@ function tasksOn(date){
   const teks=duaOn(date)?[teksTask('PPU',SOAL_HARI.PPU,'teksPPU'),teksTask('PBM',SOAL_HARI.PBM,'teksPBM')]:[teksTask(c.fokus,10,'teks')];
   const bk=dh.filter(x=>x.kat==='baku'&&x.sub!=='Baku di Kalimat').length, bkk=dh.filter(x=>x.sub==='Baku di Kalimat').length, imp=(S.imp||[]).includes(key), lama=date<BAKU_KAL_START;
   const n1=cap(c.k.subs), n2=cap(c.k2.subs);
+  if(ringanOn(date)){ const dp=drillPlan(Object.assign({},c)).map(x=>x.sub), nd=cap(dp);
+    return [{id:'imp',ic:'today',t:'Siapkan soal hari ini',d:'Salin prompt hari ini, tempel hasilnya di Bank soal',cur:imp?1:0,n:1,unit:'',act:'prompt',v:''},
+      {id:'drill',ic:'eyd',t:'Drill kaidah',d:'Campuran: '+dp.join(', '),cur:Math.min(new Set(dh.filter(x=>SUB_KAT[x.sub]).map(x=>x.id)).size,nd),n:nd,unit:'butir',act:'drill',v:'sub:'+dp.join('|')},
+      ...teks].map(x=>Object.assign(x,{done:x.done!=null?x.done:x.cur>=x.n})); }
   return [    {id:'imp',ic:'today',t:'Siapkan soal hari ini',d:'Salin Prompt 1 dan 2, tempel hasilnya di Bank soal',cur:imp?1:0,n:1,unit:'',act:'prompt',v:''},
     {id:'eyd',ic:'eyd',t:'Drill EYD',d:c.k.n,cur:Math.min(uniq(c.k.subs),n1),n:n1,unit:'butir',act:'drill',v:'sub:'+c.k.subs.join('|')},
     {id:'keb',ic:'keb',t:'Drill kebahasaan',d:c.k2.n,cur:Math.min(uniq(c.k2.subs),n2),n:n2,unit:'butir',act:'drill',v:'sub:'+c.k2.subs.join('|')},
@@ -3595,7 +3625,7 @@ function taskTile(x,i){ const c=TASK_C[i%5], attrs=x.done?' disabled':x.act==='p
 function tasksCard(){
   const t=tasksOn(new Date()), d=t.filter(x=>x.done).length, all=d===t.length;
   return '<section class="card tasks"><div class="row"><h2 class="grow">Tugas hari ini</h2><span class="tsum'+(all?' ok':'')+'">'+d+'/'+t.length+' selesai</span></div><div class="pips">'+t.map(x=>'<i class="'+(x.done?'on':'')+'"></i>').join('')+'</div>'+
-    (all?'<div class="tdone">Semua tugas hari ini selesai. Mantap!</div>':'')+'<div class="tlist">'+taskRows(t,true)+'</div>'+(t.filter(x=>/^(eyd|keb|teks)/.test(x.id)).every(x=>x.done)?'':'<button class="btn primary block" type="button" data-action="paket">Mulai paket harian · drill dan teks</button>')+'</section>';
+    (all?'<div class="tdone">Semua tugas hari ini selesai. Mantap!</div>':'')+'<div class="tlist">'+taskRows(t,true)+'</div>'+(t.filter(x=>/^(eyd|keb|drill|teks)/.test(x.id)).every(x=>x.done)?'':'<button class="btn primary block" type="button" data-action="paket">Mulai paket harian · drill dan teks</button>')+'</section>';
 }
 function weekStrip(){
   const now=new Date(); now.setHours(0,0,0,0); const mon=new Date(now); mon.setDate(now.getDate()-((now.getDay()+6)%7));
@@ -3724,7 +3754,7 @@ function blokiHero(){ const t=tasksOn(new Date()), d=t.filter(x=>x.done).length,
   return '<div class="bhero"><div class="bubble">'+esc(msg)+'</div>'+bloki(pose)+'</div>'; }
 function viewBeranda(){
   const dateStr=new Date().toLocaleDateString('id-ID',{weekday:'long',day:'numeric',month:'long'});
-  return blokiHero()+menaraCard()+tasksCard()+ebHome()+wkBanner('beranda')+weakCard()+
+  return blokiHero()+menaraCard()+tasksCard()+ebHome()+weakCard()+
     '<div class="sh">Latihan lain</div><div class="bgrid">'+
       btile('go','latihan:drill','mix','blue','Latihan bebas','Drill, teks, kartu kata baku','')+
       btile('go','latihan:sim','sim','red','Simulasi','20 soal ala UTBK','')+
@@ -4080,7 +4110,7 @@ function viewTeks(){
 function viewBank(){
   const c=V.bank.check, bp=V.bank.bakuPrev;
   let h='<div class="row" style="justify-content:flex-end;margin-bottom:-14px"><a class="link" href="#teks">Daftar teks →</a></div><h1>Bank soal</h1><p class="sub" style="margin:-6px 0 0">'+S.drill.length+' butir drill EYD · '+S.baku.length+' kata baku · '+S.bank.length+' teks</p>';
-  h+='<section class="card"><div class="row"><h2 class="grow">Paket harian (JSON)</h2><a class="link" href="#prompt">Prompt hari ini</a></div><label for="paste" class="sub">Tempel keluaran prompt harian di sini.</label><textarea id="paste" spellcheck="false" placeholder="{ &quot;versi&quot;: 3, &quot;drill&quot;: [ ... ], &quot;teks&quot;: [ ... ] }" data-action="paste">'+esc(V.bank.text)+'</textarea>'+
+  h+='<section class="card"><div class="row"><h2 class="grow">Paket harian (JSON)</h2><a class="link" href="#prompt">Prompt hari ini</a></div><label for="paste" class="sub">Tempel keluaran prompt harian di sini. Kalau jawaban Claude terpotong lalu dilanjutkan, tempel kedua bagian berurutan.</label><textarea id="paste" spellcheck="false" placeholder="{ &quot;versi&quot;: 3, &quot;drill&quot;: [ ... ], &quot;teks&quot;: [ ... ] }" data-action="paste">'+esc(V.bank.text)+'</textarea>'+
    '<div class="actions"><button class="btn ghost" type="button" data-action="loadsample">Isi contoh</button><button class="btn ghost" type="button" data-action="check">Periksa</button></div>';
   if(c){ h+='<div class="mini"><div><b>'+(c.nDrill||0)+'</b><span>butir drill</span></div><div><b>'+(c.nTeks||0)+'</b><span>teks</span></div><div><b>'+(c.nSoal||0)+'</b><span>soal teks</span></div></div><div class="checks">'+
       (c.errs.length?c.errs.slice(0,12).map(e=>'<div class="e">'+esc(e)+'</div>').join('')+(c.errs.length>12?'<div class="sub">dan '+(c.errs.length-12)+' masalah lain</div>':'')
@@ -4098,13 +4128,13 @@ function viewBank(){
 
 /* ---------- Prompt ---------- */
 function viewPrompt(){
-  const T=today(), P=V.prm=V.prm||{tab:'drill',sim:T.fokus};
-  const tabs=[['drill','1 · Drill'],['teks','2 · Teks PPU + PBM'],['sim','Simulasi']];
-  const info={drill:'20 butir: 10 EYD ('+T.k.n+') dan 10 kebahasaan ('+T.k2.n+').',teks:SOAL_HARI.PPU+' soal PPU + '+SOAL_HARI.PBM+' soal PBM; kode bentuk setiap soal sudah ditentukan.',sim:'20 soal '+P.sim+' (bacaan 3–5 soal), setara satu subtes UTBK.'};
+  const T=today(), P=V.prm=V.prm||{tab:'harian',sim:T.fokus}; if(P.tab!=='harian'&&P.tab!=='sim') P.tab='harian';
+  const tabs=[['harian','Prompt hari ini'],['sim','Simulasi']];
+  const info={harian:'Satu prompt: 10 butir drill campuran + '+SOAL_HARI.PPU+' soal PPU + '+SOAL_HARI.PBM+' soal PBM. Kalau jawaban Claude terpotong, ketik "lanjutkan" di chat yang sama, lalu tempel kedua bagian berurutan di Bank soal.',sim:'20 soal '+P.sim+' (bacaan 3–5 soal), setara satu subtes UTBK.'};
   return navbar('Latihan','Prompt hari ini','',null)+
    '<section class="card"><div class="seg" role="group" aria-label="Jenis prompt">'+tabs.map(([k,l])=>'<button type="button" aria-pressed="'+(P.tab===k)+'" data-action="ptab" data-v="'+k+'">'+esc(l)+'</button>').join('')+'</div>'+
    (P.tab==='sim'?'<div class="seg" role="group" aria-label="Subtes simulasi">'+['PBM','PPU'].map(k=>'<button type="button" aria-pressed="'+(P.sim===k)+'" data-action="psim" data-v="'+k+'">'+k+'</button>').join('')+'</div>':'')+
-   '<div class="sub">'+esc(info[P.tab])+(P.tab==='sim'?' Pakai 1–2 kali seminggu.':' Jalankan Prompt 1 dan Prompt 2 di chat Claude terpisah, lalu tempel hasil masing-masing ke Bank soal.')+'</div>'+
+   '<div class="sub">'+esc(info[P.tab])+(P.tab==='sim'?' Pakai 1–2 kali seminggu.':'')+'</div>'+
    '<textarea id="promptbox" readonly spellcheck="false">'+esc(todayPrompt(P.tab,P.sim))+'</textarea>'+
    '<div class="actions"><button class="btn primary" type="button" data-action="copyprompt">Salin prompt</button><a class="btn ghost" href="#bank">Ke Bank soal</a></div></section>'+
    '<details class="card topic rotd"><summary><span class="grow"><b>Urutan konsep</b> <span class="sub">putaran '+KONSEP.length+' hari</span></span></summary>'+
@@ -4426,6 +4456,7 @@ function gVarView(G,c,rv){ const k=G.kind, cls=(j,ans)=>rv?(j===ans?' ok':j===c.
 /* balok lego: sambung = satu balok hijau utuh, pisah = dua balok */
 function gLego(a,b,join,color){ return join?'<span class="lbk one'+(color?' g':'')+'">'+esc(a+b)+'</span>':'<span class="lbk a'+(color?'':' n')+'">'+esc(a)+'</span><span class="lbk b'+(color?'':' n')+'">'+esc(b)+'</span>'; }
 function gPForm(a,b,join){ return join?a+b:a+' '+b; }
+const GAME_KODE={susun:'PBM-2026-urutan',sisip:'PBM-4',baku:'PBM-9',pisah:'PBM-9',pangkas:'PBM-12',relasi:'PBM-10'};
 const GAMES={
   susun:{t:'Menara Paragraf',sub:'Susun Paragraf',n:5,ic:'susun',c:'yellow',tag:'Tumpuk kalimat jadi paragraf yang padu',cara:[['👆','Geser kartu untuk melihat kalimat yang tersedia.'],['⬇','Tumpuk kalimat yang melanjutkan puncak menara.'],['🔗','Kata "itu", "tersebut", "hal ini" menandakan lanjutan.']],pu:'Petunjuk'},
   sumbang:{t:'Tangkap Penyusup',sub:'Kalimat Penyusup',n:5,ic:'sumbang',c:'sky',tag:'Satu kalimat menyusup dari teks lain',cara:[['🪧','Papan desa memuat topik paragraf.'],['🧱','Warga datang satu per satu. Izinkan masuk atau tangkap.'],['⏱','Tangkap penyusup sebelum waktu habis.']],pu:'Lacak'},
@@ -4433,6 +4464,8 @@ const GAMES={
 };
 GAMES.pisah={t:'Pisah atau Sambung',sub:'Pisah atau Sambung',n:15,ic:'pisah',c:'orange',tag:'Kilat: ditulis terpisah atau serangkai?',cara:[['👈','Geser kartu ke kiri untuk PISAH.'],['👉','Geser ke kanan untuk SAMBUNG.'],['⚡','Waktu per kartu makin singkat. Jaga kombo!']],pu:null};
 GAMES.pangkas={t:'Pangkas',sub:'Pangkas',n:6,ic:'pangkas',c:'pink',tag:'Gunting kata mubazir sampai kalimat efektif',cara:[['✂','Ketuk kata yang mubazir untuk memangkasnya.'],['⚠','Memangkas kata penting membuat nyawa berkurang.'],['🎯','Penghitung menunjukkan sisa kata yang perlu dipangkas.']],pu:null};
+GAMES.sumbang.hidden=true;
+GAMES.sisip={t:'Tempatkan Kalimat',sub:'Tempatkan Kalimat',alias:'susun',n:5,ic:'susun',c:'sky',tag:'Selipkan satu kalimat di celah yang pas',cara:[['🧱','Satu balok kalimat dikeluarkan dari paragraf.'],['🔗','Cari rujukannya: "itu", "tersebut", "hal ini".'],['⬇','Pilih celah tempat kalimat itu kembali.']],pu:null};
 GAMES.relasi={t:'Relasi Kilat',sub:'Relasi Kilat',n:10,ic:'relasi',c:'purple',tag:'Pilih konjungsi yang menghubungkan dua bagian',cara:[['🔗','Dua bagian kalimat tampil dengan celah di tengah.'],['❓','Tanyakan dulu: sebab, akibat, pertentangan, syarat, tujuan, atau waktu?'],['⚡','Pilih konjungsinya sebelum waktu habis.']],pu:null};
 ICONS.relasi=['purple','<path d="M10 14a4 4 0 0 0 5.7 0l3-3a4 4 0 0 0-5.7-5.7l-1 1"/><path d="M14 10a4 4 0 0 0-5.7 0l-3 3a4 4 0 0 0 5.7 5.7l1-1"/>'];
 const GAME_INFO={susun:{sub:'Susun Paragraf'},sumbang:{sub:'Kalimat Penyusup'},baku:{sub:'Baku di Kalimat'},pisah:{sub:'Pisah atau Sambung'},pangkas:{sub:'Pangkas'},relasi:{sub:'Relasi Kilat'}};
@@ -4616,11 +4649,12 @@ function gStartTimer(G){ gStopTimer(); const lim=gLimit(G); if(!lim||!G.cur) ret
     if(bar){ bar.style.width=(left/(lim*1000)*100)+'%'; bar.classList.toggle('low',left<5000); } if(lb) lb.textContent=Math.ceil(left/1000)+' dtk';
     if(!left){ gStopTimer(); gTimeout(G); render(); } },100); }
 function gSecLeft(G){ return G.cur&&G.cur.end?Math.max(0,Math.ceil((G.cur.end-Date.now())/1000)):0; }
-function startGame(kind){ const info=GAMES[kind]; if(!info) return; gStopTimer();
-  const G={kind,info,k:0,hearts:3,score:0,combo:0,maxCombo:0,res:[],used:[],cur:null,phase:'play',pu:2,say:'',fx:null,party:false,shake:null};
+function startGame(kind){ const info=GAMES[kind]; if(!info) return; gStopTimer(); const key=kind; if(info.alias) kind=info.alias;
+  const G={kind,key,info,k:0,hearts:3,score:0,combo:0,maxCombo:0,res:[],used:[],cur:null,phase:'play',pu:2,say:'',fx:null,party:false,shake:null};
   if(kind==='baku'){ G.pool=gBakuPool(); G.n=G.pool.length>=2?info.n:0; G.L=gLevel(kind); G.plan=gPlan(kind,G.n); }
   else if(kind==='pisah'||kind==='pangkas'||kind==='relasi'){ const D=kind==='pisah'?PISAH.map(gRoundPisah):kind==='pangkas'?PANGKAS.map(gRoundPangkas):RELASI.map(gRoundRelasi); G.pool=shuffle(D).sort((a,b)=>gLast(info.sub,a.id)-gLast(info.sub,b.id)).slice(0,info.n); G.n=G.pool.length; G.L=gLevel(kind); G.plan=gPlan(kind,G.n); }
   else { G.paras=shuffle(gParas()).sort((a,b)=>gLast(info.sub,'g-'+a.id)-gLast(info.sub,'g-'+b.id)).slice(0,info.n); G.n=G.paras.length; if(GVAR[kind]){ G.L=gLevel(kind); G.plan=gPlan(kind,G.n); } }
+  if(info.alias==='susun'){ G.plan=G.paras.map(()=>2); G.L=2; }
   V.game=G; gLoad(G); if(G.phase!=='over'){ G.phase='intro'; gStopTimer(); } else { G.phase='intro'; } go('game'); }
 function gLoad(G){ G.shake=null;
   if(G.k>=G.n||G.hearts<=0){ gEnd(G); return; }
@@ -4628,12 +4662,12 @@ function gLoad(G){ G.shake=null;
   if(!G.cur){ G.n=G.k; gEnd(G); return; }
   G.phase='play'; G.say=G.kind==='susun'?'Mulai dari kalimat yang memperkenalkan topik.':G.kind==='sumbang'?'Ada satu penyusup di paragraf ini. Cari!':'Ada kata yang rusak? Ketuk kata itu.';
   gStartTimer(G); }
-function gEnd(G){ gStopTimer(); G.phase='over'; G.cur=null; S.gbest=S.gbest||{}; const b=S.gbest[G.kind]||0; G.newBest=G.score>b&&G.score>0; if(G.newBest) S.gbest[G.kind]=G.score; save(); }
+function gEnd(G){ gStopTimer(); G.phase='over'; G.cur=null; S.gbest=S.gbest||{}; const gk=G.key||G.kind, b=S.gbest[gk]||0; G.newBest=G.score>b&&G.score>0; if(G.newBest) S.gbest[gk]=G.score; save(); }
 function gPts(G,base){ G.combo++; G.maxCombo=Math.max(G.maxCombo,G.combo); const p=base*Math.min(G.combo,4); G.score+=p; G.fx={t:'+'+p+(G.combo>1?' · kombo x'+Math.min(G.combo,4):''),c:'ok'}; return p; }
 function gHurt(G,why){ G.hearts--; G.combo=0; G.fx={t:'-1 nyawa',c:'bad'}; G.say=why; buzz(false); }
 function gRecord(G,ok){ const c=G.cur; G.res.push({ok,c});
   if(G.kind==='baku'){ const s=srsOf(c.id), int=ok?(s.int?Math.round(s.int*2.5):3):0; if(c.broken>=0) S.srs[c.id]={due:ok?Date.now()+int*DAY:0,int,n:s.n+1,ok:s.ok+(ok?1:0)}; const r={id:c.id,kat:'baku',sub:'Baku di Kalimat',correct:ok,ts:Date.now()}; if(c.v) r.v=c.v; S.dhist.push(r); }
-  else { const r={id:c.id,kat:'game',sub:G.info.sub,correct:ok,ts:Date.now()}; if(c.v) r.v=c.v; S.dhist.push(r); }
+  else { const r={id:c.id,kat:'game',sub:G.info.sub,kode:GAME_KODE[G.key||G.kind]||'',correct:ok,ts:Date.now()}; if(c.v) r.v=c.v; S.dhist.push(r); }
   save(); }
 function gWin(G,ok,say){ gStopTimer(); G.phase='reveal'; G.party=ok; G.lastOk=ok; G.say=say; gRecord(G,ok); if(ok) buzz(true); }
 function gTimeout(G){ const c=G.cur; if(!c||G.phase!=='play') return; gHurt(G,'Waktu habis!');
@@ -4877,8 +4911,8 @@ function viewMingguan(){ const I=wkInfo(), W=S.wk||{}, ks=Object.keys(W).filter(
   return h; }
 
 function viewMain(){
-  return '<h1>Mini game</h1>'+blokiSay('wave','Pilih satu permainan. Skor tertinggimu tercatat di tiap balok.','sm')+wkBanner('main')+'<div class="bgrid g3">'+Object.keys(GAMES).map(k=>{ const g=GAMES[k], best=(S.gbest||{})[k]||0;
-    return btile('game',k,g.ic,g.c,g.t,g.tag,'🏆 '+best); }).join('')+'</div>'; }
+  return '<h1>Mini game</h1>'+blokiSay('wave','Pilih satu permainan. Skor tertinggimu tercatat di tiap balok.','sm')+wkBanner('main')+'<div class="bgrid g3">'+Object.keys(GAMES).filter(k=>!GAMES[k].hidden).map(k=>{ const g=GAMES[k], best=(S.gbest||{})[k]||0;
+    return btile('game',k,g.ic,g.c,g.t,g.tag+(GAME_KODE[k]?' · '+GAME_KODE[k]:''),'🏆 '+best); }).join('')+'</div><p class="sub" style="font-size:13px">Mini game tidak termasuk tugas harian. Kode di tiap balok menunjukkan pola soal UTBK yang dilatih.</p>'; }
 function viewLatihan(){ const tab=V.ltab||'drill';
   const cell=(act,v,ic,t1,t2,val,dis)=>'<button type="button" class="cell has-ic" data-action="'+act+'"'+(v?' data-v="'+esc(v)+'"':'')+(dis?' disabled':'')+'>'+icon(ic)+'<span class="txt"><span class="t1">'+t1+'</span><span class="t2">'+t2+'</span></span><span class="val">'+val+'</span>'+CHEV+'</button>';
   const dc=(k,ic,t1,t2)=>{ const n=poolFor(k).length; return cell('drill',k,ic,t1,t2,n?dueCount(k)+' siap':'kosong',!n); };

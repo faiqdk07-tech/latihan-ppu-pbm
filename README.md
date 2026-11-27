@@ -1,7 +1,7 @@
 # latihan-ppu-pbm
 
 ## Paket mini game mingguan
-- Tiap minggu (Senin–Minggu) mini game mendapat bahan baru: paragraf tambahan untuk Menara Paragraf dan Tangkap Penyusup, kalimat pembawa Bengkel Kata Baku, kalimat Pangkas, dan pasangan Relasi Kilat.
+- Tiap minggu (Senin–Minggu) mini game mendapat bahan baru: paragraf tambahan untuk Menara Paragraf dan Tempatkan Kalimat, kalimat pembawa Bengkel Kata Baku, kalimat Pangkas, dan pasangan Relasi Kilat.
 - Halaman Game → "kelola" (`#mingguan`): salin prompt mingguan → jalankan di proyek Claude PPU-PBM → tempel JSON → Cek & simpan. Butir yang tidak lolos dilewati dengan keterangan; paket minggu depan bisa disiapkan lebih awal.
 - Mulai Jumat muncul pengingat bila paket minggu depan belum ada; tanpa paket minggu ini game memakai isi bawaan.
 - Status ditulis ke kunci `paketMingguan:latihan-ppu-pbm` untuk pengingat di Progres Harian.
@@ -50,3 +50,9 @@
 - Riwayat menyimpan jawaban yang dipilih (`pil`: huruf opsi pada urutan asli di bank, angka isian, atau pola B/S).
 - Error Book punya kartu **Latihan varian**: salin prompt untuk tiga varian per soal teks yang salah (konteks diganti, arah tanya dibalik, satu langkah ditambah), tempel JSON-nya di Bank soal, lalu kerjakan dari Error Book. Varian (`"paket": "varian"`) tidak masuk tugas harian atau simulasi.
 - Ringkasan untuk tracker tidak berubah.
+
+## Beban harian (satu prompt, drill campuran, game opsional)
+- Tugas harian: **Siapkan soal** (satu prompt "Prompt hari ini"), **Drill kaidah** (10 butir), **Teks PPU** (8 soal), dan **Teks PBM** (6 soal). Hari sebelum perubahan ini tetap dinilai dengan aturan lama.
+- Satu prompt menghasilkan satu JSON berisi `"drill"` dan `"teks"`. Kalau jawaban Claude terpotong, ketik "lanjutkan" di chat yang sama, lalu tempel kedua bagian berurutan di Bank soal; app mengambil isi blok kode dan menyambungnya.
+- Drill 10 butir dicampur: 3 butir konsep EYD hari ini, 3 butir konsep kebahasaan hari ini, dan 2 + 2 butir dari subkategori yang lemah (30 hari) atau, bila belum ada, konsep beberapa hari lalu. Urutannya diacak.
+- Mini game tidak lagi menjadi tugas harian. Setiap game diberi kode pola UTBK yang dilatihnya. Tangkap Penyusup (kalimat sumbang, bentuk 2019–2022) disembunyikan dan diganti **Tempatkan Kalimat** (PBM-4: menyelipkan kalimat di celah yang tepat).
