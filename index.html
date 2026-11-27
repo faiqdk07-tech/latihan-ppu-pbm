@@ -2921,6 +2921,48 @@ window.addEventListener('storage',e=>{
   SAVE.raw=e.newValue;
   if(!busy) render();
 });
+/* ---------- Perampingan penyimpanan ----------
+   Semua app di faiqdk07-tech.github.io berbagi satu kuota (±5 MB). Data lebih dari 30 hari dirampingkan:
+   - Error Book aktif: tidak disentuh (salinan soal dan bacaan utuh).
+   - Error Book lulus > 30 hari: disimpan ringkas (id, kode pola, jenis, tanggal, hasil), tanpa teks soal.
+   - Butir drill, set teks di bank, dan paket mini game mingguan > 30 hari: dibuang; statistiknya tetap di riwayat.
+   - Catatan riwayat > 30 hari: hanya rincian yang tidak dipakai statistik yang dibuang (id teks, nomor, tema, pilihan; id butir).
+     Kode, pola_id, subtes, jenis, format, mode, benar/salah, waktu, dan tanggal tetap, jadi Indeks Kesiapan dan
+     tahap per kemampuan tetap terhitung. Riwayat 30 hari terakhir (termasuk tema 14 hari) utuh.
+   Perampingan pertama baru boleh berjalan setelah cadangan disalin atau diunduh; sesudahnya berjalan otomatis sekali sehari. */
+const RAMPING_HARI=30;
+function umurDrill(d){ if(d._imp) return d._imp; const m=/^h(\d{4})(\d{2})(\d{2})-/.exec(d.id||''); return m?new Date(+m[1],+m[2]-1,+m[3]).getTime():null; }
+function rampingkan(st){ const batas=Date.now()-RAMPING_HARI*DAY, n={drill:0,teks:0,eb:0,ebTeks:0,wk:0,hist:0,dhist:0};
+  const aktif=new Set(Object.values(st.eb||{}).filter(e=>!e.lulus).map(e=>e.id));
+  /* butir drill lama (bukan contoh bawaan, bukan yang masih aktif di Error Book) */
+  st.drill=st.drill.filter(d=>{ const u=umurDrill(d); if(!d._contoh&&u!=null&&u<batas&&!aktif.has(d.id)){ n.drill++; if(st.srs) delete st.srs[d.id]; if(st.bad) delete st.bad[d.id]; return false; } return true; });
+  /* set teks lama di bank yang belum selesai dikerjakan */
+  st.bank=st.bank.filter(t=>{ if(!t._contoh&&t._imp&&t._imp<batas){ n.teks++; if(st.bad) Object.keys(st.bad).forEach(k=>{ if(k.indexOf(t.id+'#')===0) delete st.bad[k]; }); return false; } return true; });
+  /* Error Book lulus > 30 hari → ringkas */
+  Object.keys(st.eb||{}).forEach(id=>{ const e=st.eb[id]; if(e&&e.lulus&&e.lulus<batas&&!e.ringkas){ const kode=e.q?kodeSoal(e.q):(KODE_OF[e.pola]||''), jenis=e.q?jenisDari(e.q):'';
+    st.eb[id]={id:e.id,kind:e.kind,sub:e.sub,pola:e.pola||'',kode,jenis,t:e.t,lulus:e.lulus,salah:e.salah||1,box:e.box||0,log:[],ringkas:1}; n.eb++; } });
+  /* bacaan salinan Error Book hanya untuk butir teks yang masih aktif */
+  if(st.ebTeks){ const pakai=new Set(Object.values(st.eb||{}).filter(e=>!e.lulus&&e.kind==='teks').map(e=>e.id.slice(0,e.id.lastIndexOf('#')))); Object.keys(st.ebTeks).forEach(k=>{ if(!pakai.has(k)){ delete st.ebTeks[k]; n.ebTeks++; } }); }
+  /* paket mini game mingguan yang minggunya sudah lewat > 30 hari */
+  if(st.wk){ Object.keys(st.wk).forEach(k=>{ if(fromYmd(wkAdd(k,6)).getTime()<batas){ delete st.wk[k]; n.wk++; } }); }
+  /* rincian riwayat lama */
+  (st.history||[]).forEach(x=>{ if(x.ts<batas&&(x.teksId!=null||x.nomor!=null||x.tema!=null||x.pil!=null)){ if(!x.kode) x.kode=kodeSoal(x); delete x.teksId; delete x.nomor; delete x.tema; delete x.pil; n.hist++; } });
+  (st.dhist||[]).forEach(x=>{ if(x.ts<batas&&x.id!=null&&x.kat!=='baku'){ delete x.id; n.dhist++; } });
+  return n; }
+function rencanaRamping(){ const raw=SAVE.raw||JSON.stringify(S), c=JSON.parse(raw), n=rampingkan(c); n.hemat=Math.max(0,raw.length-JSON.stringify(c).length); n.ada=n.drill+n.teks+n.eb+n.ebTeks+n.wk+n.hist+n.dhist>0; return n; }
+function jalankanRamping(){ if(!S.cadanganTs) return null; const n=rampingkan(S); S.rampingHari=ymd(new Date()); save(); return n; }
+function rampingOtomatis(){ try{ if(S.cadanganTs&&S.rampingHari!==ymd(new Date())) jalankanRamping(); }catch(e){} }
+function pakaiPenyimpanan(){ let app=0,total=0; try{ for(let i=0;i<localStorage.length;i++){ const k=localStorage.key(i), v=localStorage.getItem(k)||'', n=k.length+v.length; total+=n; if(k===KEY) app+=n; } }catch(e){} return {app,total}; }
+const mb=n=>(n/1048576).toFixed(n<1048576?2:1).replace('.',',')+' MB';
+function cadanganTeks(){ return JSON.stringify({app:'latihan-ppu-pbm',key:KEY,dibuat:new Date().toISOString(),data:S}); }
+function penyimpananCard(){ const P=pakaiPenyimpanan(), R=rencanaRamping(), row=(t,sub,btns)=>'<div class="srow"><div class="grow"><b>'+t+'</b><span class="sub">'+sub+'</span></div>'+(btns||'')+'</div>';
+  const pr=Math.min(100,Math.round(P.total/(5*1048576)*100));
+  let h='<div class="sh">Penyimpanan</div><section class="card">'+row('Pemakaian','<b>'+mb(P.total)+'</b> dari ±5 MB untuk semua app di domain ini (app ini '+mb(P.app)+')')+'<div class="bar"><i class="'+(pr>=80?'low':'')+'" style="width:'+pr+'%"></i></div>';
+  const isi=[R.drill?R.drill+' butir drill':'',R.teks?R.teks+' set teks':'',R.eb?R.eb+' Error Book lulus':'',R.wk?R.wk+' paket mini game':'',R.hist+R.dhist?(R.hist+R.dhist)+' catatan riwayat diringkas':''].filter(Boolean).join(', ');
+  h+=row('Rampingkan data lama','Data lebih dari '+RAMPING_HARI+' hari. Error Book aktif, data Indeks Kesiapan dan tahap per kemampuan, dan tema 14 hari tidak disentuh.'+(R.ada?' Yang bisa dirampingkan: '+isi+' (±'+mb(R.hemat)+').':' Belum ada yang perlu dirampingkan.'));
+  if(!S.cadanganTs) h+='<div class="sub" style="font-size:13px">Sebelum perampingan pertama, simpan cadangan dulu. Setelah itu perampingan berjalan otomatis sekali sehari.</div><div class="actions"><button class="btn primary" type="button" data-action="cadsalin">Salin cadangan dulu</button><button class="btn ghost" type="button" data-action="cadunduh">Unduh berkas cadangan</button></div>';
+  else h+='<div class="sub" style="font-size:13px">Cadangan terakhir: '+esc(new Date(S.cadanganTs).toLocaleDateString('id-ID',{day:'numeric',month:'long',year:'numeric'}))+'. Perampingan otomatis sekali sehari'+(S.rampingHari?' (terakhir '+esc(S.rampingHari)+')':'')+'.</div><div class="actions"><button class="btn ghost" type="button" data-action="cadsalin">Salin cadangan</button><button class="btn primary" type="button" data-action="rampingkan"'+(R.ada?'':' disabled')+'>Rampingkan sekarang</button></div>';
+  return h+'</section>'; }
 /* Tanda di layar skor: dicek ulang ke penyimpanan, bukan sekadar dianggap berhasil */
 function savedSince(t0){
   try{ const o=JSON.parse(localStorage.getItem(KEY)||'null'); if(!o) return false;
@@ -2929,7 +2971,7 @@ function savedSince(t0){
 }
 function saveBadge(t0){
   if(SAVE.ok&&savedSince(t0||0)) return '<div class="savest ok" role="status">Tersimpan ✓</div>';
-  return '<div class="savest bad" role="alert"><b>⚠ Belum tersimpan.</b> '+(SAVE.err==='penuh'?'Penyimpanan browser penuh, jadi riwayat dan Error Book sesi ini belum masuk.':'Browser menolak menyimpan.')+' Jangan tutup halaman ini. <button type="button" class="link" data-action="retrysave">Coba simpan lagi</button></div>';
+  return '<div class="savest bad" role="alert"><b>⚠ Belum tersimpan.</b> '+(SAVE.err==='penuh'?'Penyimpanan browser penuh, jadi riwayat dan Error Book sesi ini belum masuk. Rampingkan data lama di <a href="#pengaturan">Pengaturan</a>, lalu coba lagi.':'Browser menolak menyimpan.')+' Jangan tutup halaman ini. <button type="button" class="link" data-action="retrysave">Coba simpan lagi</button></div>';
 }
 /* ringkasan harian untuk Progres Harian (domain yang sama) */
 function ringkasPPU(){ try{ const d=new Date(), t=tasksOn(d), k=dayKey(d.getTime()), h=S.dhist.concat(S.history).filter(x=>dayKey(x.ts)===k);
@@ -2944,7 +2986,7 @@ function mergeImport(st,data,isSample){
       const old=st.bank[i]; (c.soal||[]).forEach(q=>{ const j=old.soal.findIndex(x=>x.nomor===q.nomor); if(j>=0) old.soal[j]=q; else old.soal.push(q); delete st.bad[old.id+'#'+q.nomor]; }); addT++; return; }
     if(c.paket==='varian'&&c.asal&&st.eb&&st.eb[c.asal]) st.eb[c.asal].varian=Date.now();
     if(i>=0) st.bank[i]=c; else st.bank.push(c); (c.soal||[]).forEach(q=>delete st.bad[c.id+'#'+q.nomor]); addT++; });
-  (data.drill||[]).forEach(d=>{ const c=JSON.parse(JSON.stringify(d)); c._contoh=!!isSample; const i=st.drill.findIndex(b=>b.id===c.id); if(i>=0) st.drill[i]=c; else st.drill.push(c); delete st.bad[c.id]; addD++; });
+  (data.drill||[]).forEach(d=>{ const c=JSON.parse(JSON.stringify(d)); c._contoh=!!isSample; c._imp=Date.now(); const i=st.drill.findIndex(b=>b.id===c.id); if(i>=0) st.drill[i]=c; else st.drill.push(c); delete st.bad[c.id]; addD++; });
   return {addT,addD};
 }
 
@@ -3548,7 +3590,7 @@ function viewEb(){
   if(list.length) h+='<section class="card"><h2>Jadwal ulang ('+list.length+')</h2>'+list.map(e=>{ if(EBV.edit===e.id) return '</section>'+ebKartu(e,'Ubah diagnosis')+'<section class="card">'; const f=ebFind(e), due=D.includes(e);
     return '<div class="ebit"><div class="row" style="flex-wrap:wrap;gap:6px"><span class="chip">'+esc(e.kind==='drill'?'Drill':'Teks '+e.sub)+'</span><span class="chip plain">'+esc(EBS[e.sebab]||'-')+'</span><span class="ebwhen'+(due?' due':'')+'">'+ebDots(e)+'<b>'+(due?'jatuh tempo':esc(ebKapan(e.due)))+'</b></span></div>'+
       '<div class="ebsnip">'+(f?(f.isD?rich(f.it.perintah||''):esc(f.it.perintah||'')):'Soal tidak tersedia lagi.')+'</div><div class="ebrule">'+esc(e.aturan||'')+'</div><button class="link" type="button" data-action="ebedit" data-v="'+esc(e.id)+'">Ubah diagnosis</button></div>'; }).join('')+'</section>';
-  if(Lu.length) h+='<details class="card ebmore"><summary><b>Lulus ('+Lu.length+')</b> <span class="sub" style="font-size:13px">benar 4 kali berjarak</span></summary>'+Lu.slice(0,30).map(e=>'<div class="rule"><span class="chip plain" style="align-self:flex-start">'+esc(ebLabel(e))+'</span><div style="font-size:14px">'+esc(e.aturan||'-')+'</div></div>').join('')+'</details>';
+  if(Lu.length) h+='<details class="card ebmore"><summary><b>Lulus ('+Lu.length+')</b> <span class="sub" style="font-size:13px">benar 4 kali berjarak</span></summary>'+Lu.slice(0,30).map(e=>'<div class="rule"><span class="chip plain" style="align-self:flex-start">'+esc(ebLabel(e))+'</span><div style="font-size:14px">'+(e.ringkas?'<span class="sub">Disimpan ringkas · lulus '+esc(new Date(e.lulus).toLocaleDateString('id-ID',{day:'numeric',month:'short'}))+' · salah '+(e.salah||1)+'×</span>':esc(e.aturan||'-'))+'</div></div>').join('')+'</details>';
   if(!ebList().length) h+='<section class="card empty">Masih kosong. Soal drill dan teks yang salah otomatis masuk ke sini.</section>';
   return h; }
 function ebHome(){ const p=ebPerlu().length, d=ebDue().length; if(!p&&!d) return '';
@@ -5087,6 +5129,11 @@ document.addEventListener('click',e=>{
   else if(a==='gerak'){ S.anim=cfgP().gerak?'off':'on'; save(); applyAnim(); render(); }
   else if(a==='hari'){ V.cfgHari=true; render(); }
   else if(a==='hariNo'){ V.cfgHari=false; render(); }
+  else if(a==='cadsalin'){ /* penanda cadangan hanya diisi bila penyalinan benar-benar berhasil */
+    const gagal=()=>toast('Cadangan belum tersalin. Pakai "Unduh berkas cadangan".');
+    try{ navigator.clipboard.writeText(cadanganTeks()).then(()=>{ S.cadanganTs=Date.now(); save(); render(); toast('Cadangan disalin. Tempel dan simpan di Catatan atau berkas sebelum merampingkan.'); },gagal); }catch(e){ gagal(); } }
+  else if(a==='cadunduh'){ try{ const bl=new Blob([cadanganTeks()],{type:'application/json'}), u=URL.createObjectURL(bl), el=document.createElement('a'); el.href=u; el.download='cadangan-latihan-ppu-pbm-'+ymd(new Date())+'.json'; document.body.appendChild(el); el.click(); setTimeout(()=>{ URL.revokeObjectURL(u); el.parentNode&&el.parentNode.removeChild(el); },1000); S.cadanganTs=Date.now(); save(); render(); toast('Berkas cadangan diunduh'); }catch(e){ toast('Unduhan gagal. Pakai "Salin cadangan dulu".'); } }
+  else if(a==='rampingkan'){ const n=jalankanRamping(); render(); if(n) toast('Dirampingkan: '+n.drill+' butir drill, '+n.teks+' set teks, '+n.eb+' Error Book lulus'); }
   else if(a==='hariYes'){ V.cfgHari=false; hapusHariIni(); render(); toast('Progres hari ini dihapus'); }
   else if(a==='anim'){ S.anim=b.dataset.v==='on'?'on':'auto'; save(); applyAnim(); render(); toast(S.anim==='on'?'Animasi selalu nyala':'Animasi mengikuti pengaturan perangkat'); }
   else if(a==='reset'){ V.bank.confirmReset=true; render(); }
@@ -5171,7 +5218,7 @@ function viewPengaturan(){
   const grp=fxOn?row('Atur per bagian',nOn+' dari '+SFX_GRUP.length+' bagian berbunyi','<button type="button" class="sbtn" data-action="sfxgrp" aria-expanded="'+!!V.sfxGrp+'">'+(V.sfxGrp?'Tutup':'Atur')+'</button>')+
     (V.sfxGrp?'<div class="sfx-list">'+SFX_GRUP.map(([k,t,d])=>{ const o=!off[k]; return '<div class="srow"><div class="grow"><b>'+t+'</b><span class="sub">'+d+'</span></div><button type="button" class="sw'+(o?' on':'')+'" role="switch" aria-checked="'+o+'" aria-label="'+t+'" data-action="sfxone" data-v="'+k+'"><i></i></button></div>'; }).join('')+'</div>':''):'';
   const suara='<div class="sh">Suara</div><section class="card">'+sw(S.bgm!=='off','bgm','Backsound','Musik latar tenang selama belajar')+sw(fxOn,'sfx','Efek suara','Bunyi khas tiap tombol, game, dan jawaban')+grp+'</section>';
-  return navbar('Hari ini','Pengaturan','')+'<section class="card">'+sw(c.terang,'terang','Mode terang','Matikan untuk tampilan gelap')+sw(c.gerak,'gerak','Animasi dan gerakan','Awan, balok melayang, dan transisi')+hari+semua+'</section>'+suara;
+  return navbar('Hari ini','Pengaturan','')+'<section class="card">'+sw(c.terang,'terang','Mode terang','Matikan untuk tampilan gelap')+sw(c.gerak,'gerak','Animasi dan gerakan','Awan, balok melayang, dan transisi')+hari+semua+'</section>'+penyimpananCard()+suara;
 }
 /* ---------- Efek suara (Web Audio, tanpa file) ---------- */
 const SFX=(function(){
@@ -5391,6 +5438,7 @@ setTimeout(()=>{ const hf=document.getElementById('blk'); if(!hf||!window.Mutati
 
 applyAnim();
 ebInit();
+rampingOtomatis();
 render();
 
 })();

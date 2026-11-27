@@ -56,3 +56,9 @@
 - Satu prompt menghasilkan satu JSON berisi `"drill"` dan `"teks"`. Kalau jawaban Claude terpotong, ketik "lanjutkan" di chat yang sama, lalu tempel kedua bagian berurutan di Bank soal; app mengambil isi blok kode dan menyambungnya.
 - Drill 10 butir dicampur: 3 butir konsep EYD hari ini, 3 butir konsep kebahasaan hari ini, dan 2 + 2 butir dari subkategori yang lemah (30 hari) atau, bila belum ada, konsep beberapa hari lalu. Urutannya diacak.
 - Mini game tidak lagi menjadi tugas harian. Setiap game diberi kode pola UTBK yang dilatihnya. Tangkap Penyusup (kalimat sumbang, bentuk 2019–2022) disembunyikan dan diganti **Tempatkan Kalimat** (PBM-4: menyelipkan kalimat di celah yang tepat).
+
+## Penyimpanan dan cadangan
+- Pengaturan → **Penyimpanan** menampilkan pemakaian (misalnya "1,3 MB dari ±5 MB"). Kuota ini dipakai bersama semua app di faiqdk07-tech.github.io.
+- **Rampingkan data lama** (lebih dari 30 hari): butir drill, set teks di bank, dan paket mini game mingguan dibuang; Error Book yang lulus disimpan ringkas (id, kode pola, jenis, tanggal, hasil); catatan riwayat hanya kehilangan rincian yang tidak dipakai statistik. Error Book aktif, data Indeks Kesiapan, tahap per kemampuan, dan tema 14 hari tidak disentuh.
+- Perampingan pertama terkunci sampai **Salin cadangan dulu** berhasil (atau berkas cadangan diunduh). Setelah itu perampingan berjalan otomatis sekali sehari.
+- Bila penyimpanan penuh, tanda "Belum tersimpan" di layar skor mengarah ke Pengaturan.
