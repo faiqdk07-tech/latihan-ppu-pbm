@@ -380,6 +380,8 @@ body.sess nav.bottom{display:none}
 .pemb.bad .pemb-h{color:var(--bad-ink)}
 .pemb-b{line-height:1.65;font-size:15.5px}
 .pemb-n{font-size:13px;color:var(--muted)}
+.rkp{width:100%;border-collapse:collapse;font-size:13px}.rkp th{text-align:left;color:var(--muted);font-weight:600;padding:4px 6px 4px 0;border-bottom:1px solid var(--line)}.rkp td{padding:6px 6px 6px 0;border-bottom:1px solid var(--line);font-variant-numeric:tabular-nums}
+.okc{color:var(--ok-ink)}.badc{color:var(--bad-ink)}
 sup.kn{font-size:.62em;font-weight:700;margin-left:1px;color:var(--muted)}
 .savest{margin:10px 0 4px;font-size:13px;line-height:1.45;border-radius:10px;padding:8px 12px}
 .savest.ok{align-self:center;color:var(--ok-ink);background:var(--ok-soft);font-weight:600;padding:4px 12px;border-radius:999px;width:max-content;margin-left:auto;margin-right:auto}
@@ -2673,7 +2675,9 @@ function kelKey(pid){ return String(pid).slice(0,3)+' '+kelompok(pid); }
 function kelStat(key,mode){ const a=S.history.filter(x=>x.pola_id&&kelKey(x.pola_id)===key&&(x.mode||'dasar')===mode).slice(-10); return {n:a.length,p:pct(a.filter(x=>x.correct).length,a.length)}; }
 function kelLevel(key){ const d=kelStat(key,'dasar'); if(d.n<LVL_MIN||d.p<WEAK_PCT) return 1; const g=kelStat(key,'geser'); if(g.n<LVL_MIN||g.p<WEAK_PCT) return 2; return 3; }
 function polaLevel(pid){ return kelLevel(kelKey(pid)); }
-function polaLabel(it){ const b=POLA_BRIEF[it.pola_id]; if(!b) return ''; return 'Kemampuan: '+b[0]+' · Bentuk lama terdekat: '+b[1]+(MODE_LBL[it.mode]?' · '+MODE_LBL[it.mode]:'')+(it.geser?' · Yang diubah: '+it.geser:''); }
+function polaLabel(it){ const k=kodeSoal(it), K=k&&kodeInfo(k), b=POLA_BRIEF[it.pola_id]; if(!K&&!b) return '';
+  const j=jenisDari(it), f=it.format||(it.tipe==='isian'?'J3':it.tipe==='pgk'?'J2':'J1');
+  return [K?'Kode '+k:'',K?'Kemampuan '+K.kem:(b?'Kemampuan '+b[0]:''),'Jenis '+j+' ('+JENIS_NAMA[j]+')','Format '+f,it.geser?'Yang diubah: '+it.geser:''].filter(Boolean).join(' · '); }
 function kelompok(pid){
   if(/^PBM-ejaan/.test(pid)) return 'Ejaan';
   if(/^PBM-(diksi|rumpang)/.test(pid)) return 'Diksi & rumpang';
@@ -2723,7 +2727,29 @@ const ISIAN_OK=new Set(['PPU-6','PPU-7','PPU-8','PPU-9','PPU-10','PPU-11','PPU-1
 function jenisDari(x){ return x.jenis_soal||({dasar:'L',geser:'G','2027':'B'})[x.mode||'dasar']||'L'; }
 function kemStat(kem){ const h=S.history.filter(x=>{ const K=kodeInfo(kodeSoal(x)); return K&&K.kem===kem; }).slice(-20), sel=j=>h.filter(x=>j.includes(jenisDari(x)));
   const L=sel(['L']), BM=sel(['B','M']); return {n:h.length,nL:L.length,pL:pct(L.filter(x=>x.correct).length,L.length),nBM:BM.length,pBM:pct(BM.filter(x=>x.correct).length,BM.length)}; }
+/* rekap per jenis L/G/B/M dari catatan riwayat */
+function rekapJenis(list){ const rows=['L','G','B','M'].map(j=>{ const a=list.filter(x=>jenisDari(x)===j); return {j,n:a.length,ok:a.filter(x=>x.correct).length,dtk:a.length?Math.round(a.reduce((t,x)=>t+(x.ms||0),0)/a.length/1000):0}; }).filter(r=>r.n);
+  const acc=js=>{ const a=list.filter(x=>js.includes(jenisDari(x))); return a.length?a.filter(x=>x.correct).length/a.length:null; }, aL=acc(['L']), aBM=acc(['B','M']);
+  const bm=list.filter(x=>['B','M'].includes(jenisDari(x))&&x.ms>0&&PACE[x.subtes]), rasio=bm.length?bm.reduce((t,x)=>t+x.ms/(PACE[x.subtes]*1000),0)/bm.length:null;
+  return {rows,aL,aBM,idx:aL&&aBM!=null?aBM/aL:null,rasio}; }
+const koma=(x,d)=>x.toFixed(d==null?2:d).replace('.',',');
+function rekapCard(list,judul){ const r=rekapJenis(list); if(!r.rows.length) return '';
+  return '<section class="card"><h2>'+esc(judul)+'</h2><table class="rkp"><thead><tr><th>Jenis</th><th>Benar</th><th>%</th><th>Waktu</th></tr></thead><tbody>'+
+    r.rows.map(x=>'<tr><td><b>'+x.j+'</b> <span class="sub">'+JENIS_NAMA[x.j]+'</span></td><td>'+x.ok+'/'+x.n+'</td><td>'+pct(x.ok,x.n)+'%</td><td>'+x.dtk+' dtk</td></tr>').join('')+'</tbody></table>'+
+    '<div class="row" style="font-size:14px"><span class="grow">Indeks Kesiapan (B+M ÷ L, target ≥ 0,90)</span><b class="'+(r.idx==null?'':r.idx>=0.9?'okc':r.idx<0.75?'badc':'')+'">'+(r.idx==null?(r.aL===0?'akurasi L 0%':'–'):koma(r.idx))+'</b></div>'+
+    (r.rasio!=null?'<div class="row" style="font-size:14px"><span class="grow">Waktu bentuk baru ÷ waktu resmi (target ≤ 1,25)</span><b class="'+(r.rasio<=1.25?'okc':'badc')+'">'+koma(r.rasio)+'</b></div>':'')+
+    (r.idx==null?'<div class="sub" style="font-size:12px">Indeks muncul bila ada soal L dan soal B atau M.</div>':'')+'</section>'; }
+function kesiapanCard(){ const KEMS=['PPU-A','PPU-B','PPU-C','PPU-D','PPU-E','PBM-A','PBM-B','PBM-C'], rows=KEMS.map(k=>({k,st:kemStat(k),ix:kemIndeks(k)})).filter(r=>r.st.n);
+  if(!rows.length) return '';
+  const lab=r=>kemDasar(r.k)?'<span class="badc">kembali ke L</span>':r.ix==null?'<span class="sub">belum cukup data</span>':r.ix<0.75?'<span class="badc">B dinaikkan</span>':r.ix>=0.9?'<span class="okc">siap</span>':'dekat';
+  const since=Date.now()-30*DAY, sub=s=>rekapJenis(S.history.filter(x=>x.ts>=since&&x.subtes===s));
+  return '<section class="card"><h2>Kesiapan 2027 per kemampuan</h2><div class="sub" style="font-size:12px">Dari sekitar 20 soal terakhir tiap kemampuan. Indeks = akurasi bentuk baru dan migrasi ÷ akurasi bentuk lama; dihitung bila keduanya minimal 5 soal.</div><table class="rkp"><thead><tr><th>Kemampuan</th><th>L</th><th>B+M</th><th>Indeks</th><th></th></tr></thead><tbody>'+
+    rows.map(r=>'<tr><td><b>'+r.k+'</b></td><td>'+(r.st.nL?r.st.pL+'% <span class="sub">('+r.st.nL+')</span>':'–')+'</td><td>'+(r.st.nBM?r.st.pBM+'% <span class="sub">('+r.st.nBM+')</span>':'–')+'</td><td>'+(r.ix==null?'–':koma(r.ix))+'</td><td>'+lab(r)+'</td></tr>').join('')+'</tbody></table>'+
+    ['PPU','PBM'].map(s=>{ const x=sub(s); return x.idx==null?'':'<div class="row" style="font-size:14px"><span class="grow">Indeks '+s+' (30 hari)</span><b>'+koma(x.idx)+'</b></div>'; }).join('')+'</section>'; }
 function kemDasar(kem){ const st=kemStat(kem); return st.nL>=5&&st.pL<70; }
+/* Indeks Kesiapan = akurasi B+M ÷ akurasi L (kesiapan-2027.md bagian 2); dihitung bila soal L dan B+M masing-masing minimal 5 */
+function kemIndeks(kem){ const st=kemStat(kem); return st.nL>=5&&st.nBM>=5&&st.pL>0?st.pBM/st.pL:null; }
+function kemNaikBM(kem){ const ix=kemIndeks(kem); return ix!=null&&ix<0.75&&!kemDasar(kem); }
 const hashK=k=>[...k].reduce((a,c)=>(a*31+c.charCodeAt(0))%9973,7);
 function aturJenis(sub,slots,day,nM){
   const N=slots.length, mau={L:Math.round(N*0.3),M:nM,B:Math.max(1,Math.round(N*0.2))}; mau.G=Math.max(0,N-mau.L-mau.M-mau.B);
@@ -2737,8 +2763,9 @@ function aturJenis(sub,slots,day,nM){
   sisa().filter(x=>!kodeInfo(x.k).lepas&&!kodeInfo(x.k).fmt).slice(0,mau.M).forEach((x,i)=>{ const K=kodeInfo(x.k); x.j='M';
     if(sub==='PPU'&&K.kem==='PPU-A'&&day%2){ x.f='J1'; x.mig='definisi dengan dua syarat (pindahan PU induktif, PU-I8/PU-I9): stimulus menyajikan definisi istilah dengan dua syarat dari bacaan; ditanya kata atau contoh yang memenuhi keduanya; pengecoh memenuhi satu syarat saja'; }
     else { x.f=['J2','J2','J5','J2','J6'][(day+i)%5]; x.mig='tabel benar/salah (pindahan dari Literasi, PK, dan PM sejak 2024): 3–4 pernyataan tentang hal yang diuji kode ini, dinilai benar atau salah berdasarkan bacaan'; } });
-  /* B: bentuk baru, ubah sedikitnya dua unsur */
-  sisa().slice(0,mau.B).forEach(x=>{ x.j='B'; x.f=fmtL(x); });
+  /* B: bentuk baru, ubah sedikitnya dua unsur. Kemampuan dengan Indeks Kesiapan < 0,75 didahulukan dan porsinya ditambah satu */
+  const naik=sisa().filter(x=>kemNaikBM(kodeInfo(x.k).kem)); if(naik.length&&mau.G>0){ mau.B++; mau.G--; }
+  naik.concat(sisa().filter(x=>!naik.includes(x))).slice(0,mau.B).forEach(x=>{ x.j='B'; x.f=fmtL(x); if(naik.includes(x)){ const K=kodeInfo(x.k); x.why=(x.why?x.why+'; ':'')+'Indeks Kesiapan '+K.kem+' '+kemIndeks(K.kem).toFixed(2).replace('.',',')+' (< 0,75), porsi bentuk baru dinaikkan'; } });
   /* G: satu tuas per soal, bergiliran */
   const TUAS=['bungkus cerita atau jenis stimulus','arah tanya dibalik','format jawaban'];
   sisa().forEach((x,i)=>{ x.j='G'; x.f=fmtL(x); let t=TUAS[(day+i)%3]; if(t==='format jawaban'){ if(x.f==='J1'&&ISIAN_OK.has(x.k)) x.f='J3'; else t='arah tanya dibalik'; } x.tuas=t; });
@@ -2912,6 +2939,7 @@ function mergeImport(st,data,isSample){
   (data.teks||[]).forEach(t=>{ const c=JSON.parse(JSON.stringify(t)); (c.soal||[]).forEach(q=>{ if(q&&q.jenis_soal&&!q.mode) q.mode={L:'dasar',G:'geser',B:'2027',M:'2027'}[q.jenis_soal]||'dasar'; }); c._contoh=!!isSample; c._imp=Date.now(); if(c.jenis==='lepas'&&!Array.isArray(c.kalimat)) c.kalimat=[]; const i=st.bank.findIndex(b=>b.id===c.id);
     if(i>=0&&!Array.isArray(c.kalimat)){ /* perbaikan: hanya soal yang dikirim, cocokkan lewat nomor */
       const old=st.bank[i]; (c.soal||[]).forEach(q=>{ const j=old.soal.findIndex(x=>x.nomor===q.nomor); if(j>=0) old.soal[j]=q; else old.soal.push(q); delete st.bad[old.id+'#'+q.nomor]; }); addT++; return; }
+    if(c.paket==='varian'&&c.asal&&st.eb&&st.eb[c.asal]) st.eb[c.asal].varian=Date.now();
     if(i>=0) st.bank[i]=c; else st.bank.push(c); (c.soal||[]).forEach(q=>delete st.bad[c.id+'#'+q.nomor]); addT++; });
   (data.drill||[]).forEach(d=>{ const c=JSON.parse(JSON.stringify(d)); c._contoh=!!isSample; const i=st.drill.findIndex(b=>b.id===c.id); if(i>=0) st.drill[i]=c; else st.drill.push(c); delete st.bad[c.id]; addD++; });
   return {addT,addD};
@@ -3451,6 +3479,23 @@ function ebPola(hari){ const t0=Date.now()-hari*DAY, L=ebList().filter(e=>e.t>=t
   const by={}, ka={}; L.forEach(e=>{ const w=e.salah||1; if(e.sebab) by[e.sebab]=(by[e.sebab]||0)+w; const k=ebLabel(e); ka[k]=(ka[k]||0)+w; });
   const tot=Object.values(by).reduce((a,b)=>a+b,0);
   return {n:L.filter(e=>e.sebab).length,tot,sb:Object.entries(by).sort((a,b)=>b[1]-a[1]),ka:Object.entries(ka).sort((a,b)=>b[1]-a[1]).slice(0,3)}; }
+/* Varian soal salah: tiga varian per soal teks yang salah (konteks diganti, arah tanya dibalik, satu langkah ditambah) */
+function ebVarianCalon(){ return ebAktif().filter(e=>e.kind==='teks'&&!e.varian&&ebFind(e)).sort((a,b)=>b.t-a.t).slice(0,3); }
+function ebVarianBank(){ return S.bank.filter(t=>t.paket==='varian'); }
+function varianPrompt(L){ const sid=id=>id.replace(/[^a-z0-9-]/gi,'-');
+  return 'Kamu adalah pembuat VARIAN SOAL SALAH untuk latihan UTBK-SNBT PPU dan PBM. Hasilmu akan kutempel langsung ke aplikasi, jadi keluarkan HANYA satu blok kode json yang valid, tanpa teks lain.\n\n'+
+  '## Tugas\nUntuk setiap soal di bawah, buat TIGA varian yang menguji kemampuan dan kode yang sama:\n'+
+  'V1. Konteks diganti: bacaan baru dengan topik lain, arah tanya tetap.\nV2. Arah tanya dibalik (misalnya yang TIDAK tepat, atau yang ditanya ditukar dengan yang diketahui), memakai bacaan asli.\nV3. Satu langkah ditambah (jawaban butuh dua kalimat atau satu syarat tambahan), memakai bacaan asli.\n\n'+
+  '## Bentuk keluaran per soal\n- Soal dari bacaan "bernomor": dua objek teks. "<id>-v1" berisi bacaan baru 7–12 kalimat bernomor dan 1 soal (V1). "<id>-v23" berisi bacaan asli yang disalin persis beserta "paragraf_mulai"-nya, dengan 2 soal: nomor 1 = V2, nomor 2 = V3.\n- Soal "lepas", "pendek", atau "urutan": tiga objek teks "<id>-v1", "<id>-v2", "<id>-v3" dengan jenis yang sama, masing-masing 1 soal. Jenis "urutan" selalu 5 kalimat.\n'+
+  '- Setiap objek teks memuat "paket": "varian" dan "asal": id soal asal (persis seperti tertulis di bawah). Soal PBM selalu dari bacaan bernomor atau urutan.\n'+
+  '- Setiap soal memuat "subtes", "kode", "pola_id" (dari soal asal), "jenis_soal": "G", "format" (J1 pilihan ganda, J3 isian nomor kalimat, J2 tabel benar/salah dengan "tipe": "pgk" dan "jenis_soal": "M"), "geser" ("konteks", "arah tanya", atau "tambah satu langkah"), "tipe", "perintah", "opsi", "kunci_isian", "bukti", "pembahasan", "drill_terkait".\n'+
+  '- "pembahasan" dibuka dengan label "Kode · Kemampuan · G · Format", lalu langkah menuju kunci dan satu frasa per pengecoh berisi nama kesalahannya. Jangan menyebut huruf opsi; rujuk opsi dengan kutipan isinya.\n\n'+
+  '## Aturan opsi\nIkuti aturan opsi setara: lima opsi sejajar dengan selisih panjang paling banyak 30%; kunci bukan opsi terpanjang dan bukan satu-satunya yang berhati-hati; setiap pengecoh hampir benar dan punya nama kesalahan; tidak ada opsi "semua benar", "semua salah", atau "tidak ada"; tidak ada tiga kunci sama berturut-turut. Jangan menyalin kunci atau opsi soal asal. Pengecoh salah satu varian sebaiknya meniru kesalahan yang kubuat (lihat "Jawabanku").\n\n'+
+  '## Soal yang salah\n'+L.map((e,i)=>{ const f=ebFind(e), it=f.it, t=f.t, K=kodeInfo(kodeSoal(it)), q=Object.assign({},it); delete q._t;
+    return '### Soal '+(i+1)+' · id asal "'+e.id+'" · id varian "'+sid(e.id)+'-v…" · '+(K?K.k+' · kemampuan '+K.kem:(it.pola_id||''))+' · subtes '+(it.subtes||e.sub)+' · jenis bacaan "'+(t.jenis||'bernomor')+'"\n'+
+      (t.kalimat&&t.kalimat.length?'Bacaan asli'+(t.paragraf_mulai?' (paragraf_mulai '+JSON.stringify(t.paragraf_mulai)+')':'')+':\n'+t.kalimat.map((k,j)=>'('+(j+1)+') '+k).join('\n')+'\n':'')+
+      'Soal asli (JSON): '+JSON.stringify(q)+'\nJawabanku: '+(e.jw||'-')+' · Kunci: '+ebKunci(it)+(e.sebab?' · Penyebab menurutku: '+(EBS[e.sebab]||e.sebab):'')+(e.aturan?' · Aturanku: '+e.aturan:''); }).join('\n\n')+
+  '\n\n## Format keluaran\n{"versi": 3, "teks": [ {"id": "...-v1", "paket": "varian", "asal": "...", "jenis": "bernomor", "judul": "...", "kalimat": ["..."], "paragraf_mulai": [1, 5], "kata_uji": [], "sumber_fiktif": "Diadaptasi dari ...", "soal": [ {...} ]}, ... ]}\n\n## Cek sebelum mengirim\n- JSON valid; '+(L.length)+' soal asal × 3 varian = '+(L.length*3)+' soal.\n- Setiap id teks berbeda; "asal" persis seperti di atas.\n- Tidak ada teks apa pun di luar blok json.'; }
 function ebPrompt(){ const L=ebList().filter(e=>e.sebab).sort((a,b)=>(b.salah||1)-(a.salah||1)).slice(0,30);
   return 'Ini catatan Error Book latihan PPU dan PBM (UTBK-SNBT)-ku. Bantu aku menemukan pola dan memperbaiki cara belajarku. Jawab ringkas dalam bahasa Indonesia.\n\nFORMAT: jenis | kaidah/pola soal | penyebab menurutku | aturan yang kutulis | berapa kali salah | kotak ulang (0–4)\n'+
   L.map(e=>{ const f=ebFind(e); return '- '+(e.kind==='drill'?'drill':'teks '+e.sub)+' | '+ebLabel(e)+' | '+(EBS[e.sebab]||'-')+' | '+(e.aturan||'-')+' | '+(e.salah||1)+'x | '+(e.lulus?'lulus':e.box)+(f?'\n  soal: '+String(f.it.perintah||'').replace(/\*/g,'').slice(0,160)+' · jawabanku: '+String(e.jw||'-').slice(0,80)+' · kunci: '+String(ebKunci(f.it)).replace(/\*/g,'').slice(0,80):''); }).join('\n')+
@@ -3468,6 +3513,10 @@ function viewEb(){
       (po.ka.length?'<span class="sub" style="font-size:13px">Paling sering salah: '+po.ka.map(([k,c])=>'<b>'+esc(k)+'</b> ('+c+'×)').join(' · ')+'</span>':'')+
       '<button class="btn ghost" type="button" data-action="ebprompt">Salin prompt analisis pola untuk Claude</button></section>'; }
   else if(ebList().length) h+='<p class="sub ebhint">Pola penyebab muncul setelah minimal 3 soal didiagnosis.</p>';
+  { const vc=ebVarianCalon(), vb=ebVarianBank(), nq=vb.reduce((n,t)=>n+t.soal.length,0);
+    if(vc.length||vb.length) h+='<section class="card"><h2>Latihan varian</h2><div class="sub" style="font-size:13px">Tiga varian untuk soal teks yang salah: konteks diganti, arah tanya dibalik, satu langkah ditambah. Tempel prompt ke chat Claude, lalu tempel JSON-nya di Bank soal. Varian tidak masuk tugas harian.</div>'+
+      (vc.length?'<button class="btn ghost" type="button" data-action="ebvarian">Salin prompt varian ('+vc.length+' soal × 3)</button>':'')+
+      (vb.length?'<button class="btn primary" type="button" data-action="ebvarianrun">Kerjakan '+nq+' soal varian</button>':'')+'</section>'; }
   if(P.length) h+=P.slice(0,EBV.n).map((e,i)=>ebKartu(e,'Diagnosis '+(i+1)+' dari '+P.length)).join('')+(P.length>EBV.n?'<button class="btn ghost block" type="button" data-action="ebmore">Tampilkan '+Math.min(5,P.length-EBV.n)+' lagi</button>':'');
   const list=D.concat(J);
   if(list.length) h+='<section class="card"><h2>Jadwal ulang ('+list.length+')</h2>'+list.map(e=>{ if(EBV.edit===e.id) return '</section>'+ebKartu(e,'Ubah diagnosis')+'<section class="card">'; const f=ebFind(e), due=D.includes(e);
@@ -3510,7 +3559,7 @@ function tasksOn(date){
   const uniq=subs=>new Set(dh.filter(x=>subs.includes(x.sub)).map(x=>x.id)).size;
   const cap=subs=>{ const n=poolFor('sub:'+subs.join('|')).length; return n?Math.min(10,n):10; };
   const teksTask=(sub,capQ,id)=>{ const done=new Set(S.history.filter(x=>dayKey(x.ts)===key&&x.subtes===sub).map(x=>x.teksId+'#'+x.nomor)).size;
-    const avail=S.bank.reduce((n,t)=>n+t.soal.filter(q=>q.subtes===sub&&!S.bad[t.id+'#'+q.nomor]).length,0), nQ=Math.max(1,Math.min(capQ,avail||capQ));
+    const avail=S.bank.reduce((n,t)=>n+(t.paket==='varian'?0:t.soal.filter(q=>q.subtes===sub&&!S.bad[t.id+'#'+q.nomor]).length),0), nQ=Math.max(1,Math.min(capQ,avail||capQ));
     return {id,ic:sub==='PBM'?'pbm':'ppu',t:'Teks '+sub,d:'Kerjakan '+nQ+' soal teks',cur:Math.min(done,nQ),n:nQ,unit:'soal',act:'teks2',v:sub}; };
   const teks=duaOn(date)?[teksTask('PPU',SOAL_HARI.PPU,'teksPPU'),teksTask('PBM',SOAL_HARI.PBM,'teksPBM')]:[teksTask(c.fokus,10,'teks')];
   const bk=dh.filter(x=>x.kat==='baku'&&x.sub!=='Baku di Kalimat').length, bkk=dh.filter(x=>x.sub==='Baku di Kalimat').length, imp=(S.imp||[]).includes(key), lama=date<BAKU_KAL_START;
@@ -3725,11 +3774,13 @@ function recordAt(C,k){
     S.dhist.push({id:it.id,kat:it.kategori,sub:it.subkategori,correct:ok,ts:Date.now()});
     s.res.push({id:it.id,ok,it});
   } else {
-    S.history.push({teksId:(it._t||C.t).id,nomor:it.nomor,subtes:it.subtes,pola_id:it.pola_id,kode:kodeSoal(it),mode:it.mode,jenis_soal:jenisDari(it),format:it.format||'',tema:(it._t||C.t).tema||'',correct:ok,ms:Math.min(spent(s,k),600000),ts:Date.now()});
+    S.history.push({teksId:(it._t||C.t).id,nomor:it.nomor,subtes:it.subtes,pola_id:it.pola_id,kode:kodeSoal(it),mode:it.mode,jenis_soal:jenisDari(it),format:it.format||'',tema:(it._t||C.t).tema||'',pil:pilihan(it,a,s.perm&&s.perm[k]),correct:ok,ms:Math.min(spent(s,k),600000),ts:Date.now()});
     if(!ok) (it.drill_terkait||[]).forEach(sub=>S.drill.filter(d=>d.subkategori===sub).forEach(d=>{ S.srs[d.id]=Object.assign({},srsOf(d.id),{due:0}); }));
     s.res.push(ok);
   }
 }
+/* jawaban yang dipilih: PG = huruf opsi pada urutan asli di bank (sebelum diacak), isian = angka, pgk = pola B/S */
+function pilihan(it,a,pm){ if(it.tipe==='isian') return String(a.is||''); if(it.tipe==='pgk') return Array.isArray(a.c)?a.c.map(v=>v==null?'-':v?'B':'S').join(''):''; if(a.c==null) return ''; const o=pm?pm[a.c]:a.c; return 'ABCDE'[o]||''; }
 function badId(C,it){ return C.kind==='drill'?it.id:(it._t||C.t).id+'#'+it.nomor; }
 function reportText(C,it){
   const L='ABCDE';
@@ -3832,7 +3883,7 @@ function viewCbt(C){
     let note='';
     if(isD){ note=''; }
     else { const subs=it.drill_terkait||[]; note=(it.bukti||[]).length?'Bukti: kalimat '+(it.bukti||[]).map(b=>'('+b+')').join(', '):''; }
-    h+='<div class="pemb '+(a.ok?'ok':'bad')+'"><div class="pemb-h"><span class="pemb-m">'+bloki(a.ok?'wave':'sad')+'</span><span>'+head+combo+'</span></div><div class="pemb-b">'+(isD?rich(it.kaidah||''):esc(humanCodes(it.pembahasan||'')))+'</div>'+(note?'<div class="pemb-n">'+note+'</div>':'')+(a.ok?'':materiBtn(isD?[it.subkategori]:(it.drill_terkait||[]),itemText(it,isD),true))+
+    h+='<div class="pemb '+(a.ok?'ok':'bad')+'"><div class="pemb-h"><span class="pemb-m">'+bloki(a.ok?'wave':'sad')+'</span><span>'+head+combo+'</span></div><div class="pemb-b">'+(isD?rich(it.kaidah||''):esc(humanCodes(it.pembahasan||'')))+'</div>'+(!isD&&polaLabel(it)?'<div class="pemb-n pola">'+esc(polaLabel(it))+'</div>':'')+(note?'<div class="pemb-n">'+note+'</div>':'')+(a.ok?'':materiBtn(isD?[it.subkategori]:(it.drill_terkait||[]),itemText(it,isD),true))+
       (S.bad[badId(C,it)]?'<div class="pemb-n">⚑ Sudah dilaporkan</div>':'<button type="button" class="link rep" data-action="qreport">⚑ Laporkan soal</button>')+'</div>';
     if(s.eb){ const k=h.lastIndexOf('</div>'); h=h.slice(0,k)+ebRunNote(C,it,a)+h.slice(k); }
   }
@@ -3861,7 +3912,7 @@ function viewDrillDone(){
 /* ---------- Teks bernomor ---------- */
 function lastTs(id,sub){ const h=S.history.filter(x=>x.teksId===id&&(!sub||x.subtes===sub)); return h.length?Math.max(...h.map(x=>x.ts)):0; }
 function nextTexts(sub,n,preferSim){
-  const pool=S.bank.filter(t=>t.soal.some(q=>!sub||q.subtes===sub)); if(!pool.length) return [];
+  const pool=S.bank.filter(t=>t.paket!=='varian'&&t.soal.some(q=>!sub||q.subtes===sub)); if(!pool.length) return [];
   const rank=t=>(preferSim?(t.paket==='simulasi'?0:1e15):(t.paket==='simulasi'?1e15:0))+lastTs(t.id,sub);
   return pool.slice().sort((a,b)=>rank(a)-rank(b)).slice(0,n);
 }
@@ -3920,7 +3971,7 @@ function viewSelesai(){
   if(V.paket&&V.paket.drillRes) h+='<section class="card"><div class="row"><span class="grow">Drill kaidah</span><b>'+V.paket.drillRes[0]+' / '+V.paket.drillRes[1]+'</b></div>'+(V.paket.teksRes||[]).map(x=>'<div class="row"><span class="grow">Teks '+esc(x[0])+'</span><b>'+x[1]+' / '+x[2]+'</b></div>').join('')+'<div class="row"><span class="grow">'+esc(tl.replace(/ · \d+\/\d+$/,''))+'</span><b>'+ok+' / '+R.res.length+'</b></div></section>'+
     (nx?'<button class="btn primary block" type="button" data-action="paketteks">Lanjut ke '+nx.nq+' soal teks '+esc(nx.sub)+'</button>':'<section class="card"><h2>Untuk besok</h2><div class="sub">Besok konsepnya berganti ke '+esc(KONSEP[(today().i+1)%KONSEP.length].n)+'. Kelemahan hari ini otomatis ikut di prompt besok.</div><a class="btn ghost" href="#prompt">Lihat prompt</a></section>');
   else h+=ring(ok,R.res.length)+'<div class="sub">soal benar · '+esc(tl)+'</div></section>';
-  h+=saveBadge(R.t0)+paceCard(R);
+  h+=saveBadge(R.t0)+rekapCard(S.history.filter(x=>x.ts>=(R.t0||0)&&(R.teksIds||[R.teksId]).includes(x.teksId)),'Rekap per jenis soal')+paceCard(R);
   h=h.replace('</h1>','</h1>'+blokiSay(rp>=.8?'trophy':rp>=.5?'wave':'sad',rp>=.8?'Hebat! Banyak balok berwarna hari ini.':rp>=.5?'Bagus! Cek pembahasan soal yang salah.':'Pelan-pelan saja. Pembahasan menunggumu.','sm'));
   return h+'<button class="btn ghost block" type="button" data-action="qreview" data-v="teks">Lihat pembahasan per nomor</button><a class="btn primary block" href="#beranda">Selesai</a>';
 }
@@ -4078,8 +4129,8 @@ function viewProgres(){
     '<section class="card"><h2>Teks ala UTBK</h2>'+rows.map(r=>bar('<b style="color:var(--muted)">'+r.sub+'</b> '+esc(r.k),r.n,r.p,r.n+' soal')).join('')+'<div class="sub">Batang oranye: di bawah 80%.</div></section>'+
     (function(){ const ps=polaStat().filter(x=>x.n>=3).slice(0,8), ms=modeStat(), any=ms.dasar.n+ms.geser.n+ms['2027'].n, lv=[0,0,0,0], naik=[]; KELOMPOK_ORDER.forEach(([s,k])=>{ const l=kelLevel(s+' '+k); lv[l]++; if(l>1) naik.push(s+' '+k+' (tahap '+l+')'); });
       return (ps.length?'<section class="card"><h2>Pola terlemah</h2>'+ps.map(x=>bar('<b style="color:var(--muted)">'+esc((POLA_BRIEF[x.id]||['?'])[0])+'</b> '+esc(x.id.replace(/^(PBM|PPU)-/,'')),x.n,x.p,x.n+' soal')).join('')+'<div class="sub">Dihitung per pola soal, minimal 3 soal.</div></section>':'')+
-        (any?'<section class="card"><h2>Bentuk lama vs bentuk baru</h2>'+['dasar','geser','2027'].map(k=>bar(MODE_LBL[k],ms[k].n,ms[k].p,ms[k].n+' soal')).join('')+'<div class="sub">Tahap 8 kelompok: '+lv[1]+' bentuk lama · '+lv[2]+' mulai digeser · '+lv[3]+' bentuk baru.'+(naik.length?' Sudah naik: '+esc(naik.join(', '))+'.':'')+' Kelompok naik tahap setelah 10 soal terakhirnya (minimal 8) benar 80% ke atas.</div></section>':''); })()+
-    paceProgres()+
+        ''; })()+
+    kesiapanCard()+paceProgres()+
     '<section class="card"><h2>Kelemahan untuk prompt besok</h2><div class="sub">Bagian ini otomatis masuk ke prompt hari berikutnya.</div><textarea id="weak" readonly>'+esc(weakText())+'</textarea></section>';
 }
 
@@ -4949,6 +5000,8 @@ document.addEventListener('click',e=>{
   else if(a==='ebhapus'){ const v=b.dataset.v; if(EBV.del===v){ delete S.eb[v]; ebGc(); EBV.del=null; save(); render(); toast('Dihapus dari Error Book'); } else { EBV.del=v; toast('Tekan sekali lagi untuk menghapus'); } }
   else if(a==='ebmore'){ EBV.n+=5; render(); }
   else if(a==='ebprompt'){ copyText(ebPrompt()); }
+  else if(a==='ebvarian'){ const L=ebVarianCalon(); if(L.length) copyText(varianPrompt(L)); }
+  else if(a==='ebvarianrun'){ const ts=ebVarianBank(); if(ts.length){ V.paket=null; startTeksMulti(ts,{sub:'campur',label:'Varian soal salah'}); } }
   else if(a==='ebulang'){ ebStart(b.dataset.v); }
   else if(a==='drill'){ V.paket=null; V.drill=buildDrill(b.dataset.v,drillLabel(b.dataset.v)); go('drill'); }
   else if(a==='paket'){ V.paket={done:[],teksRes:[],total:1+['PPU','PBM'].filter(x=>dailyTexts(x).length).length}; V.drill=buildPaket(); go('drill'); }
