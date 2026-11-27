@@ -15,8 +15,8 @@
 .mw-ban{display:flex;gap:12px;align-items:center;padding:14px 16px;border-radius:14px;color:#fff;background:linear-gradient(90deg,var(--m1),var(--m2))}
 .mw-ban .ic{font-size:26px;line-height:1;flex:none}.mw-ban b{display:block;font-size:17px}.mw-ban span{font-size:14px;opacity:.95}
 .mw-cap{font-size:13px;font-weight:700;color:var(--muted);margin-bottom:-4px}
-.mw-pills{display:flex;flex-wrap:wrap;gap:8px}.mw-pills button{flex:1;min-width:70px;min-height:40px;border-radius:10px;border:1.5px solid var(--line);background:var(--surface);color:var(--ink);font:inherit;font-weight:700;font-size:14px;cursor:pointer}
-.mw-pills button.on{background:var(--mc);border-color:var(--mc);color:#fff}
+.mw-pills{display:flex;flex-wrap:nowrap;gap:8px}.mw-pills button{flex:1 1 0;min-width:0;padding:0 2px;white-space:nowrap;min-height:40px;border-radius:10px;border:1.5px solid var(--line);background:var(--surface);color:var(--ink);font:inherit;font-weight:700;font-size:14px;cursor:pointer}
+.mw-pills button{font-size:15px}.mw-pills button.on{background:var(--mc);border-color:var(--mc);color:#fff}
 .mw-big{font-size:42px;font-weight:800;line-height:1.1;text-align:center}
 </style>
 <title>Latihan PPU-PBM</title>
@@ -4013,22 +4013,22 @@ function nextTexts(sub,n,preferSim){
 const MW={santai:{nama:'Santai',c:'#4fa9f0',g:['#6fd3f8','#4fa9f0'],ic:'🌿',tag:'Waktu bebas, maksimalkan akurasi'},
   sprint:{nama:'Sprint',c:'#e8894a',g:['#f0b26e','#e8894a'],ic:'⚡',tag:'Siap ngebut? Selesaikan sebanyak mungkin'},
   survival:{nama:'Survival',c:'#d9534f',g:['#ef7d78','#d9534f'],ic:'🔥',tag:'Bertahan selama mungkin, raih streak terpanjang!'}};
-const MW_SPR=[3,5,10,20], MW_SV=[1,.75,.5];
-function mwPref(){ const m=S.mw||{}; return {m:MW[m.m]?m.m:'sprint',spr:MW_SPR.includes(m.spr)?m.spr:10,sv:MW_SV.includes(m.sv)?m.sv:1}; }
+const MW_SPR=[3,5,7,10,15], MW_SV=[45,60,75,90,120];
+function mwPref(){ const m=S.mw||{}; return {m:MW[m.m]?m.m:'sprint',spr:MW_SPR.includes(m.spr)?m.spr:10,sv:MW_SV.includes(m.sv)?m.sv:60}; }
 function mwSet(k,v){ S.mw=Object.assign(mwPref(),{[k]:v}); save(); render(); }
 /* sisa jatah sesi bertimer; Sprint berhenti selama soal yang tampil sudah dijawab */
 function sisaR(R){ return R.limit-((R.mwPause||Date.now())-R.started); }
 function mwSync(R,C){ if(!R||!R.mw||R.mw.m!=='sprint'||R.fin) return; const d=R.A[R.cur]&&R.A[R.cur].done;
   if(d&&!R.mwPause) R.mwPause=Date.now(); else if(!d&&R.mwPause){ R.started+=Date.now()-R.mwPause; R.mwPause=null; } }
-function mwBatas(R,it){ return Math.round((PACE[it.subtes]||60)*R.mw.sv)*1000; }
+function mwBatas(R,it){ return R.mw.sv*1000; }
 function mwSoalLeft(R,C){ const it=C.items[R.cur]; return mwBatas(R,it)-(R.T[R.cur]+Date.now()-R.qStart); }
 function viewPick(){ const P=mwPref(), M=MW[P.m], o=V.pick.opt, n=V.pick.n;
   let h='<div class="cbt-head"><a class="cbt-exit" href="#beranda">'+BACK+'Kembali</a></div><section class="card" style="margin-top:12px">';
   h+='<h2 style="margin:0">'+esc(o.label||('Teks '+(o.sub||'')))+'</h2><div class="sub">'+n+' soal. Waktu resmi: PPU 45 detik, PBM 75 detik per soal.</div>';
   h+='<div class="mw-seg">'+Object.keys(MW).map(k=>'<button type="button" class="'+(k===P.m?'on':'')+'" style="--mc:'+MW[k].c+'" data-action="mwmode" data-v="'+k+'">'+MW[k].nama+'</button>').join('')+'</div>';
   h+='<div class="mw-ban" style="--m1:'+M.g[0]+';--m2:'+M.g[1]+'"><span class="ic">'+M.ic+'</span><div><b>Mode '+M.nama+'</b><span>'+M.tag+'</span></div></div>';
-  if(P.m==='sprint') h+='<div class="mw-cap">Batas waktu</div><div class="mw-pills" style="--mc:'+M.c+'">'+MW_SPR.map(x=>'<button type="button" class="'+(x===P.spr?'on':'')+'" data-action="mwspr" data-v="'+x+'">'+x+' menit</button>').join('')+'</div><div class="sub">Kerjakan sebanyak mungkin. Waktu berhenti saat soal yang tampil sudah dijawab. Waktu habis = sesi berhenti; soal yang belum dijawab tidak dicatat.</div>';
-  else if(P.m==='survival') h+='<div class="mw-cap">Timer per soal</div><div class="mw-pills" style="--mc:'+M.c+'">'+MW_SV.map(x=>'<button type="button" class="'+(x===P.sv?'on':'')+'" data-action="mwsv" data-v="'+x+'">'+(x===1?'Resmi':Math.round(x*100)+'%')+'</button>').join('')+'</div><div class="sub">PPU '+Math.round(45*P.sv)+' detik, PBM '+Math.round(75*P.sv)+' detik per soal. Jawaban langsung diperiksa. Satu salah atau waktu habis, sesi selesai.</div>';
+  if(P.m==='sprint') h+='<div class="mw-cap">Batas waktu (menit)</div><div class="mw-pills" style="--mc:'+M.c+'">'+MW_SPR.map(x=>'<button type="button" class="'+(x===P.spr?'on':'')+'" data-action="mwspr" data-v="'+x+'">'+x+'</button>').join('')+'</div><div class="sub">Kerjakan sebanyak mungkin. Waktu berhenti saat soal yang tampil sudah dijawab. Waktu habis = sesi berhenti; soal yang belum dijawab tidak dicatat.</div>';
+  else if(P.m==='survival') h+='<div class="mw-cap">Timer per soal (detik)</div><div class="mw-pills" style="--mc:'+M.c+'">'+MW_SV.map(x=>'<button type="button" class="'+(x===P.sv?'on':'')+'" data-action="mwsv" data-v="'+x+'">'+x+'</button>').join('')+'</div><div class="sub">Berlaku untuk semua soal. Waktu resmi: PPU 45 detik, PBM 75 detik. Jawaban langsung diperiksa. Satu salah atau waktu habis, sesi selesai.</div>';
   else h+='<div class="sub">Tanpa hitung mundur. Waktu tetap dicatat dan dibandingkan dengan target UTBK.</div>';
   h+='<button type="button" class="btn primary block" data-action="mwgo">Mulai '+M.nama+'</button></section>';
   return h; }
