@@ -8,7 +8,17 @@
 <meta name="apple-mobile-web-app-title" content="Latihan PPU-PBM">
 <meta name="theme-color" content="#F3F4F7">
 <meta name="color-scheme" content="light">
-<style>:root{padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}body{margin:0}[hidden]{display:none!important}img{max-width:100%}</style>
+<style>:root{padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}body{margin:0}[hidden]{display:none!important}img{max-width:100%}/* ===== mode waktu sesi teks: Santai / Sprint / Survival ===== */
+.mw-seg{display:flex;gap:4px;padding:4px;border:1.5px solid var(--line);border-radius:14px;background:var(--surface)}
+.mw-seg button{flex:1;min-height:40px;border-radius:10px;font:inherit;font-weight:700;font-size:15px;color:var(--ink);background:transparent;border:0;cursor:pointer}
+.mw-seg button.on{background:var(--mc);color:#fff}
+.mw-ban{display:flex;gap:12px;align-items:center;padding:14px 16px;border-radius:14px;color:#fff;background:linear-gradient(90deg,var(--m1),var(--m2))}
+.mw-ban .ic{font-size:26px;line-height:1;flex:none}.mw-ban b{display:block;font-size:17px}.mw-ban span{font-size:14px;opacity:.95}
+.mw-cap{font-size:13px;font-weight:700;color:var(--muted);margin-bottom:-4px}
+.mw-pills{display:flex;flex-wrap:wrap;gap:8px}.mw-pills button{flex:1;min-width:70px;min-height:40px;border-radius:10px;border:1.5px solid var(--line);background:var(--surface);color:var(--ink);font:inherit;font-weight:700;font-size:14px;cursor:pointer}
+.mw-pills button.on{background:var(--mc);border-color:var(--mc);color:#fff}
+.mw-big{font-size:42px;font-weight:800;line-height:1.1;text-align:center}
+</style>
 <title>Latihan PPU-PBM</title>
 <link rel="apple-touch-icon" href="ikon-180.png">
 <link rel="icon" type="image/png" href="ikon-180.png">
@@ -3841,6 +3851,7 @@ function isAns(it,a){ if(it.tipe==='pgk') return Array.isArray(a.c)&&it.pernyata
 function grade(it,a){ if(it.tipe==='pgk') return isAns(it,a)&&it.pernyataan.every((x,i)=>a.c[i]===x.benar); return it.tipe==='isian'?String(a.is).trim()===String(it.kunci_isian).trim():(a.c!=null&&!!it.opsi[a.c].benar); }
 function recordAt(C,k){
   const s=C.s, a=s.A[k], it=C.items[k]; if(a.done) return; const ok=grade(it,a); a.done=true; a.ok=ok;
+  if(s.mw){ s.mw.n++; if(ok) s.mw.b++; else if(s.mw.m==='survival'){ s.mw.end=1; S.mwBest=Math.max(S.mwBest||0,s.mw.b); } }
   if(s.eb){ (s.ebr=s.ebr||{})[badId(C,it)]=ebReview(badId(C,it),ok,it,a); s.res.push(C.kind==='drill'?{id:it.id,ok,it}:ok); return; }
   if(!ok) ebAdd(C,it,a,k);
   if(C.kind==='drill'){
@@ -3875,7 +3886,8 @@ function reportItem(C){
   setTimeout(()=>toast('Soal dikeluarkan dari latihan. Teks laporan disalin, tempel ke Claude.'),50);
 }
 function finishSess(C){
-  if(!C) return; C.items.forEach((it,i)=>{ if(!C.s.A[i].done) recordAt(C,i); }); if(C.s.T) C.s.T[C.s.cur]+=Date.now()-C.s.qStart; C.s.qStart=Date.now(); C.s.ended=Date.now(); save();
+  if(!C) return; const part=C.s.mw&&C.s.mw.m!=='santai'; if(C.s.mwPause){ C.s.started+=Date.now()-C.s.mwPause; C.s.mwPause=null; }
+  C.items.forEach((it,i)=>{ if(!C.s.A[i].done&&(!part||isAns(it,C.s.A[i]))) recordAt(C,i); }); if(C.s.mw&&C.s.mw.m==='survival') S.mwBest=Math.max(S.mwBest||0,C.s.mw.b); if(C.s.T) C.s.T[C.s.cur]+=Date.now()-C.s.qStart; C.s.qStart=Date.now(); C.s.ended=Date.now(); save();
   C.s.fin=true; C.s.review=false; V.confirmEnd=false;
   if(C.kind==='drill'){ render(); window.scrollTo(0,0); } else go('selesai');
 }
@@ -3911,7 +3923,8 @@ function viewCbt(C){
   const s=C.s, n=C.items.length, k=s.cur, it=C.items[k], a=s.A[k], fb=a.done, rv=s.review, isD=C.kind==='drill';
   const en=enterOnce(C.kind+(C.t?C.t.id:'')+'|'+k+'|'+(rv?'r':'')+'|'+C.items.length);
   const tools=(rv?'<span class="cbt-mode">Pembahasan</span>':'<button type="button" class="obtn blue" data-action="qcek" title="Ganti cara pemeriksaan">✓ '+(cekMode()==='langsung'?'Langsung':'Di akhir')+'</button>')+'<button type="button" class="obtn bm'+(s.F[k]?' on':'')+'" data-action="qflag" aria-pressed="'+s.F[k]+'" aria-label="Tandai ragu-ragu" title="Tandai ragu-ragu">'+BM+'</button>';
-  const timer=(!isD&&s.limit&&!rv)?'<span class="cbt-timer'+(s.limit-(Date.now()-s.started)<120000?' low':'')+'" id="cdown" aria-label="Sisa waktu">'+mmss(s.limit-(Date.now()-s.started))+'</span>':'';
+  const sv=!isD&&s.mw&&s.mw.m==='survival';
+  const timer=(!isD&&s.limit&&!rv)?'<span class="cbt-timer'+(sisaR(s)<(s.mw?60000:120000)?' low':'')+'" id="cdown" aria-label="Sisa waktu">'+(s.mw?'⚡ ':'')+mmss(sisaR(s))+'</span>':sv&&!rv?'<span class="cbt-timer" id="cdown" aria-label="Sisa waktu soal ini">🔥 '+(a.done?(s.mw.habis===k?0:Math.max(0,Math.ceil(mwSoalLeft(s,C)/1000))):Math.max(0,Math.ceil(mwSoalLeft(s,C)/1000)))+' dtk</span>':'';
   let h='<div class="cbt-head"><a class="cbt-exit" href="#beranda">'+BACK+'Keluar</a><div class="cbt-tools">'+timer+tools+'</div></div>';
   h+='<div class="numgrid" role="navigation" aria-label="Nomor soal">'+C.items.map((q,i)=>{ const x=s.A[i]; let c='nb'; if(i===k) c+=' cur'; if(x.done) c+=x.ok?' ok':' bad'; else if(isAns(q,x)) c+=' ans'; if(s.F[i]) c+=' flag'; return '<button type="button" class="'+c+'" data-action="qgo" data-k="'+i+'" aria-label="Soal '+(i+1)+'"'+(i===k?' aria-current="true"':'')+'>'+(i+1)+'</button>'; }).join('')+'</div>';
   
@@ -3964,7 +3977,9 @@ function viewCbt(C){
   }
   h+='</div></div>';
   if(V.confirmEnd&&!rv){ const c=countOf(C); h+='<div class="cbt-confirm"><b>'+[c.k?c.k+' soal masih kosong':'',c.f?c.f+' soal ditandai ragu-ragu':''].filter(Boolean).join(' dan ')+'.</b><span class="sub">Soal kosong dihitung salah. Tetap selesai?</span><div class="actions"><button type="button" class="obtn" data-action="qendno">Kembali</button><button type="button" class="fbtn" data-action="qendyes">Ya, selesai</button></div></div>'; }
-  h+='<div class="cbt-foot"><button type="button" class="obtn blue lg" data-action="qprev"'+(k===0?' disabled':'')+'>← Sebelumnya</button>'+
+  if(!isD&&!rv&&s.mw&&(s.mw.end||(s.mw.m==='sprint'&&a.done&&sisaR(s)<=0))) h+='<div class="cbt-foot"><button type="button" id="qprimary" class="fbtn lg" data-action="mwend" style="margin-left:auto">Lihat hasil</button></div></section>';
+  else if(sv&&!rv) h+='<div class="cbt-foot">'+(a.done?'<button type="button" id="qprimary" class="fbtn lg" data-action="mwnext" style="margin-left:auto">'+(s.A.some(x=>!x.done)?'Selanjutnya →':'Lihat hasil')+'</button>':it.tipe==='isian'?'<button type="button" id="qprimary" class="fbtn lg" data-action="qcheck" style="margin-left:auto"'+(String(a.is).trim()?'':' disabled')+'>Periksa jawaban</button>':'<span class="sub">Jawabanmu langsung diperiksa.</span>')+'</div></section>';
+  else h+='<div class="cbt-foot"><button type="button" class="obtn blue lg" data-action="qprev"'+(k===0?' disabled':'')+'>← Sebelumnya</button>'+
     primaryBtn(C)+'</div></section>';
   return h;
 }
@@ -3991,21 +4006,49 @@ function nextTexts(sub,n,preferSim){
   const rank=t=>(preferSim?(t.paket==='simulasi'?0:1e15):(t.paket==='simulasi'?1e15:0))+lastTs(t.id,sub);
   return pool.slice().sort((a,b)=>rank(a)-rank(b)).slice(0,n);
 }
+/* Mode waktu sesi teks (bukan simulasi): Santai tanpa hitung mundur; Sprint memberi jatah 3/5/10/20 menit
+   (jatah berhenti saat soal yang tampil sudah dijawab, misalnya saat membaca pembahasan); Survival memberi batas per soal
+   (PPU 45 / PBM 75 detik, atau lebih ketat) dan berhenti di jawaban salah pertama atau saat waktu habis.
+   Batas per soal tidak pernah lebih longgar dari waktu resmi. Di Sprint dan Survival, soal tanpa jawaban tidak dicatat. */
+const MW={santai:{nama:'Santai',c:'#4fa9f0',g:['#6fd3f8','#4fa9f0'],ic:'🌿',tag:'Waktu bebas, maksimalkan akurasi'},
+  sprint:{nama:'Sprint',c:'#e8894a',g:['#f0b26e','#e8894a'],ic:'⚡',tag:'Siap ngebut? Selesaikan sebanyak mungkin'},
+  survival:{nama:'Survival',c:'#d9534f',g:['#ef7d78','#d9534f'],ic:'🔥',tag:'Bertahan selama mungkin, raih streak terpanjang!'}};
+const MW_SPR=[3,5,10,20], MW_SV=[1,.75,.5];
+function mwPref(){ const m=S.mw||{}; return {m:MW[m.m]?m.m:'sprint',spr:MW_SPR.includes(m.spr)?m.spr:10,sv:MW_SV.includes(m.sv)?m.sv:1}; }
+function mwSet(k,v){ S.mw=Object.assign(mwPref(),{[k]:v}); save(); render(); }
+/* sisa jatah sesi bertimer; Sprint berhenti selama soal yang tampil sudah dijawab */
+function sisaR(R){ return R.limit-((R.mwPause||Date.now())-R.started); }
+function mwSync(R,C){ if(!R||!R.mw||R.mw.m!=='sprint'||R.fin) return; const d=R.A[R.cur]&&R.A[R.cur].done;
+  if(d&&!R.mwPause) R.mwPause=Date.now(); else if(!d&&R.mwPause){ R.started+=Date.now()-R.mwPause; R.mwPause=null; } }
+function mwBatas(R,it){ return Math.round((PACE[it.subtes]||60)*R.mw.sv)*1000; }
+function mwSoalLeft(R,C){ const it=C.items[R.cur]; return mwBatas(R,it)-(R.T[R.cur]+Date.now()-R.qStart); }
+function viewPick(){ const P=mwPref(), M=MW[P.m], o=V.pick.opt, n=V.pick.n;
+  let h='<div class="cbt-head"><a class="cbt-exit" href="#beranda">'+BACK+'Kembali</a></div><section class="card" style="margin-top:12px">';
+  h+='<h2 style="margin:0">'+esc(o.label||('Teks '+(o.sub||'')))+'</h2><div class="sub">'+n+' soal. Waktu resmi: PPU 45 detik, PBM 75 detik per soal.</div>';
+  h+='<div class="mw-seg">'+Object.keys(MW).map(k=>'<button type="button" class="'+(k===P.m?'on':'')+'" style="--mc:'+MW[k].c+'" data-action="mwmode" data-v="'+k+'">'+MW[k].nama+'</button>').join('')+'</div>';
+  h+='<div class="mw-ban" style="--m1:'+M.g[0]+';--m2:'+M.g[1]+'"><span class="ic">'+M.ic+'</span><div><b>Mode '+M.nama+'</b><span>'+M.tag+'</span></div></div>';
+  if(P.m==='sprint') h+='<div class="mw-cap">Batas waktu</div><div class="mw-pills" style="--mc:'+M.c+'">'+MW_SPR.map(x=>'<button type="button" class="'+(x===P.spr?'on':'')+'" data-action="mwspr" data-v="'+x+'">'+x+' menit</button>').join('')+'</div><div class="sub">Kerjakan sebanyak mungkin. Waktu berhenti saat soal yang tampil sudah dijawab. Waktu habis = sesi berhenti; soal yang belum dijawab tidak dicatat.</div>';
+  else if(P.m==='survival') h+='<div class="mw-cap">Timer per soal</div><div class="mw-pills" style="--mc:'+M.c+'">'+MW_SV.map(x=>'<button type="button" class="'+(x===P.sv?'on':'')+'" data-action="mwsv" data-v="'+x+'">'+(x===1?'Resmi':Math.round(x*100)+'%')+'</button>').join('')+'</div><div class="sub">PPU '+Math.round(45*P.sv)+' detik, PBM '+Math.round(75*P.sv)+' detik per soal. Jawaban langsung diperiksa. Satu salah atau waktu habis, sesi selesai.</div>';
+  else h+='<div class="sub">Tanpa hitung mundur. Waktu tetap dicatat dan dibandingkan dengan target UTBK.</div>';
+  h+='<button type="button" class="btn primary block" data-action="mwgo">Mulai '+M.nama+'</button></section>';
+  return h; }
 function startTeksMulti(texts,opt){
   opt=opt||{}; const sub=opt.sub, qs=[];
   texts.forEach(t=>t.soal.forEach((q,i)=>{ if(S.bad[t.id+'#'+q.nomor]) return; if(!sub||sub==='campur'||q.subtes===sub) qs.push([t.id,i]); }));
   const lim=opt.max?qs.slice(0,opt.max):qs; if(!lim.length){ location.hash='#bank'; return; }
+  if(opt.pilih&&!opt.mw){ V.pick={texts,opt,n:lim.length}; V.run=null; if(location.hash==='#soal') render(); else location.hash='#soal'; return; }
+  V.pick=null; const mw=opt.mw&&opt.mw.m!=='santai'?opt.mw:null;
   const perm=lim.map(([tid,i])=>{ const tt=texts.find(t=>t.id===tid), q=tt&&tt.soal[i]; return q&&opsiAcak(q)?shuffle(q.opsi.map((_,j)=>j)):null; });
-  V.run=initSess({teksId:texts[0].id,teksIds:texts.map(t=>t.id),sub,qs:lim,perm,label:opt.label||null,cek:opt.cek||null,started:Date.now(),limit:opt.timed?Math.round(lim.length*(PACE[sub]||60)*1000):0,res:[]},lim.length); V.confirmEnd=false;
+  V.run=initSess({teksId:texts[0].id,teksIds:texts.map(t=>t.id),sub,qs:lim,perm,label:opt.label||null,cek:mw&&mw.m==='survival'?'langsung':opt.cek||null,started:Date.now(),limit:opt.timed?Math.round(lim.length*(PACE[sub]||60)*1000):mw&&mw.m==='sprint'?mw.spr*60000:0,res:[],mw:opt.mw?{m:opt.mw.m,spr:opt.mw.spr,sv:opt.mw.sv,n:0,b:0}:null},lim.length); V.confirmEnd=false;
   if(location.hash==='#soal') render(); else location.hash='#soal';
 }
 function startTeks(sub, teksId){
   const t=teksId?S.bank.find(x=>x.id===teksId):nextTeks(sub==='campur'?null:sub); if(!t){ location.hash='#bank'; return; }
-  startTeksMulti([t],{sub});
+  startTeksMulti([t],{sub,pilih:true});
 }
 /* paket teks harian: ambil teks (utama, pendek, lepas) sampai sekitar 10 soal */
 function dailyTexts(sub){ const out=[]; let n=0; for(const t of nextTexts(sub,999,false)){ if(n>=(SOAL_HARI[sub]||10)) break; const k=t.soal.filter(q=>q.subtes===sub&&!S.bad[t.id+'#'+q.nomor]).length; if(!k) continue; out.push(t); n+=k; } return out; }
-function startDailyTeks(sub){ const ts=dailyTexts(sub); if(!ts.length){ location.hash='#bank'; return; } startTeksMulti(ts,{sub,label:'Teks '+sub+(V.paket?' · '+(1+(V.paket.done||[]).length)+'/'+V.paket.total:'')}); }
+function startDailyTeks(sub){ const ts=dailyTexts(sub); if(!ts.length){ location.hash='#bank'; return; } startTeksMulti(ts,{sub,pilih:true,label:'Teks '+sub+(V.paket?' · '+(1+(V.paket.done||[]).length)+'/'+V.paket.total:'')}); }
 /* langkah berikutnya paket harian: subtes yang belum dikerjakan di paket ini dan punya teks di bank */
 function paketNext(){ const P=V.paket; if(!P) return null; for(const sub of ['PPU','PBM']){ if((P.done||[]).includes(sub)) continue; const ts=dailyTexts(sub); if(ts.length) return {sub,nq:ts.reduce((n,t)=>n+t.soal.filter(q=>q.subtes===sub&&!S.bad[t.id+'#'+q.nomor]).length,0)}; } return null; }
 function simCount(sub){ let n=0; nextTexts(sub,99,true).forEach(t=>{ n+=t.soal.filter(q=>q.subtes===sub).length; }); return Math.min(20,n); }
@@ -4023,6 +4066,7 @@ function renderSentence(t,i,focus,proof){
   return '<span class="s'+(proof.includes(i+1)?' proof':focus.includes(i+1)?' focus':'')+'"><span class="n">('+(i+1)+')</span> '+s+'</span> ';
 }
 function viewSoal(){
+  if(V.pick&&!V.run) return viewPick();
   const R=V.run; if(!R) return viewBeranda();
   const C=sessCtx(); if(!C) return viewBeranda();
   if(R.fin&&!R.review) return viewSelesai();
@@ -4030,12 +4074,12 @@ function viewSoal(){
 }
 function paceCard(R){
   if(!R.started||!R.res.length) return '';
-  let used=(R.ended||Date.now())-R.started; if(R.limit) used=Math.min(used,R.limit);
+  let used=(R.ended||Date.now())-R.started; if(R.limit) used=Math.min(used,R.limit); if(R.mw&&R.mw.m==='survival') used=R.T.reduce((x,y)=>x+y,0);
   const n=R.res.length, per=used/n, sub=R.sub&&PACE[R.sub]?R.sub:null, tgt=sub?PACE[sub]*1000:0;
   const over=tgt&&per>=tgt+1000, timeout=R.limit&&used>=R.limit;
   return '<section class="card"><h2>Waktu</h2><div class="row"><span class="grow">Total</span><b>'+mmss(used)+(R.limit?' / '+mmss(R.limit):'')+'</b></div>'+
     '<div class="row"><span class="grow">Rata-rata per soal</span><b style="color:var('+(over?'--warn-ink,#8A5A00':'--ok-ink')+')">'+Math.round(per/1000)+' dtk</b></div>'+
-    (timeout?'<div class="sub">Waktu habis sebelum kamu menekan Selesai. Di UTBK asli, soal yang belum dijawab dihitung kosong.</div>':sub?'<div class="sub">Target UTBK '+sub+': '+PACE[sub]+' dtk per soal'+(over?'. Kamu masih lebih lambat '+Math.round((per-tgt)/1000)+' dtk per soal.':'. Sudah sesuai target.')+'</div>':'')+'</section>';
+    (timeout&&R.mw?'<div class="sub">Jatah sprint '+R.mw.spr+' menit habis. Soal yang belum dijawab tidak dicatat.</div>':timeout?'<div class="sub">Waktu habis sebelum kamu menekan Selesai. Di UTBK asli, soal yang belum dijawab dihitung kosong.</div>':sub?'<div class="sub">Target UTBK '+sub+': '+PACE[sub]+' dtk per soal'+(over?'. Kamu masih lebih lambat '+Math.round((per-tgt)/1000)+' dtk per soal.':'. Sudah sesuai target.')+'</div>':'')+'</section>';
 }
 function viewSelesai(){
   const R=V.run; if(!R) return viewBeranda(); if(R.eb) return ebDone(R);
@@ -4046,6 +4090,10 @@ function viewSelesai(){
   if(V.paket&&V.paket.drillRes) h+='<section class="card"><div class="row"><span class="grow">Drill kaidah</span><b>'+V.paket.drillRes[0]+' / '+V.paket.drillRes[1]+'</b></div>'+(V.paket.teksRes||[]).map(x=>'<div class="row"><span class="grow">Teks '+esc(x[0])+'</span><b>'+x[1]+' / '+x[2]+'</b></div>').join('')+'<div class="row"><span class="grow">'+esc(tl.replace(/ · \d+\/\d+$/,''))+'</span><b>'+ok+' / '+R.res.length+'</b></div></section>'+
     (nx?'<button class="btn primary block" type="button" data-action="paketteks">Lanjut ke '+nx.nq+' soal teks '+esc(nx.sub)+'</button>':'<section class="card"><h2>Untuk besok</h2><div class="sub">Besok konsepnya berganti ke '+esc(KONSEP[(today().i+1)%KONSEP.length].n)+'. Kelemahan hari ini otomatis ikut di prompt besok.</div><a class="btn ghost" href="#prompt">Lihat prompt</a></section>');
   else h+=ring(ok,R.res.length)+'<div class="sub">soal benar · '+esc(tl)+'</div></section>';
+  if(R.mw&&R.mw.m!=='santai'){ const M=MW[R.mw.m], sisa=R.items?0:(R.qs||[]).length-R.res.length;
+    h+='<section class="card"><div class="mw-ban" style="--m1:'+M.g[0]+';--m2:'+M.g[1]+'"><span class="ic">'+M.ic+'</span><div><b>'+(R.mw.m==='survival'?'Survival berakhir':'Sprint '+R.mw.spr+' menit selesai')+'</b><span>'+(R.mw.m==='survival'?(R.mw.end?(R.mw.habis!=null?'Waktu soal terakhir habis.':'Satu jawaban salah mengakhiri sesi.'):'Semua soal terjawab benar!'):'Bagus, kamu sudah melangkah.')+'</span></div></div>'+
+      (R.mw.m==='survival'?'<div class="mw-big">'+R.mw.b+'</div><div class="sub" style="text-align:center">streak benar · terbaik '+(S.mwBest||R.mw.b)+'</div>':'')+
+      (sisa>0?'<div class="sub" style="text-align:center">'+sisa+' soal tidak sempat dijawab dan tidak dicatat.</div>':'')+'</section>'; }
   h+=saveBadge(R.t0)+rekapCard(S.history.filter(x=>x.ts>=(R.t0||0)&&(R.teksIds||[R.teksId]).includes(x.teksId)),'Rekap per jenis soal')+paceCard(R);
   h=h.replace('</h1>','</h1>'+blokiSay(rp>=.8?'trophy':rp>=.5?'wave':'sad',rp>=.8?'Hebat! Banyak balok berwarna hari ini.':rp>=.5?'Bagus! Cek pembahasan soal yang salah.':'Pelan-pelan saja. Pembahasan menunggumu.','sm'));
   return h+'<button class="btn ghost block" type="button" data-action="qreview" data-v="teks">Lihat pembahasan per nomor</button><a class="btn primary block" href="#beranda">Selesai</a>';
@@ -5040,8 +5088,12 @@ function render(){
 function onScrollTop(){ const h1=$('#view h1'), tb=$('#topbar'); if(!tb) return; tb.classList.toggle('on', !!h1 && h1.getBoundingClientRect().bottom<44); }
 window.addEventListener('scroll',onScrollTop,{passive:true});
 /* hitung mundur simulasi */
-setInterval(function(){ const R=V.run; if(!R||!R.limit||R.fin) return; const left=R.limit-(Date.now()-R.started); const el=document.getElementById('cdown'); if(el){ el.textContent=mmss(left); el.classList.toggle('low',left<120000); }
-  if(left<=0&&route()==='soal'){ const C=sessCtx(); if(C){ V.confirmEnd=false; finishSess(C); toast('Waktu habis. Jawaban dikumpulkan otomatis.'); } } },1000);
+setInterval(function(){ const R=V.run; if(!R||R.fin||route()!=='soal') return;
+  if(R.mw&&R.mw.m==='survival'){ if(R.review||R.mw.end) return; const C=sessCtx(); if(!C) return; const a=R.A[R.cur]; if(a.done) return; const left=mwSoalLeft(R,C), el=document.getElementById('cdown');
+    if(el){ el.textContent='🔥 '+Math.max(0,Math.ceil(left/1000))+' dtk'; el.classList.toggle('low',left<10000); }
+    if(left<=0){ recordAt(C,R.cur); if(!a.ok) R.mw.habis=R.cur; buzz(a.ok); save(); render(); sfx('waktu:warn'); } return; }
+  if(!R.limit) return; mwSync(R); const left=sisaR(R); const el=document.getElementById('cdown'); if(el){ el.textContent=(R.mw?'⚡ ':'')+mmss(left); el.classList.toggle('low',left<(R.mw?60000:120000)); }
+  if(left<=0&&!R.mwPause){ const C=sessCtx(); if(C){ V.confirmEnd=false; finishSess(C); toast(R.mw?'Waktu sprint habis.':'Waktu habis. Jawaban dikumpulkan otomatis.'); } } },500);
 function go(h){ if(location.hash==='#'+h) render(); else location.hash='#'+h; window.scrollTo(0,0); }
 function drillLabel(v){ if(v.startsWith('sub:')){ const s=v.slice(4).split('|'); return s.length>1?'Konsep hari ini':s[0]; } return v==='campur'?'Campur':KAT[v]; }
 
@@ -5089,6 +5141,13 @@ document.addEventListener('click',e=>{
   else if(a==='qpick'){ const C=sessCtx(); if(!C) return; const s=C.s, x=s.A[s.cur]; if(x.done||s.review) return; x.c=+b.dataset.i; if(cekMode()==='langsung'){ recordAt(C,s.cur); buzz(x.ok); save(); } render(); }
   else if(a==='qpgk'){ const C=sessCtx(); if(!C) return; const s=C.s, it=C.items[s.cur], x=s.A[s.cur]; if(x.done||s.review||it.tipe!=='pgk') return; if(!Array.isArray(x.c)) x.c=it.pernyataan.map(()=>null); x.c[+b.dataset.i]=b.dataset.v==='1'; if(cekMode()==='langsung'&&isAns(it,x)){ recordAt(C,s.cur); buzz(x.ok); save(); } render(); }
   else if(a==='qcheck'){ const C=sessCtx(); if(!C) return; const s=C.s, x=s.A[s.cur]; if(x.done||!String(x.is).trim()) return; recordAt(C,s.cur); buzz(x.ok); save(); render(); }
+  else if(a==='mwmode') mwSet('m',b.dataset.v);
+  else if(a==='mwspr') mwSet('spr',+b.dataset.v);
+  else if(a==='mwsv') mwSet('sv',+b.dataset.v);
+  else if(a==='mwgo'){ const pk=V.pick; if(pk) startTeksMulti(pk.texts,Object.assign({},pk.opt,{mw:mwPref()})); }
+  else if(a==='mwend'){ const C=sessCtx(); if(C){ V.confirmEnd=false; finishSess(C); } }
+  else if(a==='mwnext'){ const C=sessCtx(); if(!C) return; const s=C.s, n=C.items.length; let to=-1; for(let j=1;j<=n;j++){ const x=(s.cur+j)%n; if(!s.A[x].done){ to=x; break; } } if(to<0){ finishSess(C); return; } if(s.T) s.T[s.cur]+=Date.now()-s.qStart; s.cur=to; s.qStart=Date.now(); render(); window.scrollTo(0,0); }
+  else if((a==='qgo'||a==='qprev'||a==='qnext')&&V.run&&V.run.mw&&V.run.mw.m==='survival'&&!V.run.review&&route()==='soal') return;
   else if(a==='qgo'||a==='qprev'||a==='qnext'){ const C=sessCtx(); if(!C) return; const s=C.s, k=a==='qgo'?+b.dataset.k:s.cur+(a==='qnext'?1:-1); if(k<0||k>=C.items.length) return; if(s.T) s.T[s.cur]+=Date.now()-s.qStart; s.cur=k; s.qStart=Date.now(); V.confirmEnd=false; render(); window.scrollTo(0,0); }
   else if(a==='qreport'){ const C=sessCtx(); if(!C) return; reportItem(C); render(); }
   else if(a==='unbad'){ const id=b.dataset.id; if(id==='*') S.bad={}; else delete S.bad[id]; save(); render(); toast('Soal dikembalikan ke latihan'); }
@@ -5200,7 +5259,7 @@ document.addEventListener('paste',e=>{ if(e.target.id==='paste'){ setTimeout(()=
     window.__gNoClick=Date.now(); gAct('g5',{dataset:{i:+w.dataset.cut}}); });
   const end=()=>{ if(!C) return; C.sc.remove(); if(C.done) window.__gNoClick=Date.now(); C=null; };
   document.addEventListener('pointerup',end); document.addEventListener('pointercancel',end); })();
-window.addEventListener('hashchange',()=>{ const r=route(); if(((r==='soal'||r==='selesai')&&!V.run)||(r==='drill'&&!V.drill)||(r==='swipe'&&!V.sw)){ location.hash='#beranda'; return; } if(r==='game'&&!V.game){ location.hash='#main'; return; } if(r!=='game') gStopTimer(); render(); window.scrollTo(0,0); });
+window.addEventListener('hashchange',()=>{ const r=route(); if(r!=='soal') V.pick=null; if(((r==='soal'&&!V.pick||r==='selesai')&&!V.run)||(r==='drill'&&!V.drill)||(r==='swipe'&&!V.sw)){ location.hash='#beranda'; return; } if(r==='game'&&!V.game){ location.hash='#main'; return; } if(r!=='game') gStopTimer(); render(); window.scrollTo(0,0); });
 if(['soal','selesai','drill','swipe','game'].includes(route())) location.hash='#beranda';
 function OSGERAK(){ try{ return !matchMedia('(prefers-reduced-motion: reduce)').matches; }catch(_){ return true; } }
 function cfgP(){ return {terang:S.theme!=='dark', gerak:S.anim==='on'?true:S.anim==='off'?false:OSGERAK()}; }
@@ -5429,8 +5488,9 @@ const _gEnd=gEnd; gEnd=function(G){ const was=G.phase; _gEnd(G); if(was==='over'
 let _tk=-1, _sk=-1;
 setInterval(()=>{ const G=V.game;
   if(G&&G.phase==='play'&&G.cur&&G.cur.end&&route()==='game'){ const s=Math.ceil((G.cur.end-Date.now())/1000); if(s<=5&&s>0&&s!==_tk){ _tk=s; sfx('tick',s<=2); } } else _tk=-1;
-  const R=V.run; if(R&&R.limit&&!R.fin&&route()==='soal'){ const s=Math.ceil((R.limit-(Date.now()-R.started))/1000);
-    if(s!==_sk){ if(s===120) sfx('waktu:warn'); else if(s<=10&&s>0) sfx('tick',s<=3); _sk=s; } }
+  const R=V.run; if(R&&R.limit&&!R.fin&&!R.mwPause&&route()==='soal'){ const s=Math.ceil(sisaR(R)/1000);
+    if(s!==_sk){ if(s===120&&!R.mw) sfx('waktu:warn'); else if(s<=10&&s>0) sfx('tick',s<=3); _sk=s; } }
+  else if(R&&R.mw&&R.mw.m==='survival'&&!R.fin&&!R.review&&!R.mw.end&&route()==='soal'&&R.A[R.cur]&&!R.A[R.cur].done){ const C=sessCtx(); if(C){ const s=Math.ceil(mwSoalLeft(R,C)/1000); if(s!==_sk){ if(s<=5&&s>0) sfx('tick',s<=2); _sk=s; } } }
 },100);
 /* seret ke tepi layar: halaman ikut bergulir */
 let _asY=0,_asT=null; document.addEventListener('pointermove',e=>{ _asY=e.clientY; if(_asT||!document.querySelector('.gghost')) return; _asT=setInterval(()=>{ if(!document.querySelector('.gghost')){ clearInterval(_asT); _asT=null; return; } const h=innerHeight, z=70; if(_asY<z) scrollBy(0,-Math.ceil((z-_asY)/5)); else if(_asY>h-z) scrollBy(0,Math.ceil((_asY-h+z)/5)); },16); },{capture:true,passive:true});
