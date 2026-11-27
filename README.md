@@ -24,3 +24,10 @@
 - Opsi pilihan ganda soal teks diacak setiap sesi (urutannya tetap selama sesi). Tidak diacak: opsi berurutan (nomor kalimat, urutan, pengelompokan kalimat), soal bertanda `"acak": false` (opsi baku), dan soal yang pembahasannya masih menyebut huruf opsi.
 - Bank soal memisahkan dua jenis temuan. **Merah** = paket belum bisa disimpan: kunci jauh lebih panjang, tiga kunci sama berturut-turut, opsi "semua benar/semua salah/tidak ada", nomor isian tidak ada di bacaan, nomor kalimat ditulis manual, kunci terpanjang di lebih dari 40% soal. **Oranye** = boleh disimpan tetapi mudah ditebak: selisih panjang opsi lebih dari 30%, hanya kunci yang berhati-hati, hanya kunci yang mengulang kata dari perintah, kunci terpanjang di lebih dari 1 dari 5 soal, pembahasan menyebut huruf.
 - Tombol **Salin prompt perbaikan** membuat prompt untuk chat Claude yang sama: perbaiki hanya soal yang ditandai, lalu kirim ulang seluruh paket.
+
+## Jenis soal L/G/B/M dan format J1–J7 (kesiapan-2027)
+- Sejak hari pertama setiap paket memakai komposisi Kesiapan 2027: per hari sekitar 4 L (bentuk lama), 6 G (geseran), 3 B (bentuk baru), 1 M (migrasi; bergantian PPU/PBM). Simulasi 20 soal: 6/8/4/2.
+- App menentukan jenis dan format setiap soal di Rancangan soal. G mendapat satu tuas bergiliran (stimulus, arah tanya, format jawaban). M berupa tabel benar/salah (J2, sesekali J5/J6 ditulis sebagai J2) atau definisi dua syarat untuk makna kata PPU. Setiap subtes minimal 2 soal di luar J1.
+- Kemampuan resmi (PPU-A–E, PBM-A–C) yang akurasi soal L-nya di bawah 70% (dari sekitar 20 soal terakhir, minimal 5 soal L) kembali memakai L saja.
+- PPU boleh punya satu bacaan pendek satu soal untuk soal B; PBM selalu berupa bacaan bernomor.
+- JSON memakai `"jenis_soal"` dan `"format"`; `"mode"` lama diisi otomatis (L→dasar, G→geser, B/M→2027). Riwayat menyimpan `jenis_soal` dan `format`.
