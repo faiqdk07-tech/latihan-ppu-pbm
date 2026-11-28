@@ -971,7 +971,7 @@ body[data-r="game"] main{gap:14px}
 .gmiss span{background:#fff;border:2px solid var(--line2);border-radius:8px;padding:4px 9px;font-size:13px}
 
 /* ===== v5: lebar lebih ramping,game di tengah layar ===== */
-body .app{max-width:500px}
+body .app{max-width:560px}
 body.sess .app{max-width:600px}
 body.sess .cbt-panel.split .cbt-body{display:flex!important;flex-direction:column}
 body.sess .cbt-panel.split .cbt-left{position:static;max-height:none;overflow:visible;border-right:0;padding-right:0}
@@ -3655,10 +3655,10 @@ function viewEbFokus(){ const e=S.eb[EBV.open]; if(!e||e.lulus){ EBV.open=null; 
   h+='<div class="ebnav"><button class="btn ghost" type="button" data-action="ebopen" data-v="'+(pv?esc(pv.id):'')+'"'+(pv?'':' disabled')+'>‹ Sebelumnya</button><button class="btn ghost" type="button" data-action="ebopen" data-v="'+(nx?esc(nx.id):'')+'"'+(nx?'':' disabled')+'>Berikutnya ›</button></div>';
   return h; }
 function viewEb(){
-  if(EBV.open){ const fk=viewEbFokus(); if(fk) return '<h1>Error Book</h1>'+fk; }
+  if(EBV.open){ const fk=viewEbFokus(); if(fk) return fk; }
   const P=ebPerlu(), Dd=ebDue('drill'), Dt=ebDue('teks'), D=Dd.concat(Dt), A=ebAktif(), J=A.filter(e=>!e.perlu&&!D.includes(e)).sort((a,b)=>a.due<b.due?-1:1), Lu=ebList().filter(e=>e.lulus), po=ebPola(30);
   const intro='Soal drill dan teks yang salah masuk ke sini. <b>Diagnosis</b> penyebabnya dan tulis aturan untuk dirimu, <b>ulang</b> tanpa melihat kunci mulai besok, lalu <b>lulus</b> setelah benar 4 kali berjarak (1, 3, 7, 14 hari). Salah lagi berarti mulai dari awal. Sebelum kunci dibuka, soal yang salah <b>dicoba sekali lagi</b>. Bila percobaan kedua benar dan penyebabnya kurang teliti, soal masuk <b>jalur pendek</b>: cukup 2 kali benar berjarak (3 dan 7 hari).';
-  let h='<h1>Error Book</h1>';
+  let h='';
   if(!ebList().length) return h+'<section class="card"><div class="sub ebintro">'+intro+'</div></section><section class="card empty">Masih kosong. Soal drill dan teks yang salah otomatis masuk ke sini.</section>';
   const tab=EBV.tab||(P.length?'perlu':D.length+J.length?'jadwal':'lulus'), L=ebListTab(tab), TB=[['perlu','Diagnosis',P.length],['jadwal','Jadwal',D.length+J.length],['lulus','Lulus',Lu.length]];
   h+='<section class="card ebcard">'+
@@ -3739,7 +3739,7 @@ function taskRows(tasks,live){
   }).join('');
 }
 /* ---------- Header aplikasi & ubin balok ---------- */
-const HDR_ROUTES=['beranda'];
+const HDR_ROUTES=['beranda','eb'];
 function appHeader(){ const ds=new Date().toLocaleDateString('id-ID',{weekday:'long',day:'numeric',month:'long'});
   return '<header class="apphd"><svg class="logo" viewBox="0 0 34 34" aria-hidden="true"><rect x="7" y="2" width="8" height="5" rx="2" fill="#ffd24f" stroke="#9a6f00" stroke-width="2"/><rect x="19" y="2" width="8" height="5" rx="2" fill="#ffd24f" stroke="#9a6f00" stroke-width="2"/><rect x="2" y="6" width="30" height="16" rx="3" fill="#ffd24f" stroke="#9a6f00" stroke-width="2.5"/><rect x="2" y="21" width="30" height="10" rx="3" fill="#4b8ae8" stroke="#2b4f99" stroke-width="2.5"/></svg><span class="hdt"><b>Latihan PPU-PBM</b><small>'+esc(ds)+' · '+daysToUtbk()+' hari menuju UTBK</small></span><a class="ibtn" href="#pengaturan" aria-label="Pengaturan"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 6h8M18 6h2M4 12h2M12 12h8M4 18h10M20 18h0"/><circle cx="15" cy="6" r="2.2"/><circle cx="9" cy="12" r="2.2"/><circle cx="17" cy="18" r="2.2"/></svg></a><a class="ibtn" href="https://faiqdk07-tech.github.io/progres-harian/#hari-ini" aria-label="Kembali ke Progres Harian"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 10.5 12 3l9 7.5"/><path d="M5 9.5V20h5v-6h4v6h5V9.5"/></svg></a></header>'; }
 function icoSvg(k){ return '<svg viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">'+ICONS[k][1]+'</svg>'; }
